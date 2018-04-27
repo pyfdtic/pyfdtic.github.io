@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ansible," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用 Ansible task, role, playbook 定义任务, 实现自动化服务器管理.">
+<meta name="keywords" content="ansible">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ansible task&#x2F;role&#x2F;playbook">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/15/Ansible-task-role-playbook/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="使用 Ansible task, role, playbook 定义任务, 实现自动化服务器管理.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/ansible%E5%AE%9E%E4%BD%93%E5%85%B3%E7%B3%BB%E5%9B%BE.PNG">
+<meta property="og:updated_time" content="2018-04-01T12:13:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ansible task&#x2F;role&#x2F;playbook">
+<meta name="twitter:description" content="使用 Ansible task, role, playbook 定义任务, 实现自动化服务器管理.">
+<meta name="twitter:image" content="http://oluv2yxz6.bkt.clouddn.com/ansible%E5%AE%9E%E4%BD%93%E5%85%B3%E7%B3%BB%E5%9B%BE.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/15/Ansible-task-role-playbook/"/>
+
+
+
+
+
+  <title>Ansible task/role/playbook | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/Ansible-task-role-playbook/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Ansible task/role/playbook</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T15:50:13+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index">
+                    <span itemprop="name">DevOps</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用 Ansible task, role, playbook 定义任务, 实现自动化服务器管理.</p>
+<a id="more"></a>
+<p><a href="https://pyfdtic.github.io/2018/03/14/Ansible-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">Ansible 学习总结</a></p>
+<h2 id="一-task"><a href="#一-task" class="headerlink" title="一. task"></a>一. task</h2><h3 id="1-name"><a href="#1-name" class="headerlink" title="1. name"></a>1. name</h3><p>可选配置, 用于提示task 的功能. 另, ansible-playbook –start-at-task &lt;task_name&gt; 可以调用 name, 从 task 的中间开始执行.</p>
+<h3 id="2-模块-功能"><a href="#2-模块-功能" class="headerlink" title="2. 模块(功能)"></a>2. 模块(功能)</h3><p>必选配置, 有模块的名称组成的 key 和 模块参数组成的 value.<br><strong>从 Ansible 前段所使用的 YAML 解析器角度看, 参数将被按照字符串处理, 而不是字典</strong></p>
+<pre><code>apt: name=nginx update_cache=yes
+</code></pre><h3 id="3-复杂参数"><a href="#3-复杂参数" class="headerlink" title="3. 复杂参数:"></a>3. 复杂参数:</h3><p>ansible 提供一个将模块调用分隔成多行的选择, 可以传递 key 为变量名的字典, 而不是传递字符串参数. 这种方式, 在调用拥有复杂参数的模块时, 十分有用. 如 ec2 模块.</p>
+<pre><code>- name: install pip pkgs
+  pip:
+    name: &quot;{{ item.name }}&quot;
+    version: &quot;{{ item.version }}&quot;
+    virtualenv: &quot;{{ venv_path }}&quot;
+  with_items:
+    - {name: mazzanine, version: 3.1.10}
+    - {name: gunicorn, version: 19.1.1}
+</code></pre><h3 id="4-environment-设置环境变量"><a href="#4-environment-设置环境变量" class="headerlink" title="4. environment : 设置环境变量"></a>4. environment : 设置环境变量</h3><p>传入包含变量名与值的字典, 来设置环境变量.</p>
+<pre><code>- name: set the site id
+  script: scripts/setsite.py
+  environment:
+    PATH: &quot;{{ venv_path }}/bin&quot;
+    PROJECT_DIR: &quot;{{ proj_path }}&quot;
+    ADMIN_PASS: &quot;{{ admin_pass }}&quot;
+</code></pre><h3 id="5-sudo-sudo-user"><a href="#5-sudo-sudo-user" class="headerlink" title="5. sudo, sudo_user"></a>5. sudo, sudo_user</h3><p>切换到 root 或 其他用户执行 task.</p>
+<h3 id="6-notify"><a href="#6-notify" class="headerlink" title="6. notify"></a>6. notify</h3><p>触发 handler 任务.</p>
+<h3 id="7-when"><a href="#7-when" class="headerlink" title="7. when"></a>7. when</h3><p>当 when 表达式返回 True 时, 执行该 task , 否则不执行.</p>
+<h3 id="8-local-action-运行本地任务"><a href="#8-local-action-运行本地任务" class="headerlink" title="8. local_action : 运行本地任务"></a>8. local_action : 运行本地任务</h3><p>在<strong>控制主机</strong>本机上(而目标主机)执行命令.</p>
+<p><strong>如果目标主机为多台, 那么, local_action 执行的task 将执行多次, 可以指定 run_once , 来限制 local_action 的执行次数.</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 调用 wait_for 模块 : 注: inventory_hostname 的值仍然是远程主机, 因为这些变量的范围仍然是远程主机, 即使 task 在本机执行.</span><br><span class="line">- name: wait for ssh server to be running</span><br><span class="line">  local_action: wait_for port=22 host=&quot;&#123;&#123; inventory_hostname &#125;&#125;&quot; search_regex=OpenSSH</span><br><span class="line"></span><br><span class="line"># 调用 command 模块   </span><br><span class="line">- name: run local cmd</span><br><span class="line">  hosts: all</span><br><span class="line">  gather_facts: False</span><br><span class="line">  tasks:</span><br><span class="line">    - name: run local shell cmd</span><br><span class="line">      local_action: command touch /tmp/new.txtxt</span><br></pre></td></tr></table></figure>
+<h3 id="9-delegate-to-在涉及主机之外的主机上运行-task"><a href="#9-delegate-to-在涉及主机之外的主机上运行-task" class="headerlink" title="9. delegate_to: 在涉及主机之外的主机上运行 task"></a>9. delegate_to: 在涉及主机之外的主机上运行 task</h3><p>使用场景:</p>
+<ul>
+<li>在报警主机中, 启用基于主机的报警, 如 Nagios</li>
+<li>向负载均衡器中, 添加一台主机, 如 HAProxy</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置 Nagios 示例, inventory_hostname 仍然指 web 主机, 而非 nagios_server.example.com .</span></span><br><span class="line">- name: <span class="built_in">enable</span> alerts <span class="keyword">for</span> web servers</span><br><span class="line">  hosts: web</span><br><span class="line">  tasks:</span><br><span class="line">    - name: <span class="built_in">enable</span> alerts</span><br><span class="line">      nagios: action=enanle_alerts service=web host=&#123;&#123; inventory_hostname &#125;&#125;</span><br><span class="line">      delegate_to: nagios_server.example.com</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"><span class="comment"># This playbook does a rolling update for all webservers serially (one at a time).</span></span><br><span class="line"><span class="comment"># Change the value of serial: to adjust the number of server to be updated.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># The three roles that apply to the webserver hosts will be applied: common,</span></span><br><span class="line"><span class="comment"># base-apache, and web. So any changes to configuration, package updates, etc,</span></span><br><span class="line"><span class="comment"># will be applied as part of the rolling update process.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gather facts from monitoring nodes for iptables rules</span></span><br><span class="line">- hosts: monitoring</span><br><span class="line">  tasks: []</span><br><span class="line"></span><br><span class="line">- hosts: webservers</span><br><span class="line">  serial: 1</span><br><span class="line"></span><br><span class="line">  <span class="comment"># These are the tasks to run before applying updates:</span></span><br><span class="line">  pre_tasks:</span><br><span class="line">  - name: <span class="built_in">disable</span> nagios alerts <span class="keyword">for</span> this host webserver service</span><br><span class="line">    nagios: <span class="string">'action=disable_alerts host=&#123;&#123; inventory_hostname &#125;&#125; services=webserver'</span></span><br><span class="line">    delegate_to: <span class="string">"&#123;&#123; item &#125;&#125;"</span></span><br><span class="line">    with_items: groups.monitoring</span><br><span class="line"></span><br><span class="line">  - name: <span class="built_in">disable</span> the server <span class="keyword">in</span> haproxy</span><br><span class="line">    haproxy: <span class="string">'state=disabled backend=myapplb host=&#123;&#123; inventory_hostname &#125;&#125; socket=/var/lib/haproxy/stats'</span></span><br><span class="line">    delegate_to: <span class="string">"&#123;&#123; item &#125;&#125;"</span></span><br><span class="line">    with_items: groups.lbservers</span><br><span class="line"></span><br><span class="line">  roles:</span><br><span class="line">  - common</span><br><span class="line">  - base-apache</span><br><span class="line">  - web</span><br><span class="line"></span><br><span class="line">  <span class="comment"># These tasks run after the roles:</span></span><br><span class="line">  post_tasks:</span><br><span class="line">  - name: <span class="built_in">wait</span> <span class="keyword">for</span> webserver to come up</span><br><span class="line">    wait_for: <span class="string">'host=&#123;&#123; inventory_hostname &#125;&#125; port=80 state=started timeout=80'</span></span><br><span class="line"></span><br><span class="line">  - name: <span class="built_in">enable</span> the server <span class="keyword">in</span> haproxy</span><br><span class="line">    haproxy: <span class="string">'state=enabled backend=myapplb host=&#123;&#123; inventory_hostname &#125;&#125; socket=/var/lib/haproxy/stats'</span></span><br><span class="line">    delegate_to: <span class="string">"&#123;&#123; item &#125;&#125;"</span></span><br><span class="line">    with_items: groups.lbservers</span><br><span class="line"></span><br><span class="line">  - name: re-enable nagios alerts</span><br><span class="line">    nagios: <span class="string">'action=enable_alerts host=&#123;&#123; inventory_hostname &#125;&#125; services=webserver'</span></span><br><span class="line">    delegate_to: <span class="string">"&#123;&#123; item &#125;&#125;"</span></span><br><span class="line">    with_items: groups.monitoring</span><br></pre></td></tr></table></figure>
+<h3 id="10-run-once-值为-True-False"><a href="#10-run-once-值为-True-False" class="headerlink" title="10. run_once : 值为 True/False"></a>10. run_once : 值为 True/False</h3><p>该 task 是否只运行一次, 与 <code>local_action</code> 配合十分好用.</p>
+<p>在生产应用发布时比较有用.</p>
+<h3 id="11-changed-when-amp-failed-when"><a href="#11-changed-when-amp-failed-when" class="headerlink" title="11. changed_when &amp; failed_when"></a>11. changed_when &amp; failed_when</h3><p>使用 changed_when 和 failed_when 语句改变 Ansible 对 task 是 chenged 状态还是 failed 状态的认定.<br><strong>需要了解命令的输出结果</strong></p>
+<pre><code>- name: initialize the database
+  django_manage:
+    command: createdb --noinput --nodata
+    app_path: &quot;{{ proj_path }}&quot;
+    virtualenv: &quot;{{ venv_path }}&quot;
+  register: result
+  changed_when: not result.failed and &quot;Creating tables&quot; in result.out
+  failed_when: result.failed and &quot;Database already created&quot; not in result.msg
+</code></pre><h3 id="12-循环"><a href="#12-循环" class="headerlink" title="12. 循环"></a>12. 循环</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>输入</th>
+<th>循环策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>with_items</td>
+<td>列表</td>
+<td>对列表元素进行循环</td>
+</tr>
+<tr>
+<td>with_lines</td>
+<td>要执行的命令</td>
+<td>对命令输出结果进行逐行循环</td>
+</tr>
+<tr>
+<td>with_fileglob</td>
+<td>glob</td>
+<td>对文件名进行循环</td>
+</tr>
+<tr>
+<td>with_first_found</td>
+<td>路径的列表</td>
+<td>输入中第一个存在的文件</td>
+</tr>
+<tr>
+<td>with_dict</td>
+<td>字典</td>
+<td>对字典元素进行循环</td>
+</tr>
+<tr>
+<td>with_flattened</td>
+<td>列表的列表</td>
+<td>对所有列表的元素顺序循环</td>
+</tr>
+<tr>
+<td>with_indexed_items</td>
+<td>列表</td>
+<td>单次迭代</td>
+</tr>
+<tr>
+<td>with_nested</td>
+<td>列表</td>
+<td>循环嵌套</td>
+</tr>
+<tr>
+<td>with_random_choice</td>
+<td>列表</td>
+<td>单次迭代</td>
+</tr>
+<tr>
+<td>with_sequence</td>
+<td>整数数组</td>
+<td>对数组进行循环</td>
+</tr>
+<tr>
+<td>with_subelements</td>
+<td>字典的列表</td>
+<td>嵌套循环</td>
+</tr>
+<tr>
+<td>with_together</td>
+<td>列表的列表</td>
+<td>对多个列表并行循环</td>
+</tr>
+<tr>
+<td>with_inventory_hostname</td>
+<td>主机匹配模式</td>
+<td>对匹配的主机进行循环</td>
+</tr>
+</tbody>
+</table>
+<h4 id="12-1-with-items"><a href="#12-1-with-items" class="headerlink" title="12.1 with_items"></a>12.1 with_items</h4><p>with_items 用于对列表中的元素进行循环.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- name: Send out a slack message</span><br><span class="line">  user:</span><br><span class="line">    name: &quot;&#123;&#123; item &#125;&#125;&quot;</span><br><span class="line">    state: present</span><br><span class="line">    groups: &quot;wheel&quot;</span><br><span class="line">  with_items:</span><br><span class="line">    - test1</span><br><span class="line">    - test2</span><br><span class="line">    - test3</span><br></pre></td></tr></table></figure>
+<h4 id="12-2-with-lines"><a href="#12-2-with-lines" class="headerlink" title="12.2 with_lines"></a>12.2 with_lines</h4><p>with_lines 循环结构允许在<strong>控制主机</strong>上执行任意命令, 并对命令的输出进行逐行迭代.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- name: Send out a slack message</span><br><span class="line">  slack:</span><br><span class="line">    domain: example.slack.com</span><br><span class="line">    token: &quot;&#123;&#123; slack_token &#125;&#125;&quot;</span><br><span class="line">    msg: &quot;&#123;&#123; item &#125;&#125; was in the list&quot;</span><br><span class="line">  with_lines:</span><br><span class="line">    - cat /path/to/name.list</span><br></pre></td></tr></table></figure>
+<h4 id="12-3-with-fileglob"><a href="#12-3-with-fileglob" class="headerlink" title="12.3 with_fileglob"></a>12.3 with_fileglob</h4><p>with_fileglob 结构对于迭代<strong>控制主机</strong>上的一系列文件很有用.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- name: add public keys to account</span><br><span class="line">  authorized_key: user=deploy key=&quot;&#123;&#123; lookup(&apos;file&apos;, item) &#125;&#125;&quot;</span><br><span class="line">  with_fileglob:</span><br><span class="line">    - /var/keys/*.pub</span><br><span class="line">    - keys/*.pub</span><br></pre></td></tr></table></figure>
+<h4 id="12-4-with-dict"><a href="#12-4-with-dict" class="headerlink" title="12.4 with_dict"></a>12.4 with_dict</h4><p>with_dict 可以对字典而不是列表进行迭代. 当使用该结构时, <code>item</code> 循环变量是一个<code>{&quot;key&quot;: some_key, &quot;value&quot;: some_value}</code> 结构的字典.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># ansibel_eth0</span><br><span class="line">&#123;</span><br><span class="line">  &quot;address&quot;: &quot;10.0.2.15&quot;,</span><br><span class="line">  &quot;netmask&quot;: &quot;255.255.255.0&quot;,</span><br><span class="line">  &quot;network&quot;: &quot;10.0.2.0&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># task</span><br><span class="line">- name: iterate over ansible_eth0</span><br><span class="line">  debug: msg=&#123;&#123; item.key &#125;&#125;=&#123;&#123; item.value &#125;&#125;</span><br><span class="line">  with_dict: ansible_etho.ipv4</span><br></pre></td></tr></table></figure>
+<h4 id="12-5-with-sequence-以递增的数字顺序生成项序列"><a href="#12-5-with-sequence-以递增的数字顺序生成项序列" class="headerlink" title="12.5  with_sequence 以递增的数字顺序生成项序列"></a>12.5  with_sequence 以递增的数字顺序生成项序列</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- hosts: all</span><br><span class="line">  tasks:</span><br><span class="line">    ## 创建组</span><br><span class="line">    - group: name=evens state=present</span><br><span class="line">    - group: name=odds state=present</span><br><span class="line"></span><br><span class="line">    ## 创建格式为testuser%02x 的0-32 序列的用户</span><br><span class="line">    - user: name=&#123;&#123; item &#125;&#125; state=present groups=evens</span><br><span class="line">      with_sequence: start=0 end=32 format=testuser%02x</span><br><span class="line"></span><br><span class="line">    ## 创建4-16之间得偶数命名的文件</span><br><span class="line">    - file: dest=/var/stuff/&#123;&#123; item &#125;&#125; state=directory</span><br><span class="line">      with_sequence: start=4 end=16 stride=2</span><br><span class="line"></span><br><span class="line">    ## 简单实用序列的方法：创建4 个用户组分表是组group1 group2 group3 group4</span><br><span class="line">    - group: name=group&#123;&#123; item &#125;&#125; state=present</span><br><span class="line">      with_sequence: count=4</span><br></pre></td></tr></table></figure>
+<h4 id="12-6-with-random-choice-随机选择"><a href="#12-6-with-random-choice-随机选择" class="headerlink" title="12.6 with_random_choice 随机选择"></a>12.6 with_random_choice 随机选择</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- debug: msg=&#123;&#123; item &#125;&#125;</span><br><span class="line">  with_random_choice:</span><br><span class="line">      - <span class="string">"go through the door"</span></span><br><span class="line">      - <span class="string">"drink from the goblet"</span></span><br><span class="line">      - <span class="string">"press the red button"</span></span><br><span class="line">      - <span class="string">"do nothing"</span></span><br></pre></td></tr></table></figure>
+<h3 id="13-tags"><a href="#13-tags" class="headerlink" title="13. tags"></a>13. tags</h3><p>用于为 task 做逻辑区分 或功能区分, 提供对 task 细粒度的执行控制.<br><strong>特殊 tags</strong>ansible内置的特殊tags：<code>always</code>、<code>tagged</code>、<code>untagged</code>、<code>all</code> 是四个系统内置的tag，有自己的特殊意义</p>
+<ul>
+<li><code>always</code> : 指定这个 tag 后，task任务将<strong>永远被执行</strong>，而不用去考虑是否使用了–skip-tags标记</li>
+<li><code>tagged</code> : 当 <code>--tags</code> 指定为它时，则只要有tags标记的task都将被执行,<code>--skip-tags</code> 效果相反</li>
+<li><code>untagged</code> : 当 <code>--tags</code> 指定为它时，则所有没有tag标记的task 将被执行, <code>--skip-tags</code>效果相反</li>
+<li><code>all</code>: 默认tag, 无需指定，ansible-playbook 默认执行的时候就是这个标记.所有task都被执行系统中内置的特殊tags：</li>
+</ul>
+<h2 id="二-play"><a href="#二-play" class="headerlink" title="二. play"></a>二. play</h2><p>play 可以想象为连接到主机(host)上执行任务(task)的事务.</p>
+<p>选项:</p>
+<ol>
+<li><p>hosts : 必选配置, 需要配置的一组主机</p>
+<p> 控制主机执行顺序<code>order</code>. </p>
+<p> <code>order</code> 可用参数:</p>
+<ul>
+<li><code>inventory</code>: 默认参数, 按照 inventory 提供的顺序</li>
+<li><code>reverse_inventory</code>: 逆序 inventory</li>
+<li><code>sorted</code>: 按字母大小排序</li>
+<li><code>reverse_sorted</code>: 按字母大小逆序</li>
+<li><p><code>shuffle</code>: 随机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- hosts: all</span><br><span class="line">  order: sorted</span><br><span class="line">  gather_facts: False</span><br><span class="line">  tasks:</span><br><span class="line">    - debug: var=inventory_hostname</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>task : 必选配置, 需要在主机上执行的任务</p>
+</li>
+<li><p>name : 可选配置, 一段注释, 用来描述 play 的功能, ansible 在 play 开始执行的时候, 会把 name 打印出来.</p>
+</li>
+<li><p>sudo : 可选配置, 如果为真, ansible 会在运行每个 task 的时候, 都是用 sudo 命令切换为 (默认) root.</p>
+</li>
+<li><p>vars : 可选配置, 变量与其值组成的列表. 任何合法的 YAML 对象都可以作为变量的值. 变量不仅可以在 tasks 中使用, 还可以在 模板文件 中使用.</p>
+</li>
+<li><p>vars_files : 可选, 把变量放到一个或者多个文件中.</p>
+</li>
+<li><p>gather_facts : 是否收集 fact.</p>
+</li>
+<li><p>handlers : 可选, ansible 提供的 <strong>条件机制</strong>, 和 task 类似, 但只有在被 task 通知的时候才会运行. 如果 ansible 识别到 task 改变了系统的状态, task 就会触发通知机制. task 将 handler 的名字作为参数传递, 依此来通知 handler. </p>
+<p> handler 只会在所有任务执行完成之后执行, 而且即使被通知了多次, 也只会执行一次. handler 按照play 中定义的顺序执行, 而不是被通知的顺序.</p>
+<p> handler 常见的用途就是重启服务和重启服务器.</p>
+<p> ansible verion &gt; 2.2 之后, 支持 将多个 handler task 注册为一个组, 从而支持对改组的操作, 如下面示例中的 <code>restart web service</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">handlers:</span><br><span class="line">  - name: restart memcached</span><br><span class="line">    service: name=memcached state=restarted</span><br><span class="line">    listen: &quot;restart web services&quot;</span><br><span class="line">  - name: restart apache</span><br><span class="line">    service: name=apache state=restarted</span><br><span class="line">    listen: &quot;restart web service&quot;     </span><br><span class="line"></span><br><span class="line">tasks:</span><br><span class="line">  - name: restart everything</span><br><span class="line">    command: echo &quot;this task will restart web service&quot;</span><br><span class="line">    notify: &quot;restart web service&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>serial, max_fail_percentage</p>
+<p> 默认情况下, Ansible 会并行的在所有相关联主机上执行每一个 task.</p>
+<p> 可以使用 serial 限制并行执行 play 的主机数量.</p>
+<p> 一般来说, 当 task 失败时, Ansible 会停止执行失败的那台主机上的任务, 但是继续对其他主机执行.  在负载均衡场景中, 可能希望 Ansible 在所有主机都发生失败前让整个 play 停止执行, 否则将会导致, 所有主机都从 负载均衡器上移除, 并且全部执行失败, 最终负载均衡器上没有任何主机的局面. 此时, 可以使用 serial 和 max_fail_percentage 语句来指定, 最大失败主机比例达<strong>超过</strong> max_fail_percentage 时, 让整个 play 失败. </p>
+<p> 如果希望 Ansible 在任何主机出现 task 执行失败的时候, 都放弃执行, 则需要设置<code>max_fail_percentage=0</code>.</p>
+<pre><code>- name: upgrade packages on servers behind load balancer
+  hosts: myhosts
+  serial: 1
+  max_fail_percentage: 25
+  tasks:
+    - name: get the ec2 instance id and elastic load balancer id
+      ec2_facts:
+
+    - name: task the out of the elastic load balancer
+      local_action: ec2_elb
+      args:
+        instance_id: &quot;{{ ansible_ec2_instance_id }}&quot;
+        state: absent
+
+    - name: upgrade packages
+      apt: update_cache=yes upgrade=yes
+
+    - name: put the host back in the elastic load balancer
+      local_action: ec2_elb
+      args:
+        instance_id: &quot;{{ ansible_ec2_instance_id }}&quot;
+        state: present
+        ec2_elbs: &quot;{{ item }}&quot;
+      with_items: ec2_elbs
+</code></pre></li>
+<li><p>roles : 指定要执行的 role 名称, 可以添加 tags, 变量等参数.</p>
+</li>
+<li>pre-task</li>
+<li>post-task</li>
+</ol>
+<h2 id="三-role"><a href="#三-role" class="headerlink" title="三. role"></a>三. role</h2><p>role 是将 playbook 分隔为多个文件的主要机制, 他大大简化了复杂 playbook 的编写, 同时使得 role 更加易于复用.</p>
+<h3 id="1-role-的基本构成"><a href="#1-role-的基本构成" class="headerlink" title="1. role 的基本构成."></a>1. role 的基本构成.</h3><p>每个 role 都会用一个名字, 如 ‘database’, 与该 role 相关的文件都放在 roles/database 目录下. 其结构如下: <strong>每个单独文件都是可选的</strong></p>
+<ul>
+<li><code>task</code><br>  task 定义<br>  <code>roles/database/tasks/main.yml</code></li>
+<li><code>files</code><br>  需要上传到目标主机的文件:<br>  <code>roles/database/files/</code></li>
+<li><code>templates</code><br>  Jinja2 模板文件. <a href="http://docs.jinkan.org/docs/jinja2/templates.html" target="_blank" rel="noopener">Jinja2 Doc</a><br>  <code>roles/database/templates</code></li>
+<li><code>handlers</code><br>  handler<br>  <code>roles/database/handler/main.yml</code></li>
+<li><code>vars</code><br>  不应被覆盖的变量<br>  <code>roles/database/vars/main.yml</code></li>
+<li><code>defaults</code><br>  可以被覆盖的默认变量<br>  <code>roles/database/default/main.yml</code></li>
+<li><code>meta</code><br>  role 的依赖信息<br>  <code>roles/database/meta/main.yml</code></li>
+</ul>
+<p>default 变量与 vars 变量:</p>
+<ul>
+<li>default : 希望在 role 中变更变量的值.</li>
+<li>vars : 不希望变量的值变更.</li>
+</ul>
+<p>role 中变量命名的一个良好实践: 变量建议以 role 的名称开头, 因为在 Ansible 中不同的 role 之间没有命名空间概念, 这意味着在其他 role 中定义的变量, 或者再 playbook 中其他地方定义的变量, 可以在任何地方被访问到. 如果在两个不同的 role 中使用了同名的变量, 可能导致意外的行为.</p>
+<h3 id="2-role-的存放位置"><a href="#2-role-的存放位置" class="headerlink" title="2. role 的存放位置"></a>2. role 的存放位置</h3><ol>
+<li>playbook 并列的 <code>roles</code> 目录下;</li>
+<li><code>/etc/ansible/roles/</code> 下</li>
+<li><code>ansible.cfg</code> 中 <code>default</code> 段 <code>roles_path</code> 指向的位置</li>
+<li>环境变量 <code>ANSIBLE_ROLES_PATH</code> 指向的位置</li>
+</ol>
+<h3 id="3-在-playbook-中使用-role"><a href="#3-在-playbook-中使用-role" class="headerlink" title="3. 在 playbook 中使用 role"></a>3. 在 playbook 中使用 role</h3><pre><code># mezzaning-single-host.yml
+- name: deploy mezzanine on vagrant
+  hosts: web
+  vars_file:
+    - secrets.yml
+  roles:
+    - role: database
+      database_name: &quot;{{ mezzanine_proj_name }}&quot;        # 定义覆盖变量
+      database_pass: &quot;{{ mezzanine_proj_name }}&quot;        # 定义覆盖变量
+
+    - role: mezzanine
+      live_hostname: 192.168.33.10.xip.io
+      domains:
+        - 192.168.33.10.xip.io
+        - www.192.168.33.10.xip.io
+
+# mezzaning-across-host.yml
+- name: deploy postgres vagrant
+  hosts: db
+  vars_files:
+    - secrets.yml
+  roles:
+    - role: database
+      database_name: &quot;{{ mezzanine_proj_name }}&quot;        # 定义覆盖变量
+      database_pass: &quot;{{ mezzanine_proj_name }}&quot;        # 定义覆盖变量
+
+- name: deploy mezzanine on vagrant
+  hosts: web
+  vars_files:
+    - secrets.yml
+  roles:
+    - role: mezzanine
+      database_host: &quot;{{ hostvars.db.ansible_eth1.ipv4.address }}&quot;
+      live_hostname: 192.168.33.10.xip.io
+      domains:
+        - 192.168.33.10.xip.io
+        - www.192.168.33.10.xip.io        
+</code></pre><h3 id="4-pre-task-amp-post-task"><a href="#4-pre-task-amp-post-task" class="headerlink" title="4. pre-task &amp; post-task"></a>4. pre-task &amp; post-task</h3><p>pre-task : 定义在 role 执行之前, 执行的 task<br>post-task : 定义在 role 执行之后, 执行的 task.</p>
+<pre><code>- name: deploy mezzanine on vagrant
+  hosts: web
+  vars_files:
+    - secrets.yml
+  pre_tasks:
+    - name: update the apt cache
+      apt: update_cache=yes
+
+  roles:
+    - role: mezzanine
+      database_host: &quot;{{ hostvars.db.ansible_eth1.ipv4.address }}&quot;
+      live_hostname: 192.168.33.10.xip.io
+      domains:
+        - 192.168.33.10.xip.io
+        - www.192.168.33.10.xip.io 
+
+  post_tasks:
+    - name: notify Slack that the servers have been updated
+      local_action:&gt;
+        slack
+        domain=acme.slack.com
+        token={{ slack_token }}
+        msg=&quot;web server {{ inventory_hostname }} configured&quot;
+</code></pre><h3 id="5-inclued"><a href="#5-inclued" class="headerlink" title="5. inclued"></a>5. inclued</h3><p>用于调用位于同一目录下的其他 定义文件, 可用于 Tasks,Playbook, Vars, Handler, Files 等.</p>
+<pre><code># task example
+---
+- name: install apt packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  sudo: True
+  with_items:
+    - git
+    - libjpeg-dev
+    - libpq-dev
+    - memcached
+    - nginx
+
+- include: django.yml
+- include: nginx.yml
+
+# example 2
+---
+- name: check host environment
+  include: check_environment.yml
+
+- name: include OS family/distribution specific variables
+  include_vars: &quot;{{ item }}&quot;
+  with_first_found:
+    - &quot;../defaults/{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml&quot;
+    - &quot;../defaults/{{ ansible_distribution | lower }}.yml&quot;
+    - &quot;../defaults/{{ ansible_os_family | lower }}.yml&quot;
+
+- name: debug variables
+  include: debug.yml
+  tags:
+    - debug    
+</code></pre><h3 id="6-ansible-galaxy-创建-role-初始文件和目录"><a href="#6-ansible-galaxy-创建-role-初始文件和目录" class="headerlink" title="6. ansible-galaxy : 创建 role 初始文件和目录"></a>6. ansible-galaxy : 创建 role 初始文件和目录</h3><ol>
+<li><p>创建初始 role 文件和目录</p>
+<pre><code>$ ansible-galaxy init -p playbook/roles web
+    -p /path/to/roles : 指定 roles 的目录, 未指定则为当前目录.
+</code></pre></li>
+<li><p>从 role 仓库中检索, 安装,删除 role.<br> <code>ansible-galaxy [delete|import|info|init|install|list|login|remove|search|setup] [--help] [options]</code></p>
+<ul>
+<li><p>检索</p>
+<pre><code>$ ansible-galaxy search ntp
+</code></pre></li>
+<li><p>安装</p>
+<pre><code>$ ansible-galaxy install -p ./roles bennojoy.ntp
+</code></pre></li>
+<li><p>列出</p>
+<pre><code>$ ansible-galaxy list
+</code></pre></li>
+<li><p>删除</p>
+<pre><code>$ ansible-galaxy remove bennojoy.ntp
+</code></pre></li>
+</ul>
+</li>
+<li><p><a href="https://galaxy.ansible.com" target="_blank" rel="noopener">在线网站 https://galaxy.ansible.com</a></p>
+</li>
+</ol>
+<h3 id="7-dependent-role"><a href="#7-dependent-role" class="headerlink" title="7. dependent role:"></a>7. dependent role:</h3><p>dependent role 用于指定 role 依赖的其他一个或多个 role, Ansible 会确保被指定依赖的role 一定会优先被执行.</p>
+<p>Ansible 允许向 dependent role 传递参数</p>
+<p>dependent role 一般在 myrole/meta/main.yml 中指定.</p>
+<pre><code># roles/web/meta/main.yml
+dependencies:
+  - { role: ntp, ntp_server=ntp.ubuntu.com }
+  - { role: common }
+  - { role: memcached }
+</code></pre><h2 id="四-playbook-用于实现-ansible-配置管理的脚本"><a href="#四-playbook-用于实现-ansible-配置管理的脚本" class="headerlink" title="四. playbook : 用于实现 ansible 配置管理的脚本."></a>四. playbook : 用于实现 ansible 配置管理的脚本.</h2><p>playbook 其实就是一个字典组成的列表. 一个 playbook 就是一组 play 组成的列表. 一个 play 由 host 的无序集合与 task 的有序列表组成. 每一个 task 由一个模块构成.</p>
+<p><img src="http://oluv2yxz6.bkt.clouddn.com/ansible%E5%AE%9E%E4%BD%93%E5%85%B3%E7%B3%BB%E5%9B%BE.PNG" alt="playbook实体关系图"></p>
+<p><strong>ansible 中的 True/False 和 yes/no</strong><br>模块参数(如 update_cache=yes)对于值的处理, 使用字符串传递:</p>
+<ul>
+<li><p>真值</p>
+<pre><code>yes,on,1,true
+</code></pre></li>
+<li><p>假值</p>
+<pre><code>no,off,0,false
+</code></pre></li>
+</ul>
+<p>其他使用 YAML 解析器来处理:</p>
+<ul>
+<li><p>真值</p>
+<pre><code>true,True,TRUE,yes,Yes,YES,on,On,ON,y,Y
+</code></pre></li>
+<li><p>假值</p>
+<pre><code>false,False,FALSE,no,No,NO,off,Off,OFF,n,N
+</code></pre></li>
+</ul>
+<p>推荐做法:</p>
+<ul>
+<li>模块参数: yes/no</li>
+<li>其他地方: True,False</li>
+</ul>
+<p>playbook 文件的执行方法:</p>
+<ol>
+<li><p>使用 ansible-playbook 命令</p>
+<pre><code>$ ansible-playbook myplaybook.yml
+</code></pre></li>
+<li><p>shebang</p>
+<pre><code>$ chmod +x myplaybook.yml
+$ head -n 1 myplaybook.yml
+  #!/usr/bin/env ansible-playbook
+$ ./myplaybook.yml
+</code></pre></li>
+</ol>
+<p>当 Ansible 开始运行 playbook 的时候, 他做的第一件事就是从他连接到的服务器上收集各种信息. 这些信息包括操作系统,主机名,网络接口等.</p>
+<h3 id="建立-nginx-web-服务器"><a href="#建立-nginx-web-服务器" class="headerlink" title="建立 nginx web 服务器"></a>建立 nginx web 服务器</h3><pre><code>$ cat web-notls.yml
+- name: Configure webserver with nginx and tls
+  hosts: webservers
+  sudo: true
+  vars:
+    key_file: /etc/nginx/ssl/nginx.key
+    cert_file: /etc/nginx/ssl/nginx.crt
+    conf_file: /etc/nginx/sites-available/default
+    server_name: localhost
+  tasks:
+    - name: install nginx
+      apt: name=nginx update_cache=yes cache_valid_time=3600
+
+    - name: create directories for ssl certificates
+      file: path=/etc/nginx/ssl state=directory
+
+    - name: copy TLS key
+      copy: src=files/nginx.key desc={{ key_file }} owner=root mode=06--
+      notify: restart nginx
+
+    - name: copy TLS certificate
+      copy: src=files/nginx.crt dest={{ cert_file }}
+      notify: restart nginx
+
+    - name: copy nginx config file
+      copy: src=files/nginx.conf.j2 dest={{ conf_file }}
+      notify: restart nginx
+
+    - name: enable configuration
+      file: dest=/etc/nginx/sites-enabled/default src={{ conf_file }} state=link
+      notify: restart nginx
+
+    - name: copy index.html
+      template: src=templates/index.html.j2 dest=/usr/share/nginx/html/index.html mode=0644
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+</code></pre><h3 id="内部变量"><a href="#内部变量" class="headerlink" title="内部变量"></a>内部变量</h3><ul>
+<li>ansible_managed : 和模板文件生成时间相关的信息.</li>
+</ul>
+<h3 id="inventory-文件"><a href="#inventory-文件" class="headerlink" title="inventory 文件"></a>inventory 文件</h3><p>使用 .ini 格式, 默认为 hosts 文件.</p>
+<pre><code>[webservers]
+testserver ansible_ssh_host=127.0.0.1 ansible_ssh_port=22
+</code></pre><h3 id="YAML-文件格式"><a href="#YAML-文件格式" class="headerlink" title="YAML 文件格式"></a>YAML 文件格式</h3><ul>
+<li><p>文件开始.</p>
+<pre><code>---
+</code></pre><p>  如果没有<code>---</code>标记, 也不影响 ansible 的运行.</p>
+</li>
+<li><p>注释: <code>#</code></p>
+</li>
+<li>字符串 : 即使字符串中有空格, 也无需使用引号.</li>
+<li>布尔型 : 有多种, 推荐使用 <code>True/False</code></li>
+<li><p>列表: 使用<code>-</code>作为分隔符</p>
+<ol>
+<li><p>标准列表</p>
+<pre><code>- My Fair Lady
+- Oklahoma
+- The Pirates of Penzance
+</code></pre></li>
+<li><p>内联式列表</p>
+<pre><code>[My Fair Lady, Oklahoma, The Pirates of Penzance]
+</code></pre></li>
+</ol>
+</li>
+<li><p>字典: </p>
+<ol>
+<li><p>标准字典</p>
+<pre><code>name: tom
+age: 12
+job: manager
+</code></pre></li>
+<li><p>内联式字典</p>
+<pre><code>{name: tom, age: 12, job: manager}
+</code></pre></li>
+</ol>
+</li>
+<li><p>折行: 使用大于号(&gt;)表示折行</p>
+</li>
+<li><p>支持变量引用:</p>
+<pre><code>admin_name: &quot;amdin&quot;
+admin_email: &quot;{{ admin_name }}@example.com&quot;
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ansible/" rel="tag"># ansible</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/15/Ansible-配置文件/" rel="next" title="Ansible-配置文件">
+                <i class="fa fa-chevron-left"></i> Ansible-配置文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/15/Ansible-基本原理与安装配置/" rel="prev" title="Ansible-基本原理与安装配置">
+                Ansible-基本原理与安装配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-task"><span class="nav-text">一. task</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-name"><span class="nav-text">1. name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-模块-功能"><span class="nav-text">2. 模块(功能)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-复杂参数"><span class="nav-text">3. 复杂参数:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-environment-设置环境变量"><span class="nav-text">4. environment : 设置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-sudo-sudo-user"><span class="nav-text">5. sudo, sudo_user</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-notify"><span class="nav-text">6. notify</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-when"><span class="nav-text">7. when</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-local-action-运行本地任务"><span class="nav-text">8. local_action : 运行本地任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-delegate-to-在涉及主机之外的主机上运行-task"><span class="nav-text">9. delegate_to: 在涉及主机之外的主机上运行 task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-run-once-值为-True-False"><span class="nav-text">10. run_once : 值为 True/False</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-changed-when-amp-failed-when"><span class="nav-text">11. changed_when &amp; failed_when</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-循环"><span class="nav-text">12. 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#12-1-with-items"><span class="nav-text">12.1 with_items</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-2-with-lines"><span class="nav-text">12.2 with_lines</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-3-with-fileglob"><span class="nav-text">12.3 with_fileglob</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-4-with-dict"><span class="nav-text">12.4 with_dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-5-with-sequence-以递增的数字顺序生成项序列"><span class="nav-text">12.5  with_sequence 以递增的数字顺序生成项序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-6-with-random-choice-随机选择"><span class="nav-text">12.6 with_random_choice 随机选择</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-tags"><span class="nav-text">13. tags</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-play"><span class="nav-text">二. play</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-role"><span class="nav-text">三. role</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-role-的基本构成"><span class="nav-text">1. role 的基本构成.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-role-的存放位置"><span class="nav-text">2. role 的存放位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-在-playbook-中使用-role"><span class="nav-text">3. 在 playbook 中使用 role</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-pre-task-amp-post-task"><span class="nav-text">4. pre-task &amp; post-task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-inclued"><span class="nav-text">5. inclued</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-ansible-galaxy-创建-role-初始文件和目录"><span class="nav-text">6. ansible-galaxy : 创建 role 初始文件和目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-dependent-role"><span class="nav-text">7. dependent role:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-playbook-用于实现-ansible-配置管理的脚本"><span class="nav-text">四. playbook : 用于实现 ansible 配置管理的脚本.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立-nginx-web-服务器"><span class="nav-text">建立 nginx web 服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内部变量"><span class="nav-text">内部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inventory-文件"><span class="nav-text">inventory 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#YAML-文件格式"><span class="nav-text">YAML 文件格式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

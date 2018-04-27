@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ansible," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Ansible 基本原理, 安装配置与命令行工具的使用.">
+<meta name="keywords" content="ansible">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ansible-基本原理与安装配置">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/15/Ansible-基本原理与安装配置/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="Ansible 基本原理, 安装配置与命令行工具的使用.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.pyfdtic.com/imgs/ansible/ansible实体关系图.PNG">
+<meta property="og:updated_time" content="2018-04-01T11:56:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ansible-基本原理与安装配置">
+<meta name="twitter:description" content="Ansible 基本原理, 安装配置与命令行工具的使用.">
+<meta name="twitter:image" content="http://www.pyfdtic.com/imgs/ansible/ansible实体关系图.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/15/Ansible-基本原理与安装配置/"/>
+
+
+
+
+
+  <title>Ansible-基本原理与安装配置 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/Ansible-基本原理与安装配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Ansible-基本原理与安装配置</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T15:51:53+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index">
+                    <span itemprop="name">DevOps</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Ansible 基本原理, 安装配置与命令行工具的使用.<br><a id="more"></a></p>
+<p><a href="https://pyfdtic.github.io/2018/03/14/Ansible-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">Ansible 学习总结</a></p>
+<h2 id="一-Ansible-简介"><a href="#一-Ansible-简介" class="headerlink" title="一. Ansible 简介"></a>一. Ansible 简介</h2><p>Ansible 是使用 Python 开发的, 基于 SSH 协议的, Agentless 的配置管理工具. 其源代码存放于 githb 上, 分隔成 三部分 分别存放在不同的代码仓库上.</p>
+<ul>
+<li>主仓库 : <a href="https://github.com/ansible/ansible" target="_blank" rel="noopener">https://github.com/ansible/ansible</a></li>
+<li>核心模块 : <a href="https://github.com/ansible/ansible-modules-core" target="_blank" rel="noopener">https://github.com/ansible/ansible-modules-core</a></li>
+<li>其他模块 : <a href="https://github.com/ansible/ansible-modules-extras" target="_blank" rel="noopener">https://github.com/ansible/ansible-modules-extras</a></li>
+</ul>
+<h3 id="1-架构"><a href="#1-架构" class="headerlink" title="1. 架构"></a>1. 架构</h3><p>核心引擎： Ansible 核心</p>
+<p>核心模块（Core Module）：和大多数运维工具一样，将系统和应用提供的能力模块化，一个模块有点像编程中一个功能接口，要使用的时候调用接口并传参就可以了。比如Ansible的service模块，你要保证名为nginx的service处于启动状态，只需要调用service模块，并配置参数name: nginx，state: started即可。</p>
+<p>自定义模块（Custom Modules）:显而易见，如果Ansible的核心模块满足不了你的需求，你可以添加自定义化的模块。</p>
+<p>插件（Plugins）：模块功能的补充，如循环插件、变量插件、过滤插件等，也和模块一样支持自定义，这个功能不常用（我没用到过），就不做细说了。</p>
+<p>剧本（playbooks）：说到这个，先说说Ansible完成任务的两种方式，一种是Ad-Hoc，就是ansible命令，另一种就是Ansible-playbook，也就是ansible-playbook命令。他们的区别就像是Command命令行和Shell Scripts。 </p>
+<p>连接插件（connectior plugins）:Ansible默认是基于SSH连接到目标机器上执行操作的。但是同样的Ansible支持不同的连接方法，要是这样的话就需要连接插件来帮助我们完成连接了。</p>
+<p>主机清单（host inventory）:为Ansible定义了管理主机的策略。一般小型环境下我们只需要在host文件中写入主机的IP地址即可，但是到了中大型环境我们有可能需要使用动态主机清单来生成我们所需要执行的目标主机（需要云环境支持动态生成Ansible host inventory）。</p>
+<h3 id="2-task-执行逻辑"><a href="#2-task-执行逻辑" class="headerlink" title="2. task 执行逻辑"></a>2. task 执行逻辑</h3><p>每个 playbook 包含多个 task. 每个 task 按次序在所有匹配主机执行, 当所有主机执行完当前 task 之后, 则执行下一个 task.</p>
+<p>当某台主机在 playbook 中的某个 task 执行失败之后, 该 playbook 的剩余 task 将不会再在该主机执行, 因此, 可以在修正之后, 重新在该主机执行 playbook.</p>
+<p>模块应该是<strong>幂等性</strong>的, 多次执行的结果应该是相同的. 幂等性的其中一种实现方式时: 提供一个用于检查的模块, 判断模块的执行对象是否达到需要实现的状态, 如果达到状态, 则跳过 task 的执行.</p>
+<p>command 和 shell 模块在执行某些操作时可能是非幂等性的, 因此, 可以使用 <code>creates</code> 标志辅助实现幂等性.</p>
+<h2 id="二-Ansible-任务的执行细节原理"><a href="#二-Ansible-任务的执行细节原理" class="headerlink" title="二. Ansible 任务的执行细节原理"></a>二. Ansible 任务的执行细节原理</h2><h3 id="1-角色与依赖"><a href="#1-角色与依赖" class="headerlink" title="1. 角色与依赖:"></a>1. 角色与依赖:</h3><ul>
+<li>被管理主机 : 需要 ssh 和 python2.5 或者更高版本.</li>
+<li>管理主机 : 需要 Python2.6 或者更高的版本.</li>
+<li>有些模块需要额外的依赖, 如 ec2模块 依赖 boto模块, docker 模块依赖 docker-py 等.</li>
+</ul>
+<h3 id="2-工作机制"><a href="#2-工作机制" class="headerlink" title="2. 工作机制"></a>2. 工作机制</h3><p>Ansible 默认采用<strong>推送模式</strong>, 但是也支持 拉取模式, 使用 <code>ansible-pull</code> 命令.</p>
+<h3 id="3-工作原理"><a href="#3-工作原理" class="headerlink" title="3. 工作原理"></a>3. 工作原理</h3><p>示例代码:</p>
+<pre><code>- name: install nginx
+  apt: name=nginx
+</code></pre><p>ansible 操作如下:</p>
+<ol>
+<li>在管理主机生成安装 nginx 软件包的 python 程序</li>
+<li>将该程序复制到 目标服务器.</li>
+<li>在目标服务器上完成操作, 执行 程序</li>
+<li>等待改程序在所有主机上完成.</li>
+</ol>
+<p>ansible 执行模块指令的注意事项:</p>
+<ol>
+<li>对于每一个任务, ansible 都是并行执行的.</li>
+<li>在开始下一个任务之前, ansible 会等待所有主机都完成上一个任务.</li>
+<li>ansible 任务的执行顺序, 为管理员定义的执行顺序.</li>
+<li>幂等性</li>
+</ol>
+<h2 id="三-安装配置"><a href="#三-安装配置" class="headerlink" title="三. 安装配置"></a>三. 安装配置</h2><h3 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yum install python-pip</span><br><span class="line">$ pip install ansible</span><br></pre></td></tr></table></figure>
+<h3 id="2-配置文件"><a href="#2-配置文件" class="headerlink" title="2. 配置文件"></a>2. 配置文件</h3><ul>
+<li><p>配置段</p>
+<p>  ansible.cfg 有 defaults, ssh_connection, paramiko, accelerate 四个配置段, 其具体配置项见<a href="http://www.cnblogs.com/yanjingnan/p/7241888.html" target="_blank" rel="noopener">ansible 番外篇之 ansible.cfg 配置参数</a></p>
+</li>
+<li><p>配置文件及优先级</p>
+<p>  ansible 配置文件 : ansible.cfg, ansible 使用如下位置和顺序来查找 ansible.cfg 文件</p>
+<ul>
+<li>ANSIBLE_CONFIG 环境变量指向的文件</li>
+<li>./ansible.cfg </li>
+<li>~/.ansible.cfg</li>
+<li>/etc/ansible/ansible.cfg</li>
+</ul>
+</li>
+<li><p>基础示例:</p>
+<pre><code>[defaults]
+hostfile = hosts
+remote_user = ec2-user
+private_key_file = /path/to/my_private_key
+host_key_checking = False                   # 关闭 host key 检查.
+</code></pre></li>
+</ul>
+<h2 id="四-Ansible-抽象实体"><a href="#四-Ansible-抽象实体" class="headerlink" title="四 Ansible 抽象实体"></a>四 Ansible 抽象实体</h2><h3 id="1-inventory"><a href="#1-inventory" class="headerlink" title="1. inventory"></a>1. <a href="">inventory</a></h3><p>Ansible 执行的目标主机的配置文件. </p>
+<p>Ansible 支持静态 Inventory 文件 和 动态 Inventory , 默认的 静态 Inventory 文件为 <code>/etc/ansible/hosts</code>, 同时支持 Cobbler Inventory , AWS ec2.py 等动态 Inventory.</p>
+<h3 id="2-变量与fact"><a href="#2-变量与fact" class="headerlink" title="2. 变量与fact"></a>2. 变量与fact</h3><p>Ansible 支持如下变量类型及定义, 可以提高 task 的可复用性和适用性:</p>
+<ul>
+<li>自定义变量</li>
+<li>注册变量</li>
+<li>内置变量</li>
+<li>fact 变量</li>
+</ul>
+<h3 id="3-模块"><a href="#3-模块" class="headerlink" title="3. 模块"></a>3. 模块</h3><p>模块定义 Ansible 可以在目标主机执行的具体操作, 是由 Ansible 包装好后在这几上执行一系列操作的脚本, 是 Ansible 执行操作的最小粒度.<br>Ansible 支持如下模块类型: </p>
+<ul>
+<li>内置模块</li>
+<li>自定义模块: 支持多种编程语言, 如 shell, python, ruby 等.</li>
+</ul>
+<h3 id="4-task-play-role-playbook"><a href="#4-task-play-role-playbook" class="headerlink" title="4. task/play/role/playbook"></a>4. task/play/role/playbook</h3><p><img src="/imgs/ansible/ansible实体关系图.PNG" alt="playbook实体关系图"></p>
+<ul>
+<li>task : 由模块定义的具体操作.</li>
+<li>play : 多个包含 host, task 等多个字段部分的任务定义集合. 是一个 YAML 字典结构.</li>
+<li>playbook : 多个 play 组成的列表</li>
+<li>role : 是将 playbook 分割为多个文件的主要机制, 用于简化 playbook 的编写, 并提高 playbook 的复用性.</li>
+</ul>
+<h2 id="五-Ansible-命令行"><a href="#五-Ansible-命令行" class="headerlink" title="五 Ansible 命令行"></a>五 Ansible 命令行</h2><h3 id="1-ansible"><a href="#1-ansible" class="headerlink" title="1. ansible"></a>1. ansible</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ ansible -i INVENTORY HOST_GROUP [ -s ] -m MODEL -a ARGS [-vvvv]</span><br><span class="line">    -i INVENTORY : 指定 INVENTORY </span><br><span class="line">    -s : sudo 为 root 执行</span><br><span class="line">    -m MODEL : 模块</span><br><span class="line">    -a ARGS : 模块参数</span><br><span class="line">    -vvvv : 输出详细信息.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测是否可以连接到服务器.</span></span><br><span class="line">$ ansible testserver -i hosts -m ping [-vvvv]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看服务器运行时间</span></span><br><span class="line">$ ansible testserver -i hosts -m <span class="built_in">command</span> -a uptime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数中包含空格, 应该使用 引号 引起来.</span></span><br><span class="line">$ ansible testserver -i hosts -m <span class="built_in">command</span> -a <span class="string">"tail /var/log/messages"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 nginx 包</span></span><br><span class="line">$ ansible testserver -s -m apt -a name=nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 nginx 服务</span></span><br><span class="line">$ ansible testserver -s -m service -a name=nginx state=restarted</span><br></pre></td></tr></table></figure>
+<h3 id="2-ansible-doc"><a href="#2-ansible-doc" class="headerlink" title="2. ansible-doc"></a>2. ansible-doc</h3><p>Ansible 模块的帮助文档.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出所有可用模块</span></span><br><span class="line">$ ansible-doc --list </span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看指定 模块的帮助</span></span><br><span class="line">$ ansible-doc MOD_NAME</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看模块的示例</span></span><br><span class="line">$ ansible-doc MOD_NAME -s</span><br></pre></td></tr></table></figure>
+<h3 id="3-ansible-galaxy"><a href="#3-ansible-galaxy" class="headerlink" title="3. ansible-galaxy"></a>3. ansible-galaxy</h3><p>ansible-galaxy : 创建 role 初始文件和目录</p>
+<h4 id="3-1-创建初始-role-文件和目录"><a href="#3-1-创建初始-role-文件和目录" class="headerlink" title="3.1 创建初始 role 文件和目录"></a>3.1 创建初始 role 文件和目录</h4><pre><code>$ ansible-galaxy init -p playbook/roles web
+    -p /path/to/roles : 指定 roles 的目录, 未指定则为当前目录.
+</code></pre><h4 id="3-2-从-role-仓库中检索-安装-删除-role"><a href="#3-2-从-role-仓库中检索-安装-删除-role" class="headerlink" title="3.2 从 role 仓库中检索, 安装,删除 role."></a>3.2 从 role 仓库中检索, 安装,删除 role.</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ansible-galaxy [delete|import|info|init|install|list|login|remove|search|setup] [--<span class="built_in">help</span>] [options]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检索</span></span><br><span class="line">$ ansible-galaxy search ntp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line">$ ansible-galaxy install -p ./roles bennojoy.ntp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出</span></span><br><span class="line">$ ansible-galaxy list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">$ ansible-galaxy remove bennojoy.ntp</span><br></pre></td></tr></table></figure>
+<h3 id="4-ansible-vault"><a href="#4-ansible-vault" class="headerlink" title="4 ansible-vault"></a>4 ansible-vault</h3><p>ansible-vault 用于创建和编辑加密文件, ansible-playbook 可以自动识别并使用密码解密这些文件.</p>
+<h4 id="4-1-ansible-vault-命令"><a href="#4-1-ansible-vault-命令" class="headerlink" title="4.1 ansible-vault 命令"></a>4.1 ansible-vault 命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-vault [create|decrypt|edit|encrypt|encrypt_string|rekey|view] [--<span class="built_in">help</span>] [options] vaultfile.yml</span><br><span class="line">    </span><br><span class="line">    SubCmd: </span><br><span class="line">    - encrypt : 加密</span><br><span class="line">    - decrypt : 解密</span><br><span class="line">    - create  : 创建</span><br><span class="line">    - edit    : 编辑</span><br><span class="line">    - view    : 查看</span><br><span class="line">    - rekey   : 修改密码</span><br><span class="line"></span><br><span class="line">    Options:</span><br><span class="line">    --ask-vault-pass  :    ask <span class="keyword">for</span> vault password</span><br><span class="line">    --new-vault-password-file=NEW_VAULT_PASSWORD_FILE  : new vault password file <span class="keyword">for</span> rekey</span><br><span class="line">    --output=OUTPUT_FILE  : output file name <span class="keyword">for</span> encrypt or decrypt; use - <span class="keyword">for</span> stdout</span><br><span class="line">    --vault-password-file=VAULT_PASSWORD_FILE : vault password file</span><br><span class="line">    -v, --verbose    :     verbose mode (-vvv <span class="keyword">for</span> more, -vvvv to <span class="built_in">enable</span> connection debugging)</span><br><span class="line">    --version        :     show program<span class="string">'s version number and exit</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-2-与playbook-结合的使用"><a href="#4-2-与playbook-结合的使用" class="headerlink" title="4.2 与playbook 结合的使用"></a>4.2 与playbook 结合的使用</h4><ol>
+<li><p>在 playbook 中引用 vault 文件:</p>
+<p> 可以在 vars_file 区段像一般文件一样易用  vault 加密的文件.<br> 即, 如果加密了一个 file 文件, 在 playbook 中也无需修改.</p>
+</li>
+<li><p>ansible-playbook 使用用 <code>--ask-value-pass</code> 或 <code>--vault-password-file</code> 参数</p>
+<pre><code>$ ansible-playbook myplay.yml --ask-value-pass
+
+# password.file 可以为文本文件, 如果该为文件可执行脚本, 则 ansible 使用它的标准输出内容作为密码
+$ ansible-playbook myplay.yml --vault-password-file /path/to/password.file
+</code></pre></li>
+</ol>
+<h3 id="5-ansible-playbook"><a href="#5-ansible-playbook" class="headerlink" title="5. ansible-playbook"></a>5. ansible-playbook</h3><h4 id="5-1-命令行参数"><a href="#5-1-命令行参数" class="headerlink" title="5.1 命令行参数"></a>5.1 命令行参数</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">Usage: ansible-playbook playbook.yml</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --ask-vault-pass      ask <span class="keyword">for</span> vault password</span><br><span class="line">  -C, --check           don<span class="string">'t make any changes; instead, try to predict some</span></span><br><span class="line"><span class="string">                        of the changes that may occur</span></span><br><span class="line"><span class="string">  -D, --diff            when changing (small) files and templates, show the</span></span><br><span class="line"><span class="string">                        differences in those files; works great with --check</span></span><br><span class="line"><span class="string">  -e EXTRA_VARS, --extra-vars=EXTRA_VARS</span></span><br><span class="line"><span class="string">                        set additional variables as key=value or YAML/JSON</span></span><br><span class="line"><span class="string">  --flush-cache         clear the fact cache</span></span><br><span class="line"><span class="string">  --force-handlers      run handlers even if a task fails</span></span><br><span class="line"><span class="string">  -f FORKS, --forks=FORKS</span></span><br><span class="line"><span class="string">                        specify number of parallel processes to use</span></span><br><span class="line"><span class="string">                        (default=5)</span></span><br><span class="line"><span class="string">  -i INVENTORY, --inventory-file=INVENTORY</span></span><br><span class="line"><span class="string">                        specify inventory host path (default=./hosts) or comma</span></span><br><span class="line"><span class="string">                        separated host list.</span></span><br><span class="line"><span class="string">  -l SUBSET, --limit=SUBSET</span></span><br><span class="line"><span class="string">                        further limit selected hosts to an additional pattern</span></span><br><span class="line"><span class="string">  --list-hosts          outputs a list of matching hosts; does not execute</span></span><br><span class="line"><span class="string">                        anything else</span></span><br><span class="line"><span class="string">  --list-tags           list all available tags</span></span><br><span class="line"><span class="string">  --list-tasks          list all tasks that would be executed</span></span><br><span class="line"><span class="string">  -M MODULE_PATH, --module-path=MODULE_PATH</span></span><br><span class="line"><span class="string">                        specify path(s) to module library (default=None)</span></span><br><span class="line"><span class="string">  --new-vault-password-file=NEW_VAULT_PASSWORD_FILE</span></span><br><span class="line"><span class="string">                        new vault password file for rekey</span></span><br><span class="line"><span class="string">  --output=OUTPUT_FILE  output file name for encrypt or decrypt; use - for</span></span><br><span class="line"><span class="string">                        stdout</span></span><br><span class="line"><span class="string">  --skip-tags=SKIP_TAGS</span></span><br><span class="line"><span class="string">                        only run plays and tasks whose tags do not match these</span></span><br><span class="line"><span class="string">                        values</span></span><br><span class="line"><span class="string">  --start-at-task=START_AT_TASK</span></span><br><span class="line"><span class="string">                        start the playbook at the task matching this name</span></span><br><span class="line"><span class="string">  --step                one-step-at-a-time: confirm each task before running</span></span><br><span class="line"><span class="string">  --syntax-check        perform a syntax check on the playbook, but do not</span></span><br><span class="line"><span class="string">                        execute it</span></span><br><span class="line"><span class="string">  -t TAGS, --tags=TAGS  only run plays and tasks tagged with these values</span></span><br><span class="line"><span class="string">  --vault-password-file=VAULT_PASSWORD_FILE</span></span><br><span class="line"><span class="string">                        vault password file</span></span><br><span class="line"><span class="string">  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable</span></span><br><span class="line"><span class="string">                        connection debugging)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Connection Options:  control as whom and how to connect to hosts</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    -k, --ask-pass      ask for connection password</span></span><br><span class="line"><span class="string">    --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE</span></span><br><span class="line"><span class="string">                        use this file to authenticate the connection</span></span><br><span class="line"><span class="string">    -u REMOTE_USER, --user=REMOTE_USER</span></span><br><span class="line"><span class="string">                        connect as this user (default=root)</span></span><br><span class="line"><span class="string">    -c CONNECTION, --connection=CONNECTION</span></span><br><span class="line"><span class="string">                        connection type to use (default=smart)</span></span><br><span class="line"><span class="string">    -T TIMEOUT, --timeout=TIMEOUT</span></span><br><span class="line"><span class="string">                        override the connection timeout in seconds</span></span><br><span class="line"><span class="string">                        (default=10)</span></span><br><span class="line"><span class="string">    --ssh-common-args=SSH_COMMON_ARGS</span></span><br><span class="line"><span class="string">                        specify common arguments to pass to sftp/scp/ssh (e.g.</span></span><br><span class="line"><span class="string">                        ProxyCommand)</span></span><br><span class="line"><span class="string">    --sftp-extra-args=SFTP_EXTRA_ARGS</span></span><br><span class="line"><span class="string">                        specify extra arguments to pass to sftp only (e.g. -f,</span></span><br><span class="line"><span class="string">                        -l)</span></span><br><span class="line"><span class="string">    --scp-extra-args=SCP_EXTRA_ARGS</span></span><br><span class="line"><span class="string">                        specify extra arguments to pass to scp only (e.g. -l)</span></span><br><span class="line"><span class="string">    --ssh-extra-args=SSH_EXTRA_ARGS</span></span><br><span class="line"><span class="string">                        specify extra arguments to pass to ssh only (e.g. -R)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Privilege Escalation Options: control how and which user you become as on target hosts</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    -s, --sudo          run operations with sudo (nopasswd) (deprecated, use</span></span><br><span class="line"><span class="string">                        become)</span></span><br><span class="line"><span class="string">    -U SUDO_USER, --sudo-user=SUDO_USER</span></span><br><span class="line"><span class="string">                        desired sudo user (default=root) (deprecated, use</span></span><br><span class="line"><span class="string">                        become)</span></span><br><span class="line"><span class="string">    -S, --su            run operations with su (deprecated, use become)</span></span><br><span class="line"><span class="string">    -R SU_USER, --su-user=SU_USER</span></span><br><span class="line"><span class="string">                        run operations with su as this user (default=root)</span></span><br><span class="line"><span class="string">                        (deprecated, use become)</span></span><br><span class="line"><span class="string">    -b, --become        run operations with become (does not imply password</span></span><br><span class="line"><span class="string">                        prompting)</span></span><br><span class="line"><span class="string">    --become-method=BECOME_METHOD</span></span><br><span class="line"><span class="string">                        privilege escalation method to use (default=sudo),</span></span><br><span class="line"><span class="string">                        valid choices: [ sudo | su | pbrun | pfexec | doas |</span></span><br><span class="line"><span class="string">                        dzdo | ksu | runas ]</span></span><br><span class="line"><span class="string">    --become-user=BECOME_USER</span></span><br><span class="line"><span class="string">                        run operations as this user (default=root)</span></span><br><span class="line"><span class="string">    --ask-sudo-pass     ask for sudo password (deprecated, use become)</span></span><br><span class="line"><span class="string">    --ask-su-pass       ask for su password (deprecated, use become)</span></span><br><span class="line"><span class="string">    -K, --ask-become-pass</span></span><br><span class="line"><span class="string">                        ask for privilege escalation password</span></span><br></pre></td></tr></table></figure>
+<p>部分示例</p>
+<pre><code>-e var=valur : 传递变量给 playbook 
+
+# 列出主机, 但不会执行 playbook 
+$ ansible-playbook -i hosts --list-hosts web-tls.yml
+
+# 语法检查
+$ ansible-playbook --syntax-check  web-tls.yml
+
+# 列出 task, 但不会执行 playbook 
+$ ansible-playbook -i hosts --list-tasks web-tls.yml
+
+# 检查模式, 会检测 playbook 中的每个任务是否会修改主机的状态, 但并不会对主机执行任何实际操作. 
+# 需要注意 playbook 中的 task 中的依赖关系, 可能会报错.
+$ ansible-playbook [ -C | --check ] web-tls.yml
+
+# diff 将会为任何变更远程主机状态的文件输出差异信息. 与 --check 结合尤其好用.
+$ ansible-playbook [ -D | --diff ] playbook.yml
+</code></pre><h4 id="5-2-ansible-playbook-控制-task-的执行"><a href="#5-2-ansible-playbook-控制-task-的执行" class="headerlink" title="5.2 ansible-playbook 控制 task 的执行"></a>5.2 ansible-playbook 控制 task 的执行</h4><ul>
+<li><p>step<br>  <code>--step</code> 参数会在执行每个 task 之前都做提示. </p>
+<pre><code>$ ansible-playbook --step playbook.yml
+Perform task: install package (y/n/c) :
+    y : 执行
+    n : 不执行, 跳过
+    c : 继续执行剩下 playbook , 并不再提示.
+</code></pre></li>
+<li><p>start-at-task</p>
+<p>  <code>--start-at-task</code> 用于让 ansible 从指定 task 开始运行 playbook, 而不是从头开始. </p>
+<p>  常用于 playbook 中存在 bug , 修复之后, 从bug处再次重新运行.</p>
+</li>
+<li><p>tags</p>
+<p>  ansible 允许对一个 task 或者 play 添加一个或多个 tags, 如:</p>
+<pre><code>- hosts: myservers
+  tags: 
+    - foo
+  tasks:
+    - name: install packages
+      apt: name={{ item }}
+      with_items:
+        - vim
+        - emacs
+        - nano
+    - name: run arbitrary command
+      command: /opt/myprog
+      tags:
+        - bar
+        - quux
+</code></pre><p>  <code>-t TAG_NAME</code> 或 <code>--tags TAG_NAME</code> 告诉 ansible 仅允许具有指定 tags 的 task 或 play.</p>
+<p>  <code>--skip-tags TAG_NAME</code> 告诉 ansible 跳过具有指定 tags 的 task 或者 play.</p>
+<pre><code># 仅允许指定 tags 的 task/play
+$ ansible-playbook -t foo,bar playbook.yml
+$ ansible-playbook --tags=foo,bar playbook.yml
+
+# 跳过指定 tags 的 task/play
+$ ansible-playbook --skip-tags=baz,quux playbook.yml 
+</code></pre></li>
+</ul>
+<h3 id="6-ansible-console"><a href="#6-ansible-console" class="headerlink" title="6. ansible-console"></a>6. ansible-console</h3><p>REPL console for executing Ansible tasks</p>
+<pre><code>$ ansible-console [&lt;host-pattern&gt;] [options]
+</code></pre><h3 id="7-ansible-config"><a href="#7-ansible-config" class="headerlink" title="7. ansible-config"></a>7. ansible-config</h3><p>View, edit and manage ansible configuratin</p>
+<pre><code>$ ansible-config [view|dump|list] [--help] [options] [ansible.cfg]
+</code></pre><h3 id="8-ansible-inventory"><a href="#8-ansible-inventory" class="headerlink" title="8. ansible-inventory"></a>8. ansible-inventory</h3><p>used to display or dump the configured inventory as Ansible sees it.</p>
+<pre><code>$ ansible-inventory [options] [host|group]
+</code></pre><h3 id="9-ansible-pull"><a href="#9-ansible-pull" class="headerlink" title="9. ansible-pull"></a>9. ansible-pull</h3><p>pulls playbooks from a VCS repo and executes them for the local host.</p>
+<pre><code>$ ansible-pull -U &lt;repository&gt; [options] [&lt;playbook.yml&gt;]
+</code></pre><h3 id="10-ansible-连接内网机器与跳板机设置"><a href="#10-ansible-连接内网机器与跳板机设置" class="headerlink" title="10. ansible 连接内网机器与跳板机设置"></a>10. ansible 连接内网机器与跳板机设置</h3><p><strong>原理</strong> : 借用 ssh ProxyCommand 实现.</p>
+<pre><code class="bash">$ vim ~/.ssh/config
+
+    Host bastion
+        User ansible    <span class="comment"># 修改为实际用户</span>
+        HostName  10.6.17.110   <span class="comment"># 配置当前主机到该主机(跳板机)的 ssh-key 认证.</span>
+        ProxyCommand none
+        BatchMode yes
+
+    Host 172.16.10.*
+        ServerAliveInterval 60
+        TCPKeepAlive        yes
+        ProxyCommand        ssh -qaY bastion <span class="string">'nc -w 14400 %h %p'</span>  <span class="comment">#or ProxyCommand ssh -W %h:%p bastion </span>
+        ControlMaster       auto
+</code></pre>
+<h2 id="六-ansible-优化加速"><a href="#六-ansible-优化加速" class="headerlink" title="六. ansible 优化加速"></a>六. ansible 优化加速</h2><h3 id="1-SSH-Multiplexing-ControlPersist"><a href="#1-SSH-Multiplexing-ControlPersist" class="headerlink" title="1. SSH Multiplexing (ControlPersist)"></a>1. SSH Multiplexing (ControlPersist)</h3><p><strong>原理</strong> : </p>
+<ul>
+<li>第一次尝试 SSH 连接到远程主机时, OpenSSH 创建一个主链接</li>
+<li>OpenSSH 创建一个 UNIX 域套接字(控制套接字), 通过主链接与远程主机相连接</li>
+<li>在 ControlPersist 超时时间之内, 再次连接到该远程主机, OpenSSH 将使用控制套接字与远程主机通信, 而不创建新的 TCP 连接, 省去了 TCP 三次握手的时间.</li>
+</ul>
+<p>Ansible 支持的 SSH Multiplexing 选项列表:</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ControlMaster</td>
+<td>auto</td>
+<td>开启 ControlPersist</td>
+</tr>
+<tr>
+<td>ControlPath</td>
+<td><code>$HOME/.ansible/cp/ansible-ssh-%h-%p-%r</code></td>
+<td>UNIX 套接字文件存放路径, 操作系统对 套接字 的最大长度有限制, 所以太长的套接字, 则 ControlPersist 将不工作, 并且 Ansible 不会报错提醒.</td>
+</tr>
+<tr>
+<td>ControlPersist</td>
+<td>60s</td>
+<td>SSH 套接字连接空闲时间, 之后关闭</td>
+</tr>
+</tbody>
+</table>
+<p>如果启用了 SSH Multiplexing 设置, 并且变更了 SSH 连接的配置, 如修改了 ssh_args 配置项, 那么, 新配置对于之前连接打开的未超时的控制套接字不会生效.</p>
+<h3 id="2-fact-缓存"><a href="#2-fact-缓存" class="headerlink" title="2. fact 缓存"></a>2. fact 缓存</h3><h4 id="2-1-关闭-fact-缓存"><a href="#2-1-关闭-fact-缓存" class="headerlink" title="2.1 关闭 fact 缓存"></a>2.1 关闭 fact 缓存</h4><pre><code># ansible.cfg 
+[defaults]
+gathering=explicit
+</code></pre><h4 id="2-2-开启-fact-缓存"><a href="#2-2-开启-fact-缓存" class="headerlink" title="2.2 开启 fact 缓存"></a>2.2 开启 fact 缓存</h4><p>请确保, playbook 中<strong>没有</strong>指定 <code>gather_facts: True</code> 或 <code>gather_facts: False</code> 配置项.</p>
+<pre><code># ansible.cfg
+[defaults]
+gathering=smart
+# 缓存过期时间, 单位 秒
+fact_cache_timeout=86400
+# 缓存实现机制.
+fact_caching=...
+</code></pre><h5 id="2-2-1-JSON"><a href="#2-2-1-JSON" class="headerlink" title="2.2.1 JSON"></a>2.2.1 JSON</h5><p>ansible 将fact 缓存写入到 JSON 文件中, Ansible 使用<strong>文件修改时间</strong>来决定fact 缓存是否过期.</p>
+<pre><code># ansible.cfg
+[defaults]
+gathering=smart
+# 缓存过期时间, 单位 秒
+fact_cache_timeout=86400
+
+fact_caching = jsonfile
+# 指定 fact 缓存文件保存目录
+fact_caching_connection = /tmp/ansible_fact/cache
+</code></pre><h5 id="2-2-2-redis"><a href="#2-2-2-redis" class="headerlink" title="2.2.2 redis"></a>2.2.2 redis</h5><p>需要安装 redis 包, <code>$ pip install redis</code>;<br>需要本机提供 redis 服务.</p>
+<pre><code># ansible.cfg
+[defaults]
+gathering=smart
+# 缓存过期时间, 单位 秒
+fact_cache_timeout=86400
+
+fact_caching = redis
+</code></pre><h5 id="2-2-3-memcache"><a href="#2-2-3-memcache" class="headerlink" title="2.2.3 memcache"></a>2.2.3 memcache</h5><p>需要安装 python-memcached 包, <code>$ pip install python-memcached</code>;<br>需要本机提供 memcached 服务.</p>
+<pre><code># ansible.cfg
+[defaults]
+gathering=smart
+# 缓存过期时间, 单位 秒
+fact_cache_timeout=86400
+
+fact_caching = memcached
+</code></pre><h4 id="2-3-希望在-playbook-运行之前清除-fact-缓存-使用-flush-cache-参数"><a href="#2-3-希望在-playbook-运行之前清除-fact-缓存-使用-flush-cache-参数" class="headerlink" title="2.3 希望在 playbook 运行之前清除 fact 缓存, 使用 --flush-cache 参数"></a>2.3 希望在 playbook 运行之前清除 fact 缓存, 使用 <code>--flush-cache</code> 参数</h4><h3 id="3-pipeline"><a href="#3-pipeline" class="headerlink" title="3. pipeline"></a>3. pipeline</h3><p><strong>原理</strong>:</p>
+<ul>
+<li>默认执行 task 步骤: 首先, 基于调用的 module 生成一个 python 脚本; 将 Python 脚本复制到远程主机; 最后, 执行 Python 脚本. 将产生两个 SSH 会话.</li>
+<li>pipeline 模式 : Ansible 执行 Python 脚本时, 并不复制他, 而是通过管道传递给 SSH 会话, 从而减少了 SSH 会话的数目, 节省时间.</li>
+</ul>
+<p>配置:</p>
+<ol>
+<li><p>控制主机开启 pipeline</p>
+<pre><code># ansible.cfg
+[defaults]
+pipeline=True
+</code></pre></li>
+<li><p>远程主机 <code>/etc/sudoers</code> 中的 <code>requiretty</code> 没有启用.<br> <code>Defaults: !requiretty</code></p>
+</li>
+</ol>
+<h3 id="4-并发"><a href="#4-并发" class="headerlink" title="4. 并发"></a>4. 并发</h3><ul>
+<li>设置 <code>ANSIBLE_FORKS</code> 环境变量</li>
+<li>修改 ansible.cfg 配置文件, <code>forks = 20</code>.</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ansible/" rel="tag"># ansible</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/15/Ansible-task-role-playbook/" rel="next" title="Ansible task/role/playbook">
+                <i class="fa fa-chevron-left"></i> Ansible task/role/playbook
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/15/Scrapy/" rel="prev" title="Scrapy">
+                Scrapy <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-Ansible-简介"><span class="nav-text">一. Ansible 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-架构"><span class="nav-text">1. 架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-task-执行逻辑"><span class="nav-text">2. task 执行逻辑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-Ansible-任务的执行细节原理"><span class="nav-text">二. Ansible 任务的执行细节原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-角色与依赖"><span class="nav-text">1. 角色与依赖:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-工作机制"><span class="nav-text">2. 工作机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-工作原理"><span class="nav-text">3. 工作原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-安装配置"><span class="nav-text">三. 安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装"><span class="nav-text">1. 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置文件"><span class="nav-text">2. 配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-Ansible-抽象实体"><span class="nav-text">四 Ansible 抽象实体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-inventory"><span class="nav-text">1. inventory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-变量与fact"><span class="nav-text">2. 变量与fact</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-模块"><span class="nav-text">3. 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-task-play-role-playbook"><span class="nav-text">4. task/play/role/playbook</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-Ansible-命令行"><span class="nav-text">五 Ansible 命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ansible"><span class="nav-text">1. ansible</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ansible-doc"><span class="nav-text">2. ansible-doc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ansible-galaxy"><span class="nav-text">3. ansible-galaxy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-创建初始-role-文件和目录"><span class="nav-text">3.1 创建初始 role 文件和目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-从-role-仓库中检索-安装-删除-role"><span class="nav-text">3.2 从 role 仓库中检索, 安装,删除 role.</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-ansible-vault"><span class="nav-text">4 ansible-vault</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-ansible-vault-命令"><span class="nav-text">4.1 ansible-vault 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-与playbook-结合的使用"><span class="nav-text">4.2 与playbook 结合的使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-ansible-playbook"><span class="nav-text">5. ansible-playbook</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-命令行参数"><span class="nav-text">5.1 命令行参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-ansible-playbook-控制-task-的执行"><span class="nav-text">5.2 ansible-playbook 控制 task 的执行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-ansible-console"><span class="nav-text">6. ansible-console</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-ansible-config"><span class="nav-text">7. ansible-config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-ansible-inventory"><span class="nav-text">8. ansible-inventory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-ansible-pull"><span class="nav-text">9. ansible-pull</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-ansible-连接内网机器与跳板机设置"><span class="nav-text">10. ansible 连接内网机器与跳板机设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-ansible-优化加速"><span class="nav-text">六. ansible 优化加速</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-SSH-Multiplexing-ControlPersist"><span class="nav-text">1. SSH Multiplexing (ControlPersist)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-fact-缓存"><span class="nav-text">2. fact 缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-关闭-fact-缓存"><span class="nav-text">2.1 关闭 fact 缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-开启-fact-缓存"><span class="nav-text">2.2 开启 fact 缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-JSON"><span class="nav-text">2.2.1 JSON</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-redis"><span class="nav-text">2.2.2 redis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-memcache"><span class="nav-text">2.2.3 memcache</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-希望在-playbook-运行之前清除-fact-缓存-使用-flush-cache-参数"><span class="nav-text">2.3 希望在 playbook 运行之前清除 fact 缓存, 使用 --flush-cache 参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-pipeline"><span class="nav-text">3. pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-并发"><span class="nav-text">4. 并发</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

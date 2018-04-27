@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C语言," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="C语言 之 概述与入门 C语言 之 变量和运算符 C语言 之 控制结构 C语言 之 函数 C语言 之 测试与调试技术 C语言 之 指针和数组 C语言 之 递归 C语言 之 C语言中的 C语言 之 数据结构   概述及入门1. 计算机语言程序就是一组计算机能识别和执行的指令. 每一条指令使计算机指定行特定的操作. 计算机的本质是程序的机器. 程序和指令是计算机系统中最基本的概念. 计算机语言的发展">
+<meta name="keywords" content="C语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C 语言笔记">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/C语言/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="C语言 之 概述与入门 C语言 之 变量和运算符 C语言 之 控制结构 C语言 之 函数 C语言 之 测试与调试技术 C语言 之 指针和数组 C语言 之 递归 C语言 之 C语言中的 C语言 之 数据结构   概述及入门1. 计算机语言程序就是一组计算机能识别和执行的指令. 每一条指令使计算机指定行特定的操作. 计算机的本质是程序的机器. 程序和指令是计算机系统中最基本的概念. 计算机语言的发展">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/4.%E6%95%B0%E6%8D%AE.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/2.%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6%E5%8F%8A%E5%85%B6%E4%BD%9C%E7%94%A8.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/5.%20%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/1.C%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%B8%A6%E6%98%9F%E5%8F%B7%E4%B8%BAC%2099%20%E6%89%80%E5%8A%A0.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E6%95%B4%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4%E5%92%8C%E5%80%BC%E5%BE%97%E8%8C%83%E5%9B%B4.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/6.%20%E8%BF%90%E7%AE%97%E7%AC%A6.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/1.%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/7.%20%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/2.%20printf%20%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/3.%20scanf%20%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6.PNG">
+<meta property="og:image" content="http://www.pyfdtic.com/2018/03/16/C语言/images">
+<meta property="og:updated_time" content="2018-03-19T09:40:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C 语言笔记">
+<meta name="twitter:description" content="C语言 之 概述与入门 C语言 之 变量和运算符 C语言 之 控制结构 C语言 之 函数 C语言 之 测试与调试技术 C语言 之 指针和数组 C语言 之 递归 C语言 之 C语言中的 C语言 之 数据结构   概述及入门1. 计算机语言程序就是一组计算机能识别和执行的指令. 每一条指令使计算机指定行特定的操作. 计算机的本质是程序的机器. 程序和指令是计算机系统中最基本的概念. 计算机语言的发展">
+<meta name="twitter:image" content="http://oluv2yxz6.bkt.clouddn.com/4.%E6%95%B0%E6%8D%AE.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/C语言/"/>
+
+
+
+
+
+  <title>C 语言笔记 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/C语言/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">C 语言笔记</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:24:29+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机原理与操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机原理与操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li>C语言 之 概述与入门</li>
+<li>C语言 之 变量和运算符</li>
+<li>C语言 之 控制结构</li>
+<li>C语言 之 函数</li>
+<li>C语言 之 测试与调试技术</li>
+<li>C语言 之 指针和数组</li>
+<li>C语言 之 递归</li>
+<li>C语言 之 C语言中的</li>
+<li>C语言 之 数据结构</li>
+</ol>
+<hr>
+<h1 id="概述及入门"><a href="#概述及入门" class="headerlink" title="概述及入门"></a>概述及入门</h1><h2 id="1-计算机语言"><a href="#1-计算机语言" class="headerlink" title="1. 计算机语言"></a>1. 计算机语言</h2><p>程序就是一组计算机能识别和执行的指令. 每一条指令使计算机指定行特定的操作.</p>
+<p>计算机的本质是程序的机器. 程序和指令是计算机系统中最基本的概念.</p>
+<p>计算机语言的发展阶段</p>
+<ol>
+<li><p>机器语言</p>
+<p> 0 和 1</p>
+<p> 一条计算机指令的长度为 16, 即以 16 个二进制数(0或1) 组成一条指令.</p>
+</li>
+<li><p>符号语言(汇编语言或符号汇编语言)</p>
+<p> 符号语言由英文字母和数字组成, 一般一条符号语言的指令对应转换为一条机器指令.<br> 人们通过<strong>汇编程序</strong>将<strong>符号语言指令</strong>转换为<strong>机器指令</strong>.</p>
+<p> 不同型号的计算机的机器语言和汇编语言是互不通用的.</p>
+<p> 机器语言和汇编语言是完全依赖于具体机器特性的, 是面向机器的语言.</p>
+<p> 符号语言 –汇编–&gt; 机器指令</p>
+</li>
+<li><p>高级语言</p>
+<p> 源程序(高级语言程序) – 编译 –&gt; 目标程序(机器指令的程序)</p>
+<p> 高级语言更接近于人们习惯使用的自然语言和数学语言. 且不依赖于具体机器.</p>
+<p> 高级语言的一个语言往往对应多条机器指令.</p>
+<p> 高级语言的发展阶段:</p>
+<ul>
+<li><p>非结构化语言</p>
+<p>  编程风格比较随意, 只要符合语法规则即可, 没有严格的规范要求, 程序中的流程可以随意跳转.</p>
+</li>
+<li><p>结构化语言</p>
+<p>  程序必须具有良好特性的基本结构(顺序,分支,循环)构成, 程序中的流程不能随意跳转, 程序总是自上而下执行各个基本结构.</p>
+</li>
+<li><p>面向对象语言</p>
+<p>  处理规模较大问题.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-C-语言的发展及其特点"><a href="#2-C-语言的发展及其特点" class="headerlink" title="2. C 语言的发展及其特点"></a>2. C 语言的发展及其特点</h2><p>37 个关键字, 9 种控制语句, </p>
+<p>34 种运算符 : C语言把括号, 赋值和强制类型转换等都作为运算符处理.</p>
+<p>数据类型: 整型, 浮点型, 字符型, 数组, 指针, 结构体, 共用体. C 99 又扩充了 复数浮点类型, 超长整型, 布尔类型. 指针类型能用来实现各种复杂的数据结构, 如链表, 树, 栈等.</p>
+<p>C 语言允许直接访问物理地址, 能进行位(bit)操作, 能实现汇编语言的大部分功能, 可以直接对硬件进行操作.</p>
+<h2 id="3-C-语言程序结构"><a href="#3-C-语言程序结构" class="headerlink" title="3. C 语言程序结构"></a>3. C 语言程序结构</h2><h3 id="3-1-一个程序由一个或多个源程序文件组成"><a href="#3-1-一个程序由一个或多个源程序文件组成" class="headerlink" title="3.1 一个程序由一个或多个源程序文件组成"></a>3.1 一个程序由一个或多个源程序文件组成</h3><p>一个源文件包含如下三个部分.</p>
+<ul>
+<li><p>预处理指令</p>
+<p>  C 编译系统在对源程序进行”翻译”之前, 先由一个<strong>预处理器(也成为预处理程序, 预编译器)</strong>对预处理指令进行预处理.</p>
+<p>  对于 <code>#include &lt;stdio.h&gt;</code> 来说, 就是将<code>stdio.h</code>头文件的内容读出来, 放在 <code>#include</code> 行处, 取代 <code>#include &lt;stdio.h&gt;</code>.</p>
+<p>  由预处理得到的结果与程序其他部分一起, 组成一个完整的, 可以用来编译的最后的<strong>源程序</strong>, 然后由编译程序对该源程序进行编译, 得到目标程序.</p>
+<p>  <code>#include</code> 有两种格式:</p>
+<ol>
+<li><code>#include &lt;stdin.h&gt;</code> : 表示从存放 C 编译系统的子目录中去找索要包含的文件, 称为<strong>标准方式</strong></li>
+<li><code>$include &quot;stdin.h&quot;</code> : 在编译时, 先在用户的<strong>当前目录</strong>寻找, 如果未找到, 则按标准方式查找. 如果头文件不在当前目录中, 可以使用<code>#include &quot;/path/to/stdin.h&quot;</code> 格式.</li>
+</ol>
+</li>
+<li><p>全局声明: 即在函数外进行的数据声明.</p>
+<p>  在函数<strong>外</strong>声明的变量称为<strong>全局变量</strong>, 在整个源文件内有效.<br>  在函数<strong>内</strong>声明的变量称为<strong>局部变量</strong>, 在整个函数内有效.</p>
+</li>
+<li><p>函数定义</p>
+<p>  每个函数用于完成一个特定的功能, 在调用这些函数时, 会完成函数中指定的功能.</p>
+</li>
+</ul>
+<h3 id="3-2-函数是-C-语言的主要组成部分"><a href="#3-2-函数是-C-语言的主要组成部分" class="headerlink" title="3.2 函数是 C 语言的主要组成部分"></a>3.2 函数是 C 语言的主要组成部分</h3><p>C 程序的几乎全部工作都由各个函数分别完成, <strong>函数是 C 程序的基本单位</strong>.</p>
+<p>一个 C 程序由一个或多个函数组成, 其中必须包含<strong>一个且只能有一个</strong> <code>main</code> 函数.</p>
+<p>一个源程序文件就是一个程序模块.</p>
+<p>在进行编译时, 是以源程序文件为对象进行的, 在分别对各个源程序文件进行<strong>编译</strong>并得到相应的目标程序后,再将这些目标程序<strong>连接</strong>成一个统一的二进制程序.</p>
+<p>在程序中被调用的函数有 3 类:</p>
+<ol>
+<li>系统提供的库函数</li>
+<li>用户编写函数</li>
+<li><p>编译系统提供的专门的函数. </p>
+<p> 不同编译系统所提供的库函数个数和功能不完全相同.</p>
+</li>
+</ol>
+<p>函数组成部分:</p>
+<ol>
+<li><p>函数首部</p>
+<p> 函数第一行, 包括 函数名, 函数类型, 函数参数(形式参数)名, 参数类型, 函数属性.</p>
+<pre><code>int      max   (int           x,        int y)
+函数类型 函数名 函数参数类型 函数参数名
+</code></pre><p> 一个函数名后面必须跟一对圆括号, 括号内写参数名及其类型. 如果函数没有参数, 可以在括号内写 <code>void</code> 或者 直接使用空括号.</p>
+<pre><code>int main(void)
+int main()
+</code></pre></li>
+<li><p>函数体</p>
+<p> 函数首部<strong>花括号内</strong>的部分. 如果在一个函数中包括有多层花括号, 则<strong>最外层</strong>的一对花括号是函数体的范围.</p>
+<p> 函数体一般包括如下两部分:</p>
+<ul>
+<li><p>声明部分</p>
+<ol>
+<li>局部变量声明</li>
+<li>调用函数声明</li>
+</ol>
+</li>
+<li><p>执行部分</p>
+<p>  由若干个<strong>语句</strong>组成, 指定在函数中所进行的操作.</p>
+</li>
+<li><p>在某些情况下, 可以 没有声明部分, 甚至可以既没有声明部分, 也没有执行部分.</p>
+<pre><code>// 如下为一个 空函数, 什么也不做, 但这是合法的.
+void dump()
+{}
+</code></pre></li>
+</ul>
+</li>
+</ol>
+<h3 id="3-3-程序总是从-main-函数开始执行-而无论-main-函数在整个函数中的位置如何"><a href="#3-3-程序总是从-main-函数开始执行-而无论-main-函数在整个函数中的位置如何" class="headerlink" title="3.3 程序总是从 main 函数开始执行, 而无论 main 函数在整个函数中的位置如何."></a>3.3 程序总是从 main 函数开始执行, 而无论 main 函数在整个函数中的位置如何.</h3><h3 id="3-4-在每个数据声明和语句的最后必须有一个分号"><a href="#3-4-在每个数据声明和语句的最后必须有一个分号" class="headerlink" title="3.4 在每个数据声明和语句的最后必须有一个分号."></a>3.4 在每个数据声明和语句的最后必须有一个分号.</h3><h3 id="3-5-C-语言本身并不提供输入输出语句"><a href="#3-5-C-语言本身并不提供输入输出语句" class="headerlink" title="3.5 C 语言本身并不提供输入输出语句."></a>3.5 C 语言本身并不提供输入输出语句.</h3><p>输入输出操作有库函数 scanf 和 printf 等函数来完成. </p>
+<p>由于输入输出操作涉及具体的计算机设备, 把输入和输出操作用库函数操作实现, 可使得 C 语言本身短小精悍, 编译程序简单, 且程序具有可移植性.</p>
+<h3 id="3-6-程序应当包含注释-以增强程序的可读性"><a href="#3-6-程序应当包含注释-以增强程序的可读性" class="headerlink" title="3.6 程序应当包含注释, 以增强程序的可读性."></a>3.6 程序应当包含注释, 以增强程序的可读性.</h3><h2 id="4-C-语言程序示例"><a href="#4-C-语言程序示例" class="headerlink" title="4. C 语言程序示例"></a>4. C 语言程序示例</h2><h3 id="示例1-打印语句"><a href="#示例1-打印语句" class="headerlink" title="示例1 : 打印语句"></a>示例1 : 打印语句</h3><pre><code>#include &lt;stdio.h&gt;          // 编译预处理指令
+int main()                  // 定义主函数
+{                           // 函数开始标志
+    printf(&quot;This is a C program.\n&quot;);   // 输出信息
+    return 0;                           // 函数执行完毕时, 返回函数值 0
+}                           // 函数结束标志
+</code></pre><p>每一个 C语言程序都必须有一个 main 函数, 函数体有花括号<code>{}</code>括起来.</p>
+<p><code>main</code> 是函数的名字, 表示<strong>主函数</strong>, <code>main</code> 前面的 <code>int</code> 表示<strong>此函数的类型是 int 类型</strong>, 在执行主函数后会得到一个值(即函数值), 此值纪委整型. 程序中, <code>return 9;</code> 的作用是: 当<code>main</code>函数执行结束前将整数 0 作为函数值, 返回到调用函数处.</p>
+<p>每个语句都由一个最后都有一个分号<code>;</code>, 表示语句结束.</p>
+<p>在使用函数库中的输入输出函数时, 编译系统要求程序提供有关此函数的信息(如对函数的声明和宏定义,全局量的定义等), 即<code>#include &lt;stdio.h&gt;</code>, 文件后缀<code>.h</code> 表示<strong>头文件(header file)</strong>, 应为这些文件放在文件模块的开头.</p>
+<p><strong>注释</strong>: 注释可以用汉语或英语表示.</p>
+<ul>
+<li><code>//</code> : 单行注释,</li>
+<li><code>/* ... ... */</code> : 多行注释.</li>
+</ul>
+<p>在程序进行预编译处理时, 将每个注释替换为一个空格, 因此在编译时注释部分不产生目标代码, 注释对运行不起作用.</p>
+<h3 id="示例2-函数调用"><a href="#示例2-函数调用" class="headerlink" title="示例2 : 函数调用"></a>示例2 : 函数调用</h3><p>程序第 5 行, 是对被调用函数(max)的声明, 因为 max 函数的定义在 main 函数之后, 在对程序进行编译时, 编译系统无法得知 max 为何物, 因而无法把它作为函数调用处理. 函数声明 即告诉编译系统 max 是什么, 及 max 的相关信息.</p>
+<pre><code>#include &lt;stdio.h&gt;
+// 主函数
+int main()
+{
+    int max(int x, int y); 
+    int a, b, c;
+    scanf(&quot;%d, %d&quot;, &amp;a, &amp;b);
+    c=max(a, b);
+    printf(&quot;max=%d\n&quot;, c);
+    return 0;
+}
+
+// 求两个整数中较大者的 max 函数.
+int max(int x, int y)
+{
+    int z;
+    if(x&gt;y)
+        z=x;
+    else 
+        z=y;
+
+    return(z);
+}
+</code></pre><p><code>scanf(A, B)</code> 是 C 标准库中的输入函数的名字,用于接受用户输入. </p>
+<ul>
+<li>A 参数指定输入格式, </li>
+<li>B 参数指定输入的数据赋给那个变量.</li>
+<li><code>&amp;</code> 是地址符, <code>&amp;a</code> 表示 变量 a 的地址.</li>
+</ul>
+<h2 id="5-运行-C-程序的步骤及方法"><a href="#5-运行-C-程序的步骤及方法" class="headerlink" title="5. 运行 C 程序的步骤及方法"></a>5. 运行 C 程序的步骤及方法</h2><p>源程序 —[预编译/正式编译]—&gt; 目标程序 —[连接]—&gt; 库函数/其他目标程序 —&gt; 可执行二进制程序</p>
+<pre><code>$ gcc test.c -o test
+$ ./test
+</code></pre><h2 id="6-程序-数据结构-算法"><a href="#6-程序-数据结构-算法" class="headerlink" title="6. 程序 = 数据结构 + 算法"></a>6. 程序 = 数据结构 + 算法</h2><p><strong>数据结构</strong> : 对<strong>数据</strong>的描述, 在程序中用到了那些数据, 这些数据的类型和数据的组织形式.</p>
+<p><strong>算法</strong> : 对<strong>操作</strong>的描述, 即要求计算机进行操作的步骤.</p>
+<p>广义的说, 为解决一个问题而采取的方法和步骤就是算法.</p>
+<p>计算机算法分为两类:</p>
+<ol>
+<li><p>数值运算算法<br> 目的是求数值解.</p>
+<p> 数值运算算法, 往往有现成的模型, 可以运用数值分析方法.</p>
+</li>
+<li><p>非数值运算算法<br> 包括非常广, 常见的是用于事务管理领域.<br> 目前, 计算机在非数值运算方面的应用远远超过 数值运算算法的运用.</p>
+<p> 非数值运算算法种类繁多, 要求各异, 只有一些典型的非数值运算算法(如排序算法, 查找搜索算法等).</p>
+</li>
+</ol>
+<p>实际上, 一个过程化的程序除了数据结构和算法之外, 还应当采用结构化的程序设计方法进行程序设计, 并且用一种计算机语言表示.</p>
+<h2 id="7-结构化程序设计方法"><a href="#7-结构化程序设计方法" class="headerlink" title="7. 结构化程序设计方法"></a>7. 结构化程序设计方法</h2><p>采用以下方法来保证得到结构化的程序:</p>
+<ol>
+<li>自顶向下</li>
+<li>逐步细化</li>
+<li>模块化设计</li>
+<li>结构化编码</li>
+</ol>
+<h1 id="变量-运算符-表达式和语句"><a href="#变量-运算符-表达式和语句" class="headerlink" title="变量,运算符,表达式和语句"></a>变量,运算符,表达式和语句</h1><h2 id="1-数据"><a href="#1-数据" class="headerlink" title="1 数据"></a>1 数据</h2><p><img src="http://oluv2yxz6.bkt.clouddn.com/4.%E6%95%B0%E6%8D%AE.PNG" alt="数据"></p>
+<h3 id="1-1-常量"><a href="#1-1-常量" class="headerlink" title="1.1 常量"></a>1.1 常量</h3><p>在程序运行过程中, 其值不能改变的量称为常量.</p>
+<h4 id="整型常量"><a href="#整型常量" class="headerlink" title="整型常量"></a>整型常量</h4><p>如 1000, 123, 0 , -123 等.</p>
+<h4 id="实型常量"><a href="#实型常量" class="headerlink" title="实型常量"></a>实型常量</h4><ul>
+<li>十进制小数形式 : 由数字和小数点组成.</li>
+<li><p>指数形式: 以 e 或 E 表示以 10 为底的指数.</p>
+<p>  <strong>e 或 E 之前必须有数字, 且 e 或 E 之后必须为整数.</strong></p>
+</li>
+</ul>
+<h4 id="字符常量"><a href="#字符常量" class="headerlink" title="字符常量"></a>字符常量</h4><ul>
+<li><p><strong>普通字符</strong></p>
+<p>  用<strong>单撇号</strong>括起来的<strong>一个</strong>字符. 如 ‘z’, ‘A’, ‘3’, ‘?’ 等. 单撇号只是界限符, 字符常量只能是一个字符, 不包括单撇号.</p>
+<p>  字符常量存储在计算机存储单元中时, 并不是存储字符本身, 而是一起代码(一般为 ASCII)存储的.</p>
+</li>
+<li><p><strong>转义字符</strong></p>
+<p>  以字符 <code>\</code> 开头的字符序列.</p>
+<p>  <img src="http://oluv2yxz6.bkt.clouddn.com/2.%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6%E5%8F%8A%E5%85%B6%E4%BD%9C%E7%94%A8.PNG" alt="转义字符及其作用"></p>
+<p>  | 转义字符 | 字符值 | 输出结果 |<br>  | — | — | — |<br>  | <code>\&#39;</code> | 一个单撇号 | 具有此八进制码的字符 |<br>  | <code>\&quot;</code> | 一个双撇号 | 输出此字符 |<br>  | <code>\?</code> | 一个问号 | 输出此字符 |<br>  | <code>\\</code> | 一个反斜线 | 输出此字符 |<br>  | <code>\a</code> | 警告(alert) | 产生声音或视觉信号 |<br>  | <code>\b</code> | 退格(backspace) | 将当前位置后退一个字符 |<br>  | <code>\f</code> | 换页(form feed) | 将当前位置移到下一页的开头 |<br>  | <code>\n</code> | 换行 | 将当前位置移到下一行的开头 |<br>  | <code>\r</code> | 回车(carriage return) | 将当前位置移到本行的开头 |<br>  | <code>\t</code> | 水平制表符 | 将当前位置移到下一个 tab 位置 |<br>  | <code>\v</code> | 垂直制表符 | 将当前位置移到下一个垂直指标对齐点 |<br>  | <code>\o</code> 或 <code>\oo</code> 或 <code>\ooo</code>, 其中 o 代表一个八进制数字 | 与该八进制码对应的 ASCII 字符 | 与该八进制码对应的字符, 如 <code>\101</code> 代表字母 <code>A</code>. |<br>  | <code>\xh[h...]</code> 其中 h 代表一个十六进制数字 | 与该十六进制码对应的 ASCII 字符 | 与该十六进制码对应的字符, 如 <code>\x41</code> 代表字母 <code>A</code> |</p>
+</li>
+</ul>
+<h4 id="字符串常量"><a href="#字符串常量" class="headerlink" title="字符串常量"></a>字符串常量</h4><p>用<strong>双撇号</strong>把若干个字符括起来, 字符串常量是双撇号中的全部字符(但不包括双撇号本身).</p>
+<p><strong>单撇号只能包含一个字符, 双撇号可以包含一个字符串</strong>.</p>
+<h4 id="符号常量"><a href="#符号常量" class="headerlink" title="符号常量"></a>符号常量</h4><p>用<code>#define</code>指令, 指定用一个符号名称代表一个常量, 在源代码预编译后, 符号常量被全部替换为字面常量. 如下示例:</p>
+<pre><code>#define PI 3.1416   // 注意行末没有分号
+</code></pre><p>要注意区别<em>符号常量</em>和<em>变量</em>: 符号常量不占内存, 只是一个临时符号, 在预编译后这个符号就不存在了, 故不能对符号常量赋予新值.</p>
+<p>为与变量名相区别, 习惯上符号常量用<strong>大写</strong>表示, 如 PI, PRICE 等.</p>
+<h3 id="1-2-变量"><a href="#1-2-变量" class="headerlink" title="1.2 变量"></a>1.2 变量</h3><p>变量代表一个有名字的, 具有特定属性的一个存储单元. 他用来存放数据, 也就是存放变量的值. 在程序运行期间, 变量的值是可以改变的.</p>
+<p>变量必须<strong>先定义, 后使用</strong>. 在定义时指定变量的名字和类型, 一个变量应该有一个名字, 以便被引用.</p>
+<p><strong>区分变量名与变量值</strong>:</p>
+<pre><code>- 变量名: 变量名实际上是一个名字代表的一个存储地址. 
+
+    在对程序编译连接时, 由编译系统给每一个变量名分配对应的内存地址. 
+
+    从变量中取值, 实际上时通过变量名找到相应的内存地址, 从该存储单元中读取数据.
+
+- 变量值: 变量的实际值.
+</code></pre><h3 id="1-3-常变量"><a href="#1-3-常变量" class="headerlink" title="1.3. 常变量"></a>1.3. 常变量</h3><p>C 99 允许使用<strong>常变量</strong>, 如:</p>
+<pre><code>const int a = 3;    // 表示 a 被定义为一个整型变量, 其指定值为 3, 且在变量存在期间, 其值不能改变.
+</code></pre><p><strong>常变量与常量的异同</strong>:</p>
+<pre><code>常变量具有常量的基本属性: 有类型, 占存储单元, 只是不允许改变其值.
+
+常变量是有名字的不变量; 有名字方便在程序中调用.
+常量是没有名字的不变量.
+</code></pre><p><strong>常变量与符号变量的异同</strong>:</p>
+<pre><code>- 符号常量: 
+
+    定义符号常量用 &apos;#define&apos; 指令, 他是预编译指定, 他只是用符号常量代表一个字符串, 在预编译时仅是进行字符替换, 在预编译后, 符号常量就不存在了, 对符号常量的名字是不分配存储单元的.
+
+- 常变量: 
+
+    常变量占用存储单元, 有变量值, 只是改值不改变而已.
+
+- 从使用的角度, 常变量具有符号变量的有点, 而且使用方便. 有了常变量之后, 可以不必多用符号常量.
+</code></pre><h3 id="1-4-标识符"><a href="#1-4-标识符" class="headerlink" title="1.4. 标识符"></a>1.4. 标识符</h3><p>在计算机高级语言中, 用来对变量, 符号常量名, 函数, 数组, 类型等命名的有效字符序列统称为<strong>标识符</strong>. 标识符就是一个对象的名字.</p>
+<pre><code>// 标识符举例
+变量名 : p1, p2, p3 
+符号常量名 : PI, PRICE
+函数名 : printf, scanf
+</code></pre><p>C 语言规定标识符只能有<strong>字母</strong>, <strong>数字</strong>, <strong>下划线</strong> 3 种字符组成, 且<strong>第一个字符必须为字母或下划线</strong>. 标识符是大小写敏感的.</p>
+<h2 id="2-数据类型"><a href="#2-数据类型" class="headerlink" title="2 数据类型"></a>2 数据类型</h2><p><img src="http://oluv2yxz6.bkt.clouddn.com/5.%20%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.PNG" alt="数据类型"></p>
+<p>C 语言要求在<strong>定义</strong>所有的变量时都要<strong>指定变量的类型</strong>. 常量也是区分类型的.</p>
+<p>数据类型产生的原因: </p>
+<pre><code>数学是一门研究抽象的学科, 数和数的运算都是抽象的. 而在计算机中, 数据是存放在存储单元中的, 他是具体存在. 而且, 存储单元是以优先的字节构成的, 每一个存储单元中存放数据的范围是有限的, 不可能存放无穷大的数, 也不能存放无限循环小数.
+
+用计算机进行的计算不是抽象的计算, 而是用工程的方法实现的计算, 在许多情况下, 只能得到近似的结果.
+</code></pre><p>所谓<strong>类型</strong>, 就是对数据分配存储单元的安排, 包括存储单元的长度(占用多少字节)以及数据的存储形式. 不同的类型分配不同的长度和存储形式.</p>
+<p><img src="http://oluv2yxz6.bkt.clouddn.com/1.C%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B-%E5%B8%A6%E6%98%9F%E5%8F%B7%E4%B8%BAC%2099%20%E6%89%80%E5%8A%A0.PNG" alt="C语言数据类型-带星号的为C99所新加"></p>
+<h3 id="2-1-基本类型"><a href="#2-1-基本类型" class="headerlink" title="2.1 基本类型"></a>2.1 基本类型</h3><h4 id="整型类型"><a href="#整型类型" class="headerlink" title="整型类型"></a>整型类型</h4><p><img src="http://oluv2yxz6.bkt.clouddn.com/%E6%95%B4%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4%E5%92%8C%E5%80%BC%E5%BE%97%E8%8C%83%E5%9B%B4.PNG" alt="整型数据常见的存储空间和值得范围"></p>
+<ul>
+<li><p>基本整型</p>
+<p>  编译系统分配给 <code>int</code> 型数据 2 个或 4 个字节(由具体的C编译系统自定决定).</p>
+<p>  存储方式: 用整数的<strong>补码</strong>形式存放. </p>
+<ul>
+<li>正数: 一个正数的补码是此数的二进制形式.</li>
+<li><p>复数: 先将此数的绝对值写成二进制形式, 然后对其后面所有各二进制按位取反, 再加1.</p>
+<p>在存放整数的存储单元中, 最左面一位是用来表示符号的, 如果该位为 0 , 表示数值为正; 如果该位为 1 , 表示数值为负.</p>
+</li>
+</ul>
+</li>
+<li><p>短整型</p>
+<p>  类型名为 <code>short int</code> 或 <code>short</code>. </p>
+<p>  一个短整型变量的值得范围是 -32768 ~ 32767</p>
+</li>
+<li><p>长整型</p>
+<p>  类型名为 <code>long int</code> 或 <code>long</code>.</p>
+<p>  编译系统分配给 长整型 4 个字节.</p>
+</li>
+<li><p>双长整型</p>
+<p>  类型名为 <code>long long int</code> 或 <code>long long</code>. 一般分配 8 个字节.</p>
+</li>
+<li><p>有符号整数与无符号整数</p>
+<p>  为充分利用变量的值得范围, 可以将变量定义为<strong>无符号</strong>类型.<br>  在类型符号前面加上修饰符<code>unsigned</code> 表示指定该变量是<strong>无符号整数</strong>类型.<br>  在类型符号前面加上修饰符<code>signed</code> 表示该变量是<strong>有符号</strong>类型. 此类型为默认类型, 即当一个正数既没有指定为 signed 也没有指定为 unsigned, 则默认为 <strong>有符号类型</strong>.</p>
+</li>
+</ul>
+<pre><code>因此, 以上四种数据类型可以扩展为 8 种数据类型:
+
+| 名称 | 类型符号 |
+| --- | --- |
+| 有符号基本类型 | [signed] int |
+| 无符号基本类型 | unsigned int |
+| 有符号短整型   | [signed] short [int] |
+| 无符号短整型   | unsigned short [int] |
+| 有符号长整型   | [signed] long [int] |
+| 无符号长整型   | unsigned long [int] |
+| 有符号双长整型 | [signed] long long [int] |
+| 无符号双长整型 | unsigned long long [int] |
+
+**注意**:
+1. 只有整型(包括字符型)数据可以加 signed 或 unsigned 修饰符, 实型数据不能加.
+2. 对无符号整型数据用`%u` 格式输出, 表示无符号十进制数.
+3. 将一个变量定义为无符号整形后, 不应向他赋予一个负值, 否则会得到一个错误的结果.
+</code></pre><ul>
+<li><p>字符型</p>
+<p>  由于字符是按其代码(整数)形式存储的, 因此 C 99 把字符型数据作为整数类型的一种.</p>
+<p>  各种字符集(包含 ASCII) 的基本集都包含 127 个字符. 在 C 中, 指定用一个字节存储一个字符, 此时字节的第一位置为 0 .</p>
+<p>  字符变量使用 char 定义, 实质上是一个字节的整型变量. 可以把 0~127 之间的整数赋值给一个字符变量.</p>
+<pre><code>char c=&apos;?&apos;      // c 是字符变量, 
+printf(&quot;%d %c\n&quot;, c, c)     // 输出字符变量的值时, 可以十进制整数形式输出, 也可以字符形式输出.
+// 输出: 63 ?
+</code></pre><p>  字符型数据的存储空间和值范围:</p>
+<p>  | 类型 | 字节数 | 取值范围 |<br>  | — | — | — |<br>  | signed char | 1 | -128~127 |<br>  | unsigned char | 1 | 0~255 |</p>
+<p>  如果把一个负整数赋给有符号字符型变量时合法的, 但他不代表一个字符, 而作为一个字节整型变量存储负整数.</p>
+<p>  如果在定义变量时即不加 signed 也不加 unsigned, C 标准并未规定如何处理, 由各个编译系统自己决定, 可用如下方法做测试:</p>
+<pre><code>char c=255;
+printf(&quot;%d\n&quot;, c)
+</code></pre></li>
+<li><p>布尔型</p>
+</li>
+</ul>
+<h4 id="浮点类型"><a href="#浮点类型" class="headerlink" title="浮点类型"></a>浮点类型</h4><p>浮点型数据用来表示具有小数点的实数. 在 C 语言中, 实数是以<strong>指数形式</strong>存放在存储单元中的.</p>
+<p><strong>规范化的指数形式</strong>: 把小数部分中小数点前的数字为 0, 小数点后第一位不为 0 的表示形式. 一个实数只有一个规范化的指数形式, 在程序以指数形式输出时, 必然以规范化的指数形式输出. </p>
+<ul>
+<li><p>单精度浮点型(float)</p>
+<p>  编译系统为每一个 float 型变量分配 4 个字节, 数值以规范化的二进制指数形式存放在存储单元中.</p>
+<p>  在存储时, 系统将实型数据分成小数部分和指数部分两部分, 以二进制形式分别存放.</p>
+<p>  由于用二进制形式表示一个实数以及存储单元的长度是有限的, 因此不可能得到完全精确的值, 只能存储成优先的精确度:</p>
+<ul>
+<li>小数部分占的位(bit)数越多, 数的有效数字越多, 精度也就越高;</li>
+<li><p>指数部分占的位(bit)数越多, 表示的数值的范围就越大.</p>
+<p>float 可以得到 6 位有效数字.</p>
+</li>
+</ul>
+</li>
+<li><p>双精度浮点型(double)</p>
+<p>  用 8 个字节存储一个 double 型数据, 可以得到 15 位有效数字. </p>
+<p>  在 C 语言中进行浮点数的算术运算时, 将 float 型数据都自动转换为 double 型, 然后进行运算.</p>
+</li>
+<li><p>长双精度浮点型(long double)</p>
+<p>  不同的编译系统对 long double 型的处理方法不同, Turbo C 分配 16 字节, Visual C++ 6.0 分配 8 字节.   </p>
+</li>
+</ul>
+<h3 id="2-2-枚举类型"><a href="#2-2-枚举类型" class="headerlink" title="2.2 枚举类型"></a>2.2 枚举类型</h3><h3 id="2-3-空类型"><a href="#2-3-空类型" class="headerlink" title="2.3 空类型"></a>2.3 空类型</h3><h3 id="2-4-派生类型"><a href="#2-4-派生类型" class="headerlink" title="2.4 派生类型"></a>2.4 派生类型</h3><h4 id="指针类型"><a href="#指针类型" class="headerlink" title="指针类型"></a>指针类型</h4><h4 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h4><h4 id="结构体类型"><a href="#结构体类型" class="headerlink" title="结构体类型"></a>结构体类型</h4><h4 id="共用体类型"><a href="#共用体类型" class="headerlink" title="共用体类型"></a>共用体类型</h4><h4 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h4><h2 id="3-运算符"><a href="#3-运算符" class="headerlink" title="3 运算符"></a>3 运算符</h2><p><img src="http://oluv2yxz6.bkt.clouddn.com/6.%20%E8%BF%90%E7%AE%97%E7%AC%A6.PNG" alt="运算符"><br>C 语言的运算符范围很宽, 把除了控制语句和输入输出意外的几乎所有操作都作为运算符处理.</p>
+<h3 id="3-1-算术运算符"><a href="#3-1-算术运算符" class="headerlink" title="3.1 算术运算符"></a>3.1 算术运算符</h3><h4 id="基本的算术运算符"><a href="#基本的算术运算符" class="headerlink" title="基本的算术运算符"></a>基本的算术运算符</h4><p><img src="http://oluv2yxz6.bkt.clouddn.com/1.%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6.PNG" alt="基本算术运算符"></p>
+<h4 id="自增自减运算符"><a href="#自增自减运算符" class="headerlink" title="自增自减运算符"></a>自增自减运算符</h4><p>作用是使变量的值加 1 或 减 1.</p>
+<p><code>++i</code>, <code>--i</code> : 在使用之<strong>前</strong>, 先使 i 的值加(减)1.<br><code>i++</code>, <code>i--</code> : 在使用之<strong>后</strong>, 使 i 的值加(减)1.</p>
+<p><strong>自增运算符(++) 和 自减运算符(–) 只能用于变量, 不能用于常量或表达式</strong>.</p>
+<p>自增(减)运算符常用与循环语句中, 使循环变量自动加 1; 也用于指针变量, 使指针指向下一个地址.</p>
+<h4 id="混合运算"><a href="#混合运算" class="headerlink" title="混合运算"></a>混合运算</h4><p>如果一个运算符的两侧的数据类型不同, 则先自动进行类型转换, 使二者具有同一种类型, 然后进行运算.因此, 整型,实型, 字符型数据间可以进行混合运算. 规律如下:</p>
+<ol>
+<li><p>+,-,*,/ 运算的两个数中有一个数为 float 或 double 型, 结果是 double 型, 因为系统将所有 float 型数据都先转换为 double 型, 然后进行运算.</p>
+</li>
+<li><p>如果 int 型与 float 或 double 型数据进行运算, 先把 int 型 和 float 型数据转换为 double 型, 然后进行运算, 结果是 double 型.</p>
+</li>
+<li><p>字符型数据与整型数据进行运算, 就是把字符的 ASCII 代码与整型数据进行运算. 如果字符型数据与实型数据进行运算, 则将字符的 ASCII 代码转换为 double 型数据, 然后进行运算.</p>
+</li>
+</ol>
+<p>以上转换, 由编译系统自动完成, 用户无需干预.</p>
+<h4 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换."></a>强制类型转换.</h4><p>可以利用强制类型转换运算符将一个表达式转换成所需类型.其格式为:</p>
+<pre><code>(类型名)(表达式)
+</code></pre><p>在强制类型转换时, 得到一个所需类型的中间数据, 而原来的变量的类型保持不变.</p>
+<pre><code>(int)(x+y)  // 将 x+y 的结果转换为 int 类型
+(int)x+y    // 将 x 转换为 int 类型, 然后与 y 做加法.
+</code></pre><h4 id="复合的赋值运算符"><a href="#复合的赋值运算符" class="headerlink" title="复合的赋值运算符"></a>复合的赋值运算符</h4><p>在赋值符<code>=</code>之前加上其他运算符, 可以构成复合的运算符.凡是<strong>二元运算符</strong>, 都可以与赋值符一起组合成复合赋值符.</p>
+<pre><code>a+=b    // 如果 b 为一个表达式, 则相当于他有括号
+a=a+b 
+x*=y+8  &lt;--&gt; x=x*(y+8)
+</code></pre><h4 id="赋值过程中的强制类型转换"><a href="#赋值过程中的强制类型转换" class="headerlink" title="赋值过程中的强制类型转换"></a>赋值过程中的强制类型转换</h4><p>如果赋值运算符两侧的类型不一致, 但都是算术类型时, 在赋值时要进行类型转换. 类型转换由系统自动完成, 规则如下: 赋值给谁, 以谁为准.</p>
+<ul>
+<li>将浮点型数据赋值给 整型变量时, 先对浮点数取整, 然后赋值给整型变量;</li>
+<li>将整型数据赋值给 浮点型数据时, 数值不变, 但以浮点数形式存储到变量中.</li>
+<li>将一个 double 型数据赋值给 float 型数据, 先将双精度转换为单精度, 存储到 float 变量的 4 个字节中. 要注意 双精度数值的大小不能超过 float 型变量的数值范围.</li>
+<li>字符型数据赋给整型变量时, 将字符的 ASCII 代码赋给整型变量.</li>
+<li>将一个占字节多的整型数据赋给一个占字节少的整型变量或字符变量时, 只将其低字节原封不同的赋值给变量, 即发生<strong>截断</strong>.</li>
+</ul>
+<h3 id="3-2-关系运算符-gt-lt-gt-lt"><a href="#3-2-关系运算符-gt-lt-gt-lt" class="headerlink" title="3.2 关系运算符(&gt;,&lt;,==,&gt;=,&lt;=,!=)"></a>3.2 关系运算符(&gt;,&lt;,==,&gt;=,&lt;=,!=)</h3><p>关系运算符与优先级:</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>含义</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;</code></td>
+<td>小于</td>
+<td>优先级高</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>小于等于</td>
+<td>优先级高</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>大于</td>
+<td>优先级高</td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>大于等于</td>
+<td>优先级高</td>
+</tr>
+<tr>
+<td><code>==</code></td>
+<td>等于</td>
+<td>优先级低</td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>不等于</td>
+<td>优先级低</td>
+</tr>
+</tbody>
+</table>
+<p>注意:</p>
+<ol>
+<li>前四种(&lt;,&lt;=,&gt;,&gt;=)关系运算符的优先级别相同, 后两种(==,!=)也相同. 前四种优先级高于后两种..</li>
+<li>关系运算符的优先级低于算术运算符.</li>
+<li>关系运算符的优先级高于赋值运算符.</li>
+</ol>
+<p>示例:</p>
+<pre><code>c &gt; a + b  --&gt; c &gt; (a+b)
+a &gt; b == c --&gt; (a&gt;b)==c
+a==b&lt;c     --&gt; a==(b&lt;c)
+a=b&gt;c      --&gt; a=(b&gt;c)
+</code></pre><h3 id="3-3-逻辑运算符-amp-amp"><a href="#3-3-逻辑运算符-amp-amp" class="headerlink" title="3.3 逻辑运算符(!, &amp;&amp;, ||)"></a>3.3 逻辑运算符(!, &amp;&amp;, ||)</h3><p>逻辑运算符与优先级</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>含义</th>
+<th>举例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>逻辑与</td>
+<td><code>a &amp;&amp; b</code></td>
+<td>如果 a 和 b 都为真, 则结果为真; 否则为假</td>
+</tr>
+<tr>
+<td>`</td>
+<td></td>
+<td>`</td>
+<td>逻辑或</td>
+<td>`a</td>
+<td></td>
+<td>b`</td>
+<td>如果 a 和 b 至少有一个为真, 则结果为真; 否则为假</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>逻辑非</td>
+<td><code>!a</code></td>
+<td>如果 a 为假, 则 !a 为真; 反之, 为假.</td>
+</tr>
+</tbody>
+</table>
+<p>优先级:</p>
+<pre><code>!(非)  &gt;  算术运算符 &gt; 关系运算符 &gt; &amp;&amp; 和 || &gt; 赋值运算符
+</code></pre><p>C 语言编译系统在表示逻辑运算结果时,  以数值 1 表示 真, 数值 0 代表 假; 但在判断一个量是否为真时, 以 0 为假, 非0 为真.</p>
+<p>实际上, 逻辑运算符两侧的运算对象不但可以是 0 和 1, 或者 0 或 非0 的整数, 也可以是字符型, 浮点型, 枚举型或指针型的纯量型数据. 系统最终以 0 或 非0 来判断他们属于 真或假.</p>
+<p>逻辑表达式在判断时, 执行<strong>短路逻辑</strong>. <code>(m=a&gt;b) &amp;&amp; (n=c&gt;d)</code> 当 <code>a&gt;b</code> 为假时, <code>m=0</code>, 则此时 <code>&amp;&amp;</code> 表达式必定为假, 则 <code>(n=c&gt;d)</code> 将不会执行, 即 n 的值保持不变.</p>
+<h3 id="3-4-位运算符-lt-lt-gt-gt-amp"><a href="#3-4-位运算符-lt-lt-gt-gt-amp" class="headerlink" title="3.4 位运算符(&lt;&lt;,&gt;&gt;,~,|,^,&amp;)"></a>3.4 位运算符(&lt;&lt;,&gt;&gt;,~,|,^,&amp;)</h3><h3 id="3-6-赋值运算符-及其扩展运算符"><a href="#3-6-赋值运算符-及其扩展运算符" class="headerlink" title="3.6 赋值运算符(=, 及其扩展运算符)"></a>3.6 赋值运算符(=, 及其扩展运算符)</h3><h3 id="3-7-条件运算符-–-gt-C-中唯一的-三目运算符"><a href="#3-7-条件运算符-–-gt-C-中唯一的-三目运算符" class="headerlink" title="3.7 条件运算符(?:) –&gt; C 中唯一的 三目运算符"></a>3.7 条件运算符(?:) –&gt; C 中唯一的 三目运算符</h3><p>条件表达式的一般形式:</p>
+<pre><code>表达式_1 ? 表达式_2 : 表达式_3; 
+// 如果 表达式_1 为真, 则执行 表达式_2, 否则执行 表达式_3.
+</code></pre><p>示例:</p>
+<pre><code>max=(a&gt;b) ? a:b;    // 求 a,b 的最大值.
+
+// 输入一个字母, 判断是否为大写字母, 如果是, 将其转换为小写字母, 如果不是, 不转换.
+
+#include &lt;stdio.h&gt;
+
+int main()
+{
+    char ch;
+    scanf(&quot;%c&quot;, &amp;ch);
+
+    ch=(ch&gt;=&apos;A&apos; &amp;&amp; ch&lt;=&apos;Z&apos;) ? (ch + 32) : ch;
+    printf(&quot;%c\n&quot;, ch);
+    return 0;
+}    
+</code></pre><h3 id="3-8-逗号运算符"><a href="#3-8-逗号运算符" class="headerlink" title="3.8 逗号运算符(,)"></a>3.8 逗号运算符(,)</h3><h3 id="3-9-指针运算符-amp"><a href="#3-9-指针运算符-amp" class="headerlink" title="3.9 指针运算符(*, &amp;)"></a>3.9 指针运算符(*, &amp;)</h3><h3 id="3-10-求字节数运算符-sizeof"><a href="#3-10-求字节数运算符-sizeof" class="headerlink" title="3.10 求字节数运算符(sizeof)"></a>3.10 求字节数运算符(sizeof)</h3><h3 id="3-11-强制类型转换运算符-TYPE"><a href="#3-11-强制类型转换运算符-TYPE" class="headerlink" title="3.11 强制类型转换运算符((TYPE))"></a>3.11 强制类型转换运算符((TYPE))</h3><h3 id="3-12-成员运算符-gt"><a href="#3-12-成员运算符-gt" class="headerlink" title="3.12 成员运算符(.,-,&gt;)"></a>3.12 成员运算符(.,-,&gt;)</h3><h3 id="3-13-下标运算符"><a href="#3-13-下标运算符" class="headerlink" title="3.13 下标运算符([])"></a>3.13 下标运算符([])</h3><h2 id="4-C-语句和表达式"><a href="#4-C-语句和表达式" class="headerlink" title="4. C 语句和表达式"></a>4. C 语句和表达式</h2><p><img src="http://oluv2yxz6.bkt.clouddn.com/7.%20%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5.PNG" alt="表达式和语句"></p>
+<h3 id="4-1-控制语句"><a href="#4-1-控制语句" class="headerlink" title="4.1 控制语句"></a>4.1 控制语句</h3><h4 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h4><ul>
+<li><code>if() ... else ...</code></li>
+<li><code>switch</code></li>
+</ul>
+<h4 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h4><ul>
+<li><code>for() ...</code></li>
+<li><code>while() ...</code></li>
+<li><code>do ... while ()</code></li>
+<li><code>continue</code></li>
+<li><code>break</code></li>
+</ul>
+<h4 id="return"><a href="#return" class="headerlink" title="return"></a>return</h4><h4 id="goto"><a href="#goto" class="headerlink" title="goto"></a>goto</h4><h3 id="4-2-函数调用语句"><a href="#4-2-函数调用语句" class="headerlink" title="4.2 函数调用语句"></a>4.2 函数调用语句</h3><p>由一个函数调用 + 一个分号组成.</p>
+<pre><code>printf(&quot;Just for test.&quot;);
+</code></pre><h3 id="4-3-表达式语句"><a href="#4-3-表达式语句" class="headerlink" title="4.3 表达式语句"></a>4.3 表达式语句</h3><p>由一个表达式 + 一个分号组成.</p>
+<pre><code>a=3     // 表达式
+a=3;    // 表达式语句
+i++;    // 表达式语句
+x+y;    // 表达式语句, 只是没有赋值, 没有实际意义
+</code></pre><p>其实函数调用语句, 也是一种表达式语句, 因为函数调用也是表达式的一种.</p>
+<h4 id="赋值语句"><a href="#赋值语句" class="headerlink" title="赋值语句"></a>赋值语句</h4><h4 id="输入输出语句"><a href="#输入输出语句" class="headerlink" title="输入输出语句"></a>输入输出语句</h4><h5 id="putchar-输出字符"><a href="#putchar-输出字符" class="headerlink" title="putchar(输出字符)"></a>putchar(输出字符)</h5><p>输出单个字符:</p>
+<pre><code>putchar(c)  // c 可以是字符常量, 整型常量, 字符变量或整型变量(在ASCII代码范围内)
+</code></pre><p>示例:</p>
+<pre><code>putchar(c)  // 输出变量 c
+putchar(&apos;\101&apos;)     // 输出字符 A
+putchar(&apos;\&apos;&apos;)       // 输出单撇号
+putchar(&apos;\o15&apos;)     // 八进制15, 输出回车
+</code></pre><h5 id="getchar-输入字符"><a href="#getchar-输入字符" class="headerlink" title="getchar(输入字符)"></a>getchar(输入字符)</h5><p>向计算机输入一个字符:</p>
+<pre><code>getchar()   // 没有参数, 只能接受一个字符.
+</code></pre><h5 id="printf-格式输出"><a href="#printf-格式输出" class="headerlink" title="printf(格式输出)"></a>printf(格式输出)</h5><p><img src="http://oluv2yxz6.bkt.clouddn.com/2.%20printf%20%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6.PNG" alt="printf格式字符"></p>
+<p>printf 函数的一般格式为:</p>
+<pre><code>printf(格式控制, 输出列表)
+
+格式控制 = 格式声明 + 普通字符串
+格式声明 = &quot;%&quot; + 格式字符
+
+输出列表是程序需要输出的一些数据, 可以是变量, 常量 或 表达式.
+
+格式控制和输出列表实质上是 printf 函数的参数.
+</code></pre><p>示例:</p>
+<pre><code>printf(&quot;%5d\n%5d\n&quot;, 12, -345);
+   12  // 12 前面 3 个空格
+ -345  // -345 前面 1 个空格
+
+
+printf(&quot;%ld&quot;)   // 表示 long 型数据
+printf(&quot;%lld&quot;)   // 表示 long long 型数据
+
+printf(&quot;%5c&quot;, &quot;a&quot;) 
+    a  // a 前面 4 个空格
+printf(&quot;%5c&quot;, 121)  // 会自动执行 ASCII 转换.
+
+printf(&quot;%s&quot;, &quot;China&quot;)   // 输出字符串
+
+printf(&quot;%f&quot;)     // 输出实数
+printf(&quot;%m.nf&quot;)  // m 数据宽度, n 小数位数.
+printf(&quot;%-m.nf&quot;) // 数据输出左对齐
+
+printf(&quot;%e&quot;)    // 指数格式输出
+printf(&quot;%E&quot;)    // 指数格式输出
+
+printf(&quot;%o&quot;)    // 输出八进制格式
+printf(&quot;%x&quot;)    // 输出十六进制格式
+
+printf(&quot;%%&quot;)    // 输出百分号(%)
+</code></pre><h5 id="scanf-格式输入"><a href="#scanf-格式输入" class="headerlink" title="scanf(格式输入)"></a>scanf(格式输入)</h5><p><img src="http://oluv2yxz6.bkt.clouddn.com/3.%20scanf%20%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6.PNG" alt="scanf格式字符"></p>
+<p>一般格式:</p>
+<pre><code>scanf(格式控制, 地址表列)
+
+地址表列是由若干个地址组成的表列, 可以是变量的地址, 或字符串的首地址.
+</code></pre><p><strong>注意问题</strong>:</p>
+<ol>
+<li><p>scanf 函数中的地址表列, 应当是变量地址, 而不是变量名.</p>
+<p> scanf(“%f%f%f”, a, b, c)    // 错误<br> scanf(“%f%f%f”, &amp;a, &amp;b, &amp;c)    // 正确</p>
+</li>
+<li><p>如果在格式控制字符串中, 除了格式声明之外, 还有其他字符, 则在输入数据时, 在对应的位置上应输入与这些字符相同的字符.</p>
+<p> scanf(“a=%f, b=%f”, &amp;a, &amp;b)     // 应当输入 “a=1, b=3”</p>
+</li>
+<li><p>在使用 <code>%c</code> 格式声明输入字符时, 空格字符和转义字符中的字符都作为有效字符输入.</p>
+</li>
+<li>在输入数值数据时, 如输入空格, 回车, Tab 键, 或遇非法字符(不属于数值的字符), 认为该数据结束.</li>
+</ol>
+<h5 id="puts-输出字符串"><a href="#puts-输出字符串" class="headerlink" title="puts(输出字符串)"></a>puts(输出字符串)</h5><h5 id="gets-输入字符串"><a href="#gets-输入字符串" class="headerlink" title="gets(输入字符串)"></a>gets(输入字符串)</h5><h3 id="4-4-空语句"><a href="#4-4-空语句" class="headerlink" title="4.4 空语句"></a>4.4 空语句</h3><p>空语句什么也不做, 主要用来作为流程的转向点(流程从程序其他地方转到此语句处), 也可以作为循环语句中的循环体(循环体是空语句, 表示循环体什么也不做).</p>
+<pre><code>;   // 空语句
+</code></pre><h3 id="4-5-复合语句"><a href="#4-5-复合语句" class="headerlink" title="4.5 复合语句"></a>4.5 复合语句</h3><p>用<code>{}</code>把一些语句和声明括起来称为复合语句(又称语句块). 复合语句常用在 if 语句或循环中.</p>
+<p>可以在复合语句中包含声明部分, 声明部分可以放在复合语句中的任何位置, 但习惯上把它放在语句块开头的位置.</p>
+<p><strong>复合语句中最后一个语句中最后的分号不能省略</strong>.</p>
+<pre><code>{
+    float pi=3.14159, r=2.5m, area;
+    area = pi * r * r;
+    printf(&quot;area=%f&quot;, area);
+}
+</code></pre><h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h1 id="控制结构"><a href="#控制结构" class="headerlink" title="控制结构"></a>控制结构</h1><h2 id="1-顺序"><a href="#1-顺序" class="headerlink" title="1. 顺序"></a>1. 顺序</h2><p>语句自上而下依次执行.</p>
+<h2 id="2-选择"><a href="#2-选择" class="headerlink" title="2. 选择"></a>2. 选择</h2><h3 id="2-1-if-选择"><a href="#2-1-if-选择" class="headerlink" title="2.1 if 选择"></a>2.1 if 选择</h3><p>if 语句的一般形式: </p>
+<pre><code>// 一般形式
+if(表达式) 语句_1
+    [ else 语句_2 ]
+
+// 常见形式
+if(表达式) 语句_1
+
+if(表达式)
+    语句_1
+else
+    语句_2
+
+if(表达式_1) 语句_1
+else if(表达式_2) 语句_2
+else if(表达式_3) 语句_3
+...
+else 语句_n
+</code></pre><p>注意:</p>
+<ol>
+<li>if语句中的表达式可以为关系表达式, 逻辑表达式, 甚至是数值表达式.</li>
+<li>语句_1, 语句_2 … 是 if 语句的内嵌语句, 每个内嵌语句末尾都应当有分号结尾.</li>
+<li>语句_1, 语句_2 … 可以是单个语句, 也可以是复合语句, 复合语句应当用花括号括起来.</li>
+</ol>
+<p>实例代码:</p>
+<pre><code>#include &lt;stdio.h&gt;
+// 输入三个数字, 按从小到大输出.
+int main()
+{
+    float a,b,c,t;
+
+    scanf(&quot;%f,%f,%f&quot;, &amp;a, &amp;b, &amp;c);
+
+    if(a&gt;b)
+    {
+        t=a;
+        a=b;
+        b=t;
+    }
+
+    if(a&gt;c)
+    {
+        t=a;
+        a=c;
+        c=t;
+    }
+
+    if(b&gt;c){
+        t=b;
+        b=c;
+        c=t;
+    }
+
+    printf(&quot;%5.2f,%5.2f,%5.2f\n&quot;, a,b,c);
+    return 0;
+}
+</code></pre><h3 id="2-2-switch-选择"><a href="#2-2-switch-选择" class="headerlink" title="2.2 switch 选择"></a>2.2 switch 选择</h3><p>switch 语句是<strong>多分支语句</strong>. 其一般表达式如下:</p>
+<pre><code>switch(表达式)
+{
+    case 常量_1 : 语句_1 ; break;
+    case 常量_1 : 语句_1 ; break;
+    ...     ...
+    default: 语句_n;
+}
+</code></pre><p>switch 后面括号内的”表达式”, 其值的类型应为<strong>整数类型</strong>(包括字符型);</p>
+<p>default 标号是可选的, 如果没有雨 switch 表达式相匹配的 case 常量, 则不执行任何语句;</p>
+<p>各个 case 标号(包含 default)出现的次序不影响执行结果.</p>
+<p>一个 switch 选择分支结构中, <strong>最多</strong>只能执行<strong>一个</strong>标号语句;</p>
+<p>多个 case 标号, 可以共用一组执行语句, 如:</p>
+<pre><code>case &apos;a&apos;:
+case &apos;A&apos;: action(a); break;
+...
+</code></pre><p>每个 case 后面的的语句中, 最后都有一个 break 语句, 他的作用是使流程转到 switch 语句的末尾.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    char grade;
+    scanf(&quot;%c&quot;, &amp;grade);
+    printf(&quot;Your score:&quot;);
+
+    switch(grade)
+    {
+        case &apos;A&apos;: 
+            printf(&quot;85 ~ 100\n&quot;); 
+            break;
+        case &apos;B&apos;: 
+            printf(&quot;70 ~ 84\n&quot;);
+            break;
+        case &apos;C&apos;: 
+            printf(&quot;60 ~ 69\n&quot;);
+            break;
+        case &apos;D&apos;: 
+            printf(&quot;&lt; 60\n&quot;);
+            break;
+        default: printf(&quot;enter data error!\n&quot;);
+    }
+
+    return 0;
+}
+</code></pre><h2 id="3-循环"><a href="#3-循环" class="headerlink" title="3. 循环"></a>3. 循环</h2><h3 id="3-1-for-循环"><a href="#3-1-for-循环" class="headerlink" title="3.1 for 循环"></a>3.1 for 循环</h3><p>一般形式:</p>
+<pre><code>for(循环变量赋初值; 循环条件; 循环变量增值)
+    语句
+</code></pre><p>说明:</p>
+<ol>
+<li>循环变量赋初值, 只执行一次, 可以为零个, 一个或多个变量设置初值.</li>
+<li>循环条件表达式, 用来判断是否继续循环, 在每次执行循环体之前, 先执行此表达式做判断.</li>
+<li>作为循环的调整, 是在每次执行完循环体之后执行.</li>
+<li><p>for 语句形式与下列 while 语句<strong>无条件等价</strong></p>
+<pre><code>循环变量赋初值;
+while 循环条件
+{
+    语句;
+    循环变量增值;
+}
+</code></pre></li>
+<li><p><em>循环变量赋初值</em>可以省略, 但其后的<strong>分号不能省略</strong>. </p>
+<p> <code>for(;i&lt;100;i++)</code></p>
+</li>
+<li><p><em>循环条件</em>也可以省略, 即不设置循环条件, 此时循环<em>无终止进行</em>, 即认为循环条件始终为真. </p>
+<p> <code>for(i=1; ; i++)</code></p>
+</li>
+<li><p><em>循环变量增值</em>, 也可省略, 但此时应另外设法保证循环能正常结束, 否则, <strong>循环体无止境执行</strong>.</p>
+<p> <code>for(i=1;i&lt;100;)</code></p>
+</li>
+<li><p><em>循环变量赋初值</em>,<em>循环条件</em>,<em>循环变量增值</em> 三个可同时省略, 此时, 循环<strong>无终止运行</strong>. </p>
+<p> <code>for(;;)</code></p>
+</li>
+<li><p><em>循环变量赋初值</em>,<em>循环变量增值</em> 可以是一个简单的表达式, 也可以是一个<strong>逗号表达式</strong>, 即包含一个以上的简单表达式, 中间用逗号分隔. 在逗号表达式内, 按<em>自左至右</em>顺序求解, <strong>整个逗号表达式的值为最右边的表达式的值</strong>.</p>
+<p> <code>for(i=1;i&lt;=100;i++,i++)</code></p>
+</li>
+<li><p>C99 允许在 for 语句的<em>循环变量赋初值</em>中定义变量并赋初值. 但<strong>所定义变量的有效范围仅限于for循环中</strong>, 在循环外不能使用此变量.</p>
+<p><code>for(int i=1;i&lt;100;i++)</code></p>
+</li>
+</ol>
+<h3 id="3-2-while-循环"><a href="#3-2-while-循环" class="headerlink" title="3.2 while 循环"></a>3.2 while 循环</h3><p>while 语句的一般形式: 只要循环条件表达式为真, 就执行循环体.</p>
+<pre><code>// 循环条件表达式控制循环体, 他的值只能为真或假.
+while(循环条件表达式) 循环体
+</code></pre><p>程序示例: 求 1 ~ 100 之和</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int i=1, sum=0;
+    while(i&lt;=100)
+    {
+        sum = sum + i;
+        i++ ;
+    }
+
+    printf(&quot;sum=%d\n&quot;, sum);
+    return 0;
+}
+</code></pre><h3 id="3-3-do-…-while-循环"><a href="#3-3-do-…-while-循环" class="headerlink" title="3.3 do … while 循环"></a>3.3 do … while 循环</h3><p>一般形式: 先无条件执行循环体, 然后判断循环条件是否成立. 即对于 <code>do ... while</code> 循环来说, 至少执行一次循环体.</p>
+<pre><code>do
+    循环体
+while(循环条件)
+</code></pre><p>示例: 求 1 ~ 100 之和</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int i=1, sum=0;
+
+    do
+    {
+        sum = sum + i;
+        i++;
+    }while(i&lt;=100);
+
+    printf(&quot;sum=%d\n&quot;, sum);
+    return 0;
+}
+</code></pre><p><code>while</code> 和 <code>do ... while</code> 比较: </p>
+<ol>
+<li><strong>当 while 表达式的第一次的值为真时, 两个循环得到的结果相同, 否则不同.</strong></li>
+<li><code>while</code> 和 <code>do ... while</code> 都需要在循环体中实现循环条件控制变量的增减.</li>
+</ol>
+<h3 id="3-4-continue-amp-break"><a href="#3-4-continue-amp-break" class="headerlink" title="3.4 continue &amp; break"></a>3.4 continue &amp; break</h3><ol>
+<li><p><code>break</code> 用来从循环体中跳出循环体, 即<strong>提前结束整个循环</strong>, 接着执行循环后面的语句.</p>
+<p> <strong>break只能用于 循环语句 和 switch 语句之中, 而不能单独使用</strong>.</p>
+</li>
+<li><p><code>continue</code> 提前结束<strong>本次</strong>循环 , 而接着执行下次循环.</p>
+</li>
+</ol>
+<h3 id="3-5-实例"><a href="#3-5-实例" class="headerlink" title="3.5 实例:"></a>3.5 实例:</h3><h4 id="斐波那契数列前-40-个数"><a href="#斐波那契数列前-40-个数" class="headerlink" title="斐波那契数列前 40 个数"></a>斐波那契数列前 40 个数</h4><h5 id="方法一"><a href="#方法一" class="headerlink" title="方法一 :"></a>方法一 :</h5><pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int f1=1, f2=1, f3;
+    int i;
+    printf(&quot;\t%12d\n\t%12d\n&quot;, f1, f2);
+    for(i=1;i&lt;=38;i++)      // 40 = 38 + 2
+    {
+        f3 = f1 + f2;
+        printf(&quot;%d\t%12d\n&quot;, i, f3);
+        f1 = f2;
+        f2 = f3;
+    }
+
+    return 0;
+}
+</code></pre><h5 id="方法二"><a href="#方法二" class="headerlink" title="方法二:"></a>方法二:</h5><pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int f1=1, f2=1;
+    int i;
+    for(i=1;i&lt;=20;i++)  // 每次输入两个数, 只需 20 次循环
+    {
+        printf(&quot;%12d%12d&quot;,f1,f2 );
+        if(i%2==0) printf(&quot;\n&quot;);
+        f1 = f1 + f2;      // 此时 f1 为 第三个数
+        f2 = f2 + f1;      // f2 是 第二个数(f2) + 第三个数(f1) 的和, 即第四个数.
+    }
+}
+</code></pre><h4 id="输入一个大于-3-的数-判断是否为素数-质数"><a href="#输入一个大于-3-的数-判断是否为素数-质数" class="headerlink" title="输入一个大于 3 的数, 判断是否为素数(质数)"></a>输入一个大于 3 的数, 判断是否为素数(质数)</h4><h5 id="方法一-1"><a href="#方法一-1" class="headerlink" title="方法一:"></a>方法一:</h5><pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int f, i;
+    int fl=0;
+    scanf(&quot;%d&quot;, &amp;f);
+    for(i=2; i&lt;f; i++)
+    {
+        if(f%i==0) 
+        {
+            fl=1;
+            break;
+        }
+    }
+    if(fl==0) printf(&quot;%d is prime\n&quot;, f);
+    else printf(&quot;%d is not prime\n&quot;, f);
+
+    return 0;
+}
+</code></pre><h5 id="方法二-1"><a href="#方法二-1" class="headerlink" title="方法二:"></a>方法二:</h5><pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int n,i;
+    printf(&quot;Plz input a integer number, n\n&quot;);
+    scanf(&quot;%d&quot;, &amp;n);
+
+    for(i=2;i&lt;=n;i++)
+    {
+        if(n%i==0) break;   // 当 n 为非质数, 会提前退出.
+
+        // 当 n 为质数, 会一直循环到 n-1 而不退出.
+        if(i==n-1) printf(&quot;%d is a prime\n&quot;, n);
+    }
+    return 0;
+}
+</code></pre><h5 id="方法三-输入任意数字-求-小于该数的所有质数"><a href="#方法三-输入任意数字-求-小于该数的所有质数" class="headerlink" title="方法三: 输入任意数字, 求 小于该数的所有质数"></a>方法三: 输入任意数字, 求 小于该数的所有质数</h5><pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int f;
+    int i;
+    int num;
+    int fl=0;
+
+    scanf(&quot;%d&quot;, &amp;num);
+
+    printf(&quot;Begin:\n&quot;);
+    for(i=3;i&lt;=num;i++)
+    {
+
+        for(f=2;f&lt;i;f++)
+        {
+            if(i%f==0)
+            {
+                fl=1;
+                break;
+            }
+        }
+        if(fl==0) printf(&quot;\t%d\n&quot;, i);
+        fl=0;
+    }
+
+    return 0;
+}
+</code></pre><h1 id="指针和数组"><a href="#指针和数组" class="headerlink" title="指针和数组"></a>指针和数组</h1><h2 id="一-指针"><a href="#一-指针" class="headerlink" title="一. 指针"></a>一. 指针</h2><h2 id="二-数组"><a href="#二-数组" class="headerlink" title="二. 数组"></a>二. 数组</h2><h3 id="1-数组含义"><a href="#1-数组含义" class="headerlink" title="1. 数组含义"></a>1. 数组含义</h3><ol>
+<li><p>数组是一组<strong>有序</strong>数据的集合, 数组中的各数据的排列是<strong>有顺序的</strong>, 下标代表数据在数组中的序号.</p>
+</li>
+<li><p>用一个<strong>数组名</strong>和<strong>下标</strong>来唯一的确定数组中的元素. 在 C 语言中, 下标使用<strong>方括号中的数字</strong>表示.</p>
+</li>
+<li><p>数组中的每一个元素都属于<strong>同一种数据类型</strong>, 不能把不同类型的数据放在同一个数组中.</p>
+</li>
+</ol>
+<h3 id="2-一维数组"><a href="#2-一维数组" class="headerlink" title="2. 一维数组"></a>2. 一维数组</h3><h4 id="2-1-定义数组"><a href="#2-1-定义数组" class="headerlink" title="2.1 定义数组"></a>2.1 定义数组</h4><p>可变长数组</p>
+<h4 id="2-2-引用数组"><a href="#2-2-引用数组" class="headerlink" title="2.2 引用数组"></a>2.2 引用数组</h4><h4 id="2-3-一维数组的初始化"><a href="#2-3-一维数组的初始化" class="headerlink" title="2.3 一维数组的初始化"></a>2.3 一维数组的初始化</h4><h4 id="2-4-示例"><a href="#2-4-示例" class="headerlink" title="2.4 示例"></a>2.4 示例</h4><ol>
+<li><p>示例: 10个元素赋值为 0-9, 并倒序输出</p>
+<pre><code>#include &lt;stdio.h&gt;
+int main()
+{
+    int i,a[10];
+    for(i=0; i&lt;=9;i++)
+        a[i]=i;
+
+    for(i=9;i&gt;=0;i--)
+    {
+        printf(&quot;%d\t&quot;, a[i]);
+    }
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre></li>
+<li><p>示例: 使用数组,输出斐波那契数列的前 20 个数</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int i;
+    int f[20]={1,1};
+
+    for(i=2;i&lt;=20;i++)
+        f[i] = f[i-2] + f[i-1];
+
+    for(i=0;i&lt;20;i++)
+    {
+
+        if(i%5==0) printf(&quot;\n&quot;);
+        printf(&quot;%12d&quot;, f[i]);
+    }
+
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre></li>
+<li><p>示例: 随机输入10个整数, 使用冒泡排序按从小到大的顺序输出.</p>
+<p> <strong>冒泡排序</strong>: 如果有 n 个数, 则进行 n-1 趟比较, 第 1 趟比较中有 n - 1 此比较, 第 2 趟有 n-2 比较, 第 j 趟中有 n - j 趟比较. 在每趟比较中, 从第 1 个数字开始, 两两比较, 并将两者中的大者排到小者的后面, 以此类推. 第 1 趟比较中, 最大的数字将排到末尾, 第 2 趟比较中, 次大的数字将排到次末尾, 依次类推.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int a[10];
+    int i,j,t;
+    // 获取输入
+    printf(&quot;input 10 numbers: \n&quot;);
+    for(i=0;i&lt;10;i++)
+        scanf(&quot;%d&quot;, &amp;a[i]);
+    printf(&quot;\n&quot;);
+
+    // 冒泡排序
+    for(j=0;j&lt;9;j++)
+        for(i=0;i&lt;9-j;i++)
+            if(a[i]&gt;a[i+1])
+            {
+                t=a[i]; 
+                a[i]=a[i+1];
+                a[i+1]=t;
+            }
+
+    // 输出
+    printf(&quot;The Sorted Numbers: \n&quot;);
+    for(i=0; i&lt;10;i++)
+        printf(&quot;%d &quot;, a[i]);
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre></li>
+</ol>
+<h3 id="3-二维数组"><a href="#3-二维数组" class="headerlink" title="3. 二维数组"></a>3. 二维数组</h3><p>二维数组常常成为<strong>矩阵</strong>. 用矩阵表示二维数组, 只是<strong>逻辑</strong>上的概念, 能形象的表示出行和列的关系. 但是在内存中, 各元素是连续存放的, 不是二维的, 是<strong>线性</strong>的.</p>
+<p>除了 二维数组之外, C 语言还允许使用<strong>多维数组</strong>, 类似二维数组, 如 三维数组定义如下 <code>float a[2][3][4]</code>.</p>
+<p><img src="images" alt="数组存放示意图"></p>
+<h4 id="3-1-定义二维数组"><a href="#3-1-定义二维数组" class="headerlink" title="3.1 定义二维数组"></a>3.1 定义二维数组</h4><h4 id="3-2-引用二维数组"><a href="#3-2-引用二维数组" class="headerlink" title="3.2 引用二维数组"></a>3.2 引用二维数组</h4><h4 id="3-3-二维数组的初始化"><a href="#3-3-二维数组的初始化" class="headerlink" title="3.3 二维数组的初始化"></a>3.3 二维数组的初始化</h4><h4 id="3-4-示例"><a href="#3-4-示例" class="headerlink" title="3.4 示例"></a>3.4 示例</h4><ol>
+<li><p>示例1 : 将一个二维数组行和列的元素互换, 存到另一个数组中. 如将一个两行三列的数据转换为三行两列的数据.</p>
+<p> 核心算法: 将 a 数组中的元素 a[i][j] 存到 b 数组中的 b[j][i].</p>
+<pre><code>#include &lt;stdio.h&gt;
+int main()
+{
+    int a[2][3] = {{1,2,3}, {4,5,6}};
+    int b[3][2], i,j;
+    printf(&quot;array a: \n&quot;);
+    for(i=0;i&lt;=1;i++)
+    {
+        for(j=0;j&lt;=2;j++)
+        {
+            printf(&quot;%5d&quot;, a[i][j]);
+            b[j][i] = a[i][j];
+        }
+        printf(&quot;\n&quot;);
+    }
+
+    printf(&quot;array b: \n&quot;);
+    for(i=0;i&lt;=2;i++)
+    {
+        for(j=0;j&lt;=1;j++)
+            printf(&quot;%5d&quot;, b[i][j]);
+        printf(&quot;\n&quot;);
+    }
+    return 0;
+}
+
+// 输出如下:
+array a: 
+    1    2    3
+    4    5    6
+array b: 
+    1    4
+    2    5
+    3    6
+</code></pre></li>
+<li><p>示例2 : 有一个 3x4 的矩阵, 求出其中最大的元素的值及其下标.</p>
+<p> 打擂台算法: 有 a[3][4] 数组, 从 a[0][0] 开始, 存到 max 中,  a[3][4] 中的每个数依次与 max 比较大小, 大的 赋值并保存到 max 中, 最后, max 为最大值.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    int i,j, row=0,colum=0,max;
+    int a[3][4] = {{1,2,3,4},{9,8,7,6},{-10,10,-5,2}};
+
+    max=a[0][0];
+    for(i=0;i&lt;=2;i++)
+        for(j=0;j&lt;=3;j++)
+            if(a[i][j]&gt;max){
+                max = a[i][j];
+                row = i;
+                colum = j;
+            }
+
+    printf(&quot;Max=%d\nrow=%d\ncolum=%d\n&quot;,max,row,colum );
+    return 0;        
+}
+</code></pre></li>
+</ol>
+<h3 id="4-字符数组"><a href="#4-字符数组" class="headerlink" title="4. 字符数组"></a>4. 字符数组</h3><p>C 语言中没有字符串类型, 字符串是存放在字符型数组中的.</p>
+<h4 id="4-1-字符数组定义"><a href="#4-1-字符数组定义" class="headerlink" title="4.1 字符数组定义"></a>4.1 字符数组定义</h4><h4 id="4-2-字符数组初始化"><a href="#4-2-字符数组初始化" class="headerlink" title="4.2 字符数组初始化"></a>4.2 字符数组初始化</h4><h4 id="4-3-字符数组引用"><a href="#4-3-字符数组引用" class="headerlink" title="4.3 字符数组引用"></a>4.3 字符数组引用</h4><h4 id="4-4-字符数组处理函数"><a href="#4-4-字符数组处理函数" class="headerlink" title="4.4 字符数组处理函数"></a>4.4 字符数组处理函数</h4><h5 id="include-lt-string-h-gt"><a href="#include-lt-string-h-gt" class="headerlink" title="include &lt;string.h&gt;"></a>include &lt;string.h&gt;</h5><h5 id="puts-–-输出字符串的函数"><a href="#puts-–-输出字符串的函数" class="headerlink" title="puts – 输出字符串的函数"></a>puts – 输出字符串的函数</h5><h5 id="gets-–-输入字符串的函数"><a href="#gets-–-输入字符串的函数" class="headerlink" title="gets – 输入字符串的函数"></a>gets – 输入字符串的函数</h5><h5 id="strcat-–-字符串连接函数"><a href="#strcat-–-字符串连接函数" class="headerlink" title="strcat – 字符串连接函数"></a>strcat – 字符串连接函数</h5><h5 id="strcpy-strncpy-–-字符串复制函数"><a href="#strcpy-strncpy-–-字符串复制函数" class="headerlink" title="strcpy strncpy – 字符串复制函数"></a>strcpy strncpy – 字符串复制函数</h5><h5 id="strcmp-–-字符串比较函数"><a href="#strcmp-–-字符串比较函数" class="headerlink" title="strcmp – 字符串比较函数"></a>strcmp – 字符串比较函数</h5><h5 id="strlen-–-测字符串长度的函数"><a href="#strlen-–-测字符串长度的函数" class="headerlink" title="strlen – 测字符串长度的函数"></a>strlen – 测字符串长度的函数</h5><h5 id="strlwr-–-转换为小写的函数"><a href="#strlwr-–-转换为小写的函数" class="headerlink" title="strlwr – 转换为小写的函数"></a>strlwr – 转换为小写的函数</h5><h5 id="strupr-–-转换为大写的函数"><a href="#strupr-–-转换为大写的函数" class="headerlink" title="strupr – 转换为大写的函数"></a>strupr – 转换为大写的函数</h5><h4 id="4-5-示例"><a href="#4-5-示例" class="headerlink" title="4.5 示例"></a>4.5 示例</h4><h1 id="C语言中的-IO"><a href="#C语言中的-IO" class="headerlink" title="C语言中的 IO"></a>C语言中的 IO</h1><h1 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h1><h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><h2 id="1-结构体"><a href="#1-结构体" class="headerlink" title="1. 结构体"></a>1. 结构体</h2><h2 id="2-结构体数组"><a href="#2-结构体数组" class="headerlink" title="2. 结构体数组"></a>2. 结构体数组</h2><h2 id="3-链表"><a href="#3-链表" class="headerlink" title="3. 链表"></a>3. 链表</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C语言/" rel="tag"># C语言</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/linux-tcp-wrapper/" rel="next" title="linux tcp_wrapper">
+                <i class="fa fa-chevron-left"></i> linux tcp_wrapper
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/python-内置函数/" rel="prev" title="python-内置函数">
+                python-内置函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述及入门"><span class="nav-text">概述及入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-计算机语言"><span class="nav-text">1. 计算机语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-C-语言的发展及其特点"><span class="nav-text">2. C 语言的发展及其特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-C-语言程序结构"><span class="nav-text">3. C 语言程序结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-一个程序由一个或多个源程序文件组成"><span class="nav-text">3.1 一个程序由一个或多个源程序文件组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-函数是-C-语言的主要组成部分"><span class="nav-text">3.2 函数是 C 语言的主要组成部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-程序总是从-main-函数开始执行-而无论-main-函数在整个函数中的位置如何"><span class="nav-text">3.3 程序总是从 main 函数开始执行, 而无论 main 函数在整个函数中的位置如何.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-在每个数据声明和语句的最后必须有一个分号"><span class="nav-text">3.4 在每个数据声明和语句的最后必须有一个分号.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-C-语言本身并不提供输入输出语句"><span class="nav-text">3.5 C 语言本身并不提供输入输出语句.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-程序应当包含注释-以增强程序的可读性"><span class="nav-text">3.6 程序应当包含注释, 以增强程序的可读性.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-C-语言程序示例"><span class="nav-text">4. C 语言程序示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例1-打印语句"><span class="nav-text">示例1 : 打印语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例2-函数调用"><span class="nav-text">示例2 : 函数调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-运行-C-程序的步骤及方法"><span class="nav-text">5. 运行 C 程序的步骤及方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-程序-数据结构-算法"><span class="nav-text">6. 程序 = 数据结构 + 算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-结构化程序设计方法"><span class="nav-text">7. 结构化程序设计方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量-运算符-表达式和语句"><span class="nav-text">变量,运算符,表达式和语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-数据"><span class="nav-text">1 数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-常量"><span class="nav-text">1.1 常量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整型常量"><span class="nav-text">整型常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实型常量"><span class="nav-text">实型常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符常量"><span class="nav-text">字符常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串常量"><span class="nav-text">字符串常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#符号常量"><span class="nav-text">符号常量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-变量"><span class="nav-text">1.2 变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-常变量"><span class="nav-text">1.3. 常变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-标识符"><span class="nav-text">1.4. 标识符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据类型"><span class="nav-text">2 数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-基本类型"><span class="nav-text">2.1 基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整型类型"><span class="nav-text">整型类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点类型"><span class="nav-text">浮点类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-枚举类型"><span class="nav-text">2.2 枚举类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-空类型"><span class="nav-text">2.3 空类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-派生类型"><span class="nav-text">2.4 派生类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指针类型"><span class="nav-text">指针类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组类型"><span class="nav-text">数组类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体类型"><span class="nav-text">结构体类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#共用体类型"><span class="nav-text">共用体类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数类型"><span class="nav-text">函数类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-运算符"><span class="nav-text">3 运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-算术运算符"><span class="nav-text">3.1 算术运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本的算术运算符"><span class="nav-text">基本的算术运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自增自减运算符"><span class="nav-text">自增自减运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合运算"><span class="nav-text">混合运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#强制类型转换"><span class="nav-text">强制类型转换.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合的赋值运算符"><span class="nav-text">复合的赋值运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#赋值过程中的强制类型转换"><span class="nav-text">赋值过程中的强制类型转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-关系运算符-gt-lt-gt-lt"><span class="nav-text">3.2 关系运算符(&gt;,&lt;,==,&gt;=,&lt;=,!=)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-逻辑运算符-amp-amp"><span class="nav-text">3.3 逻辑运算符(!, &amp;&amp;, ||)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-位运算符-lt-lt-gt-gt-amp"><span class="nav-text">3.4 位运算符(&lt;&lt;,&gt;&gt;,~,|,^,&amp;)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-赋值运算符-及其扩展运算符"><span class="nav-text">3.6 赋值运算符(=, 及其扩展运算符)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-条件运算符-–-gt-C-中唯一的-三目运算符"><span class="nav-text">3.7 条件运算符(?:) –&gt; C 中唯一的 三目运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-逗号运算符"><span class="nav-text">3.8 逗号运算符(,)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-9-指针运算符-amp"><span class="nav-text">3.9 指针运算符(*, &amp;)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-10-求字节数运算符-sizeof"><span class="nav-text">3.10 求字节数运算符(sizeof)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-11-强制类型转换运算符-TYPE"><span class="nav-text">3.11 强制类型转换运算符((TYPE))</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-12-成员运算符-gt"><span class="nav-text">3.12 成员运算符(.,-,&gt;)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-13-下标运算符"><span class="nav-text">3.13 下标运算符([])</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-C-语句和表达式"><span class="nav-text">4. C 语句和表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-控制语句"><span class="nav-text">4.1 控制语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#条件"><span class="nav-text">条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#循环"><span class="nav-text">循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#return"><span class="nav-text">return</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#goto"><span class="nav-text">goto</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-函数调用语句"><span class="nav-text">4.2 函数调用语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-表达式语句"><span class="nav-text">4.3 表达式语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#赋值语句"><span class="nav-text">赋值语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入输出语句"><span class="nav-text">输入输出语句</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#putchar-输出字符"><span class="nav-text">putchar(输出字符)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#getchar-输入字符"><span class="nav-text">getchar(输入字符)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#printf-格式输出"><span class="nav-text">printf(格式输出)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scanf-格式输入"><span class="nav-text">scanf(格式输入)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#puts-输出字符串"><span class="nav-text">puts(输出字符串)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gets-输入字符串"><span class="nav-text">gets(输入字符串)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-空语句"><span class="nav-text">4.4 空语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-复合语句"><span class="nav-text">4.5 复合语句</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-text">函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#控制结构"><span class="nav-text">控制结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-顺序"><span class="nav-text">1. 顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-选择"><span class="nav-text">2. 选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-if-选择"><span class="nav-text">2.1 if 选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-switch-选择"><span class="nav-text">2.2 switch 选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-循环"><span class="nav-text">3. 循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-for-循环"><span class="nav-text">3.1 for 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-while-循环"><span class="nav-text">3.2 while 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-do-…-while-循环"><span class="nav-text">3.3 do … while 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-continue-amp-break"><span class="nav-text">3.4 continue &amp; break</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-实例"><span class="nav-text">3.5 实例:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#斐波那契数列前-40-个数"><span class="nav-text">斐波那契数列前 40 个数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方法一"><span class="nav-text">方法一 :</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法二"><span class="nav-text">方法二:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入一个大于-3-的数-判断是否为素数-质数"><span class="nav-text">输入一个大于 3 的数, 判断是否为素数(质数)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方法一-1"><span class="nav-text">方法一:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法二-1"><span class="nav-text">方法二:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法三-输入任意数字-求-小于该数的所有质数"><span class="nav-text">方法三: 输入任意数字, 求 小于该数的所有质数</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指针和数组"><span class="nav-text">指针和数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-指针"><span class="nav-text">一. 指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-数组"><span class="nav-text">二. 数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数组含义"><span class="nav-text">1. 数组含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-一维数组"><span class="nav-text">2. 一维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-定义数组"><span class="nav-text">2.1 定义数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-引用数组"><span class="nav-text">2.2 引用数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-一维数组的初始化"><span class="nav-text">2.3 一维数组的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-示例"><span class="nav-text">2.4 示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-二维数组"><span class="nav-text">3. 二维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-定义二维数组"><span class="nav-text">3.1 定义二维数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-引用二维数组"><span class="nav-text">3.2 引用二维数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-二维数组的初始化"><span class="nav-text">3.3 二维数组的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-示例"><span class="nav-text">3.4 示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-字符数组"><span class="nav-text">4. 字符数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-字符数组定义"><span class="nav-text">4.1 字符数组定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-字符数组初始化"><span class="nav-text">4.2 字符数组初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-字符数组引用"><span class="nav-text">4.3 字符数组引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-字符数组处理函数"><span class="nav-text">4.4 字符数组处理函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#include-lt-string-h-gt"><span class="nav-text">include &lt;string.h&gt;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#puts-–-输出字符串的函数"><span class="nav-text">puts – 输出字符串的函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gets-–-输入字符串的函数"><span class="nav-text">gets – 输入字符串的函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#strcat-–-字符串连接函数"><span class="nav-text">strcat – 字符串连接函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#strcpy-strncpy-–-字符串复制函数"><span class="nav-text">strcpy strncpy – 字符串复制函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#strcmp-–-字符串比较函数"><span class="nav-text">strcmp – 字符串比较函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#strlen-–-测字符串长度的函数"><span class="nav-text">strlen – 测字符串长度的函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#strlwr-–-转换为小写的函数"><span class="nav-text">strlwr – 转换为小写的函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#strupr-–-转换为大写的函数"><span class="nav-text">strupr – 转换为大写的函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-示例"><span class="nav-text">4.5 示例</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C语言中的-IO"><span class="nav-text">C语言中的 IO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归"><span class="nav-text">递归</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据结构"><span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-结构体"><span class="nav-text">1. 结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-结构体数组"><span class="nav-text">2. 结构体数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-链表"><span class="nav-text">3. 链表</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PyPi,Celery,任务队列," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一. celery 简介Celery 是一个专注于实时处理和任务调度的分布式任务队列, 同时提供操作和维护分布式系统所需的工具.. 所谓任务就是消息, 消息中的有效载荷中包含要执行任务需要的全部数据. Celery 是一个分布式队列的管理工具, 可以用 Celery 提供的接口快速实现并管理一个分布式的任务队列. Celery 本身不是任务队列, 是管理分布式任务队列的工具. 它封装了操作常见任务">
+<meta name="keywords" content="PyPi,Celery,任务队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python celery 任务队列">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/python-celery-任务队列/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="一. celery 简介Celery 是一个专注于实时处理和任务调度的分布式任务队列, 同时提供操作和维护分布式系统所需的工具.. 所谓任务就是消息, 消息中的有效载荷中包含要执行任务需要的全部数据. Celery 是一个分布式队列的管理工具, 可以用 Celery 提供的接口快速实现并管理一个分布式的任务队列. Celery 本身不是任务队列, 是管理分布式任务队列的工具. 它封装了操作常见任务">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.pyfdtic.com/imgs/python/celery-arch.PNG">
+<meta property="og:updated_time" content="2018-03-30T08:56:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python celery 任务队列">
+<meta name="twitter:description" content="一. celery 简介Celery 是一个专注于实时处理和任务调度的分布式任务队列, 同时提供操作和维护分布式系统所需的工具.. 所谓任务就是消息, 消息中的有效载荷中包含要执行任务需要的全部数据. Celery 是一个分布式队列的管理工具, 可以用 Celery 提供的接口快速实现并管理一个分布式的任务队列. Celery 本身不是任务队列, 是管理分布式任务队列的工具. 它封装了操作常见任务">
+<meta name="twitter:image" content="http://www.pyfdtic.com/imgs/python/celery-arch.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/python-celery-任务队列/"/>
+
+
+
+
+
+  <title>python celery 任务队列 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/python-celery-任务队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python celery 任务队列</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T12:45:47+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一-celery-简介"><a href="#一-celery-简介" class="headerlink" title="一. celery 简介"></a>一. celery 简介</h1><p>Celery 是一个专注于实时处理和任务调度的分布式任务队列, 同时提供操作和维护分布式系统所需的工具.. 所谓任务就是消息, 消息中的有效载荷中包含要执行任务需要的全部数据.</p>
+<p>Celery 是一个分布式队列的管理工具, 可以用 Celery 提供的接口快速实现并管理一个分布式的任务队列.</p>
+<p>Celery 本身不是任务队列, 是管理分布式任务队列的工具. 它封装了操作常见任务队列的各种操作, 我们使用它可以快速进行任务队列的使用与管理.</p>
+<h3 id="Celery-特性"><a href="#Celery-特性" class="headerlink" title="Celery 特性 :"></a>Celery 特性 :</h3><ul>
+<li>方便查看定时任务的执行情况, 如 是否成功, 当前状态, 执行任务花费的时间等.</li>
+<li>使用功能齐备的管理后台或命令行添加,更新,删除任务.</li>
+<li>方便把任务和配置管理相关联.</li>
+<li>可选 多进程, Eventlet 和 Gevent 三种模型并发执行.</li>
+<li>提供错误处理机制.</li>
+<li>提供多种任务原语, 方便实现任务分组,拆分,和调用链.</li>
+<li>支持多种消息代理和存储后端.</li>
+<li>Celery 是语言无关的.它提供了python 等常见语言的接口支持.</li>
+</ul>
+<h1 id="二-celery-组件"><a href="#二-celery-组件" class="headerlink" title="二. celery 组件"></a>二. celery 组件</h1><h3 id="1-Celery-扮演生产者和消费者的角色"><a href="#1-Celery-扮演生产者和消费者的角色" class="headerlink" title="1. Celery 扮演生产者和消费者的角色,"></a>1. Celery 扮演生产者和消费者的角色,</h3><ul>
+<li>Celery Beat : 任务调度器. Beat 进程会读取配置文件的内容, 周期性的将配置中到期需要执行的任务发送给任务队列.</li>
+<li>Celery Worker : 执行任务的消费者, 通常会在多台服务器运行多个消费者, 提高运行效率.</li>
+<li>Broker : 消息代理, 队列本身. 也称为消息中间件. 接受任务生产者发送过来的任务消息, 存进队列再按序分发给任务消费方(通常是消息队列或者数据库).</li>
+<li>Producer : 任务生产者. 调用 Celery API , 函数或者装饰器, 而产生任务并交给任务队列处理的都是任务生产者.</li>
+<li>Result Backend : 任务处理完成之后保存状态信息和结果, 以供查询.</li>
+</ul>
+<p><strong>Celery架构图</strong><br><img src="/imgs/python/celery-arch.PNG" alt="celery架构图"></p>
+<h3 id="2-产生任务的方式"><a href="#2-产生任务的方式" class="headerlink" title="2. 产生任务的方式 :"></a>2. 产生任务的方式 :</h3><ol>
+<li>发布者发布任务(WEB 应用)</li>
+<li>任务调度按期发布任务(定时任务)</li>
+</ol>
+<h3 id="3-celery-依赖三个库-这三个库-都由-Celery-的开发者开发和维护"><a href="#3-celery-依赖三个库-这三个库-都由-Celery-的开发者开发和维护" class="headerlink" title="3. celery 依赖三个库: 这三个库, 都由 Celery 的开发者开发和维护."></a>3. celery 依赖三个库: 这三个库, 都由 Celery 的开发者开发和维护.</h3><ul>
+<li>billiard : 基于 Python2.7 的 multisuprocessing 而改进的库, 主要用来提高性能和稳定性.</li>
+<li>librabbitmp : C 语言实现的 Python 客户端, </li>
+<li>kombu : Celery 自带的用来收发消息的库, 提供了符合 Python 语言习惯的, 使用 AMQP 协议的高级借口.</li>
+</ul>
+<h1 id="三-选择消息代理"><a href="#三-选择消息代理" class="headerlink" title="三. 选择消息代理"></a>三. 选择消息代理</h1><p>使用于生产环境的消息代理有 <strong>RabbitMQ</strong> 和 <strong>Redis</strong>, 官方推荐 RabbitMQ.</p>
+<h1 id="四-Celery-序列化"><a href="#四-Celery-序列化" class="headerlink" title="四. Celery 序列化"></a>四. Celery 序列化</h1><p>在客户端和消费者之间传输数据需要 序列化和反序列化. Celery 支出的序列化方案如下所示:</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pickle</td>
+<td>pickle 是Python 标准库中的一个模块, 支持 Pyuthon 内置的数据结构, 但他是 Python 的专有协议. Celery 官方不推荐.</td>
+</tr>
+<tr>
+<td>json</td>
+<td>json 支持多种语言, 可用于跨语言方案.</td>
+</tr>
+<tr>
+<td>yaml</td>
+<td>yaml 表达能力更强, 支持的数据类型较 json 多, 但是 python 客户端的性能不如 json</td>
+</tr>
+<tr>
+<td>msgpack</td>
+<td>二进制的类 json 序列化方案, 但比 json 的数据结构更小, 更快.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="五-安装-配置与简单示例"><a href="#五-安装-配置与简单示例" class="headerlink" title="五. 安装,配置与简单示例"></a>五. 安装,配置与简单示例</h1><p><strong>Celery 配置参数汇总</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CELERY_DEFAULT_QUEUE</td>
+<td>默认队列</td>
+</tr>
+<tr>
+<td>CELERY_BROKER_URL</td>
+<td>Broker 地址</td>
+</tr>
+<tr>
+<td>CELERY_RESULT_BACKEND</td>
+<td>结果存储地址</td>
+</tr>
+<tr>
+<td>CELERY_TASK_SERIALIZER</td>
+<td>任务序列化方式</td>
+</tr>
+<tr>
+<td>CELERY_RESULT_SERIALIZER</td>
+<td>任务执行结果序列化方式</td>
+</tr>
+<tr>
+<td>CELERY_TASK_RESULT_EXPIRES</td>
+<td>任务过期时间</td>
+</tr>
+<tr>
+<td>CELERY_ACCEPT_CONTENT</td>
+<td>指定任务接受的内容类型(序列化)</td>
+</tr>
+</tbody>
+</table>
+<p>代码示例 : </p>
+<pre><code># 安装
+$ pip install celery, redis, msgpack
+
+# 配置文件 celeryconfig.py
+
+    CELERY_BROKER_URL = &apos;redis://localhost:6379/1&apos;
+    CELERY_RESULT_BACKEND = &apos;redis://localhost:6379/0&apos;
+    CELERY_TASK_SERIALIZER = &apos;json&apos;
+    CELERY_RESULT_SERIALIZER = &apos;json&apos;
+    CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24   # 任务过期时间
+    CELERY_ACCEPT_CONTENT = [&quot;json&quot;]            # 指定任务接受的内容类型.
+
+# 初始化文件 celery.py
+
+    from __future__ import absolute_import
+    from celery import Celery
+
+    app = Celery(&apos;proj&apos;, include=[&quot;proj.tasks&quot;])
+    app.config_from_object(&quot;proj.celeryconfig&quot;)
+
+    if __name__ == &quot;__main__&quot;:
+        app.start()     
+
+# 任务文件 tasks.py
+
+    from __future__ import absolute_import
+    from proj.celery import app
+
+    @app.task
+    def add(x, y):
+        return x + y    
+
+# 启动消费者
+    $ celery -A proj worker -l info
+
+# 在终端中测试
+    &gt; from proj.tasks import add
+    &gt; r = add.delay(2,4)
+    &gt; r.result
+      6
+    &gt; r.status
+      u&quot;SUCCESS&quot;
+    &gt; r.successful()
+      True
+
+    &gt; r.ready()     # 返回布尔值,  任务执行完成, 返回 True, 否则返回 False.
+    &gt; r.wait()      # 等待任务完成, 返回任务执行结果.
+    &gt; r.get()       # 获取任务执行结果
+    &gt; r.result      # 任务执行结果.
+    &gt; r.state       # PENDING, START, SUCCESS
+    &gt; r.status      # PENDING, START, SUCCESS
+
+    # 使用 AsyncResult 方式获取执行结果.
+    # AsyncResult 主要用来存储任务执行信息与执行结果(类似 js 中的 Promise 对象), 
+    &gt; from celery.result import AsyncResult
+    &gt; AsyncResult(task_id).get()
+      4
+</code></pre><h1 id="六-调用任务的方法"><a href="#六-调用任务的方法" class="headerlink" title="六. 调用任务的方法 :"></a>六. 调用任务的方法 :</h1><h3 id="1-delay"><a href="#1-delay" class="headerlink" title="1. delay"></a>1. delay</h3><pre><code>task.delay(args1, args2, kwargs=value_1, kwargs2=value_2)
+</code></pre><h3 id="2-apply-async"><a href="#2-apply-async" class="headerlink" title="2. apply_async"></a>2. apply_async</h3><p>delay 实际上是 apply_async 的<strong>别名</strong>, 还可以使用如下方法调用, 但是 apply_async 支持更多的参数:</p>
+<pre><code>task.apply_async(args=[arg1, arg2], kwargs={key:value, key:value})
+</code></pre><p>支持的参数 :</p>
+<ul>
+<li><p>countdown : 等待一段时间再执行.</p>
+<pre><code>add.apply_async((2,3), countdown=5)
+</code></pre></li>
+<li><p>eta : 定义任务的开始时间.</p>
+<pre><code>add.apply_async((2,3), eta=now+tiedelta(second=10))
+</code></pre></li>
+<li><p>expires : 设置超时时间.</p>
+<pre><code>add.apply_async((2,3), expires=60)
+</code></pre></li>
+<li><p>retry : 定时如果任务失败后, 是否重试.</p>
+<pre><code>add.apply_async((2,3), retry=False)
+</code></pre></li>
+<li><p>retry_policy : 重试策略.</p>
+<ul>
+<li>max_retries   : 最大重试次数, 默认为 3 次.</li>
+<li>interval_start    : 重试等待的时间间隔秒数, 默认为 0 , 表示直接重试不等待.</li>
+<li>interval_step     : 每次重试让重试间隔增加的秒数, 可以是数字或浮点数, 默认为 0.2 </li>
+<li>interval_max  : 重试间隔最大的秒数, 即 通过 interval_step 增大到多少秒之后, 就不在增加了, 可以是数字或者浮点数, 默认为 0.2 .</li>
+</ul>
+</li>
+</ul>
+<p><strong>自定义发布者,交换机,路由键, 队列, 优先级,序列方案和压缩方法</strong>:</p>
+<pre><code>task.apply_async((2,2), compression=&apos;zlib&apos;,
+    serialize=&apos;json&apos;,
+    queue=&apos;priority.high&apos;,
+    routing_key=&apos;web.add&apos;,
+    priority=0,
+    exchange=&apos;web_exchange&apos;)
+</code></pre><h1 id="七-指定队列"><a href="#七-指定队列" class="headerlink" title="七. 指定队列 :"></a>七. 指定队列 :</h1><p>Celery 默认使用名为 celery 的队列 (可以通过 CELERY_DEFAULT_QUEUE 修改) 来存放任务. 我们可以使用 <strong>优先级不同的队列</strong> 来确保高优先级的任务优先执行.</p>
+<pre><code># 修改配置文件, 保证队列优先级
+
+from kombu import Queue
+
+CELERY_QUEUE = (        # 定义任务队列.
+    Queue(&apos;default&apos;, routing_key=&quot;task.#&quot;),     # 路由键 以 &quot;task.&quot; 开头的消息都进入 default 队列.
+    Queue(&apos;web_tasks&apos;, routing_key=&quot;web.#&quot;)     # 路由键 以 &quot;web.&quot; 开头的消息都进入 web_tasks 队列.
+)
+
+CELERY_DEFAULT_EXCHANGE = &apos;tasks&apos;               # 默认的交换机名字为 tasks
+CELERY_DEFAULT_EXCHANGE_KEY = &apos;topic&apos;           # 默认的交换机类型为 topic
+CELERY_DEFAULT_ROUTING_KEY = &apos;task.default&apos;     # 默认的路由键是 task.default , 这个路由键符合上面的 default 队列.
+
+CELERY_ROUTES = {
+    &apos;proj.tasks.add&apos;: {
+        &apos;queue&apos;: &apos;web_tasks&apos;,
+        &apos;routing_key&apos;: &apos;web.add&apos;,
+    }
+}
+
+# 使用指定队列的方式启动消费者进程.
+$ celery -A proj worker -Q web_tasks -l info    # 该 worker 只会执行 web_tasks 中任务, 我们可以合理安排消费者数量, 让 web_tasks 中任务的优先级更高.
+</code></pre><p><strong>阅后即焚模式(transient)</strong>:</p>
+<pre><code>from kombu import Queue
+Queue(&apos;transient&apos;, routing_key=&apos;transient&apos;, delivery_mode=1)
+</code></pre><h1 id="八-使用任务调度"><a href="#八-使用任务调度" class="headerlink" title="八. 使用任务调度"></a>八. 使用任务调度</h1><p>使用 Beat 进程自动生成任务.</p>
+<pre><code># 修改配置文件, 
+# 下面的任务指定 tasks.add 任务 每 10s 跑一次, 任务参数为 (16,16).
+
+from datetime import timedelta
+
+CELERYBEAT_SCHEDULE = {
+    &apos;add&apos;: {
+        &apos;task&apos;: &apos;proj.tasks.add&apos;,
+        &apos;schedule&apos;: timedelta(seconds=10),
+        &apos;args&apos;: (16, 16)
+    }
+}
+
+
+# crontab 风格
+
+from celery.schedules import crontab
+
+CELERYBEAT_SCHEDULE = {
+        &quot;add&quot;: {
+                &quot;task&quot;: &quot;tasks.add&quot;,
+                &quot;schedule&quot;: crontab(hour=&quot;*/3&quot;, minute=12),
+                &quot;args&quot;: (16, 16),
+                }
+            }
+
+# 启动 Beat 程序
+$ celery beat -A proj
+
+# 之后启动 worker 进程.
+$ celery -A proj worker -l info
+
+或者
+$ celery -B -A proj worker -l info
+</code></pre><p>使用自定义调度类还可以实现动态添加任务. 使用 Django 可以通过 Django-celery 实现在管理后台创建,删除,更新任务, 是因为他使用了自定义的 调度类 djcelery.schedulers.DatabaseScheduler .</p>
+<h1 id="九-任务绑定-记录日志-重试"><a href="#九-任务绑定-记录日志-重试" class="headerlink" title="九. 任务绑定, 记录日志, 重试"></a>九. 任务绑定, 记录日志, 重试</h1><pre><code># 修改 tasks.py 文件.
+
+from celery.utils.log import get_task_logger
+logger = get_task_logger(__name__)
+
+@app.task(bind=True)
+def div(self, x, y):
+    logger.info((&apos;Executing task id {0.id}, args: {0.args!r}&apos;
+                 &apos;kwargs: {0.kwargs!r}&apos;).format(self.request))
+    try:
+        result = x/y
+    except ZeroDivisionError as e:
+        raise self.retry(exc=e, countdown=5, max_retries=3)     # 发生 ZeroDivisionError 错误时, 每 5s 重试一次, 最多重试 3 次.
+
+    return result
+</code></pre><p><strong>当使用 bind=True 参数之后, 函数的参数发生变化, 多出了参数 self, 这这相当于把 div 编程了一个已绑定的方法, 通过 self 可以获得任务的上下文.</strong></p>
+<h1 id="十-信号系统"><a href="#十-信号系统" class="headerlink" title="十. 信号系统 :"></a>十. 信号系统 :</h1><p>信号可以帮助我们了解任务执行情况, 分析任务运行的瓶颈. Celery 支持 7 种信号类型.</p>
+<ol>
+<li>任务信号<ul>
+<li>before_task_publish : 任务发布前</li>
+<li>after_task_publish  : 任务发布后</li>
+<li>task_prerun         : 任务执行前</li>
+<li>task_postrun        : 任务执行后</li>
+<li>task_retry          : 任务重试时</li>
+<li>task_success        : 任务成功时</li>
+<li>task_failure        : 任务失败时</li>
+<li>task_revoked        : 任务被撤销或终止时</li>
+</ul>
+</li>
+<li>应用信号</li>
+<li>Worker 信号</li>
+<li>Beat 信号</li>
+<li>Eventlet 信号</li>
+<li>日志信号</li>
+<li>命令信号</li>
+</ol>
+<p>不同的信号参数格式不同, 具体格式参见<a href="http://docs.celeryproject.org/en/latest/userguide/signals.html" target="_blank" rel="noopener">官方文档</a></p>
+<p>代码示例 :</p>
+<pre><code># 在执行任务 add 之后, 打印一些信息.
+
+@after_task_publish
+def task_send_handler(sender=None, body=None, **kwargs):
+    print &apos;after_task_publish: task_id: {body[id]}; sender: {sender}&apos;.format(body=body, sender=sender)
+</code></pre><h1 id="十一-子任务与工作流"><a href="#十一-子任务与工作流" class="headerlink" title="十一. 子任务与工作流:"></a>十一. 子任务与工作流:</h1><p>可以把任务 通过签名的方法传给其他任务, 成为一个子任务.</p>
+<pre><code>from celery import signature
+task = signature(&apos;task.add&apos;, args=(2,2), countdown=10)
+task
+task.add(2,2)   # 通过签名生成任务
+task.apply_async()
+</code></pre><p>还可以通过如下方式生成子任务 :</p>
+<pre><code>from proj.task import add
+task = add.subtask((2,2), countdown=10)     # 快捷方式 add.s((2,2), countdown-10) 
+task.apply_async()
+</code></pre><p>自任务实现片函数的方式非常有用, 这种方式可以让任务在传递过程中财传入参数.</p>
+<pre><code>partial = add.s(2)
+partial.apply_async((4,))
+</code></pre><p>子任务支持如下 5 种原语,实现工作流. 原语表示由若干指令组成的, 用于完成一定功能的过程.</p>
+<ol>
+<li><p>chain : 调用连, 前面的执行结果, 作为参数传给后面的任务, 直到全部完成, 类似管道.</p>
+<pre><code>from celery import chain
+res = chain(add.s(2,2), add.s(4), add.s(8))()
+res.get()
+
+管道式:
+
+(add.s(2,2) | add.s(4) | add.s(8))().get()
+</code></pre></li>
+<li><p>group : 一次创建多个(一组)任务.</p>
+<pre><code>from celery import group
+
+res = group(add.s(i,i) for i in range(10))()
+res.get()
+</code></pre></li>
+<li><p>chord : 等待任务全部完成时添加一个回调任务.</p>
+<pre><code>res = chord((add.s(i,i) for i in range(10)), add.s([&apos;a&apos;]))()
+res.get()    # 执行完前面的循环, 把结果拼成一个列表之后, 再对这个列表 添加 &apos;a&apos;.
+[0,2,4,6,8,10,12,14,16,18,u&apos;a&apos;]
+</code></pre></li>
+<li><p>map/starmap : 每个参数都作为任务的参数执行一遍, map 的参数只有一个, starmap 支持多个参数.</p>
+<pre><code>add.starmap(zip(range(10), range(10)))
+
+相当于:
+
+@app.task
+def temp():
+    return [add(i,i) for i in range(10)]
+</code></pre></li>
+<li><p>chunks : 将任务分块.</p>
+<pre><code>res = add.chunks(zip(range(50), range(50)),10)()
+res.get()
+</code></pre></li>
+</ol>
+<p><strong>在生成任务的时候, 应该充分利用 group/chain/chunks 这些原语.</strong></p>
+<h1 id="十二-其他"><a href="#十二-其他" class="headerlink" title="十二. 其他"></a>十二. 其他</h1><h3 id="关闭不想要的功能"><a href="#关闭不想要的功能" class="headerlink" title="关闭不想要的功能 :"></a>关闭不想要的功能 :</h3><pre><code>@app.task(ignore_result=True)   # 关闭任务执行结果.
+def func():
+    pass
+
+CELERY_DISABLE_RATE_LIMITS=True     # 关闭限速.
+</code></pre><h3 id="根据任务状态执行不同操作"><a href="#根据任务状态执行不同操作" class="headerlink" title="根据任务状态执行不同操作 :"></a>根据任务状态执行不同操作 :</h3><pre><code># tasks.py
+class MyTask(Task):
+
+    def on_success(self, retval, task_id, args, kwargs):
+        print &apos;task done: {0}&apos;.format(retval)
+        return super(MyTask, self).on_success(retval, task_id, args, kwargs)
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        print &apos;task fail, reason: {0}&apos;.format(exc)
+        return super(MyTask, self).on_failure(exc, task_id, args, kwargs, einfo)
+
+# 正确函数, 执行 MyTask.on_success() :
+@app.task(base=MyTask)
+def add(x, y):
+    return x + y
+
+# 错误函数, 执行 MyTask.on_failure() : 
+@app.task  #普通函数装饰为 celery task
+def add(x, y):
+    raise KeyError
+    return x + y
+</code></pre><h1 id="十三-Celery-管理命令"><a href="#十三-Celery-管理命令" class="headerlink" title="十三. Celery 管理命令"></a>十三. Celery 管理命令</h1><h3 id="任务状态回调"><a href="#任务状态回调" class="headerlink" title="任务状态回调 :"></a>任务状态回调 :</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PENDING</td>
+<td>任务等待中</td>
+</tr>
+<tr>
+<td>STARTED</td>
+<td>任务已开始</td>
+</tr>
+<tr>
+<td>SUCCESS</td>
+<td>任务执行成功</td>
+</tr>
+<tr>
+<td>FAILURE</td>
+<td>任务执行失败</td>
+</tr>
+<tr>
+<td>RETRY</td>
+<td>任务将被</td>
+<td>重试</td>
+</tr>
+<tr>
+<td>REVOKED</td>
+<td>任务取消</td>
+</tr>
+<tr>
+<td>PROGRESS</td>
+<td>任务进行中</td>
+</tr>
+</tbody>
+</table>
+<h3 id="普通启动命令"><a href="#普通启动命令" class="headerlink" title="普通启动命令 :"></a>普通启动命令 :</h3><pre><code>$ celery -A proj worker -l info
+</code></pre><h3 id="使用-daemon-方式-multi"><a href="#使用-daemon-方式-multi" class="headerlink" title="使用 daemon 方式 multi :"></a>使用 daemon 方式 multi :</h3><pre><code>$ celery multi start web -A proj -l info --pidfile=/path/to/celery_%n.pid --logfile=/path/to/celery_%n.log 
+
+# web 是对项目启动的标识, 
+# %n 是对节点的格式化用法.
+    %n : 只包含主机名
+    %h : 包含域名的主机
+    %d : 只包含域名
+    %i : Prefork 类型的进程索引,如果是主进程, 则为 0.
+    %I : 带分隔符的 Prefork 类型的进程索引. 假设主进程为 worker1, 那么进程池的第一个进程则为 worker1-1
+</code></pre><p>常用 multi 相关命令:</p>
+<pre><code>$ celery multi show web     # 查看 web 启动时的命令
+$ celery multi names web    # 获取 web 的节点名字
+$ celery multi stop web     # 停止 web 进程
+$ celery multi restart web  # 重启 web
+$ celery multi kill web     # 杀掉 web 进程
+</code></pre><h3 id="常用监控和管理命令"><a href="#常用监控和管理命令" class="headerlink" title="常用监控和管理命令 :"></a>常用监控和管理命令 :</h3><ul>
+<li><p>shell : 交互时环境, 内置了 Celery 应用实例和全部已注册的任务, 支持 默认解释器,IPython,BPython .</p>
+<pre><code>$ celery shell -A proj
+</code></pre></li>
+<li><p>result : 通过 task_id 在命令行获得任务执行结果</p>
+<pre><code>$ celery -A proj result TASK_ID
+</code></pre></li>
+<li><p>inspect active : 列出当前正在执行的任务</p>
+<pre><code>$ celery -A proj inspect active
+</code></pre></li>
+<li><p>inspect stats : 列出 worker 的统计数据, 常用来查看配置是否正确以及系统的使用情况.</p>
+<pre><code>$ celery -A proj inspect stats
+</code></pre></li>
+</ul>
+<h3 id="Flower-web-监控工具"><a href="#Flower-web-监控工具" class="headerlink" title="Flower web 监控工具"></a>Flower web 监控工具</h3><ul>
+<li>查看任务历史,任务具体参数,开始时间等信息;</li>
+<li>提供图表和统计数据</li>
+<li>实现全面的远程控制功能, 包括但不限于 撤销/终止任务, 关闭重启 worker, 查看正在运行任务</li>
+<li>提供一个 HTTP API , 方便集成.</li>
+</ul>
+<p>Flower 的 supervisor 管理配置文件:</p>
+<pre><code>[program:flower]
+command=/opt/PyProjects/venv/bin/flower -A celery_worker:celery --broker=&quot;redis://localhost:6379/2&quot; --address=0.0.0.0 --port=5555 
+directory=/opt/PyProjects/app
+autostart=true
+autorestart=true
+startretries=3 
+user=derby
+stdout_logfile=/var/logs/%(program_name)s.log
+stdout_logfile_maxbytes=50MB
+stdout_logfile_backups=30
+stderr_logfile=/var/logs/%(program_name)s-error.log
+stderr_logfile_maxbytes=50MB
+stderr_logfile_backups=3
+</code></pre><h3 id="Celery-自带的事件监控工具显示任务历史等信息"><a href="#Celery-自带的事件监控工具显示任务历史等信息" class="headerlink" title="Celery 自带的事件监控工具显示任务历史等信息."></a>Celery 自带的事件监控工具显示任务历史等信息.</h3><pre><code>$ celery -A proj event
+** 需要把 CELERY_SEND_TASK_SEND_EVENT = True 设置, 才可以获取时间.
+</code></pre><h3 id="使用自动扩展"><a href="#使用自动扩展" class="headerlink" title="使用自动扩展 :"></a>使用自动扩展 :</h3><pre><code>$ celery -A proj worker -l info --autoscale=6,3     # 平时保持 3 个进程, 最大时可以达到 6 个.
+</code></pre><h3 id="Celery-命令汇总"><a href="#Celery-命令汇总" class="headerlink" title="Celery 命令汇总"></a>Celery 命令汇总</h3><pre><code>$ celery --help
+    -A APP, --app APP
+    -b BROKER, --broker BROKER
+    --loader LOADER
+    --config CONFIG
+    --workdir WORKDIR
+    --no-color, -C
+    --quiet, -q
+
+$ celery &lt;command&gt; --help
+
++ Main: 
+|    celery worker
+|    celery events
+|    celery beat
+|    celery shell
+|    celery multi
+|    celery amqp
+
++ Remote Control: 
+|    celery status
+
+|    celery inspect --help
+|    celery inspect active 
+|    celery inspect active_queues 
+|    celery inspect clock 
+|    celery inspect conf [include_defaults=False]
+|    celery inspect memdump [n_samples=10]
+|    celery inspect memsample 
+|    celery inspect objgraph [object_type=Request] [num=200 [max_depth=10]]
+|    celery inspect ping 
+|    celery inspect query_task [id1 [id2 [... [idN]]]]
+|    celery inspect registered [attr1 [attr2 [... [attrN]]]]
+|    celery inspect report 
+|    celery inspect reserved 
+|    celery inspect revoked 
+|    celery inspect scheduled 
+|    celery inspect stats 
+
+|    celery control --help
+|    celery control add_consumer &lt;queue&gt; [exchange [type [routing_key]]]
+|    celery control autoscale [max [min]]
+|    celery control cancel_consumer &lt;queue&gt;
+|    celery control disable_events 
+|    celery control election 
+|    celery control enable_events 
+|    celery control heartbeat 
+|    celery control pool_grow [N=1]
+|    celery control pool_restart 
+|    celery control pool_shrink [N=1]
+|    celery control rate_limit &lt;task_name&gt; &lt;rate_limit (e.g., 5/s | 5/m | 5/h)&gt;
+|    celery control revoke [id1 [id2 [... [idN]]]]
+|    celery control shutdown 
+|    celery control terminate &lt;signal&gt; [id1 [id2 [... [idN]]]]
+|    celery control time_limit &lt;task_name&gt; &lt;soft_secs&gt; [hard_secs]
+
++ Utils: 
+|    celery purge
+|    celery list
+|    celery call
+|    celery result
+|    celery migrate
+|    celery graph
+|    celery upgrade
+
++ Debugging: 
+|    celery report
+|    celery logtool
+
++ Extensions: 
+|    celery flower
+</code></pre><h1 id="十四-在-Flask-中使用-Celery"><a href="#十四-在-Flask-中使用-Celery" class="headerlink" title="十四. 在 Flask 中使用 Celery"></a>十四. 在 Flask 中使用 Celery</h1><p><a href="http://docs.jinkan.org/docs/flask/patterns/celery.html" target="_blank" rel="noopener">Flask 文档: 基于 Celery 的后台任务</a><br><a href="http://www.pythondoc.com/flask-celery/first.html" target="_blank" rel="noopener">在 Flask 中使用 Celery</a></p>
+<h1 id="十五-参考链接"><a href="#十五-参考链接" class="headerlink" title="十五. 参考链接"></a>十五. 参考链接</h1><p><a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B01L8NVIC6/ref=sr_1_2?ie=UTF8&amp;qid=1490938822&amp;sr=8-2&amp;keywords=python+web+%E5%BC%80%E5%8F%91" target="_blank" rel="noopener">Python Web开发实战</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PyPi/" rel="tag"># PyPi</a>
+          
+            <a href="/tags/Celery/" rel="tag"># Celery</a>
+          
+            <a href="/tags/任务队列/" rel="tag"># 任务队列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/docker-kubernets/" rel="next" title="kubernets 学习笔记">
+                <i class="fa fa-chevron-left"></i> kubernets 学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/docker-内部组件结构-docker-daemon-container-runC/" rel="prev" title="docker 内部组件结构 docker daemon, container,runC">
+                docker 内部组件结构 docker daemon, container,runC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-celery-简介"><span class="nav-text">一. celery 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Celery-特性"><span class="nav-text">Celery 特性 :</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-celery-组件"><span class="nav-text">二. celery 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Celery-扮演生产者和消费者的角色"><span class="nav-text">1. Celery 扮演生产者和消费者的角色,</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-产生任务的方式"><span class="nav-text">2. 产生任务的方式 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-celery-依赖三个库-这三个库-都由-Celery-的开发者开发和维护"><span class="nav-text">3. celery 依赖三个库: 这三个库, 都由 Celery 的开发者开发和维护.</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三-选择消息代理"><span class="nav-text">三. 选择消息代理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四-Celery-序列化"><span class="nav-text">四. Celery 序列化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五-安装-配置与简单示例"><span class="nav-text">五. 安装,配置与简单示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六-调用任务的方法"><span class="nav-text">六. 调用任务的方法 :</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-delay"><span class="nav-text">1. delay</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-apply-async"><span class="nav-text">2. apply_async</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七-指定队列"><span class="nav-text">七. 指定队列 :</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八-使用任务调度"><span class="nav-text">八. 使用任务调度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九-任务绑定-记录日志-重试"><span class="nav-text">九. 任务绑定, 记录日志, 重试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十-信号系统"><span class="nav-text">十. 信号系统 :</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十一-子任务与工作流"><span class="nav-text">十一. 子任务与工作流:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十二-其他"><span class="nav-text">十二. 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭不想要的功能"><span class="nav-text">关闭不想要的功能 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据任务状态执行不同操作"><span class="nav-text">根据任务状态执行不同操作 :</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十三-Celery-管理命令"><span class="nav-text">十三. Celery 管理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#任务状态回调"><span class="nav-text">任务状态回调 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#普通启动命令"><span class="nav-text">普通启动命令 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-daemon-方式-multi"><span class="nav-text">使用 daemon 方式 multi :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用监控和管理命令"><span class="nav-text">常用监控和管理命令 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flower-web-监控工具"><span class="nav-text">Flower web 监控工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Celery-自带的事件监控工具显示任务历史等信息"><span class="nav-text">Celery 自带的事件监控工具显示任务历史等信息.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用自动扩展"><span class="nav-text">使用自动扩展 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Celery-命令汇总"><span class="nav-text">Celery 命令汇总</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十四-在-Flask-中使用-Celery"><span class="nav-text">十四. 在 Flask 中使用 Celery</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十五-参考链接"><span class="nav-text">十五. 参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

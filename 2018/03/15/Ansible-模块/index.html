@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ansible," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Ansible 常用模块使用方法 自定义 Ansible 模块">
+<meta name="keywords" content="ansible">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ansible-模块">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/15/Ansible-模块/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="Ansible 常用模块使用方法 自定义 Ansible 模块">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-01T12:03:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ansible-模块">
+<meta name="twitter:description" content="Ansible 常用模块使用方法 自定义 Ansible 模块">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/15/Ansible-模块/"/>
+
+
+
+
+
+  <title>Ansible-模块 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/Ansible-模块/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Ansible-模块</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T15:47:42+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index">
+                    <span itemprop="name">DevOps</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li>Ansible 常用模块使用方法</li>
+<li>自定义 Ansible 模块</li>
+</ol>
+<a id="more"></a>
+<p><a href="https://pyfdtic.github.io/2018/03/14/Ansible-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">Ansible 学习总结</a></p>
+<h2 id="一-内置模块"><a href="#一-内置模块" class="headerlink" title="一. 内置模块"></a>一. 内置模块</h2><p>是由 ansible 包装后, 在主机上执行一系列操作的脚本.</p>
+<h3 id="1-查看模块帮助"><a href="#1-查看模块帮助" class="headerlink" title="1. 查看模块帮助"></a>1. 查看模块帮助</h3><pre><code>$ ansible-doc MOD_NAME
+</code></pre><h3 id="2-查找第三方模块"><a href="#2-查找第三方模块" class="headerlink" title="2. 查找第三方模块"></a>2. 查找第三方模块</h3><pre><code>$ ansible-galaxy search MOD_NAME
+</code></pre><h3 id="3-常用模块"><a href="#3-常用模块" class="headerlink" title="3. 常用模块"></a>3. 常用模块</h3><p><a href="http://docs.ansible.com/ansible/latest/modules/list_of_all_modules.html" target="_blank" rel="noopener">Ansible 模块索引</a></p>
+<h4 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h4><ul>
+<li><p>update_cache=yes </p>
+<p>  在安装软件之前, 首先更新 repo 缓存.</p>
+</li>
+<li><p>cache_valid_time=3600</p>
+<p>  上次 repo 缓存的有效时间.</p>
+</li>
+<li>upgrade=yes</li>
+</ul>
+<h4 id="pip"><a href="#pip" class="headerlink" title="pip"></a>pip</h4><p>Ansible 的 pip 模块支持向 virtualenv 中安装软件包, 并且还支持在没有可用的 virtualenv 时, 自动创建一个.</p>
+<pre><code>- name: install required python packages
+  pip: name={{ item }} virtualenv={{ venv_path }}
+  with_items:
+    - gunicorn
+    - django
+    - django-compressor
+</code></pre><p>支持 requirements 文件</p>
+<pre><code>- name: install required python pkg
+  pip: requirements={{ proj_path }}/{{ reqs_file }} virtualenv={{ venv_path }}
+</code></pre><p>Options :</p>
+<ul>
+<li>chdir<pre><code>cd into this directory before running the command
+[Default: None]
+</code></pre></li>
+<li>editable<pre><code>Pass the editable flag for versioning URLs.
+[Default: True]
+</code></pre></li>
+<li>executable<pre><code>The explicit executable or a pathname to the executable to be used to run pip for a specific
+version of Python installed in the system. For example `pip-3.3&apos;, if there are both Python 2.7
+and 3.3 installations in the system and you want to run pip for the Python 3.3 installation. It
+cannot be specified together with the &apos;virtualenv&apos; parameter (added in 2.1). By default, it
+will take the appropriate version for the python interpreter use by ansible, e.g. pip3 on
+python 3, and pip2 or pip on python 2.
+[Default: None]
+</code></pre></li>
+<li>extra_args<pre><code>Extra arguments passed to pip.
+[Default: None]
+</code></pre></li>
+<li>name<pre><code>The name of a Python library to install or the url of the remote package.
+As of 2.2 you can supply a list of names.
+[Default: None]
+</code></pre></li>
+<li>requirements<pre><code>The path to a pip requirements file, which should be local to the remote system. File can be
+specified as a relative path if using the chdir option.
+[Default: None]
+</code></pre></li>
+<li>state<pre><code>The state of module
+The &apos;forcereinstall&apos; option is only available in Ansible 2.1 and above.
+(Choices: present, absent, latest, forcereinstall)[Default: present]
+</code></pre></li>
+<li>umask<pre><code>The system umask to apply before installing the pip package. This is useful, for example, when
+installing on systems that have a very restrictive umask by default (e.g., 0077) and you want
+to pip install packages which are to be used by all users. Note that this requires you to
+specify desired umask mode in octal, with a leading 0 (e.g., 0077).
+[Default: None]
+</code></pre></li>
+<li>version<pre><code>The version number to install of the Python library specified in the `name&apos; parameter
+[Default: None]
+</code></pre></li>
+<li>virtualenv<pre><code>An optional path to a `virtualenv&apos; directory to install into. It cannot be specified together
+with the &apos;executable&apos; parameter (added in 2.1). If the virtualenv does not exist, it will be
+created before installing packages. The optional virtualenv_site_packages, virtualenv_command,
+and virtualenv_python options affect the creation of the virtualenv.
+[Default: None]
+</code></pre></li>
+<li>virtualenv_command<pre><code>The command or a pathname to the command to create the virtual environment with. For example
+`pyvenv&apos;, `virtualenv&apos;, `virtualenv2&apos;, `~/bin/virtualenv&apos;, `/usr/local/bin/virtualenv&apos;.
+[Default: virtualenv]
+</code></pre></li>
+<li>virtualenv_python<pre><code>The Python executable used for creating the virtual environment. For example `python3.5&apos;,
+`python2.7&apos;. When not specified, the Python version used to run the ansible module is used.
+[Default: None]
+</code></pre></li>
+<li>virtualenv_site_packages<pre><code>Whether the virtual environment will inherit packages from the global site-packages directory.
+Note that if this setting is changed on an already existing virtual environment it will not
+have any effect, the environment must be deleted and newly created.
+(Choices: yes, no)[Default: no]
+</code></pre></li>
+</ul>
+<h4 id="copy"><a href="#copy" class="headerlink" title="copy"></a>copy</h4><h4 id="file"><a href="#file" class="headerlink" title="file"></a>file</h4><h4 id="service"><a href="#service" class="headerlink" title="service"></a>service</h4><h4 id="template"><a href="#template" class="headerlink" title="template"></a>template</h4><h4 id="setup"><a href="#setup" class="headerlink" title="setup"></a>setup</h4><p>实现 fact 收集的模块. 一般无需再 playbook 中调用该模块, Ansible 会在采集 fact 时, 自动调用.</p>
+<p><code>$ ansible server_name -m setup -a &#39;filter=ansible_eth*&#39;</code> </p>
+<p>其返回值为一个字典, 字典的 key 是 ansible_fact, 他的 value 是一个有实际 fact 的名字与值组成的字典.</p>
+<p>setup 模块支持 filter 参数, 可以实现 shell 通配符的匹配过滤.</p>
+<pre><code>- name: gather facts
+  setup:
+</code></pre><h4 id="set-fact"><a href="#set-fact" class="headerlink" title="set_fact"></a>set_fact</h4><p>使用 set_fact 模块在 task 中设置 fact(与定义一个新变量是一样的). 可以在 register 关键字后, 立即使用 set_fact , 这样使得变量引用更简单.</p>
+<pre><code>- name: get snapshot id
+  shell: &gt;
+    aws ec2 describe-snapshot --filters Name=tag:Name, Valuse=my-snapshot | jq --raw-outpuy &quot;.Snapshots[].SnapshtId&quot;
+  register: snap_result
+- set_fact: snap={{ snap_result.stdout }}
+
+- name: delete old snapshot
+  command: aws ec2 delete-snapshot --snapshot-id &quot;{{ snap }}&quot;
+</code></pre><h4 id="command"><a href="#command" class="headerlink" title="command"></a>command</h4><p>在 command 中保持幂等性的方法: 指定 creates 参数.</p>
+<pre><code># 当 Vagrantfile 存在, 则表示已经处于正确状态, 而且不需要再次执行命令, 从而实现幂等性.
+- name: create a vagrantfile
+  command: vagrant init {{ box }} creates=Vagrantfile
+</code></pre><p>官方文档:</p>
+<pre><code>- creates
+        a filename or (since 2.0) glob pattern, when it already exists, this step
+        will *not* be run.
+        [Default: None]
+
+- removes
+        a filename or (since 2.0) glob pattern, when it does not exist, this step
+        will *not* be run.
+        [Default: None]
+</code></pre><h4 id="script"><a href="#script" class="headerlink" title="script"></a>script</h4><p>实现幂等性方法: creates 和 removes 参数.</p>
+<p>官方文档:</p>
+<pre><code>- creates
+        a filename, when it already exists, this step will *not* be run.
+        [Default: None]
+
+- removes
+        a filename, when it does not exist, this step will *not* be run.
+        [Default: None]
+</code></pre><h4 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h4><pre><code>&gt; DEBUG    (/opt/virtualEnv/ansibleEnv/lib/python2.7/site-packages/ansible/modules/utilities/logic/debug.py)
+
+  This module prints statements during execution and can be useful for debugging variables or
+  expressions without necessarily halting the playbook. Useful for debugging together with the &apos;when:&apos;
+  directive.
+
+  * note: This module has a corresponding action plugin.
+
+Options (= is mandatory):
+
+- msg
+        The customized message that is printed. If omitted, prints a generic message.
+        [Default: Hello world!]
+- var
+        A variable name to debug.  Mutually exclusive with the &apos;msg&apos; option.
+        [Default: (null)]
+- verbosity
+        A number that controls when the debug is run, if you set to 3 it will only run debug when -vvv
+        or above
+        [Default: 0]
+
+EXAMPLES:
+
+# Example that prints the loopback address and gateway for each host
+- debug:
+    msg: &quot;System {{ inventory_hostname }} has uuid {{ ansible_product_uuid }}&quot;
+
+- debug:
+    msg: &quot;System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}&quot;
+    when: ansible_default_ipv4.gateway is defined
+
+- shell: /usr/bin/uptime
+  register: result
+
+- debug:
+    var: result
+    verbosity: 2
+
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[inventory_hostname]
+    verbosity: 4
+</code></pre><h4 id="postgresql-user"><a href="#postgresql-user" class="headerlink" title="postgresql_user"></a>postgresql_user</h4><h4 id="postgresql-db"><a href="#postgresql-db" class="headerlink" title="postgresql_db"></a>postgresql_db</h4><h4 id="django-manage"><a href="#django-manage" class="headerlink" title="django_manage"></a>django_manage</h4><h4 id="cron"><a href="#cron" class="headerlink" title="cron"></a>cron</h4><pre><code># 安装 cron job, 注意 name 参数, 该参数必须要有, 该参数将用于删除计划任务时所使用的名称.
+- name: install poll twitter cron job
+  cron: name=&quot;Poll twitter&quot; minute=&quot;*/5&quot; user={{ user }} job=&quot;{{ manage }} poll_twitter&quot;
+
+# 删除计划任务, 基于 name 参数, 在删除时, 会连带注释一起删掉.
+- name: remote cron job
+  cron: name=&quot;Poll twitter&quot; state=absent
+</code></pre><h4 id="git"><a href="#git" class="headerlink" title="git"></a>git</h4><pre><code>- name: check out the repository on the host
+  git: repo={{ repo_url }} dest={{ proj_path }} accept_host_key=yes
+</code></pre><h4 id="wait-for"><a href="#wait-for" class="headerlink" title="wait_for"></a>wait_for</h4><p>You can wait for a set amount of time `timeout’, this is the default if nothing is specified. Waiting for a port to become available is useful for when services are not immediately available after their init scripts return which is true of certain Java application servers. It is also useful when starting guests with the [virt] module and needing to pause until they are ready. This module can also be used to wait for a regex match a string to be present in a file. </p>
+<p>In 1.6 and later, this module can also be used to wait for a file to be available or absent on the filesystem. </p>
+<p>In 1.8 and later, this module can also be used to wait for active connections to be closed before continuing,useful if a node is being rotated out of a load balancer pool.</p>
+<p>Options: </p>
+<ul>
+<li>active_connection_states<pre><code>The list of tcp connection states which are counted as active connections
+[Default: [u&apos;ESTABLISHED&apos;, u&apos;SYN_SENT&apos;, u&apos;SYN_RECV&apos;, u&apos;FIN_WAIT1&apos;, u&apos;FIN_WAIT2&apos;, u&apos;TIME_WAIT&apos;]]
+</code></pre></li>
+<li>connect_timeout<pre><code>maximum number of seconds to wait for a connection to happen before closing and retrying
+[Default: 5]
+</code></pre></li>
+<li>delay<pre><code>number of seconds to wait before starting to poll
+[Default: 0]
+</code></pre></li>
+<li>exclude_hosts<pre><code>list of hosts or IPs to ignore when looking for active TCP connections for `drained&apos; state
+[Default: None]
+</code></pre></li>
+<li>host<pre><code>A resolvable hostname or IP address to wait for
+[Default: 127.0.0.1]
+</code></pre></li>
+<li>path<pre><code>path to a file on the filesytem that must exist before continuing
+[Default: None]
+</code></pre></li>
+<li>port<pre><code>port number to poll
+[Default: None]
+</code></pre></li>
+<li>search_regex<pre><code>Can be used to match a string in either a file or a socket connection. Defaults to a multiline
+regex.
+[Default: None]
+</code></pre></li>
+<li>sleep<pre><code>Number of seconds to sleep between checks, before 2.3 this was hardcoded to 1 second.
+[Default: 1]
+</code></pre></li>
+<li>state<pre><code>either `present&apos;, `started&apos;, or `stopped&apos;, `absent&apos;, or `drained&apos;
+When checking a port `started&apos; will ensure the port is open, `stopped&apos; will check that it is
+closed, `drained&apos; will check for active connections
+When checking for a file or a search string `present&apos; or `started&apos; will ensure that the file or
+string is present before continuing, `absent&apos; will check that file is absent or removed
+(Choices: present, started, stopped, absent, drained)[Default: started]
+</code></pre></li>
+<li>timeout<pre><code>maximum number of seconds to wait for
+[Default: 300]
+</code></pre></li>
+</ul>
+<ul>
+<li><p><code>wait_for_connection</code> : 默认超时时间 600s</p>
+<p>  Waits until remote system is reachable/usable</p>
+<p>  等待目标主机可以成为 reachable/usable 状态, 即 ssh 22 端口可以连通.</p>
+<pre><code>- name: Wait 300 seconds, but only start checking after 60 seconds
+  wait_for_connection:
+    delay: 60               # 等待 60s 之后执行 本task
+    timeout: 300            # 超时时间, 默认300s
+    sleep: 2                # 在检查期间, 每次检查之间的间隔时间, 默认为 1s
+
+- name: Wait 600 seconds for target connection to become reachable/usable
+  wait_for_connection: 
+</code></pre></li>
+<li><p><code>wait_for</code> : Waits for a condition before continuing</p>
+<p> 等待某个主机或端口可用, 适用范围比 wait_for_connection 更加广泛. 可以在本机或目标主机检查其他或本地主机的端口,.</p>
+<pre><code>- name: Wait 300 seconds for port 22 to become open
+  wait_for: 
+     port: 22
+     sleep: 3
+
+     # A resolvable hostname or IP address to wait for.
+     host: &apos;{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}&apos;
+
+     # Can be used to match a string in either a file or a socket connection.
+     search_regex: OpenSSH
+
+     timeout: 300
+
+     # This overrides the normal error message from a failure to meet the required conditions.
+     msg: Timeout to connect through OpenSSH
+
+     # Either present, started, or stopped, absent, or drained.
+     # When checking a port started will ensure the port is open, stopped will check that it is closed, drained will check for active connections.
+     # When checking for a file or a search string present or started will ensure that the file or string is present before continuing, absent will check that file is absent or removed.
+     state: drained
+
+     # List of hosts or IPs to ignore when looking for active TCP connections for drained state.
+     exclude_hosts: 10.2.1.2,10.2.1.3   
+
+  delegate_to: localhost
+</code></pre></li>
+</ul>
+<pre><code>- name: Wait until the process is finished and pid was destroyed
+  wait_for:
+    # Path to a file on the filesystem that must exist before continuing.
+    path: /proc/3466/status
+    state: absent
+</code></pre><h4 id="lineinfile"><a href="#lineinfile" class="headerlink" title="lineinfile"></a>lineinfile</h4><h4 id="stat"><a href="#stat" class="headerlink" title="stat"></a>stat</h4><p>收集关于文件路径状态的各种信息, 返回一个字典, 该字典包含一个 <code>stat</code> 字段. 部分字段返回值表:</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dev</td>
+<td>inode 所在设备 ID 编号</td>
+</tr>
+<tr>
+<td>gid</td>
+<td>路径的所属组 ID 编号</td>
+</tr>
+<tr>
+<td>inode</td>
+<td>inode 号</td>
+</tr>
+<tr>
+<td>mode</td>
+<td>字符串格式的八进制文件模式,如 1777</td>
+</tr>
+<tr>
+<td>atime</td>
+<td>路径的最后访问时间, 使用 UNIX 时间戳</td>
+</tr>
+<tr>
+<td>ctime</td>
+<td>路径的创建时间, 使用 UNIX 时间戳, 文件元数据变更时间</td>
+</tr>
+<tr>
+<td>mtime</td>
+<td>路径的最后修改时间, 使用 UNIX 时间戳 , 文件内容修改时间.</td>
+</tr>
+<tr>
+<td>nlink</td>
+<td>文件硬链接的数量</td>
+</tr>
+<tr>
+<td>pw_name</td>
+<td>文件所属者的登录名</td>
+</tr>
+<tr>
+<td>size</td>
+<td>如果是文件, 返回字节单位的文件大小</td>
+</tr>
+<tr>
+<td>uid</td>
+<td>路径所属者的 uid</td>
+</tr>
+<tr>
+<td>isblk</td>
+<td>如果路径为指定块设备文件, 返回 true</td>
+</tr>
+<tr>
+<td>ischr</td>
+<td>如果路径为指定字符设备文件,返回 true</td>
+</tr>
+<tr>
+<td>isdir</td>
+<td>如果路径为目录, 返回 true</td>
+</tr>
+<tr>
+<td>isfifo</td>
+<td>如果路径为 FIFO(管道), 返回 true</td>
+</tr>
+<tr>
+<td>isgid</td>
+<td>如果文件设置了 setgid , 返回 true</td>
+</tr>
+<tr>
+<td>isuid</td>
+<td>如果文件设置了 setuid , 返回 true</td>
+</tr>
+<tr>
+<td>islnk</td>
+<td>如果文件时符号链接, 返回 true</td>
+</tr>
+<tr>
+<td>isreg</td>
+<td>如果路径是常规文件, 返回 true</td>
+</tr>
+<tr>
+<td>issock</td>
+<td>如果路径是UNIX 域socket, 返回 true</td>
+</tr>
+<tr>
+<td>rgrp</td>
+<td>如果设置所属组可读权限, 返回 true</td>
+</tr>
+<tr>
+<td>roth</td>
+<td>如果设置其他人可读权限, 返回 true</td>
+</tr>
+<tr>
+<td>rusr</td>
+<td>如果设置了属主可读权限, 返回 true</td>
+</tr>
+<tr>
+<td>wgrp</td>
+<td>如果设置所属组可写权限, 返回 true</td>
+</tr>
+<tr>
+<td>woth</td>
+<td>如果设置所属组可写权限, 返回 true</td>
+</tr>
+<tr>
+<td>wusr</td>
+<td>如果设置所属组可写权限, 返回 true</td>
+</tr>
+<tr>
+<td>xgrp</td>
+<td>如果设置所属组可执行权限, 返回 true</td>
+</tr>
+<tr>
+<td>xoth</td>
+<td>如果设置所属组可执行权限, 返回 true</td>
+</tr>
+<tr>
+<td>xusr</td>
+<td>如果设置所属组可执行权限, 返回 true</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>如果存在, 返回 true</td>
+</tr>
+<tr>
+<td>md5</td>
+<td>文件的 md5 值</td>
+</tr>
+<tr>
+<td>checksum</td>
+<td>文件的hash 值, 可以设置 sha 算法.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h4><p>assert 模块在指定的条件<strong>不符合</strong>是,返回错误, 并失败退出. 主要用于调试.<br><code>that</code> : 后跟计算表达式<br><code>msg</code> : 失败后的提示信息.</p>
+<pre><code>- name: stat /opt/foo
+  stat: path=/opt/foo
+  register: st
+
+- name: assert that /opt/foo is a directory
+  assert:
+    that: st.stat.isdir
+
+-------
+
+- assert:
+    that:
+      - &quot;my_param &lt;= 100&quot;
+      - &quot;my_param &gt;= 0&quot;
+    msg: &quot;&apos;my_param&apos; must be between 0 and 100&quot;
+</code></pre><h2 id="二-自定义模块"><a href="#二-自定义模块" class="headerlink" title="二. 自定义模块"></a>二. 自定义模块</h2><p>自定义模块存放路径: playbooks/library</p>
+<h3 id="1-使用-script-自定义-模块"><a href="#1-使用-script-自定义-模块" class="headerlink" title="1. 使用 script 自定义 模块"></a>1. 使用 script 自定义 模块</h3><h3 id="2-使用-Python-自定义模块"><a href="#2-使用-Python-自定义模块" class="headerlink" title="2. 使用 Python 自定义模块."></a>2. 使用 Python 自定义模块.</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ansible/" rel="tag"># ansible</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/15/Ansible-变量/" rel="next" title="Ansible-变量">
+                <i class="fa fa-chevron-left"></i> Ansible-变量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/15/Ansible-API/" rel="prev" title="Ansible-API">
+                Ansible-API <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-内置模块"><span class="nav-text">一. 内置模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-查看模块帮助"><span class="nav-text">1. 查看模块帮助</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-查找第三方模块"><span class="nav-text">2. 查找第三方模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-常用模块"><span class="nav-text">3. 常用模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#apt"><span class="nav-text">apt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pip"><span class="nav-text">pip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#copy"><span class="nav-text">copy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file"><span class="nav-text">file</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#service"><span class="nav-text">service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#template"><span class="nav-text">template</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setup"><span class="nav-text">setup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-fact"><span class="nav-text">set_fact</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#command"><span class="nav-text">command</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#script"><span class="nav-text">script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#debug"><span class="nav-text">debug</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#postgresql-user"><span class="nav-text">postgresql_user</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#postgresql-db"><span class="nav-text">postgresql_db</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#django-manage"><span class="nav-text">django_manage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cron"><span class="nav-text">cron</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git"><span class="nav-text">git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-for"><span class="nav-text">wait_for</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lineinfile"><span class="nav-text">lineinfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stat"><span class="nav-text">stat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#assert"><span class="nav-text">assert</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-自定义模块"><span class="nav-text">二. 自定义模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用-script-自定义-模块"><span class="nav-text">1. 使用 script 自定义 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用-Python-自定义模块"><span class="nav-text">2. 使用 Python 自定义模块.</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

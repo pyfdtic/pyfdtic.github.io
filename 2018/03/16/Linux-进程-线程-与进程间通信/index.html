@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,进程,线程,进程间通信," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="进程如何使用内存.当程序文件运行为进程时, 进程在内存中获得空间.  1) Text : 固定大小     存储指令(instruction), 说明每一步的操作.          2) Global Data : 固定大小     存放全局变量        3) Stack     存放局部变量.     以帧(stack frame) 为单位, 当程序调用函数的时候, stack 向下增长">
+<meta name="keywords" content="Linux,进程,线程,进程间通信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 进程, 线程 与 进程间通信">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/Linux-进程-线程-与进程间通信/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="进程如何使用内存.当程序文件运行为进程时, 进程在内存中获得空间.  1) Text : 固定大小     存储指令(instruction), 说明每一步的操作.          2) Global Data : 固定大小     存放全局变量        3) Stack     存放局部变量.     以帧(stack frame) 为单位, 当程序调用函数的时候, stack 向下增长">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.pyfdtic.com/imgs/linux//%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E7%BB%93%E6%9E%84.jpg">
+<meta property="og:image" content="http://www.pyfdtic.com/imgs/linux//%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C.jpg">
+<meta property="og:image" content="http://www.pyfdtic.com/imgs/linux//pipe_%E5%8E%9F%E7%90%86.jpg">
+<meta property="og:updated_time" content="2018-03-19T09:38:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 进程, 线程 与 进程间通信">
+<meta name="twitter:description" content="进程如何使用内存.当程序文件运行为进程时, 进程在内存中获得空间.  1) Text : 固定大小     存储指令(instruction), 说明每一步的操作.          2) Global Data : 固定大小     存放全局变量        3) Stack     存放局部变量.     以帧(stack frame) 为单位, 当程序调用函数的时候, stack 向下增长">
+<meta name="twitter:image" content="http://www.pyfdtic.com/imgs/linux//%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E7%BB%93%E6%9E%84.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/Linux-进程-线程-与进程间通信/"/>
+
+
+
+
+
+  <title>Linux 进程, 线程 与 进程间通信 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/Linux-进程-线程-与进程间通信/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Linux 进程, 线程 与 进程间通信</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T13:43:01+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机原理与操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机原理与操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="进程如何使用内存"><a href="#进程如何使用内存" class="headerlink" title="进程如何使用内存."></a>进程如何使用内存.</h2><p>当程序文件运行为进程时, 进程在内存中获得空间.</p>
+<p><img src="/imgs/linux//%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E7%BB%93%E6%9E%84.jpg" alt="进程内存空间结构"></p>
+<pre><code>1) Text : 固定大小
+    存储指令(instruction), 说明每一步的操作.        
+
+2) Global Data : 固定大小
+    存放全局变量      
+
+3) Stack
+    存放局部变量.
+    以帧(stack frame) 为单位, 当程序调用函数的时候, stack 向下增长一帧. 帧中存储该函数的参数和局部变量, 以及该函数的返回地址(return address). 此时, 计算机控制权转移到被调用的函数, 该函数处于激活状态(active).
+
+    位于栈最下方的帧, 和全局变量一起, 构成了当前的环境(context) 上下文. 激活的函数可以从环境中调用需要的变量. 典型的编程语言都只允许你使用位于 stack 最下方的帧, 而不允许你调用其他的帧(这也符合 stack 先进先出的特征).
+
+    当函数又进一步调用另一个函数的时候, 一个新的帧会继续增加到帧的下方, 控制权移交到新的函数当中.
+
+    当激活函数返回的时候, 会从栈中弹出(pop, 读取并从占中删除)该帧, 并根据帧中记录的返回地址, 将控制权交给返回地址所指定的指令.
+
+    在进程运行的过程中, 通过调用和返回函数, 控制权不断在函数间转移. 进程可以在调用函数的时候, 原函数的帧中保存有在我们离开时的状态, 并为新的函数开辟所需的帧空间. 在调用函数返回时, 该函数的帧所占据的空间随着帧的弹出而清空. 进程再次回到原函数的帧中保存的状态, 并根据返回地址所指向的指令继续执行. 
+
+    上面的过程不断继续, 栈不断增长或减小, 主函数返回的时候, 栈全部清空, 进程结束.
+
+4) Heap
+    存放动态变量(dynamic variable). 程序利用 malloc 系统调用, 直接从内存中为 dynamic variable 开辟空间.
+
+    当程序总使用 malloc 的时候, 堆(heap)会向上增长, 其增长的部分就成为 malloc 从内存中分配的空间. malloc 开辟的空间会一直存在, 知道我们调用 free系统调用来释放, 或者进程结束. 一个经典的错误的 内存泄露(memory leakage), 就是指我们没有释放不再使用的堆空间, 导致堆不断增长, 而内存不可用空间不断减少.
+
+堆和栈的大小则会随着进程的运行增大或变小. 当栈和堆增长到两者相遇的时候, 再无内存可用. 进程会出现 栈溢出(stack overflow) 的错误, 导致进程终止.
+</code></pre><h2 id="进程附加信息-task-struct"><a href="#进程附加信息-task-struct" class="headerlink" title="进程附加信息 : task_struct"></a>进程附加信息 : task_struct</h2><p>每个进程还要包括一些进程附加信息, 包括 PID,PPID,PGID等, 用来说明程序的身份,进程关系,以及其他统计信息. </p>
+<p>这些信息<em>并不保存在</em>进程自己的内存空间中.  <strong>内核</strong> 为每个进程在内核自己的空间中分配一个变量(<strong>task_struct 结构体</strong>)以保存上述信息. </p>
+<p>内核可以通过查看自己空间中的各个进程的附加信息就能知道进程的概况, 而不用进入到进程自身的空间. 每个进程的附加信息中都有位置专门用于保存接受到的信息.</p>
+<h2 id="fork-amp-amp-exec"><a href="#fork-amp-amp-exec" class="headerlink" title="fork &amp;&amp; exec"></a>fork &amp;&amp; exec</h2><p><strong>fork</strong> : 当程序调用 fork 的时候, 实际上就是讲上面的内存空间, 包括 text,global data, heap,stack, 又赋值出来一个, 构成新的进程, 并在内核中为该进程创建新的附加信息(如pid等), 此后, 两个进程分别地继续运行下去, 新的进程和原有的进程有相同的进程状态(相同的变量值, 相同的 instruction), 我们会只能通过进程的附加信息来区分两者.</p>
+<p><strong>exec</strong> : 程序调用 exec 的时候, 进程清空自身内存空间 text, global data,heap,stack. 并根据新的程序文件重建 text,glabal data ,heap,stack (此时 heap 和 stack 大小都为 0), 并开始运行.</p>
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p>多线程就是允许一个进程内存在多个控制权, 以便让多个函数同时处于激活状态, 从而让多个函数的操作同时运行. 即使是单cpu 的计算机,也可以通过不停的在不同线程的指令键切换, 从而造成多线程同事运行的效果.</p>
+<p><img src="/imgs/linux//%E5%A4%9A%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C.jpg" alt="多线程运行"></p>
+<pre><code>main() 到 func3() 再到 main() 构成一个线程, func1 和 func2 构成另外两个线程. 操作系统一般都有一些系统调用来让你讲一个函数运行成为一个新的线程.
+</code></pre><p>创建一个新的线程时，我们为这个线程建一个新的栈。每个栈对应一个线程。当某个栈执行到全部弹出时，对应线程完成任务，并收工。所以，多线程的进程在内存中有多个栈。多个栈之间以一定的空白区域隔开，以备栈的增长。每个线程可调用自己栈最下方的帧中的参数和变量，并与其它线程共享内存中的Text，heap和global data区域。对应上面的例子，我们的进程空间中需要有3个栈。</p>
+<h2 id="多线程同步"><a href="#多线程同步" class="headerlink" title="多线程同步"></a>多线程同步</h2><p>对于多线程来说, 同步(synchronization) 是指在一定的时间内, 之允许某一个线程来访问某个资源. 可以通过 互斥锁(mutex)/条件变量(condition variable)/读写锁(reader-writer lock)来同步资源.</p>
+<h4 id="互斥锁-mutex"><a href="#互斥锁-mutex" class="headerlink" title="互斥锁(mutex)"></a>互斥锁(mutex)</h4><p>互斥锁是一个特殊变量, 有 锁上(lock) 和 打开(ublock) 两个状态. 互斥锁一般被设置成全局变量. 打开的互斥锁可以由某个线程获得, 一旦获得, 这个互斥锁会锁上, 此后只有该线程有权打开. 其他想要获得互斥锁的线程, 会等待知道互斥锁再次打开的时候. </p>
+<p>(可以将互斥锁想成只能容纳一个人的洗手间,可以从里面将洗手间锁上。其它人只能在互斥锁外面等待那个人出来，才能进去。在外面等候的人并没有排队，谁先看到洗手间空了，就可以首先冲进去。)</p>
+<h4 id="条件变量-condition-variable"><a href="#条件变量-condition-variable" class="headerlink" title="条件变量(condition variable)"></a>条件变量(condition variable)</h4><p>条件变量时另一种常用的变量, 常常被保存为全局变量,并和互斥锁合作. </p>
+<p>条件变量特别适用于多个线程等待某个条件的发生。如果不使用条件变量，那么每个线程就需要不断尝试获得互斥锁并检查条件是否发生，这样大大浪费了系统的资源。</p>
+<p>如 : 有100个工人，每人负责装修一个房间。当有10个房间装修完成的时候，老板就通知相应的十个工人一起去喝啤酒。</p>
+<h4 id="读写锁-reader-writer-lock"><a href="#读写锁-reader-writer-lock" class="headerlink" title="读写锁(reader-writer lock)"></a>读写锁(reader-writer lock)</h4><p>读写锁与互斥锁非常相似, 有三种状态 : 共享读取锁(shared-read), 互斥写入锁(exclusive-write lock), 打开(unlock). 后两种状态与之前的互斥锁两种状态完全相同. </p>
+<p>一个 unlock 的 RW lock 可以被其他线程继续获得 R 锁, 而不必等待该线程释放 R 锁. 但是, 如果此时有其他线程想要获得 W 所, 必须等待所有持有共享读取锁的线程释放到各自的 R 锁.</p>
+<p>如果一个锁被一个线程获得 W 锁, 那么其他线程, 无论是想要获取 R 锁还是 W 锁, 都必须等待该线程释放 W 锁.</p>
+<p>这样, 多个线程就可以同时读取共享资源, 而具有危险性的写入操作则得到了互斥锁的保护.</p>
+<p>同步并发系统，这为程序员编程带来了难度。但是多线程系统可以很好的解决许多IO瓶颈的问题。</p>
+<h2 id="Linux-进程间通信"><a href="#Linux-进程间通信" class="headerlink" title="Linux 进程间通信."></a>Linux 进程间通信.</h2><h4 id="管道-PIPE"><a href="#管道-PIPE" class="headerlink" title="管道(PIPE)"></a>管道(PIPE)</h4><p>可以使用管道将一个进程的输出和另一个进程的输入连接起来，从而利用文件操作API来管理进程间通信。</p>
+<p>管道是由内核管理的一个缓冲区(buffer)，相当于我们放入内存中的一个纸条。管道的一端连接一个进程的输出。这个进程会向管道中放入信息。管道的另一端连接一个进程的输入，这个进程取出被放入管道的信息。一个缓冲区不需要很大，它被设计成为环形的数据结构，以便管道可以被循环利用。当管道中没有信息的话，从管道中读取的进程会等待，直到另一端的进程放入信息。当管道被放满信息的时候，尝试放入信息的进程会等待，直到另一端的进程取出信息。当两个进程都终结的时候，管道也自动消失。</p>
+<p><img src="/imgs/linux//pipe_%E5%8E%9F%E7%90%86.jpg" alt="pipe 原理"><br>从原理上，管道利用fork机制建立，从而让两个进程可以连接到同一个PIPE上。最开始的时候，上面的两个箭头都连接在同一个进程Process 1上(连接在Process 1上的两个箭头)。当fork复制进程的时候，会将这两个连接也复制到新的进程(Process 2)。随后，每个进程关闭自己不需要的一个连接 (两个黑色的箭头被关闭; Process 1关闭从PIPE来的输入连接，Process 2关闭输出到PIPE的连接)，这样，剩下的红色连接就构成了如上图的PIPE。</p>
+<p>由于基于fork机制，所以管道只能用于父进程和子进程之间，或者拥有相同祖先的两个子进程之间 (有亲缘关系的进程之间)。为了解决这一问题，Linux提供了FIFO方式连接进程。FIFO又叫做<strong>命名管道(named PIPE)</strong>。</p>
+<p>FIFO (First in, First out)为一种特殊的文件类型，它在文件系统中有对应的路径。当一个进程以读(r)的方式打开该文件，而另一个进程以写(w)的方式打开该文件，那么内核就会在这两个进程之间建立管道，所以FIFO实际上也由内核管理，不与硬盘打交道。之所以叫FIFO，是因为管道本质上是一个先进先出的队列数据结构，最早放入的数据被最先读出来(好像是传送带，一头放货，一头取货)，从而保证信息交流的顺序。FIFO只是借用了文件系统(file system)来为管道命名。写模式的进程向FIFO文件中写入，而读模式的进程从FIFO文件中读出。当删除FIFO文件时，管道连接也随之消失。FIFO的好处在于我们可以通过文件的路径来识别管道，从而让没有亲缘关系的进程之间建立连接。</p>
+<h4 id="传统-IPC-interprocess-communication-特点是允许多进程之间共享资源"><a href="#传统-IPC-interprocess-communication-特点是允许多进程之间共享资源" class="headerlink" title="传统 IPC (interprocess communication) : 特点是允许多进程之间共享资源."></a>传统 IPC (interprocess communication) : 特点是允许多进程之间共享资源.</h4><pre><code>消息队列(message queue)
+信号量(semaphore)
+共享内存(shared memory)
+</code></pre><p>不使用文件操作的API。</p>
+<p>对于任何一种IPC来说，你都可以建立多个连接，并使用键值(key)作为识别的方式。我们可以在一个进程中中通过键值来使用的想要那一个连接 (比如多个消息队列，而我们选择使用其中的一个)。键值可以通过某种IPC方式在进程间传递(比如说我们上面说的PIPE，FIFO或者写入文件)，也可以在编程的时候内置于程序中。</p>
+<ul>
+<li><p>消息队列(message queue)与PIPE相类似。它也是建立一个队列，先放入队列的消息被最先取出。不同的是，消息队列允许<strong>多个进程</strong>放入消息，也允许<strong>多个进程</strong>取出消息。每个消息可以带有一个<strong>整数识别符</strong>(message_type)。你可以通过识别符对消息分类 (极端的情况是将每个消息设置一个不同的识别符)。某个进程从队列中取出消息的时候，可以按照先进先出的顺序取出，也可以只取出符合某个识别符的消息(有多个这样的消息时，同样按照先进先出的顺序取出)。消息队列与PIPE的另一个不同在于它并不使用文件API。最后，一个队列不会自动消失，它会一直存在于内核中，直到某个进程删除该队列。</p>
+</li>
+<li><p>semaphore与mutex类似，用于处理同步问题。我们说mutex像是一个只能容纳一个人的洗手间，那么semaphore就像是一个能容纳N个人的洗手间。其实从意义上来说，semaphore就是一个<strong>计数锁</strong>(我觉得将semaphore翻译成为信号量非常容易让人混淆semaphore与signal)，它允许被N个进程获得。当有更多的进程尝试获得semaphore的时候，就必须等待有前面的进程释放锁。当N等于1的时候，semaphore与mutex实现的功能就完全相同。许多编程语言也使用semaphore处理多线程同步的问题。一个semaphore会一直存在在内核中，直到某个进程删除它。</p>
+</li>
+<li><p>共享内存与多线程共享global data和heap类似。一个进程可以将自己内存空间中的一部分拿出来，允许其它进程读写。当使用共享内存的时候，我们要注意<strong>同步</strong>的问题。我们可以使用semaphore同步，也可以在共享内存中建立mutex或其它的线程同步变量来同步。由于共享内存允许多个进程直接对同一个内存区域直接操作，所以它是<strong>效率最高</strong>的IPC方式。</p>
+</li>
+</ul>
+<p>互联网通信实际上也是一个进程间通信的问题，只不过这多个进程分布于不同的电脑上。网络连接是通过socket实现的。</p>
+<p><a href="http://www.cnblogs.com/vamei/archive/2012/09/20/2694466.html" target="_blank" rel="noopener">参考</a><br><a href="http://www.cnblogs.com/vamei/archive/2012/10/07/2713023.html" target="_blank" rel="noopener">参考</a><br><a href="http://www.cnblogs.com/vamei/archive/2012/10/09/2715388.html" target="_blank" rel="noopener">参考</a><br><a href="http://www.cnblogs.com/vamei/archive/2012/10/09/2715393.html" target="_blank" rel="noopener">参考</a><br><a href="http://www.cnblogs.com/vamei/archive/2012/10/10/2715398.html" target="_blank" rel="noopener">参考</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/进程/" rel="tag"># 进程</a>
+          
+            <a href="/tags/线程/" rel="tag"># 线程</a>
+          
+            <a href="/tags/进程间通信/" rel="tag"># 进程间通信</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/docker-内部组件结构-docker-daemon-container-runC/" rel="next" title="docker 内部组件结构 docker daemon, container,runC">
+                <i class="fa fa-chevron-left"></i> docker 内部组件结构 docker daemon, container,runC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/容器网络规范/" rel="prev" title="容器网络规范">
+                容器网络规范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程如何使用内存"><span class="nav-text">进程如何使用内存.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程附加信息-task-struct"><span class="nav-text">进程附加信息 : task_struct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork-amp-amp-exec"><span class="nav-text">fork &amp;&amp; exec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程"><span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程同步"><span class="nav-text">多线程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#互斥锁-mutex"><span class="nav-text">互斥锁(mutex)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#条件变量-condition-variable"><span class="nav-text">条件变量(condition variable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读写锁-reader-writer-lock"><span class="nav-text">读写锁(reader-writer lock)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-进程间通信"><span class="nav-text">Linux 进程间通信.</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管道-PIPE"><span class="nav-text">管道(PIPE)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#传统-IPC-interprocess-communication-特点是允许多进程之间共享资源"><span class="nav-text">传统 IPC (interprocess communication) : 特点是允许多进程之间共享资源.</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

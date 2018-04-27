@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web development,django," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="模板可以使用模板标签和模板变量.  模板标签  模板标签是在一个模板中起作用的标记.  区块标签 ‘{ % TAG % }’   变量 : 一个在模板里用来输出值的标记  { { TAG } }   context : 是一个传递给模板的名称到值的映射(类似Python字典)  渲染: 通过从 contex 获取值来替换模板中的变量, 并执行所有的模板标签.   1. RequestContext">
+<meta name="keywords" content="web development,django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django-模板原理及扩展">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/django-模板原理及扩展/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="模板可以使用模板标签和模板变量.  模板标签  模板标签是在一个模板中起作用的标记.  区块标签 ‘{ % TAG % }’   变量 : 一个在模板里用来输出值的标记  { { TAG } }   context : 是一个传递给模板的名称到值的映射(类似Python字典)  渲染: 通过从 contex 获取值来替换模板中的变量, 并执行所有的模板标签.   1. RequestContext">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-16T09:44:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="django-模板原理及扩展">
+<meta name="twitter:description" content="模板可以使用模板标签和模板变量.  模板标签  模板标签是在一个模板中起作用的标记.  区块标签 ‘{ % TAG % }’   变量 : 一个在模板里用来输出值的标记  { { TAG } }   context : 是一个传递给模板的名称到值的映射(类似Python字典)  渲染: 通过从 contex 获取值来替换模板中的变量, 并执行所有的模板标签.   1. RequestContext">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/django-模板原理及扩展/"/>
+
+
+
+
+
+  <title>django-模板原理及扩展 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/django-模板原理及扩展/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">django-模板原理及扩展</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:48:12+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>模板可以使用模板标签和模板变量.</p>
+<ol>
+<li><p>模板标签</p>
+<p> 模板标签是在一个模板中起作用的标记.</p>
+<ul>
+<li>区块标签 ‘{ % TAG % }’</li>
+</ul>
+</li>
+<li><p>变量 : 一个在模板里用来输出值的标记</p>
+<ul>
+<li><code>{ { TAG } }</code></li>
+</ul>
+</li>
+<li><p>context : 是一个传递给模板的名称到值的映射(类似Python字典)</p>
+</li>
+<li><p>渲染: 通过从 contex 获取值来替换模板中的变量, 并执行所有的模板标签.</p>
+</li>
+</ol>
+<h2 id="1-RequestContext-和-Context-处理器"><a href="#1-RequestContext-和-Context-处理器" class="headerlink" title="1. RequestContext 和 Context 处理器"></a>1. RequestContext 和 Context 处理器</h2><h3 id="1-1-Context"><a href="#1-1-Context" class="headerlink" title="1.1 Context"></a>1.1 Context</h3><p>一段解析模板的 context 是 <code>django.template.Context</code> 的实例.</p>
+<h3 id="1-2-RequestContext"><a href="#1-2-RequestContext" class="headerlink" title="1.2 RequestContext"></a>1.2 RequestContext</h3><p><code>django.template.RequestContext</code> 默认在模板 context 中加入一些变量. 如 <code>HttpRequest</code>对象或者当前登录用户的相关信息.</p>
+<p>创建 RequestContext  和 Context 处理器就是为了解决这个问题. Context 处理器允许设置一些变量, 他们会在每个 context 中自动被设置好, 而不必每次调用 render_to_response() 时都指定. 要点就是, 当你渲染模板时, 使用 RequestContext 而不是 Context . 最直接的做法就是用 context 处理器来创建一些处理器并传递给 RequestContext. </p>
+<p>RequestContext 的第一个参数需要传递一个 HttpRequest 对象，就是传递给视图函数的第一个参数（ request ）. RequestContext 有一个可选的参数 processors ，这是一个包含context处理器函数的列表或者元组.</p>
+<pre><code># 原始视图: 使用手动载入模板
+from django.template import loader, Context
+
+def view_1(request):
+    # ... 
+    t = loader.get_template(&apos;template1.html&apos;)
+    c = Context({
+        &apos;app&apos;: &apos;My app&apos;,
+        &apos;user&apos;: request.user,
+        &apos;ip_address&apos;: request.META[&quot;REMOTE_ADDR&quot;],
+        &apos;message&apos;: &quot;I am view1&quot;
+    })
+    return t.render(c)
+
+def view_2(request):
+    # ...
+    t = loader.get_template(&apos;template2.html&apos;)
+    c = Context({
+        &apos;app&apos;: &apos;My app&apos;,
+        &apos;user&apos;: request.user,
+        &apos;ip_address&apos;: request.META[&quot;REMOTE_ADDR&quot;],
+        &apos;message&apos;: &quot;I am the second view.&quot;
+    })     
+
+    return t.render(c)
+
+# 使用处理器: 用 context 处理器创建一些处理器, 并传递给 RequestContext.
+from django.template import loader, RequestContext
+
+def custom_proc(request):
+    &quot;A context processor that provides &apos;app&apos;, &apos;user&apos;, and &apos;ip_address&apos;&quot;
+    return {
+        &apos;app&apos;: &apos;My app&apos;,
+        &apos;user&apos;: request.user,
+        &apos;ip_address&apos;: request.META[&quot;REMOTE_ADDR&quot;]
+    }
+
+def view_1(request):
+    # ...
+    t = loader.get_template(&apos;template1.html&apos;)
+    c = RequestContext(request, {&quot;message&quot;: &quot;I am view 1.&quot;}, processors=[custom_proc])
+    return t.render(c)
+
+def view_2(request):
+    # ...
+    t = loader.get_template(&apos;template2.html&apos;)
+    c = RequestContext(request, {&quot;message&quot;: &quot;I am the second view.&quot;}, processors=[custom_proc])
+    return t.render(c)
+</code></pre><p>render_to_response() 可以简化调用 loader.get_template() , 然后创建一个 Context 对象, 最后再调用模板对象的 render() 过程. 使用 render_to_response() 作为 context 的处理器, 就需要使用 <code>context_instance</code> 参数.</p>
+<pre><code>from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+def custom_proc(request):
+    &quot;A context processor that provides &apos;app&apos;, &apos;user&apos;, and &apos;ip_address&apos;&quot;
+
+    return {
+        &apos;app&apos;: &quot;My app&quot;,
+        &apos;user&apos;: request.user,
+        &apos;ip_address&apos;: request.META[&quot;REMOTE_ADDR&quot;]
+    }
+
+def view_1(request):
+    # ...
+    return render_to_response(&apos;template1.html&apos;, {&apos;message&apos;: &apos;I am view 1.&apos;}, context_instance=RequestContext(request, processors=[custom_proc]))
+
+def view_2(request):
+    # ...
+    return render_to_response(&apos;template2.html&apos;, {&apos;message&apos;: &apos;I am view 2.&apos;}, context_instance=RequestContext(request, processor=[custom_proc]))
+</code></pre><p>全局 context 处理器支持. <code>TEMPLATE_CONTEXT_PROCESSORS</code> 指定了哪些 context processors 总是默认被使用. 这样就省去了每次使用 RequestContext 都指定 processors 的麻烦.</p>
+<pre><code># 默认 TEMPLATE_CONTEXT_PROCESSORS 设置:
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    &apos;django.core.context_processors.auth&apos;,
+    &apos;django.core.context_processors.debug&apos;,
+    &apos;django.core.context_processors.i18n&apos;,
+    &apos;django.core.context_processors.media&apos;,
+)
+</code></pre><p>这个设置项是一个可调用函数的元组, 其中的每个函数使用了和上文中 <code>custom_proc</code> 相同的接口, 他们都以 request 对象作为参数, 返回一个会被合并传给 context 的字典: 接受一个 request 对象作为参数, 返回一个包含了将被合并到 context 中的项的字典.</p>
+<p>每个处理器竟会按照顺序应用, 也就是说如果在第一个处理器中向 context 添加了一个变量, 而第二个处理器添加了同样名字的变量, 那么第二个将会覆盖第一个.</p>
+<ul>
+<li><p><code>django.core.context_processors.auth</code></p>
+<p>  如果 <code>TEMPLATE_CONTEXT_PROCESSORS</code> 包含该处理器, 则每个 RequestContext 将包含这些变量:</p>
+<ul>
+<li>user: 一个 <code>django.contrib.auth.models.User</code> 实例, 描述当前登录用户(或 AnonymousUser )</li>
+<li>messages: 一个当前登录用户的消息列表(字符串). 在后台对每个请求, 这个变量都调用 <code>request.user.get_and_delete_messages()</code> 方法. 这个方法收集用户的消息然后把他们从数据库中删除.</li>
+<li>perms: <code>django.core.context_processors.PermWrapper</code> 实例, 包含了当前登录用户的所有权限.</li>
+</ul>
+</li>
+<li><p><code>django.core.context_processors.debug</code></p>
+<p>  该处理器把 调试信息发送到模板层. 如果 <code>TEMPLATE_CONTEXT_PROCESSORS</code> 包含该处理器, 则每个 RequestContext 将包含这些变量:</p>
+<ul>
+<li>debug : 设置的 DEBUG 的值(True/False). 可以在模板里调用该变量, 测试是否在 debug 模式.</li>
+<li><p>sql_queries : 包含类似于 “{‘sql’: …, ‘time’: …}” 的字典的一个列表, 记录了该请求期间的每个 SQL 查询以及查询所消耗的时间. 该列表按请求顺序排列.</p>
+<p>该 Context 处理器只有当同时满足一下两个条件时, 才有效:</p>
+</li>
+<li>DEBUG : 设置为 True;</li>
+<li><p>请求的 IP 包含在 <code>INTERNAL_IPS</code>的设置里面.</p>
+<p>DEBUG 模板变量的值, 永远不可能是 False, 因为如果 DEBUG 是 False, 那么 debug 模板变量一开始就不会被 RequestContext 所包含.</p>
+</li>
+</ul>
+</li>
+<li><p><code>django.core.context_processors.i18n&#39;
+  如果</code>TEMPLATE_CONTEXT_PROCESSORS` 包含该处理器, 则每个 RequestContext 将包含这些变量:</p>
+<ul>
+<li>LANGUAGES : LANGUAGES 选项的值.</li>
+<li>LANGUAGE_CODE : 如果 LANGUAGE_CODE存在, 就等于它 , 否则 等同于 LANGUAGE_COde 设置.</li>
+</ul>
+</li>
+<li><p>`django.core.context_processors.request’</p>
+<p>  如果启用这个处理器，每个 RequestContext 将包含变量 request ， 也就是当前的 HttpRequest 对象。 注意这个处理器默认是不启用的，你需要激活它。</p>
+<pre><code># 在模板中使用
+{ { request.REMOTE_ADDR } }
+</code></pre></li>
+</ul>
+<p><strong>写 Context 处理器的一些建议</strong>:</p>
+<ol>
+<li><p>使 每个 context 处理器完成尽可能小的功能. 使用多个处理器是很容易的, 所以, 可以根据逻辑块来分解功能以便将来复用.</p>
+</li>
+<li><p>要注意 <code>TEMPLATE_CONTEXT_PROCESSORS</code> 里的 context processor 将会在基于这个 settings.py 的每个模板中有效, 所以变量的命名不要和模板的变量冲突. 变量名是大小写敏感的, 所以 processor 的变量全用大写是个好主意.</p>
+</li>
+<li><p>不论他们存放在哪个路径下, 只要在 python 的搜索路径中, 就可以在<code>TEMPLATE_CONTEXT_PROCESSORS</code>  设置里指向他们. 建议吧他们放在应用或者工程目录下名为 context_processors.py 的文件里.</p>
+</li>
+</ol>
+<h2 id="2-模板加载器"><a href="#2-模板加载器" class="headerlink" title="2. 模板加载器"></a>2. 模板加载器</h2><h3 id="2-1-加载模板相关变量"><a href="#2-1-加载模板相关变量" class="headerlink" title="2.1 加载模板相关变量"></a>2.1 加载模板相关变量</h3><ul>
+<li><code>TEMPLATE_DIRS</code> : 模板存放目录</li>
+<li><code>TEMPLATE_LOADERS</code> : 是一个字符串的元组, 其中每个字符都表示一个模板加载器. 这些模板加载器岁 Django 一起发布. <strong>Django按照 TEMPLATE_LOADERS 设置中的顺序使用模板加载器. 它逐个使用每个加载器直到找到一个匹配的模板</strong></li>
+</ul>
+<h3 id="2-2-默认加载模板方法"><a href="#2-2-默认加载模板方法" class="headerlink" title="2.2 默认加载模板方法"></a>2.2 默认加载模板方法</h3><ul>
+<li><p><code>django.template.loader.get_template(template_name)</code></p>
+<p>  <code>get_template</code> 根据给定的模板名称返回一个已编译的模板(一个 Template对象). 如果模板不存在, 就触发 <code>TemplateDoesNotExist</code> 异常.</p>
+</li>
+<li><p><code>django.template.loader.select_template(template_name_list)</code></p>
+<p>  <code>select_template</code> 以模板名称的列表作为参数, 他会返回列表中存在的第一个模板, 如果模板都不存在, 将会触发 <code>TemplateDoesNotExist</code> 异常.</p>
+</li>
+</ul>
+<h3 id="2-3-其他模板加载器"><a href="#2-3-其他模板加载器" class="headerlink" title="2.3 其他模板加载器"></a>2.3 其他模板加载器</h3><ul>
+<li><p><code>django.template.loader.filesystem.load_template_source</code>: </p>
+<p>  该加载器根据<code>TEMPLATE_DIRS</code> 的设置从问加你系统加载模板. 该加载器默认可用.</p>
+</li>
+<li><p><code>django.template.loaders.app_directories.load_template_source</code></p>
+<p>  该加载器从文件系统上的 Django 应用中加载模板. 对 <code>INSTALLED_APPS</code> 中的每个应用, 这个加载器会查找 <code>templates</code> 子目录. 如果该目录存在, Django 就在那里寻找模板. 这意味着可以把模板和应用一起保存, 从而使得 Django 应用更容易和默认模板一起发布.</p>
+<p>  加载器在首次被导入的时候, 会执行一个优化: 它会缓存一个列表, 这个列表包含了 <code>INSTALLED_APPS</code> 中的带有 <code>templates</code> 子目录的包.</p>
+<p>  该加载器默认启用.</p>
+</li>
+<li><p><code>django.template.loaders.eggs.load_template_source</code></p>
+<p>  该加载器类似 <code>app_directories</code>, 只不过他从 Python eggs 而不是文件系统中加载模板. 这个加载器默认禁用. Python eggs 可以将 Python 代码压缩到一个文件中.</p>
+</li>
+</ul>
+<h2 id="3-扩展模板系统"><a href="#3-扩展模板系统" class="headerlink" title="3. 扩展模板系统"></a>3. 扩展模板系统</h2><p>绝大部分的模板定制是以<strong>自定义标签/过滤器</strong>的方式来完成的.</p>
+<h3 id="3-1-创建模板库-Django-能够导入的基本结构"><a href="#3-1-创建模板库-Django-能够导入的基本结构" class="headerlink" title="3.1 创建模板库(Django 能够导入的基本结构)"></a>3.1 创建模板库(Django 能够导入的基本结构)</h3><h4 id="3-1-1-决定模板库应该放在哪个-Django-应用下"><a href="#3-1-1-决定模板库应该放在哪个-Django-应用下" class="headerlink" title="3.1.1 决定模板库应该放在哪个 Django 应用下."></a>3.1.1 决定模板库应该放在哪个 Django 应用下.</h4><p>可以将模板库放在某个应用下, 也可以为模板库单独创建一个应用(推荐, filter 可能在后来的工程中有用).</p>
+<h4 id="3-1-2-在适当的-Django-应用包里创建一个-templatetags-目录"><a href="#3-1-2-在适当的-Django-应用包里创建一个-templatetags-目录" class="headerlink" title="3.1.2 在适当的 Django 应用包里创建一个 templatetags 目录."></a>3.1.2 在适当的 Django 应用包里创建一个 <code>templatetags</code> 目录.</h4><p>   该目录应该和 <code>models.py</code> , <code>views.py</code>等处于同一层次.</p>
+<h4 id="3-1-3-在-templatetags-中创建两个空文件"><a href="#3-1-3-在-templatetags-中创建两个空文件" class="headerlink" title="3.1.3 在 templatetags 中创建两个空文件:"></a>3.1.3 在 <code>templatetags</code> 中创建两个空文件:</h4><ul>
+<li><p><code>__init__</code></p>
+<p>  一旦创建了 Python 模块, 只需根据要编写过滤器还是标签来响应的编写一些 Python 代码即可.</p>
+</li>
+<li><p>该文件名稍后用来加载标签. </p>
+<p>  如, 自定义标签/过滤器 存放在一个名为 <code>poll_extras.py</code> 的文件中. 需要在模板中写入如下内容:</p>
+<pre><code>{ % load poll_extras % }
+</code></pre><p>  <code>{ % load % }</code> 标签检查 <code>INSTALL_APPS</code> 中的设置, 仅允许加载已安装的 Django 应用程序的模板库. 它可以让你在一台电脑上部署很多的模板库的代码, 而不用吧他们暴露给每一个 Django 安装.</p>
+</li>
+</ul>
+<p>对于在 <code>templatetags</code> 包中放置多少个模块没有做任何的限制. 需要了解的是: <code>{ % load % }</code> 语句时通过指定的 Python 模块名而不是应用名来加载标签/过滤器的.</p>
+<p>Django 默认的过滤器和标签源码: <code>django/template/defaultfilters.py</code> 和 <code>django/template/defaulttags.py</code></p>
+<p>作为合法的标签库, 模块需要包含一个名为 <code>register</code> 的模块级变量. 这个变量时 <code>template.Library</code> 的实例, 时所有注册标签和过滤器的数据结构.</p>
+<pre><code>from django import template
+
+register = template.Library()
+</code></pre><p>创建 register 变量后，你就可以使用它来创建模板的过滤器和标签了。</p>
+<h4 id="3-1-4-自定义模板过滤器"><a href="#3-1-4-自定义模板过滤器" class="headerlink" title="3.1.4 自定义模板过滤器"></a>3.1.4 自定义模板过滤器</h4><p>自定义过滤器上就是有一个或者两个参数的 Python 函数: 输入变量的值, 参数的值(可以是默认值或者留空).</p>
+<p>例如, 在过滤器 { { var|foo:”bar” } } 中 ，过滤器 foo 会被传入变量 var 和默认参数 bar。</p>
+<p>过滤器函数应该总有返回值. 而且不能触发异常, 他们都应该静静的失败, 如果出现错误, 应该返回一个原始输入或者空字符串, 这回更有意义.</p>
+<pre><code># 1. 定义过滤器
+def cut(value, args):
+    &quot;remove all values of arg from the given string&quot;
+    return value.replace(arg, &apos;&apos;)
+
+# 使用方法: { { somevariable | cut:&quot; &quot; } }
+
+def lower(value):
+    &quot;Converts a strings into all lovercase&quot;
+    return value.lower()
+
+# 2. 使用 Library 注册过滤器
+register.filter(&apos;cut&apos;, cut)
+register.filter(&apos;lower&apos;, lower)
+
+# Library.filter() 本身需要两个参数: 过滤器名称 和 过滤器函数本身.
+
+# 使用装饰器的注册过滤器
+
+@register.filter(name=&apos;cut&apos;)    # name 指定过滤器名称, 不指定为函数名.
+def cut(value, arg):
+    return value.replace(arg, &apos;&apos;)
+
+@register.filter
+def lower(value):
+    return value.lower()
+</code></pre><p>完成的模板库例子, 包含一个 cut 过滤器:</p>
+<pre><code>from django import template
+
+register = template.Library()
+
+@register.filter(name=&apos;cut&apos;)
+def cut(value, arg):
+    return value.replace(arg, &apos;&apos;)
+</code></pre><h4 id="3-1-5-自定义模板标签"><a href="#3-1-5-自定义模板标签" class="headerlink" title="3.1.5 自定义模板标签"></a>3.1.5 自定义模板标签</h4><p>自定义标签要比过滤器复杂些.</p>
+<p>当 Django 编译一个模板时, 它将原始模板分成一个个节点, 每个节点都是 <code>django.template.Node</code> 的一个实例, 并且具备 <code>render()</code> 方法. 一个已编译的模板就是节点对象的一个列表.</p>
+<pre><code>Hello, { { person.name } }.
+
+{ % ifequal name.birthday today % }
+    Happy birthday!
+{ % else % }
+    Be sure to come back on your birthday
+    for a splendid surprise message.
+{ % endifequal % }
+
+被编译的模板表现为节点列表的形式：
+
+1. 文本节点： &quot;Hello, &quot;
+
+2. 变量节点： person.name
+
+3. 文本节点: &quot;.\n\n&quot;
+
+4. IfEqual节点: name.birthday和today
+</code></pre><p>当调用一个已编译模板的 <code>render()</code> 方法时, 模板就会用给定的 context 来调用每个在他的节点列表上的所有节点的 <code>render()</code> 方法. 这些渲染的结果合并起来, 形成模板的输出. 因此, 要自定义模板标签, 需要指明原始模板标签如何转换成<strong>节点(编译函数)</strong> 和 节点的 <code>render()</code> 方法完成的功能.</p>
+<p><code>render()</code> 应当总是返回一个字符串, 即使是空字符串.</p>
+<h5 id="3-1-5-1-编写编译函数"><a href="#3-1-5-1-编写编译函数" class="headerlink" title="3.1.5.1 编写编译函数"></a>3.1.5.1 编写编译函数</h5><p>当遇到一个模板标签(template tag)时, 模板解析器就会把标签包含的内容, 以及模板解析器自己作为参数调用一个 Python 函数. 这个函数负责返回一个和当前模板标签内容相对应的节点(Node)实例.</p>
+<p>使用的标签<code>&lt;p&gt;The time is { % current_time &quot;%Y-%m-%d %I:%M %p&quot; % }.&lt;/p&gt;</code></p>
+<p>函数的分析器会获取参数并创建一个 Node 对象:</p>
+<pre><code>from django import template
+
+register = template.Library()
+
+def do_current_time(parser, token):
+    try:
+        # split_contents() knows not to split quoted strings.
+        tag_name, format_string = token.split_contents()
+
+    except ValueError:
+        msg = &quot;%r tag requires a single argument&quot; % token.split_contents()[0]
+
+    return CurrentTimeNode(format_string[1:-1])
+</code></pre><ul>
+<li>每个标签编译函数有两个参数: parser 和 token. parser 是模板解析器对象, token 是被解析的语句.</li>
+<li><code>token.contents</code> 是包含有变迁原始内容的字符串. 在本例中为 <code>current_time &quot;%Y-%m-%d %I:%M %P&quot;</code></li>
+<li><code>token.split_contents()</code> 方法按空格拆分参数, 同时保证引号中的字符串不拆分. 应该避免使用, 因为他不够健壮.</li>
+<li><code>django.template.TemplateSyntaxError</code> 异常提供所有语法错误的有用信息.</li>
+<li><code>token.split_contents()[0]</code> 记录标签的名字, 就算标签没有任何参数. 不要把便签名硬编码在错误信息中, 因为这样会把标签名称和函数耦合在一起.</li>
+<li>函数返回一个<code>CurrentTimeNode</code>, 它包含了节点需要知道的关于这个标签的全部信息.</li>
+<li>模板标签编译函数<strong>必须</strong>返回一个 Node 子类, 返回其他值都是错的.</li>
+</ul>
+<h5 id="3-1-5-2-编写模板节点"><a href="#3-1-5-2-编写模板节点" class="headerlink" title="3.1.5.2 编写模板节点"></a>3.1.5.2 编写模板节点</h5><p>定义一个拥有 <code>render()</code> 方法的 Node 子类. 如上例中的 <code>CurrentTimeNode</code>.</p>
+<p>两个函数<code>__init__()</code> 和 <code>render()</code> 与模板处理中的两步(编译与渲染) 直接对应. 这样, 初始化函数仅仅需要存储后要用到的格式字符串, 而 <code>render()</code> 函数才做真正的工作.</p>
+<p>与模板过滤器一样, 这些渲染函数应该静静的捕获错误, 而不是抛出错误. 模板标签只允许在编译的时候抛出错误.</p>
+<pre><code>import datetime
+
+class CurrentTimeNode(template.Node):
+    def __init__(self, format_string):
+        self.format_string  = format_string
+
+    def render(self, context):
+        now = datetime.datetime.now()
+        return now.strftime(self.format_string)
+</code></pre><h5 id="3-1-5-3-注册标签"><a href="#3-1-5-3-注册标签" class="headerlink" title="3.1.5.3 注册标签"></a>3.1.5.3 注册标签</h5><p>只需实例化一个 <code>template.Library</code> 实例然后调用它的 <code>tag(TAG_NAME, TAG_FUNC)</code> 方法即可.</p>
+<pre><code># tag()
+register.tag(&apos;current_time&apos;, do_current_time)
+
+# 装饰器格式
+@register.tag(name=&quot;current_time&quot;)
+def do_current_time(parser, token):
+    # ...
+</code></pre><h5 id="3-1-5-4-在上下文中设置变量"><a href="#3-1-5-4-在上下文中设置变量" class="headerlink" title="3.1.5.4 在上下文中设置变量"></a>3.1.5.4 在上下文中设置变量</h5><p>要在上下文中设置变量, 在 render() 函数的 context 对象上使用字典赋值即可. </p>
+<pre><code># 设置上下文变量
+class CurrentTimeNode2(template.Node):
+    def __init__(self, format_string):
+        self.format_string = format_string
+
+    def render(self, context):
+        now = datetime.datetime.now()
+        context[&quot;current_time&quot;] = now.strftime(self.format_string)
+        return &apos;&apos;
+
+# 在模板中使用标签:
+{ % current_time2 &quot;%Y-%m-%d %I:%M %p&quot; % }
+&lt;P&gt;The time is { { current_time } }.&lt;/p&gt;
+</code></pre><p>上例中的变量名是硬编码的, 去除硬编码的更简洁的方案如下:</p>
+<pre><code># 在模板中使用标签
+{ % get_current_time &quot;%Y-%M-%d %I:%M %p&quot; as my_current_time % }
+&lt;p&gt;The current time is { { my_current_time } }.&lt;/p&gt;
+
+# 编译函数和 Node 类
+import re
+
+class CurrentTimeNode3(template.Node):
+    def __init__(self, format_string, var_name):
+        self.format_string = format_string 
+        self.var_name = var_name
+
+    def render(self, context):
+        now = datetime.datetime.now()
+        context[self.var_name] = now.strftime(self.format_string)
+        return &apos;&apos;
+
+# do_current_time() 把格式字符串和变量名传递给 CurrentTimeNode3
+def do_current_time(parser, token):
+    # This version use a regular expression to parser tag contents.
+    try:
+        # Splitting by None == splitting by spaces.
+        tag_name, arg = token.contents.split(None, 1)
+
+    expect ValueError:
+        msg = &quot;%r tag requires arguments&quot; $ token.contents[0]
+        raise template.TemplateSyntaxError(msg)
+
+    m = re.search(r&apos;(.*?) as (\w+)&apos;, arg)
+    if m:
+        fmt, var_name = m.groups()
+    else:
+        msg = &quot;%r tag had invalid arguments&quot; % tag_name
+        raise template.TemplateSyntaxError(msg)
+
+    if not (fmt[0] == fmt[-1] and fmt[0] in (&quot;&apos;&quot;, &apos;&quot;&apos;)):
+        msg = &quot;%r tag&apos;s arguments should be in quotes&quot; % tag_name
+        raise template.TemplateSyntaxError(msg)
+
+    return CurrentTimeNode3(fmt[1:-1], var_name)
+</code></pre><h5 id="3-1-5-5-标签对-分析直至另一个模板标签"><a href="#3-1-5-5-标签对-分析直至另一个模板标签" class="headerlink" title="3.1.5.5 标签对 : 分析直至另一个模板标签"></a>3.1.5.5 标签对 : 分析直至另一个模板标签</h5><p>在编译函数中使用 <code>parser.parser()</code></p>
+<pre><code># 标准的 { % comment % } 标签实现
+def do_comment(parser, token):
+    nodelist = parser.parser((&apos;endcommend&apos;,))
+    parser.delete_first_token()
+
+    return CommentNode()
+
+class CommentNode(template.Node):
+    def render(self, context):
+        return &apos;&apos;
+</code></pre><p><code>parser.parser()</code> 接受一个包含了需要分析的模板标签名的元组作为参数. 它返回一个<code>django.template.NodeList</code> 实例. 他是一个包含了所有 Node 对象的列表. 这些对象是解析器在解析到任一元组中指定的标签之前遇到的内容.</p>
+<p>上面的代码中, <code>nodelist</code> 实在 <code>{ % comment % }</code> 和 <code>{ % endcomment % }</code> 之间所有节点的列表, 不包括 <code>{ % comment % }</code> 和 <code>{ % endcomment % }</code> 自身.</p>
+<p>在 <code>parser.parser()</code> 被调用之后, 分析器还没有清除<code>{ % endcommend % }</code> 标签, 因此代码需要显式的调用 <code>parser.delete_first_token()</code> 来防止该标签被处理两次.</p>
+<p>之后 <code>CommentNode.render()</code> 只是简单的返回一个空字符串, 在 <code>{ % comment % }</code> 和 <code>{ % endcomment % }</code> 之间的所有内容被忽略.</p>
+<p>修改和利用标签之间的内容:</p>
+<pre><code># 解析器代码
+def do_upper(parser, token):
+    nodelist = parser.parse((&apos;endupper&apos;,))
+    parser.delete_first_token()
+    return UpperNode(nodelist)
+
+class UpperNode(template.Node):
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+
+    def render(self, context):
+        # self.nodelist.render(context) 对节点列表中的每个 Node 简单的调用 render()
+        output = self.nodelist.render(context)
+        return output.upper()
+
+# 在模板中使用:
+{ % upper % }
+    This will appear in uppercase, { { user_name } }
+{ % endupper % }
+</code></pre><h5 id="3-1-5-6-简单标签的快捷方式-django-template-Library-simple-tag"><a href="#3-1-5-6-简单标签的快捷方式-django-template-Library-simple-tag" class="headerlink" title="3.1.5.6 简单标签的快捷方式: django.template.Library.simple_tag()"></a>3.1.5.6 简单标签的快捷方式: django.template.Library.simple_tag()</h5><p>许多模板标签接受单一的字符串参数或者一个模板变量引用, 然后独立的根据输入变量和一些其他外部信息进行处理并返回一个字符串. </p>
+<p>为了简化这类标签, Django 提供了一个帮助函数<code>simple_tag()</code>. 该函数是 <code>django.template.Library</code> 的一个方法. 它接受一个<strong>只有一个参数</strong>的函数作为参数. 把他包装在 render函数 和之前提及过的其他的必要单位中, 然后通过模板系统注册标签.</p>
+<pre><code># 解析器代码
+def current_time(format_string):
+    try:
+        return datetime.datetiem.now().strftime(str(format_string))
+    except UnicodeEncodeError:
+        return &apos;&apos;
+
+register.simple_tag(current_time)
+
+# 装饰器实现代码
+@register.simple_tag
+def current_time(token):
+    # ...
+</code></pre><p><code>simple_tag()</code> 函数注意事项:</p>
+<ul>
+<li>传递给该函数的只有<strong>单个</strong> 参数</li>
+<li>在函数被调用的时候, 检查必需参数个数的工作已经完成.</li>
+<li>参数两边的引号(如果有的话), 已经被截掉, 所有函数接收到一个普通 Unicode 字符串.</li>
+</ul>
+<h5 id="3-1-5-7-包含标签-通过渲染其他模板显示数据"><a href="#3-1-5-7-包含标签-通过渲染其他模板显示数据" class="headerlink" title="3.1.5.7 包含标签: 通过渲染其他模板显示数据."></a>3.1.5.7 包含标签: 通过渲染其他模板显示数据.</h5><p>实现结果:</p>
+<pre><code># 在模板中调用
+{ % books_for_author author % }
+
+# 输出结构:
+&lt;ul&gt;
+    &lt;li&gt;The Cat in Hat&lt;/li&gt;
+    &lt;li&gt;Hop On Pop&lt;/li&gt;
+    &lt;li&gt;Green Eggs And Ham&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><p>实现过程:</p>
+<pre><code># 1. 定义函数, 通过给定的参数生成一个字典形式的结果. 只需返回字典类型的结果就行, 无需返回更复杂的东西.
+def books_for_author(author):
+    books = Book.objects.filter(authors_id=author.id)
+    return {&apos;books&apos;: books}
+
+# 2. 创建用于渲染的模板: 
+&lt;ul&gt;
+{ % for book in books % }
+    &lt;li&gt; { { book.title } } &lt;/li&gt;
+{ % endfor % }
+&lt;/ul&gt;
+
+# 3. 通过 Library 对象使用 inclusion_tag() 方法来创建并注册这个包含标签.
+
+register.inclusion_tag(&apos;book_snippet.html&apos;)(books_for_author)
+
+@register.inclusion_tag(&apos;book_snippet.html&apos;)
+def books_for_author(author):
+    # ...
+</code></pre><p>Django 为包含标签提供了一个<code>takes_context</code> 选项, 用于在包含标签中访问父模板的 context. 如果在创建模板标签时, 指明了这个选项, 这个标签就不需要参数, 并且下面的 Python 函数会带一个参数: 就是当这个标签被调用时的模板 context.</p>
+<pre><code># 一个包含标签, 该标签包含有指向主页的 home_link 和 home_title 变量.
+@register.inclusion_tag(&apos;link.html&apos;, tokes_context=True)
+def jump_link(context):
+    return {
+        &apos;link&apos;: context[&apos;home_link&apos;],
+        &apos;title&apos;: context[&apos;home_title&apos;]
+    }
+
+# link.html
+Jump directly to &lt;a href=&quot;{ { link } }&quot;&gt; { { title } } &lt;/a&gt;
+
+# 使用自定义标签时, 就可以加载它的库, 然后不带参数的调用它.
+{ % jump_link % }
+</code></pre><h2 id="4-编写自定义模板加载器"><a href="#4-编写自定义模板加载器" class="headerlink" title="4. 编写自定义模板加载器"></a>4. 编写自定义模板加载器</h2><p>模板加载器, 也就是<code>TEMPLATE_LOADERS</code> 中的每一项, 都有要能被下面这个接口调用:</p>
+<pre><code>load_template_source(template_name, template_dirs=None)
+template_name : 所加载模板的名称.
+template_dirs : 一个可选的代替 TEMPLATE_DIRS 的搜索目录列表.
+</code></pre><p>如果加载器能够成功加载一个模板, 他应当返回一个元组<code>(template_source, template_path)</code>. <code>template_source</code> 就是将被模板引擎编译的模板字符串; <code>template_path</code> 是被加载的模板的路径.</p>
+<p>如果加载器加载模板失败, 那么就会触发 <code>django.template.TemplateDoesNotExist</code> 异常.</p>
+<p>每个加载函数都应该有一个 <code>is_usable</code> 的函数属性. 这个属性是一个布尔值, 用于告知模板引擎, 这个加载器是否在当前安装的 Python 中可用. </p>
+<p>编写自定义模板加载器分两步:</p>
+<ol>
+<li>编写模板加载器代码</li>
+<li>将模板加载器名称加入到 <code>TEMPLATE_LOADERS</code></li>
+</ol>
+<p>示例: 一个可以从 ZIP 文件中加载模板的模板加载函数. 他使用了自定义的设置 <code>TEMPLATE_ZIP_FILES</code> 来取代 <code>TEMPLATE_DIRS</code> 用做查找路径, 并且他假设在此路径上的每一个文件都是包含模板的 ZIP 文件.</p>
+<pre><code>from django.conf import settings
+from django.template import TemplateDoesNotExist
+import zipfile
+
+def load_template_source(template_name, template_dirs=None):
+    &quot;Template loader that load templates from a ZIP file.&quot;
+
+    template_zipfiles = getattr(settings, &quot;TEMPLATE_ZIP_FILES&quot;, [])
+
+    # Try each ZIP file in TEMPLATE_ZIP_FILES .
+    for fname in template_zipfiles:
+        try:
+            z = zipfile.ZipFile(fname)
+            source = z.read(template_name)
+        except (IOError, KeyError):
+            continue
+
+        z.close()
+
+        # We found a tmeplate , so return the source.
+        template_path = &quot;%s:%s&quot; % (fname, template_name)
+
+        return (source, template_path)
+
+    # If we reach here, the template couldn&apos;t be loaded
+    raise TemplateDoesNotExist(template_name)
+
+# This loadder is always usable (since zipfile is included with Python)
+load_template_source.is_usable = True
+
+# 还需要将上面的代码, 加入到 TEMPLATE_LOADERS 中.
+# 如果代码放在 mysite.zip_loader 的包中, 那么我们要把 mysite.zip_loader.load_template_source 加入到 TEMPLATE_LOADERS 中.
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web-development/" rel="tag"># web development</a>
+          
+            <a href="/tags/django/" rel="tag"># django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/flaskExt--flask-sse/" rel="next" title="Flask 扩展之--flask-sse">
+                <i class="fa fa-chevron-left"></i> Flask 扩展之--flask-sse
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/kvm虚拟化之自动化脚本篇/" rel="prev" title="kvm虚拟化之自动化脚本篇">
+                kvm虚拟化之自动化脚本篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-RequestContext-和-Context-处理器"><span class="nav-text">1. RequestContext 和 Context 处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Context"><span class="nav-text">1.1 Context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-RequestContext"><span class="nav-text">1.2 RequestContext</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-模板加载器"><span class="nav-text">2. 模板加载器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-加载模板相关变量"><span class="nav-text">2.1 加载模板相关变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-默认加载模板方法"><span class="nav-text">2.2 默认加载模板方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-其他模板加载器"><span class="nav-text">2.3 其他模板加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-扩展模板系统"><span class="nav-text">3. 扩展模板系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-创建模板库-Django-能够导入的基本结构"><span class="nav-text">3.1 创建模板库(Django 能够导入的基本结构)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-决定模板库应该放在哪个-Django-应用下"><span class="nav-text">3.1.1 决定模板库应该放在哪个 Django 应用下.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-在适当的-Django-应用包里创建一个-templatetags-目录"><span class="nav-text">3.1.2 在适当的 Django 应用包里创建一个 templatetags 目录.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-在-templatetags-中创建两个空文件"><span class="nav-text">3.1.3 在 templatetags 中创建两个空文件:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-自定义模板过滤器"><span class="nav-text">3.1.4 自定义模板过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-5-自定义模板标签"><span class="nav-text">3.1.5 自定义模板标签</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-5-1-编写编译函数"><span class="nav-text">3.1.5.1 编写编译函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-5-2-编写模板节点"><span class="nav-text">3.1.5.2 编写模板节点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-5-3-注册标签"><span class="nav-text">3.1.5.3 注册标签</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-5-4-在上下文中设置变量"><span class="nav-text">3.1.5.4 在上下文中设置变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-5-5-标签对-分析直至另一个模板标签"><span class="nav-text">3.1.5.5 标签对 : 分析直至另一个模板标签</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-5-6-简单标签的快捷方式-django-template-Library-simple-tag"><span class="nav-text">3.1.5.6 简单标签的快捷方式: django.template.Library.simple_tag()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-5-7-包含标签-通过渲染其他模板显示数据"><span class="nav-text">3.1.5.7 包含标签: 通过渲染其他模板显示数据.</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-编写自定义模板加载器"><span class="nav-text">4. 编写自定义模板加载器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

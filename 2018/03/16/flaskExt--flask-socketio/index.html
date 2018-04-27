@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Flask,Flask 扩展,socketio,websocket," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="WebSocket 可以实现客户端与服务器之间的双向的, 基于消息的文本或二进制数据传输. 其极简的 API 可以让我们在客户端和服务器之间以数据流的形式实现各种应用数据交换(包含JSON 及自定义的二进制消息格式). 自定义数据交换协议的问题通常也在于自定义, 因为应用必须考虑状态,压缩,缓存及其原来有浏览器提供的服务. 功能:  连接协商和同源策略 与既有HTTP基础设施的互操作 基于消息的通">
+<meta name="keywords" content="Flask,Flask 扩展,socketio,websocket">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask 扩展之--flask-socketio">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-socketio/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="WebSocket 可以实现客户端与服务器之间的双向的, 基于消息的文本或二进制数据传输. 其极简的 API 可以让我们在客户端和服务器之间以数据流的形式实现各种应用数据交换(包含JSON 及自定义的二进制消息格式). 自定义数据交换协议的问题通常也在于自定义, 因为应用必须考虑状态,压缩,缓存及其原来有浏览器提供的服务. 功能:  连接协商和同源策略 与既有HTTP基础设施的互操作 基于消息的通">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/websocket%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7.PNG">
+<meta property="og:updated_time" content="2018-04-01T08:39:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask 扩展之--flask-socketio">
+<meta name="twitter:description" content="WebSocket 可以实现客户端与服务器之间的双向的, 基于消息的文本或二进制数据传输. 其极简的 API 可以让我们在客户端和服务器之间以数据流的形式实现各种应用数据交换(包含JSON 及自定义的二进制消息格式). 自定义数据交换协议的问题通常也在于自定义, 因为应用必须考虑状态,压缩,缓存及其原来有浏览器提供的服务. 功能:  连接协商和同源策略 与既有HTTP基础设施的互操作 基于消息的通">
+<meta name="twitter:image" content="http://oluv2yxz6.bkt.clouddn.com/websocket%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-socketio/"/>
+
+
+
+
+
+  <title>Flask 扩展之--flask-socketio | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-socketio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Flask 扩展之--flask-socketio</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:43:43+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>WebSocket 可以实现客户端与服务器之间的双向的, 基于消息的文本或二进制数据传输. 其极简的 API 可以让我们在客户端和服务器之间以数据流的形式实现各种应用数据交换(包含JSON 及自定义的二进制消息格式). 自定义数据交换协议的问题通常也在于自定义, 因为应用必须考虑状态,压缩,缓存及其原来有浏览器提供的服务.</p>
+<p>功能:</p>
+<ul>
+<li>连接协商和同源策略</li>
+<li>与既有HTTP基础设施的互操作</li>
+<li>基于消息的通信和高效消息分帧</li>
+<li>子协议协商及可扩展能力</li>
+</ul>
+<p>WebSocket 由多个标准组成:</p>
+<ul>
+<li>WebSocket API 有 W3C 定义;</li>
+<li>WebSocket 协议(RFC 6455) 及其扩展由 IETF 定义</li>
+</ul>
+<h1 id="一-WebSocket-协议"><a href="#一-WebSocket-协议" class="headerlink" title="一. WebSocket 协议"></a>一. WebSocket 协议</h1><h2 id="1-WebSocket-API"><a href="#1-WebSocket-API" class="headerlink" title="1. WebSocket API"></a>1. WebSocket API</h2><h3 id="1-1-代码示例"><a href="#1-1-代码示例" class="headerlink" title="1.1 代码示例"></a>1.1 代码示例</h3><pre><code>var ws = new WebSocket(&quot;wss://example.com/socket&quot;)  // 建立安全的 ws 连接
+ws.onerror = function(error) { ... }        // 可选回调, 在连接出错时调用
+ws.oncloes = function() { ... }             // 可选回调, 在连接关闭时调用
+
+ws.onopen = function () {                   // 可选回调, 在连接建立时调用
+    ws.send(&quot;Connection established, Hello Server!&quot;)    // 客户端向服务器发送一条消息
+}
+
+ws.onmessage = function(msg) {          // 回调函数, 服务器每发送一条消息就调用一次.
+    if (msg.data instanceof Blob) {     // 判断接收到的消息是二进制还是文本处理.
+        processBlob(msg.data)
+    } else {
+        processText(msg.data)
+    }
+}
+</code></pre><p>在选择 Socket.IO 这样的腻子脚本或”实时框架”时, 一定要留心其底层实现, 以及客户端和服务器的配置: 保证尽可能利用原生 WebSocket 接口以求最佳性能, 然后确保备用传输机制能满足你的性能要求.</p>
+<h3 id="1-2-WS-与-WSS"><a href="#1-2-WS-与-WSS" class="headerlink" title="1.2 WS 与 WSS"></a>1.2 WS 与 WSS</h3><p>WebSocket 资源 URL 采用了自定义模式:</p>
+<ol>
+<li>ws 表示 存文本 通信.</li>
+<li>wss 表示使用加密信道通信(TCP+TLS)</li>
+</ol>
+<h3 id="1-3-接收文本和二进制数据"><a href="#1-3-接收文本和二进制数据" class="headerlink" title="1.3 接收文本和二进制数据"></a>1.3 接收文本和二进制数据</h3><p>WebSocket 通信只涉及消息, 应用代码无需担心缓冲,解析,重建接收到的数据. 如 服务器发送一个 1MB 的净荷, 应用的 <code>onmessage</code> 回调只会在客户端接收到全部数据时才会被调用.</p>
+<p>WebSocket 协议不做格式假设, 对应用的净荷也没有后限制: 文本或者二进制数据都可以. 从内部看, 协议只关注消息的两个信息: <strong>净荷长度(一个可变长度字段)</strong> 和 <strong>数据类型</strong>, 据以区别 UTF-8 数据和 二进制数据.</p>
+<ul>
+<li>文本数据 : 浏览器会自动将其转换为 DOMString 对象.</li>
+<li><p>二进制数据或 Blob 对象: 将其直接转交给应用. 或者 告诉浏览器把接收到的二进制数据转换成 ArrayBuffer 而非 Blob.</p>
+<pre><code>var ws = new WebSocket(&apos;wss://example.com/socket&apos;);
+// 如果接收到二进制数据, 则强制转换为 ArrayBuffer.
+ws.binaryType = &quot;arraybuffer&quot;;      
+
+ws.onmessage = function(msg) {
+    if (msg.data instanceof ArrayBuffer) {
+        processArrayBuffer(msg.data);
+    } else {
+        processText(msg.data);
+    }
+}
+</code></pre></li>
+</ul>
+<p>Blob 代表一个不可变的文件对象或者原始数据. 通常用于处理<strong>无需修改或者切分</strong>的数据块.</p>
+<p>ArrayBuffer 表示一个普通的,固定长度的二进制数据缓冲, 通常用于接受需要<strong>再次处理的二进制数据</strong>. 可以用 ArrayBuffer 创建一个或多个 ArrayBufferView 对喜爱那个, 每一个都可以通过特定的格式来展示缓冲中的内容.</p>
+<p>所有二进制数据类型只是为了简化 API :  在传输中, 只通过一位 (bit) 即可将 WebSocket 帧标记为二进制或文本. 假如应用或服务器需要传输其他的内容类型, 就必须通过其他机制来沟通这个信息.</p>
+<h3 id="1-4-发送文本和二进制数据"><a href="#1-4-发送文本和二进制数据" class="headerlink" title="1.4 发送文本和二进制数据"></a>1.4 发送文本和二进制数据</h3><p>WebSocket 提供的是一个双向通信的信道, 即, 在同一个 TCP 连接上, 可以双向传输数据.</p>
+<pre><code>var ws = new WebSocket(&quot;wss://example.com/socket&quot;)
+
+ws.open = function() {
+    socket.send(&quot;hello server!&quot;);
+    socket.send(JSON.stringify({&apos;msg&apos;: &apos;payload&apos;}));
+
+    var buffer = new ArrayBuffer(128);
+    socket.send(buffer);
+
+    var intview = new Unit32Array(buffer):
+    socket.send(intview)
+
+    var blob = new Blob(buffer);
+    socket.send(blob);
+}
+</code></pre><p>这里 <code>send()</code> 方法是异步的: 提供的数据会在客户端排队, 而函数则立即返回. 特别是在传输大文件的时候, 千万别因为返回快, 就错误的以为数据已经发送出去了. 要监控在浏览器中排队的数据量, 可以查询套接字的 <code>bufferdAmount</code> 属性</p>
+<pre><code>var ws = new WebSocket(&quot;wss://example.com/socket&quot;)
+
+ws.onopen = function() {
+    subscribeToApplicationUpodates(function(env) {
+        if (ws.bufferedAmount == 0)
+            ws.send(evt.data);
+    });
+};
+</code></pre><p>所有 WebSocket 消息都会按照他们在客户端排队的次序逐个发送. 因此, 大量排队的消息, 甚至一个大消息, 都可能导致排在他后面的消息延迟– <strong>队首阻塞</strong>.</p>
+<p>为解决该问题, 应用可以将大消息切分成小块, 通过监控<code>bufferedAmount</code>的值来避免队首阻塞. 甚至还可以实现自己的优先队列, 而不是盲目都把他们送到套接字上排队. 要实现最优化传输, 应用必须关心任意时刻在套接字上排队的是什么消息.</p>
+<h3 id="1-5-子协议协商"><a href="#1-5-子协议协商" class="headerlink" title="1.5 子协议协商"></a>1.5 子协议协商</h3><h4 id="1-5-1-子协议协商实现策略"><a href="#1-5-1-子协议协商实现策略" class="headerlink" title="1.5.1 子协议协商实现策略"></a>1.5.1 子协议协商实现策略</h4><p>WebSocket 协议对每条消息的格式实现不做任何假设, 仅用一位标记消息是文本还是二进制, 以便客户端和服务器有效的解码数据, 除此之外的消息内容就是未知的.</p>
+<p>WebSocket 没有实现元数据沟通的机制, 如果需要沟通关于消息的元数据, 客户端和服务器必须达成沟通这一数据的子协议. 可以有以下实现方式:</p>
+<ul>
+<li>客户端和服务器可以提前确定一种固定的消息格式.而 必要的元数据作为这种数据结构的一部分.</li>
+<li>如果客户端和服务器要发送不同的数据类型, 那么他们可以确定一个双发都知道的消息首部, 利用它来沟通说明信息或有关净荷的其他解码信息.</li>
+<li>混合使用文本和二进制消息, 可以沟通净荷和元数据, 比如用文本消息实现 HTTP 首部的功能, 后跟包含应用净荷的二进制消息.</li>
+</ul>
+<h4 id="1-5-2-子协议协商API"><a href="#1-5-2-子协议协商API" class="headerlink" title="1.5.2 子协议协商API"></a>1.5.2 子协议协商API</h4><p>客户端可以在初次链接握手时, 告诉服务器自己支持那种协议.</p>
+<pre><code>var ws = new WebSocket(&apos;wss://example.com/socket&apos;, [&apos;appProtocol&apos;, &apos;appProtocol-v2&apos;])       // 在 WebSocket 握手期间发送子协议数组.
+
+ws.onopen = function () {
+    if (ws.protocol == &quot;appProtocol-v2&quot;) {  // 检查服务器选择了那个子协议
+        // ...
+    } else {
+        // ...
+    }
+}
+</code></pre><p>子协议有应用自己定义, 且在初次 HTTP 握手期间发送给服务器, 除此之外, 指定的子协议对核心 WebSocket API 不会有任何影响.</p>
+<p>如果子协议协商成功, 会触发客户端的 <code>onopen</code> 回调, 应用可以查询 WebSocket 对象上的 <code>protocol</code> 属性, 从而得知服务器选定的协议. 另一方面, 服务器如果不支持客户端声明的任何一个协议, 则 WebSocket 握手时不完整的, 此时会触发 <code>onerror</code> 回调, 连接断开.  </p>
+<h2 id="2-WebSocket-协议"><a href="#2-WebSocket-协议" class="headerlink" title="2. WebSocket 协议"></a>2. WebSocket 协议</h2><p>WebSocket 协议包含两个高层组件:</p>
+<ol>
+<li>开放性 HTTP 握手 , 用于协商连接参数</li>
+<li>二进制消息分帧, 用于支持低开销的基于消息的文本和二进制数据传输.</li>
+</ol>
+<p>WebSocket 协议尝试在既有 HTTP 基础设施中实现双向的 HTTP 通信, 因此, 也是用 HTTP 的 80 和 443 端口. WebSocket 协议是一个独立完善的协议, 可以在浏览器之外实现.</p>
+<h3 id="2-1-二进制分帧"><a href="#2-1-二进制分帧" class="headerlink" title="2.1 二进制分帧"></a>2.1 二进制分帧</h3><p>客户端和服务器 WebSocket 应用通过基于<strong>消息</strong>的 API 通信: 发送端提供任意 UTF-8 或二进制的净荷, 接收端<strong>整个</strong>消息可用时收到通知. 为此, WebSocket 使用了自定义的二进制分帧格式, 把每个应用消息切分成一个或多个帧, 发送到目的地之后再组装起来, 等接收到完整的消息后, 再通知接收端.</p>
+<p>所有 WebSocket 通信都是通过交换帧实现的, 而帧将净荷视为不透明的应用数据块.</p>
+<p><img src="http://oluv2yxz6.bkt.clouddn.com/websocket%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7.PNG" alt="WebSocket帧格式: 2-14字节 + 净荷"></p>
+<ul>
+<li>帧 : 最小的通信单位, 包含可变长度的帧首部和净荷部分, 净荷可能包含完整或部分应用消息. 是否把消息分帧由客户端和服务器实现决定.</li>
+<li>消息, 一系列帧, 与应用消息对等.</li>
+<li>每一帧的第一位(FIN), 表示当前帧是不是消息的最后一帧, 一条消息有可能只有对应一帧.</li>
+<li><p>操作码(4位), 表示被传输帧的类型, </p>
+<ul>
+<li><p>传输应用数据时</p>
+<ul>
+<li>1 : 文本</li>
+<li>2 : 二进制数据</li>
+</ul>
+</li>
+<li><p>连接有效性检查时</p>
+<ul>
+<li>8 : 关闭</li>
+<li>9 : 呼叫(ping)</li>
+<li>10 : 回应(pong)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>掩码位, 表示净荷是否有掩码(只适用于客户端发送给服务器的消息)</li>
+<li><p>净荷长度, 有可可变长度字段表示</p>
+<ul>
+<li>1 ~ 125 : 净荷长度</li>
+<li>126 : 则接下来的 2 字节表示的 16 位无符号整数才是这一帧的长度</li>
+<li>127 : 则接下来的 8 字节表示的 64 位无符号整数才是这一帧的长度</li>
+</ul>
+</li>
+<li><p>掩码键, 包含 32 位值, 用于给净荷加掩护</p>
+</li>
+<li>净荷包含应用数据, 如果客户端和服务器在建立连接时协商过, 也可以包含自定义的扩展数据.</li>
+</ul>
+<h3 id="2-2-协议扩展"><a href="#2-2-协议扩展" class="headerlink" title="2.2 协议扩展"></a>2.2 协议扩展</h3><p>WebSocket 规范允许对协议进行扩展: 数据格式和 WebSocket 协议的语义可以通过新的操作码和数据字段扩展. 即, 允许客户端和服务器在基本的 WebSocket 分帧层之上实现更多的功能, 而无需应用代码介入或协作.</p>
+<p>协议扩展:</p>
+<ul>
+<li>多路复用扩展 : 可以将 WebSocket 的逻辑链接独立出来, 实现共享底层的 TCP 链接.</li>
+<li>压缩扩展 : 为 WebSocket 协议添加了压缩功能.</li>
+</ul>
+<h3 id="2-3-HTTP-协议-握手-协商"><a href="#2-3-HTTP-协议-握手-协商" class="headerlink" title="2.3 HTTP 协议(握手)协商"></a>2.3 HTTP 协议(握手)协商</h3><p>利用 HTTP 完成握手, 有多个好处:</p>
+<ul>
+<li>让 WebSocket 与现有 HTTP 协议基础设置兼容. 让 WebSocket 可以运行在 80 或 443 端口.</li>
+<li>可以重用并扩展 HTTP 的 Upgrade 流, 为其添加自定义的 WebSocket 首部, 已完成协商.</li>
+</ul>
+<h4 id="2-3-1-可用-HTTP-首部"><a href="#2-3-1-可用-HTTP-首部" class="headerlink" title="2.3.1 可用 HTTP 首部"></a>2.3.1 可用 HTTP 首部</h4><p>以下协商字段, 用于在客户端和服务器之间进行 HTTP Upgrade 并协商新的 WebSocket 连接 : </p>
+<ul>
+<li><p>Sec-WebSocket-Version : 客户端发送, 表示其使用的 WebSocket 协议版本(13 表示 RFC 6455). 如服务器不支持该版本, 则必须回应自己支持的版本.</p>
+</li>
+<li><p>Sec-WebSocket-Key : 客户端发送, 自动生成的一个键, 作为一个对服务器的”挑战”, 以验证服务器支持的协议版本.</p>
+</li>
+<li><p>Sec-WebSocket-Accept : 服务器响应, 包含 Sec-WebSocket-Key 的签名值, 证明他支持请求的协议版本.</p>
+</li>
+<li><p>Sec-WebSocket-Protocol : 用于协商应用子协议: 客户端发送支持的协议列表, 服务器必须只回应一个协议名.</p>
+</li>
+<li><p>Sec-WebSocket-Extensions : 用于 协商本次链接要使用的 WebSocket 扩展: 客户端发送支持的扩展, 服务器通过返回相同的首部, 确认自己支持一个或多个扩展.</p>
+</li>
+</ul>
+<p>HTTP 协商示例:</p>
+<pre><code>GET /socket HTTP/1.1
+Host: thirdparty.com
+Origin: http://example.com
+Connection: Upgrade             
+Upgrade: websocket              // 请求升级到 WebSocket
+Sec-WebSocket-Version: 13       // 客户端使用的 WebSocket 协议版本
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==  // 自动生成的键, 以验证服务器对协议的支持.
+Sec-WebSocket-Protocol: appProtocol, appProtocol-v2     // 可选的应用指定的子协议列表
+Sec-WebSocket-Extensions: x-webkit-deflate-message,x-custom-extension   // 可选的客户端支持的协议扩展列表.
+</code></pre><p>WebSocket 请求也必须遵守同源策略: 浏览器会自动在升级握手请求中追加 Origin 首部, 远程服务器可能使用 CORS 判断接受或拒绝跨源请求. </p>
+<p>要完成握手, 服务器必须返回一个成功的 “Switching Protocols(切换协议)”  响应, 并确认选择了客户端发送的那个选项:</p>
+<pre><code>HTTP/1.1 101 Switching Protocol     // 101 响应确认升级到 websocket 协议.
+Upgrade: websocket
+Connection: Upgrade
+Acess-Control-Allow-Origin: http://example.com  // CORS 首部表示选择同意跨源链接
+Sec-WebSocket-Accept: s3pPLmBiTxaQ9kYGzzhZRbk+x0o   // 签名的键值验证协议支持.
+Sec-WebSocket-Protocol: appProtocol-v2  // 服务器选择的应用子协议
+Sec-WebSocket-Extensions: x-custom-extension    // 服务器选择的 WebSocket 扩展.
+</code></pre><p>所有兼容 RFC 6455 的 WebSocket 服务器都使用相同的算法计算客户端挑战的答案: 将 Sec-WebSocket-Key 的内容与标准定义的唯一的 GUID 字符串拼接起来, 计算出 SHA1 散列值, 结果是一个 base-64 编码的字符串, 将这个字符串发送给客户端即可.</p>
+<p>握手成功后, 该连接就可以作为双向通信信道交换 WebSocket 消息, 客户端和服务器之间的通信有 WebSocket 协议接管.</p>
+<h2 id="3-性能检查表"><a href="#3-性能检查表" class="headerlink" title="3. 性能检查表"></a>3. 性能检查表</h2><ul>
+<li>使用安全 WebSocket </li>
+<li>密切关注 腻子脚本的性能</li>
+<li>利用子协议协商确定应用协议</li>
+<li>优化二进制净荷以最小化传输数据</li>
+<li>考虑压缩 UTF-8 内容</li>
+<li>设置正确的二进制类型以接受二进制净荷</li>
+<li>监控客户端缓冲数据的量</li>
+<li>切分应用消息以避免队首阻塞</li>
+<li>合用的情况下, 利用其它传输机制.</li>
+</ul>
+<h1 id="二-Flask-socketio"><a href="#二-Flask-socketio" class="headerlink" title="二. Flask-socketio"></a>二. Flask-socketio</h1><h2 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. <a href="https://flask-socketio.readthedocs.io/en/latest/" target="_blank" rel="noopener">初始化</a></h2><pre><code>from flask import Flask, render_template
+from flask_socketio import SocketIO
+
+app = Flask(__name__)
+app.config[&quot;SECRET_KEY&quot;] = &apos;secret!&apos;
+socketio = SocketIO(app)
+
+if __name__ == &quot;__main__&quot;:
+    socketio.run(app[,host=&quot;0.0.0.0&quot;])
+</code></pre><p>The <code>init_app()</code> style of initialization is also supported.</p>
+<p><strong>Note the way the web server is starded.</strong></p>
+<p>The <code>socketio.run()</code> function encapsulates the start up of the web server and replaces the <code>app.run()</code> standard Flask development server start up. </p>
+<p>When the application is in debug mode the Werkzeug development server is still uead and configured properly inside <code>socketio.run()</code>.</p>
+<p>In production mode the eventlet web server is used if available , else the gevent web server is used. If eventlet and gevent are not installed , the Werkzeug development web server is used.</p>
+<p>client page:</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
+    var socket = io.connect(&apos;http://&apos; + document.domain + &apos;:&apos; + location.port);
+    socket.on(&apos;connect&apos;, function() {
+        socket.emit(&apos;my event&apos;, {data: &apos;I\&apos;m connected!&apos;});
+    });
+&lt;/script&gt;
+</code></pre><h2 id="2-socketio-handler-function"><a href="#2-socketio-handler-function" class="headerlink" title="2. socketio handler function"></a>2. socketio handler function</h2><h3 id="2-1-装饰器模式"><a href="#2-1-装饰器模式" class="headerlink" title="2.1 装饰器模式"></a>2.1 装饰器模式</h3><pre><code>@socketio.on(&quot;my event&quot;)
+def handle_my_custom_event(json):
+    print &quot;Reveived json: &quot; + str(json)
+</code></pre><h3 id="2-2-on-event-方法"><a href="#2-2-on-event-方法" class="headerlink" title="2.2 on_event() 方法"></a>2.2 on_event() 方法</h3><pre><code>def my_function_handler(data):
+    pass
+
+socketio.on_event(&quot;my event&quot;, my_function_handler, namespace=&quot;/test&quot;)
+</code></pre><h2 id="3-接受消息"><a href="#3-接受消息" class="headerlink" title="3. 接受消息"></a>3. 接受消息</h2><p>When using SocketIO, messages are received by both parties as <strong>events</strong>. On the client side Javascript callbacks are used. With Flask-SocketIO the server needs to register handlers for these events, similarly to how routes are hanled by view function.</p>
+<h3 id="3-1-unnamed-events"><a href="#3-1-unnamed-events" class="headerlink" title="3.1 unnamed events"></a>3.1 unnamed events</h3><h4 id="3-1-1-String-date"><a href="#3-1-1-String-date" class="headerlink" title="3.1.1 String date"></a>3.1.1 String date</h4><pre><code>@socketio.on(&apos;message&apos;)
+def hanle_message(message):
+    print &quot;Received message:&quot; + message
+</code></pre><h4 id="3-1-2-JSON-data"><a href="#3-1-2-JSON-data" class="headerlink" title="3.1.2 JSON data"></a>3.1.2 JSON data</h4><pre><code>@socketio.on(&apos;json&apos;)
+def handle_json(json):
+    print &quot;Received JSON:&quot; + str(JSON)
+</code></pre><h3 id="3-2-Custom-Names-events"><a href="#3-2-Custom-Names-events" class="headerlink" title="3.2 Custom Names events"></a>3.2 Custom Names events</h3><p>The message data for these events can be string, byes, int, or JSON.</p>
+<pre><code>@socketio.on(&quot;my event&quot;)
+def handle_my_custom_event(json):
+    print &quot;Received json&quot;: str(json)
+
+
+# multiple arguments:
+@socketio.on(&quot;my event&quot;)
+def handle_my_custom_event(arg1,arg2,arg3):
+    print &quot;Received args: &quot; + arg1 + arg2 + arg3
+</code></pre><p>Names events are the most flexible , as they eliminate the need to include additional metadata to describe the message type.</p>
+<p>Event names <code>connect</code>, <code>disconnect</code>, <code>message</code>, <code>json</code> are special events generated by SocketIO. Any other event names are considered custom events.</p>
+<p>The <code>connect</code> and <code>disconnect</code> events are self-explanatory. The <code>message</code> event delivers a payload of type string, and the <code>json</code> and custom events deliver a JSON payload, in the form of a Python dictionary.</p>
+<h3 id="3-3-SocketIO-namespaces"><a href="#3-3-SocketIO-namespaces" class="headerlink" title="3.3 SocketIO namespaces"></a>3.3 SocketIO namespaces</h3><p>Namespaces allow a client to open multiple connections to the server that are multiplexed on a single socket. When a namespace is not specified the events are attached to the default global namespace.</p>
+<h4 id="3-3-1-Decorator-Based-Namespace"><a href="#3-3-1-Decorator-Based-Namespace" class="headerlink" title="3.3.1 Decorator-Based Namespace"></a>3.3.1 Decorator-Based Namespace</h4><p>SocketIO namespace allow the client to multiplex several independent connections on the same physical socket:</p>
+<pre><code>@socketio.on(&quot;my event&quot;, namespace=&quot;/test&quot;)
+def handle_my_custom_namespace_event(json):
+    print &quot;Received json: &quot; + str(json)
+</code></pre><p>When a namespace is not specified a default global namespace with the name ‘/‘ is used.</p>
+<h4 id="3-3-2-Class-Based-Namespaces"><a href="#3-3-2-Class-Based-Namespaces" class="headerlink" title="3.3.2 Class-Based Namespaces"></a>3.3.2 Class-Based Namespaces</h4><p>The events handlers that belong to a namespace cna be created as methods of a class. The <code>flask_socketio.Namespace()</code> is provided as a base class to create class-based namespaces:</p>
+<pre><code>from flask_socketio import Namespace, emit
+
+class MyCustomNamespace(Namespace):
+    def on_connect(self):
+        pass
+
+    def on_disconnect(self):
+        pass
+
+    def on_my_event(self, data):
+        emit(&quot;my_response&quot;, data)
+
+socketio.on_namespace(MyCustomNamespace(&quot;/test&quot;))
+</code></pre><p>当使用基于类的名称空间时, 所有服务器收到的 events 都会被分发给 <strong>on_EVENT-NAME</strong> 的方法去处理. 没有该方法, 则该 events 被忽略. 因此, 在基于类的名称空间中,所有 evnet 的名称必须同时也是合法的方法名称.</p>
+<p>As a convenience to methods defied in a class-based namespace, the namespace instance includes versions of several of the methods in the <code>flask_socketio.SocketIO</code> class that default to the proper namespace when the <code>namespace</code> argument is not given.</p>
+<p>如果一个 event 同时被 基于类的名称空间和 基于装饰器的名称空间 所定义, 则 <strong>基于装饰器的名称空间拥有更高的优先级</strong>.</p>
+<h3 id="3-4-return-amp-amp-client-callback-function"><a href="#3-4-return-amp-amp-client-callback-function" class="headerlink" title="3.4 return &amp;&amp; client callback function"></a>3.4 return &amp;&amp; client callback function</h3><p>Clients may request an acknowledgement callback that confirm receipt of a message . <strong>Any values returned from the handler function will be passed to the client as arguments  in the callbak function</strong>:</p>
+<pre><code>@socketio.on(&quot;my event&quot;)
+def handle_my_custom_event(json):
+    print &quot;received json: &quot; + str(json)
+    return &quot;one&quot;, 2
+</code></pre><p>In the above exampel, the client callback function will be invoked with two arguments, “one” and 2. If a handler function does not return any values, the client callback function will be invoked without arguments.</p>
+<h2 id="4-发送消息"><a href="#4-发送消息" class="headerlink" title="4. 发送消息"></a>4. 发送消息</h2><p>SocketIO event handlers defined as shown in the previous section can send reply message to the connected client using the <code>send()</code> and <code>emit()</code> functions.</p>
+<ul>
+<li>send() : sends a standard message of string or JSON type to the client.</li>
+<li>emit() : sends a message under a custom event name.</li>
+</ul>
+<h3 id="4-1-working-with-unnamed-and-named-events"><a href="#4-1-working-with-unnamed-and-named-events" class="headerlink" title="4.1 working with unnamed and named events"></a>4.1 working with unnamed and named events</h3><pre><code># 回音壁
+
+from flask_socketio import send, emit
+
+@socketio.on(&quot;message&quot;)
+def handle_messgae(message):
+    send(message)
+
+@socketio.on(&quot;json&quot;)
+def handle_json(json):
+    send(json, json=True)
+
+@socketio.on(&quot;my event&quot;)
+def handle_my_event(json):
+    emit(&quot;my response&quot;, json)
+</code></pre><h3 id="4-2-working-with-namespaces"><a href="#4-2-working-with-namespaces" class="headerlink" title="4.2 working with namespaces."></a>4.2 working with namespaces.</h3><p>By default <code>send()</code> and <code>emit()</code> use the namespace of the incoming message by default. </p>
+<p>A different namespace can be specified with the optional <code>namespace</code> argumenbt.</p>
+<pre><code>@socketio.on(&quot;message&quot;)
+def handler_message(message):
+    send(message, namespace=&quot;/chat&quot;)
+
+
+@socketio.on(&quot;my event&quot;)
+def handler_my_event(json):
+    emit(&apos;my response&apos;, json, namespace=&quot;/chat&quot;)
+
+
+# emit with multiple arguments, send a tuple
+@socketio.on(&quot;my event&quot;)
+def handle_my_event(json):
+    emit(&quot;my response&quot;, (&apos;foo&apos;, &apos;bar&apos;, json), namespace=&quot;/chat&quot;)
+</code></pre><h3 id="4-3-acknowledgement-callback"><a href="#4-3-acknowledgement-callback" class="headerlink" title="4.3 acknowledgement callback"></a>4.3 acknowledgement callback</h3><p>SockIO supports acknowledgement callbacks that confirm that a message war received by the client.</p>
+<pre><code>def ack():
+    print &quot;Message war receiverd&quot;
+
+@socketio.on(&quot;my event&quot;)
+def handle_my_custom_event(json):
+    emit(&quot;My response&quot;, json, callback=ack)
+</code></pre><p>When using callbacks the Javascript client receives a callback function to invoke upon receipt of the message. After the client application invokes the callback function the server invokes the corresponding server-side callback. If the client-side callback returns any values, these are provided as arguments to servier-side callback.</p>
+<p>The client application can also request an acknoledgement callback for an event sent to the server. If the server wants to provide arguments for this callback, it must return them from the event handler function:</p>
+<pre><code>@socketio.on(&quot;My event&quot;)
+def handle_my_custom_event(json):
+    # ... handle the event
+
+    # client callback will reveive these 3 arguments.
+    return &apos;foo&apos;,&apos;bar&apos;, 123     
+</code></pre><h2 id="5-广播-Broadcasting"><a href="#5-广播-Broadcasting" class="headerlink" title="5. 广播: Broadcasting"></a>5. 广播: Broadcasting</h2><p>Flask-SocketIO supports broadcasting with the <code>broadcast=True</code> optional argument to <code>send()</code> and <code>emit()</code></p>
+<pre><code>@socketio.on(&quot;my event&quot;)
+def handle_my_custom_event(data):
+    emit(&quot;my response&quot;, data, broadcast=True)
+</code></pre><p>When a message is sent with the broadcast option enabled, all clients connected  to the namespace receive it, including the sender. When namespaces are not used, the clients connected to the global namespace receive the message. <strong>Note that callbacks are not invoked for broadcast message</strong>.</p>
+<p>In some scenes, the server needs to be the originator of a messag. This can be useful to send notifications to client of events that originated in the server, for example in a background thread. The <code>socketio.send()</code> and <code>socketio.emit()</code> methods can be used to broadcast to all connected clients:</p>
+<pre><code>def some_function():
+    socketio.emit(&quot;Some event&quot;, {&apos;data&apos;: 42})
+</code></pre><p><strong>Note that <code>socketio.send()</code> and <code>socketio.emit()</code> are not the same functions as the context-aware <code>send()</code> and <code>emit()</code></strong></p>
+<h2 id="6-Rooms"><a href="#6-Rooms" class="headerlink" title="6. Rooms"></a>6. Rooms</h2><p>For many applications it is necessary to group users into subsets that can be addressed together. Flask-SocketIO supports this concept of rooms through the <code>join_room()</code> and <code>leave_room()</code> functions.</p>
+<pre><code>from flask_socketio import join_room, leave_room
+
+@socketio.on(&quot;join&quot;)
+def on_join(data):
+    username = data[&quot;username&quot;]
+    room = data[&quot;room&quot;]
+    join_room(room)
+    send(username + &quot; has entered the room.&quot;, room=room)
+
+@socketio.on(&quot;leave&quot;)
+def on_leave(data):
+    username = data[&quot;username&quot;]
+    room = data[&quot;room&quot;]
+    leave_room(room)
+    send(username + &quot; has left the room.&quot;, room=room)
+</code></pre><p>The <code>send()</code> and <code>emit()</code> functions accept an optional <code>room</code> argument that cause the message to be send to all clients that are in the given room.</p>
+<p>All client are assigned a room when they connect , nameed with the session ID of the connection, which can be obtained from <code>request.sid</code>. A givent client can join any rooms, which can be given any names. </p>
+<p>When a client disconnects it is removed from all the rooms it was in. The context-free <code>socketio.send()</code> and <code>socketio.emit()</code> functions also accept a <code>room</code> argument to broadcast to all clients in a room.</p>
+<p>Since all clients are assigned a personal room, to address a message to a single client, the session ID of the client can be used as the room argument.</p>
+<h2 id="7-Connection-Events"><a href="#7-Connection-Events" class="headerlink" title="7. Connection Events"></a>7. Connection Events</h2><p>Flask-SocketIO also dispatches connection and disconnection events. </p>
+<pre><code>@socket.on(&apos;connect&apos;, namespace=&quot;/chat&quot;)
+def test_connect():
+    emit(&quot;my response&quot;, {&apos;data&apos;: 42})
+
+@socketio.on(&quot;disconnect&quot;, namespace=&quot;/chat&quot;)
+def test_disconnect():
+    print &quot;Client disconnected.&quot;
+</code></pre><p>The connection event handler can optionally return <code>False</code> to reject the connection. This is so that the client can be authenticated at this point.</p>
+<p>Note that connection and disconnection events are sent individually on each namespace used.</p>
+<h2 id="8-Error-Handling"><a href="#8-Error-Handling" class="headerlink" title="8. Error Handling"></a>8. Error Handling</h2><p>Flask-SocketIO can also deal with exceptions.</p>
+<p>Error handler functions take the exception object as an argument.</p>
+<pre><code># handles the default namespace
+@socketio.on_error()
+def error_handler(e):
+    pass
+
+# handler the &apos;/chat&apos; namespace
+@socketio.on_error(&quot;/chat&quot;)
+def error_handler_chat(e):
+    pass
+
+# handlers all namespace without an sxplicit error handler
+@socketio.on_error_default
+def default_error_handler(e):
+    pass
+</code></pre><p>The message and data arguments of the current request can also be inspected with the <code>request.event</code> variables, which is useful for error logging and debugging outside the event handler.</p>
+<pre><code>from flask import request
+
+@socketio.on(&quot;my error event&quot;)
+def on_my_event(data):
+    raise RuntimeError()
+
+@socketio.on_error_default
+def default_error_default(e):
+    print request.event[&quot;message&quot;]  # my error event
+    print request.event[&quot;args&quot;]     # (data, )
+</code></pre><h2 id="9-Access-to-Flask’s-Context-Globals"><a href="#9-Access-to-Flask’s-Context-Globals" class="headerlink" title="9. Access to Flask’s Context Globals"></a>9. Access to Flask’s Context Globals</h2><p>All SocketIO events generatred for a client occur in the context of a single long running request.</p>
+<p>Flask-SocketIO 上下文变量与 常规 HTTP 上下文异同</p>
+<ul>
+<li><p>An <strong>application context</strong> is pushed before invoking an event handler making <code>current_app</code> and <code>g</code> available to the handler.</p>
+</li>
+<li><p>A <strong>request context</strong> is also pushed before invoking a handler, also making <code>request</code> and <code>session</code> available. But note that WebSocket events do <strong>not</strong> have individual requests associated with them, so the request context that started the connection is pushed for all the events that are dispatched during the life of the connection.</p>
+</li>
+<li><p><code>request.sid</code> is set to a unique session ID for the connection. This value is used as an initial room where the client is added.</p>
+</li>
+<li><p><code>request.namespace</code> contain the currently handled namespace.</p>
+</li>
+<li><p><code>request.event</code> contain the event arguments , which is a dict with <code>message</code> and <code>args</code> keys.</p>
+</li>
+<li><p>The <code>session</code> context global behaves in a different way than in regular requests. A copy of the user session at the time the SocketIO connettion is established is made available to handlers invoke in the context oif that connection. If a SocketIO handler modifies the session , the modified session will be preserved for future SocketIO handlers, but regular HTTP route handlers will not see these changes. Effectively, when a SocketIO handler modifies the session , a <em>fork</em> of the session is created exclusively for these handlers. The technical reason for this limitation is that to save the user session a cookie needs to be sent to the client, and that requires HTTP request and response, which do not exist in a SocketIO connection. When using server-side sessions such as those provieded by the Flask-Session or Flask-KVSession extensions, changes make to the session in HTTP route handlers can be seen by SocketIO handlers , as long as the session is not modified in the SocketIO handlers.</p>
+</li>
+<li><p>the <code>before_request</code> and <code>after_request</code> hooks are not invoked for SocketIO event handlers.</p>
+</li>
+<li><p>SocketIO handlers can take custom decorators , but most Flask decorators will not be appropriate to use for a SocketIO handler, givent that there is no concept of a <code>Response</code> object during a SocketIO connection.</p>
+</li>
+</ul>
+<h2 id="10-Authentication"><a href="#10-Authentication" class="headerlink" title="10. Authentication"></a>10. Authentication</h2><p>In most cases it is more convenient to perform the traditional authentication process(using web form and HTTP requests) before the SocketIO connection is established . The user’s identify can then be recorded in the user session or in a cookie, and later when the SocketIO connettin is established that informatin will be accessible to SocketIO event handlers.</p>
+<h3 id="10-1-Using-Flask-Login-with-Flask-SocketIO"><a href="#10-1-Using-Flask-Login-with-Flask-SocketIO" class="headerlink" title="10.1 Using Flask-Login with Flask-SocketIO"></a>10.1 Using Flask-Login with Flask-SocketIO</h3><p>Flask-SocketIO can access login information maintained by Flask-Login . After a regular Flask-Login authentication is performed and the <code>login_user()</code> function is called to record the user in the user session, any SocketIO connections will have access to the <code>current_user</code> context variable:</p>
+<pre><code>@socketio.on(&apos;connect&apos;)
+def connect_handler():
+    if current_user.is_authenticated:
+        emit(&quot;My response&quot;, {&apos;message&apos;: &quot;{0} has joined&quot;.format(current_user.name)}, broadcast=True)
+
+    else:
+        return False    # not allowed here
+</code></pre><p><strong>Note that the login_required decorator cannot be used with SocketIO event handlers</strong>, but a custom decorator that disconnects non-authticated users can be created as follow:</p>
+<pre><code>import functools
+from flask import request
+from flask_login import current_user
+from flask_socketio import disconnect
+
+def authenticated_only(f):
+    @functools.wraps(f)
+    def wrapped(*args, **kwargs):
+        if not current_user.is_authenticated:
+            disconnect()
+        else:
+            return f(*args, **kwargs)
+
+    return wrapped
+
+@socketio.on(&apos;my event&apos;)
+@authenticated_only
+def handle_my_custom_event(data):
+    emit(&quot;my response&quot;, {&apos;message&apos;: &quot;{0} has joined&quot;.format(current_user.name)}, broadcast=True)
+</code></pre><h2 id="11-Deployment"><a href="#11-Deployment" class="headerlink" title="11. Deployment"></a>11. Deployment</h2><h3 id="11-1-Embedded-Server"><a href="#11-1-Embedded-Server" class="headerlink" title="11.1 Embedded Server"></a>11.1 Embedded Server</h3><p>The simplest deployment strategy is to have eventlet or gevent installed, and start the web server by calling socketio.run(app) as shown in examples above. This will run the application on the eventlet or gevent web servers, whichever is installed.</p>
+<p>Note that socketio.run(app) runs a production ready server <strong>when eventlet or gevent are installed</strong>. If neither of these are installed, then the application runs on Flask’s development web server, which is not appropriate for production use.</p>
+<p>Unfortunately this option is <strong>not available</strong> when using gevent with uWSGI. See the uWSGI section below for information on this option.</p>
+<h3 id="11-2-Gunicorn-Web-Server"><a href="#11-2-Gunicorn-Web-Server" class="headerlink" title="11.2 Gunicorn Web Server"></a>11.2 Gunicorn Web Server</h3><p><strong>module</strong> is the Python module or package that defines the application instance, and <strong>app</strong> is the application instance itself.   </p>
+<pre><code># start eventlet server via gunicorn
+$ gunicorn --worker-class eventlet -w 1 module:app
+
+# use gevent
+$ gunicorn -k gevent -w 1 module:app
+</code></pre><h3 id="11-3-uWSGI-Web-Server"><a href="#11-3-uWSGI-Web-Server" class="headerlink" title="11.3 uWSGI Web Server"></a>11.3 uWSGI Web Server</h3><p>When using the uWSGI server in combination with gevent , the SocketIO server can take advantage if uWSGI’s native WebSocket support.</p>
+<pre><code>$ uwsgi --http :5000 --gevent 1000 --http-websockets --master --wsgi-file app.py --callable app
+</code></pre><h3 id="11-4-Using-nginx-as-a-WebSocket-Reverse-Proxy"><a href="#11-4-Using-nginx-as-a-WebSocket-Reverse-Proxy" class="headerlink" title="11.4 Using nginx as a WebSocket Reverse Proxy"></a>11.4 Using nginx as a WebSocket Reverse Proxy</h3><p>Only releases of nginx 1.4 and newer support proxying of the WebSocket protocol.</p>
+<pre><code># single WebSocket service
+server {
+
+    listen 80;
+    server_name _;
+
+    locatioin / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000;
+    }
+
+    location /socket.io {
+        include proxy_params;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;Upgrade&quot;;
+        proxy_pass http://127.0.0.1:5000/socket.io;
+    }
+}
+
+# multi WebSocket service
+upstream socketio_nodes {
+    ip_hash;
+
+    server 127.0.0.1:5000;
+    server 127.0.0.1:5001;
+    server 127.0.0.1:5002;
+    # to scale the app, just add more nodes here!
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:5000;
+    }
+
+    location /socket.io {
+        include proxy_params;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;Upgrade&quot;;
+        proxy_pass http://socketio_nodes/socket.io;
+    }
+}
+</code></pre><h3 id="11-5-Using-Multiple-Workers"><a href="#11-5-Using-Multiple-Workers" class="headerlink" title="11.5 Using Multiple Workers"></a>11.5 Using Multiple Workers</h3><p>Flask-SocketIO supports multiple workers behind a load balancer starting with release 2.0.</p>
+<p>Deploying multiple workers gives applications that use Flask-SocketIO the ability to spread the client connections among multiple processes and hosts, and in this way scale to support very large numbers of concurrent clients.</p>
+<p><strong>Requirements</strong></p>
+<ul>
+<li><p>The LB must be configured to forward all HTTP request from a given client always to the worker. This is sometimes referenced as <strong>sticky sessions</strong>. For nginx , use the ip_hash directive to archieve this. Gunicorn cannot be used with multiple workers because its LB algorithm does not support sticky session.</p>
+<pre><code>$ pip install redis
+</code></pre></li>
+<li><p>Since each of the servers owns only a subset of the client connections , a message queue such as Redis or RabbitMQ is used by the servers to coordinate complex operations such as broadcasting and rooms.</p>
+<pre><code>$ pip install kombu
+</code></pre></li>
+<li><p>If eventlet or gevent are used , then monkey patching the Python standard library is normally required to force the message queue package to use coroutine friendly functions and classes.</p>
+</li>
+</ul>
+<p><strong>Useage</strong></p>
+<pre><code>socketio = SocketIO(app, message_queue=&apos;redis://&apos;)
+</code></pre><h3 id="11-6-Emitting-from-an-External-Process"><a href="#11-6-Emitting-from-an-External-Process" class="headerlink" title="11.6 Emitting from an External Process"></a>11.6 Emitting from an External Process</h3><p>For many types of applications, it is necessary to emit events from a process that is not the SocketIO server, for a example a Celery worker. If the SocketIO server or servers are configured to listen on a message queue as shown in the previous section, then any other process can create its own SocketIO instance and use it to emit events in the same way the server does.</p>
+<p>For example, for an application that runs on an eventlet web server and uses a Redis message queue, the following Python script broadcasts an event to all clients:</p>
+<pre><code>socketio = SocketIO(message_queue=&apos;redis://&apos;)
+socketio.emit(&apos;my event&apos;, {&apos;data&apos;: &apos;foo&apos;}, namespace=&apos;/test&apos;)
+</code></pre><p>When using the SocketIO instance in this way, the Flask application instance is not passed to the constructor.</p>
+<p>The channel argument to SocketIO can be used to select a specific channel of communication through the message queue. Using a custom channel name is necessary when there are multiple independent SocketIO services sharing the same queue.</p>
+<p>Flask-SocketIO does not apply monkey patching when eventlet or gevent are used. But when working with a message queue, it is very likely that the Python package that talks to the message queue service will hang if the Python standard library is not monkey patched.</p>
+<p>It is important to note that an external process that wants to connect to a SocketIO server does not need to use eventlet or gevent like the main server. Having a server use a coroutine framework, while an external process does not is not a problem. For example, Celery workers do not need to be configured to use eventlet or gevent just because the main server does. But if your external process does use a coroutine framework for whatever reason, then monkey patching is likely required, so that the message queue accesses coroutine friendly functions and classes.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+            <a href="/tags/Flask-扩展/" rel="tag"># Flask 扩展</a>
+          
+            <a href="/tags/socketio/" rel="tag"># socketio</a>
+          
+            <a href="/tags/websocket/" rel="tag"># websocket</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/python-pyecharts-文档笔记/" rel="next" title="python-pyecharts-文档笔记">
+                <i class="fa fa-chevron-left"></i> python-pyecharts-文档笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/flaskExt--flask-sse/" rel="prev" title="Flask 扩展之--flask-sse">
+                Flask 扩展之--flask-sse <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-WebSocket-协议"><span class="nav-text">一. WebSocket 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-WebSocket-API"><span class="nav-text">1. WebSocket API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-代码示例"><span class="nav-text">1.1 代码示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-WS-与-WSS"><span class="nav-text">1.2 WS 与 WSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-接收文本和二进制数据"><span class="nav-text">1.3 接收文本和二进制数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-发送文本和二进制数据"><span class="nav-text">1.4 发送文本和二进制数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-子协议协商"><span class="nav-text">1.5 子协议协商</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-1-子协议协商实现策略"><span class="nav-text">1.5.1 子协议协商实现策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-2-子协议协商API"><span class="nav-text">1.5.2 子协议协商API</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-WebSocket-协议"><span class="nav-text">2. WebSocket 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-二进制分帧"><span class="nav-text">2.1 二进制分帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-协议扩展"><span class="nav-text">2.2 协议扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-HTTP-协议-握手-协商"><span class="nav-text">2.3 HTTP 协议(握手)协商</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-可用-HTTP-首部"><span class="nav-text">2.3.1 可用 HTTP 首部</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-性能检查表"><span class="nav-text">3. 性能检查表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-Flask-socketio"><span class="nav-text">二. Flask-socketio</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-初始化"><span class="nav-text">1. 初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-socketio-handler-function"><span class="nav-text">2. socketio handler function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-装饰器模式"><span class="nav-text">2.1 装饰器模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-on-event-方法"><span class="nav-text">2.2 on_event() 方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-接受消息"><span class="nav-text">3. 接受消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-unnamed-events"><span class="nav-text">3.1 unnamed events</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-String-date"><span class="nav-text">3.1.1 String date</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-JSON-data"><span class="nav-text">3.1.2 JSON data</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Custom-Names-events"><span class="nav-text">3.2 Custom Names events</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-SocketIO-namespaces"><span class="nav-text">3.3 SocketIO namespaces</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-Decorator-Based-Namespace"><span class="nav-text">3.3.1 Decorator-Based Namespace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-Class-Based-Namespaces"><span class="nav-text">3.3.2 Class-Based Namespaces</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-return-amp-amp-client-callback-function"><span class="nav-text">3.4 return &amp;&amp; client callback function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-发送消息"><span class="nav-text">4. 发送消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-working-with-unnamed-and-named-events"><span class="nav-text">4.1 working with unnamed and named events</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-working-with-namespaces"><span class="nav-text">4.2 working with namespaces.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-acknowledgement-callback"><span class="nav-text">4.3 acknowledgement callback</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-广播-Broadcasting"><span class="nav-text">5. 广播: Broadcasting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Rooms"><span class="nav-text">6. Rooms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Connection-Events"><span class="nav-text">7. Connection Events</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Error-Handling"><span class="nav-text">8. Error Handling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Access-to-Flask’s-Context-Globals"><span class="nav-text">9. Access to Flask’s Context Globals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Authentication"><span class="nav-text">10. Authentication</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-Using-Flask-Login-with-Flask-SocketIO"><span class="nav-text">10.1 Using Flask-Login with Flask-SocketIO</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Deployment"><span class="nav-text">11. Deployment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1-Embedded-Server"><span class="nav-text">11.1 Embedded Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-Gunicorn-Web-Server"><span class="nav-text">11.2 Gunicorn Web Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3-uWSGI-Web-Server"><span class="nav-text">11.3 uWSGI Web Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-4-Using-nginx-as-a-WebSocket-Reverse-Proxy"><span class="nav-text">11.4 Using nginx as a WebSocket Reverse Proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-5-Using-Multiple-Workers"><span class="nav-text">11.5 Using Multiple Workers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-6-Emitting-from-an-External-Process"><span class="nav-text">11.6 Emitting from an External Process</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

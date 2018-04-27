@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web development,Flask," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Flask是一个简洁的 Python_web 框架.  零. virtualenv 虚拟环境配置.$ easy_install pip $ pip install virtualenv $ virtualenv venv        # 创建名称为 venv 的虚拟环境 $ source venv/bin/active     # 进入 venv 虚拟环境 (venv) $ pip instal">
+<meta name="keywords" content="web development,Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask-学习总结">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/14/flask-学习总结/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="Flask是一个简洁的 Python_web 框架.  零. virtualenv 虚拟环境配置.$ easy_install pip $ pip install virtualenv $ virtualenv venv        # 创建名称为 venv 的虚拟环境 $ source venv/bin/active     # 进入 venv 虚拟环境 (venv) $ pip instal">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-01T08:19:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask-学习总结">
+<meta name="twitter:description" content="Flask是一个简洁的 Python_web 框架.  零. virtualenv 虚拟环境配置.$ easy_install pip $ pip install virtualenv $ virtualenv venv        # 创建名称为 venv 的虚拟环境 $ source venv/bin/active     # 进入 venv 虚拟环境 (venv) $ pip instal">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/14/flask-学习总结/"/>
+
+
+
+
+
+  <title>Flask-学习总结 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/14/flask-学习总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Flask-学习总结</h2>
+        
+
+        <div class="post-meta">
+	  
+            <font color=7D26CD>[置顶]</font>
+            <span class="post-meta-divider">|</span>
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T23:27:11+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Flask是一个简洁的 Python_web 框架. </p>
+<h2 id="零-virtualenv-虚拟环境配置"><a href="#零-virtualenv-虚拟环境配置" class="headerlink" title="零. virtualenv 虚拟环境配置."></a>零. virtualenv 虚拟环境配置.</h2><pre><code>$ easy_install pip
+$ pip install virtualenv
+$ virtualenv venv        # 创建名称为 venv 的虚拟环境
+$ source venv/bin/active     # 进入 venv 虚拟环境
+(venv) $ pip install flask   # 在虚拟环境中安装 flask 包
+(venv) $ deactivate          # 从虚拟环境退出
+</code></pre><h2 id="一-基本配置"><a href="#一-基本配置" class="headerlink" title="一. 基本配置"></a>一. 基本配置</h2><h3 id="1-创建并启动程序实例"><a href="#1-创建并启动程序实例" class="headerlink" title="1. 创建并启动程序实例"></a>1. 创建并启动程序实例</h3><p>示例 :</p>
+<pre><code>from flask import Flask
+app = Flask(__name__)       # Flask 类的构造函数只有一个必须制定的参数, 即程序主模块或包的名字. 
+
+# route here
+
+if __name__ == &quot;__main__&quot;:      # 程序启动后进入轮训, 等待并处理请求.
+    app.run(debug=True)         # 启动服务器,并启用调试模式, 激活调试器和重载程序.
+</code></pre><h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h3><p>app.config 字典用来存储框架, 扩展和程序本身的配置变量. 使用标准的字典语法就可把配置值添加到 app.config 对象中. </p>
+<p>示例代码 : </p>
+<pre><code>from flask import Flask
+app = Flask(app)
+app.config[&quot;SECRET_KEY&quot;] = &quot;hard to guess string&quot;
+</code></pre><p>该对象还提供了一些其他方法, 可以从文件或环境中导入配置值.</p>
+<h3 id="3-路由-装饰器-视图函数"><a href="#3-路由-装饰器-视图函数" class="headerlink" title="3. 路由 = 装饰器 + 视图函数."></a>3. 路由 = 装饰器 + 视图函数.</h3><p>处理URL 和 视图函数 之间映射关系的程序成为路由.</p>
+<p>1.<em>生成路由映射</em></p>
+<pre><code>1. app.route 装饰器
+    最简单方式是使用 app.route 装饰器.
+
+    示例代码 : 
+
+        @app.route(&quot;/&quot;, methods=[&quot;GET&quot;, &quot;POST&quot;])    # methods 为请求方法.
+        def index():             # 视图函数.
+            return &quot;&lt;h1&gt;Hello World&lt;/h1&gt;&quot;
+
+        @app.route(&quot;/user/&lt;name&gt;&quot;)      # 尖括号中的就是动态内容, 任何能匹配静态部分的 URL 都会映射到这个路由上. 调用视图函数时, Flaks 会将动态部分作为参数传入函数.
+        def user(name):
+            return &quot;&lt;h1&gt;Hello , %s&lt;/h1&gt;&quot; % name
+
+    动态视图函数类型定义 : 
+
+        int : 匹配动态片id 为整数的 URL. `/user/&lt;ind:id&gt;`
+        float : 浮点数
+        path : path 类型也是字符串, 但不把斜线视作分隔符, 而将其视为动态片段的一部分. `/user/&lt;path:dir_path&gt;`        
+
+2. app.add_url_rule()
+
+3. app.errorhandler() 错误页面
+
+    示例代码 : 
+
+        @app.errorhandler(404)
+        def page_not_found(e):
+            return render_template(&apos;404.html&apos;), 404
+
+        @app.errorhandler(500)
+        def internal_server_error(e):
+            return render_template(&apos;500.html&apos;), 500
+</code></pre><p>2.<em>查看路由映射</em></p>
+<pre><code>&gt;&gt; from hello import app
+&gt;&gt; app.url_map
+    Map([&lt;Rule &apos;/&apos; (HEAD, POST, OPTIONS, GET) -&gt; main.index&gt;,
+     &lt;Rule &apos;/static/bootstrap/&lt;filename&gt;&apos; (HEAD, OPTIONS, GET) -&gt; bootstrap.static&gt;,
+     &lt;Rule &apos;/static/&lt;filename&gt;&apos; (HEAD, OPTIONS, GET) -&gt; static&gt;])    
+</code></pre><h2 id="二-请求-响应模型"><a href="#二-请求-响应模型" class="headerlink" title="二. 请求-响应模型."></a>二. 请求-响应模型.</h2><p>HTTP 协议的基本模型即 <strong>请求 <---> 响应</---></strong>.</p>
+<h3 id="1-上下文"><a href="#1-上下文" class="headerlink" title="1. 上下文"></a>1. 上下文</h3><p>Flask 使用上下文, 让特定的变量在一个线程中全局可访问, 而不会干扰其他线程.</p>
+<p>Flask 中的上下文包含 <strong>程序上下文</strong> 和 <strong>请求上下文</strong> . </p>
+<p>Flask 在分发请求之前激活(或推送)程序和请求上下文, 请求处理完成后将其删除. </p>
+<p>程序上下文本推送后, 就可以在线程中使用 current_app 和 g 变量. 请求上下文本推送后, 就可以使用 request 和 session 变量. </p>
+<p>如果使用这些变量时, 没有激活程序上下文或请求上下文, 就会导致错误.</p>
+<p><strong>很多 Flask 扩展都假设已经存在激活的程序上下文和请求上下文, 所以 使用不同线程执行 Flask 扩展时, 需要手动激活上下文.</strong></p>
+<p><em>1. 程序上下文</em></p>
+<table>
+<thead>
+<tr>
+<th>变量名称</th>
+<th>上下文</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>current_app</td>
+<td>程序上下文</td>
+<td>当前激活程序的程序实例</td>
+</tr>
+<tr>
+<td>g</td>
+<td>程序上下文</td>
+<td>处理请求时做临时存储的对象. 每次请求都会重设这个变量</td>
+</tr>
+</tbody>
+</table>
+<p><em>2. 请求上下文</em></p>
+<table>
+<thead>
+<tr>
+<th>变量名称</th>
+<th>上下文</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>request</td>
+<td>请求上下文</td>
+<td>请求对象, 封装了客户端发出的 HTTP 请求中的内容</td>
+</tr>
+<tr>
+<td>session</td>
+<td>请求上下文</td>
+<td>用户会话, 用于存储请求之间需要 “记住” 的值的字典</td>
+</tr>
+</tbody>
+</table>
+<p>示例 : 在视图函数中使用上下文</p>
+<pre><code>from flask import request
+
+@app.route(&apos;/&apos;)
+def index():
+    user_agent = request.headers.get(&quot;User-Agent&quot;)
+    return &quot;&lt;p&gt;Your browser is  %s&lt;/p&gt;&quot; % user_agent
+</code></pre><p>示例 : 在 shell 中使用上下文(手动推送上下文). </p>
+<pre><code>&gt;&gt; from hello import app  # hello 为程序主文件
+&gt;&gt; from flask import current_app
+&gt;&gt; current_app.name                 # 未激活程序上下文就调用 current_app 导致错误.
+    Traceback (most recent call last):
+    ...
+    RuntimeError : working outside of application context.
+&gt;&gt; app_ctx = app.app_context()      # 获取程序上下文
+&gt;&gt; app_ctx.push()                   # 推送上下文
+&gt;&gt; current_app.name
+    &quot;hello&quot;
+</code></pre><h3 id="2-请求钩子-注册通用函数"><a href="#2-请求钩子-注册通用函数" class="headerlink" title="2. 请求钩子(注册通用函数)"></a>2. 请求钩子(注册通用函数)</h3><p>Flask 提供了注册通用函数的功能, 注册的函数可在请求被分发到视图函数之前或之后调用.</p>
+<table>
+<thead>
+<tr>
+<th>请求钩子函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>before_first_request</td>
+<td>注册一个函数, 在处理第一个请求之前运行.</td>
+</tr>
+<tr>
+<td>before_request</td>
+<td>注册一个函数, 在每次请求之前运行.</td>
+</tr>
+<tr>
+<td>after_request</td>
+<td>注册一个函数, 如果没有未处理的异常抛出, 在每次请求之后运行.</td>
+</tr>
+<tr>
+<td>teardown_request</td>
+<td>注册一个函数, 即使有未处理的异常抛出, 在每次请求之后运行.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>在请求钩子函数和视图函数之间共享数据, 一般使用上下文全局变量 g .</strong></p>
+<p>before_request 钩子在应用到蓝本时, 只能对应到针对蓝本的请求上; 如想在蓝本中使用针对程序全局请求的钩子, 必须使用 before_app_request .</p>
+<p>示例代码 :</p>
+<pre><code>@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated() and not current_user.confirmed and \
+                    request.endpoint[:5] != &apos;auth.&apos; and \
+                    request.endpoint != &apos;static&apos;:
+        return redirect(url_for(&quot;auth.unconfirmed&quot;))
+</code></pre><h3 id="3-响应-响应内容-响应码-响应首部"><a href="#3-响应-响应内容-响应码-响应首部" class="headerlink" title="3. 响应 : 响应内容, 响应码, 响应首部."></a>3. 响应 : 响应内容, 响应码, 响应首部.</h3><p>Flask 返回响应有 4 种方式:</p>
+<ol>
+<li><p>return : 在视图函数中返回响应.</p>
+<p> return “响应内容或模板”, 响应码, {响应首部字典}</p>
+</li>
+<li><p>Response 对象 : flaks.make_response() </p>
+<p> make_response() 函数接受 1个, 2个, 或 3个参数, 并返回一个 Response 对象.</p>
+<p> 示例代码 :</p>
+<pre><code>from flask import make_response
+
+@app.route(&quot;/&quot;)
+def index():
+    response = make_response(&quot;&lt;p&gt;This Document carries a cookie !&lt;/p&gt;&quot;)
+    response.set_cookie(&quot;answer&quot;, &quot;42&quot;)
+    return response
+</code></pre></li>
+<li><p>重定向 .</p>
+<p> 重定向是一种特殊的响应类型, 这种响应没有页面文档, 只会告诉浏览器一个新地址, 浏览器在得到新地址之后, 自动重新请求加载新地址.</p>
+<p> 重定向可以使用 3个 值形式的返回值生成, 可在 Response 对象中设定. 但是 Flask 提供了 redirect() 辅助函数, 用于生成这种响应.</p>
+<p> 示例代码 : </p>
+<pre><code>from flask import redirect
+
+@app.route(&quot;/&quot;)
+def index():
+    return redirect(&quot;http://www.example.com&quot;)
+</code></pre></li>
+<li><p>abort() : </p>
+<p> abort() 处理错误. </p>
+<p> 示例代码 : </p>
+<pre><code>from flask import abort
+
+@app.route(&quot;/user/&lt;id&gt;&quot;)
+def get_user(id):
+    user = load_user(id)
+    if not user:
+        abort(404)
+    return &quot;&lt;h1&gt;Hello , %s !&lt;/h1&gt;&quot; % user.name
+</code></pre><p> <strong>注意 : abort 不会把控制权交给调用它的函数, 而是抛出异常把控制权交给 web 服务器.</strong></p>
+</li>
+</ol>
+<h2 id="三-大型程序组织结构"><a href="#三-大型程序组织结构" class="headerlink" title="三. 大型程序组织结构"></a>三. 大型程序组织结构</h2><p>Flaks 并不强制要求大型项目使用特定的组织方式, 程序的结构组织方式完全有开发者自己决定. </p>
+<h3 id="1-项目结构示例"><a href="#1-项目结构示例" class="headerlink" title="1. 项目结构示例"></a>1. 项目结构示例</h3><pre><code>├── app
+│   ├── __init__.py
+│   ├── email.py
+│   ├── models.py
+│   ├── main /
+│   │   ├── __init__.py
+│   │   ├── errors.py
+│   │   ├── forms.py
+│   │   ├── views.py
+│   ├── static / 
+│   └── templates / 
+├── config.py
+├── manage.py
+├── venv /
+├── migrations /
+├── requirements.txt
+└── tests /
+    ├── __init__.py
+    ├── test_*.py
+
+文件夹类 : 
+    app : Flask 程序
+    migrations : 数据库迁移脚本
+    tests : 单元测试脚本
+    venv : 虚拟环境
+
+文件类 : 
+    requirements.txt : 程序依赖包
+    config.py  : 存储配置
+    manage.py : 启动脚本及程序任务.
+</code></pre><h3 id="2-配置选项-层次的配置类"><a href="#2-配置选项-层次的配置类" class="headerlink" title="2. 配置选项 : 层次的配置类."></a>2. 配置选项 : 层次的配置类.</h3><pre><code>import os
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+class Config:
+    SECRET_KEY = os.environ.get(&apos;SECRET_KEY&apos;) or &apos;hard to guess string&apos;
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+
+    FLASKY_MAIL_SUBJECT_PREFIX = &apos;[Flasky]&apos;
+    FLASKY_MAIL_SENDER = &apos;Flasky Admin &lt;flasky@example.com&gt;&apos;
+    FLASKY_ADMIN = os.environ.get(&apos;FLASKY_ADMIN&apos;)
+
+    @staticmethod
+    def init_app(app):
+        pass
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+    MAIL_SERVER = &apos;smtp.googlemail.com&apos;
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get(&apos;MAIL_USERNAME&apos;)
+    MAIL_PASSWORD = os.environ.get(&apos;MAIL_PASSWORD&apos;)
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get(&apos;DEV_DATABASE_URL&apos;) or \
+        &apos;sqlite:///&apos; + os.path.join(basedir, &apos;data-dev.sqlite&apos;)
+
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get(&apos;TEST_DATABASE_URL&apos;) or \
+        &apos;sqlite:///&apos; + os.path.join(basedir, &apos;data-test.sqlite&apos;)
+
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get(&apos;DATABASE_URL&apos;) or \
+        &apos;sqlite:///&apos; + os.path.join(basedir, &apos;data.sqlite&apos;)
+
+config = {
+    &apos;development&apos;: DevelopmentConfig,
+    &apos;testing&apos;: TestingConfig,
+    &apos;production&apos;: ProductionConfig,
+
+    &apos;default&apos;: DevelopmentConfig
+}
+</code></pre><p>基类 Config 中包含通用配置, 子类分别定义专用的配置. 如果需要还可以添加其他的配置类.</p>
+<p>配置类可以定义 init_app() 类方法, 其参数是程序实例. 在这个方法中, 可以执行对当前环境的配置初始化. 现在 , 基类 Confifg 中的 init_app() 方法为空.</p>
+<p>config 字典中注册了不同的配置环境, 而且还注册了一个默认配置(开发环境).</p>
+<h3 id="3-程序包"><a href="#3-程序包" class="headerlink" title="3. 程序包"></a>3. 程序包</h3><p>程序包用来保存程序的所有代码,模板和静态文件. </p>
+<h4 id="1-程序工厂函数"><a href="#1-程序工厂函数" class="headerlink" title="1) 程序工厂函数"></a>1) 程序工厂函数</h4><p>在单个文件中开发程序很方便, 但却有个很大的缺点, 因为程序在全局作用域中创建, 所以无法动态修改配置. 运行脚本时, 程序实例已经创建完毕, 再修改配置为时已晚. 这一点对单元测试尤其重要, 因为有事为了提高测试覆盖度, 必须在不同的配置环境中运行程序.</p>
+<p>解决办法就是 : 延迟创建程序实例, 把创建过程移到可现实调用的工厂函数中. 这种方法不仅可以给脚本流出配置程序的时间, 还能够创建多个程序实例, 这些实例有时在测试中非常有用.</p>
+<p>构造文件示例 : </p>
+<pre><code># app/__init__.py
+
+from flask import Flask
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
+from flask_mail import Mail
+from flask_sqlalchemy import SQLAlchemy
+
+from config import config
+
+bootstrap = Bootstrap()
+mail = Mail()
+moment = Moment()
+db = SQLAlchemy()
+
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
+
+    bootstrap.init_app(app)
+    mail.init_app(app)
+    moment.init_app(app)
+    db.init_app(app)
+
+    # 附加路由和自定义的错误页面
+
+    return app
+</code></pre><p>构造文件导入了大多数正在使用的 Flask 扩展. 由于尚未初始化所需的程序实例, 所以没有初始化扩展, 创建扩展类时, 没有向构造函数传入参数. </p>
+<p>create_app() 函数就是程序的工厂函数, 接受一个 参数, 就是程序使用的配置名称. 配置类在 config.py 文件中定义, 其中保存的配置可以使用 Flaks app.config 配置对象提供的 from_object() 方法直接导入程序. 至于配置对象, 则可以通过名字从 config 字典中选择. 程序创建并配置好后, 就能初始化扩展了. 在之前创建的扩展对象上调用 init_app() 可以完成初始化过程.</p>
+<p>工厂函数返回创建的程序示例, 不过,现在工厂函数创建的程序还不完整, 因为没有路由和自定义的错误页面处理程序.</p>
+<h4 id="2-蓝本"><a href="#2-蓝本" class="headerlink" title="2) 蓝本"></a>2) 蓝本</h4><p>转换成程序工厂函数的操作让定义路由变复杂了. 在当脚本程序中, 程序实例存在于全局作用域中, 路由可以直接使用 app.route 装饰器定义. 但现在程序在运行时创建, 只有调用 create_app() 之后才能使用 app.route 装饰器, 这是定义路由就太晚了. 错误页面处理程序使用 app.errorhandler 装饰器, 也面临同样的困难.</p>
+<p>解决方法 : <strong>蓝本</strong></p>
+<ol>
+<li><p>创建蓝本</p>
+<p> 蓝本中可以定义路由, 不同的是, 在蓝本中定义的路由处于休眠状态, 直到蓝本注册到程序上后, 路由才真正成为程序的一部分. 使用位于全局作用域中的蓝本时, 定义路由的方法几乎和单脚本程序一样.</p>
+<p> 蓝本可以在单个文件中定义, 也可使用更结构化的方式在包中的多个模块中创建.</p>
+<p> 为了获取更大的灵活性, 程序包中创建了一个子包, 用于保存蓝本.</p>
+<p> 示例 : </p>
+<pre><code># app/main/__init__.py
+
+from flask import Blueprint     
+
+main = Blueprint(&apos;main&apos;, __name__)    # 通过实例化一个 Blueprint 类对象创建蓝本, 该构造函数必须制定两个参数 : 蓝本名称 , 蓝本所在的包或模块(__name__即可).
+
+from . import views, errors     # views 模块保存程序路由, errors 模块保存页面错误处理程序. 导入这两个模块,可以路由和错误处理程序与蓝本关联起来.
+
+** views 和 errors 在 __init__.py 脚本的末尾导入, 是为了避免循环导入依赖 ,因为在 两个模块中, 还有导入 蓝本 main.
+</code></pre></li>
+<li><p>注册蓝本</p>
+<p> 蓝本在 工厂函数 create_app() 中注册到程序上.</p>
+<p> 示例 :</p>
+<pre><code># app/__init__.py
+
+#... 
+from .main import main as main_blueprint
+app.register_blueprint(main_blueprint)
+
+from .auth import auth as auth_blueprint
+app.register_blueprint(auth_blueprint, url_prefix=&quot;/auth&quot;)         # url_prefix 使得蓝本中定义的路由都会加上指定前缀.
+
+return app
+</code></pre></li>
+</ol>
+<ol>
+<li><p>蓝本中的错误处理程序</p>
+<p> 在蓝本中编写错误处理程序, 如果使用 errorhandler 装饰器, 那么只有蓝本中的错误才能触发处理程序; 要想注册程序全局的错误处理程序, 必须使用 app_errorhandler .</p>
+<p> 示例 : </p>
+<pre><code># app/main/errors.py
+
+from flask import render_template
+from . import main
+
+@main.app_errorhandler(404)
+def page_not_fount(e):
+    return render_template(&apos;404.html&apos;), 404
+
+@main.app_errorhandler(500)
+def page_not_fount(e):
+    return render_template(&apos;500.html&apos;), 500
+</code></pre></li>
+<li><p>蓝本中的路由程序</p>
+<p> 蓝本中的视图函数,与单脚本中的视图函数有两点不同: </p>
+<ul>
+<li>路由装饰器由蓝本提供.</li>
+<li><p>url_for() 的用法不同. 需要加上蓝本的名字. 如下 :</p>
+<pre><code>url_for(&apos;main.index&apos;)   # 全局通用
+url_for(&apos;.index&apos;)       # 简写形式, 只在当前蓝本中使用.
+</code></pre><p>flask 为蓝本中的全部断点加上了一个<strong>命名空间</strong>, 这样在不同蓝本中使用相同的端点名称定义视图函数, 就不会产生冲突了. 命令空间的名称就是蓝本的名称. 这也是 url_for() 写法不同的原因.</p>
+<pre><code># app/main/views.py
+from datetime import datetime
+from flask import render_template, session, redirect, url_for
+
+from . import main
+from .forms import NameForm
+from .. import db
+from ..models import User
+
+@main.route(&quot;/&quot;, methods=[&quot;GET&quot;, &quot;POST&quot;])
+def index():
+    form = NameForm()
+
+    if form.validate_on_submit():
+        # ...
+        return redirect(url_for(&quot;.index&quot;))
+    return render_template(&quot;index.html&quot;,
+                        current_time=datetime.utcnow(),
+                        form=form,
+                        name=session.get(&quot;name&quot;),
+                        known=session.get(&quot;known&quot;))
+</code></pre></li>
+</ul>
+</li>
+</ol>
+<h3 id="4-启动脚本"><a href="#4-启动脚本" class="headerlink" title="4. 启动脚本"></a>4. 启动脚本</h3><p>顶级文件夹中的 manage.py 用于启动程序.</p>
+<p>示例 : </p>
+<pre><code># manage.py
+
+import os
+from app import create_app, db
+from app.models import User, Role
+from flask_script import Manager, Shell
+from flask_migrate import Migrate, MigrateCommand
+
+app = create_app(os.getenv(&quot;FLASK_CONFIG&quot; or &quot;default&quot;))    # 创建程序.
+manager = Manager(app)      # 初始化 Flask-Script
+migrate = Migrate(app, db)  # 初始化 Flask-Migrate
+
+
+def make_shell_context():
+    return dict(app=app, db=db, Role=Role, User=User)
+
+manager.add_command(&quot;shell&quot;, Shell(make_context=make_shell_context))
+manager.add_command(&quot;db&quot;, MigrateCommand)
+
+if __name__ == &quot;__main__&quot;:
+    manager.run()
+</code></pre><h3 id="5-需求文件"><a href="#5-需求文件" class="headerlink" title="5. 需求文件"></a>5. 需求文件</h3><p>生成需求文件 : </p>
+<pre><code>$ pip freeze &gt; requirements.txt
+</code></pre><p>依据需求文件创建新的虚拟环境 :</p>
+<pre><code>$ pip install -r requirements.txt
+</code></pre><p><strong>配置文件的导入包含</strong>一般在开发环境中, 可以将 requirements.txt 文件替换为 requirements 文件夹, 其中包含不同环境的配置文件 : </p>
+<pre><code>common.txt   # 基础包
+prod.txt     # 生产专用包
+demo.txt     # 测试专用包
+</code></pre><p>其中 prod.txt 和 demo.txt 可以从 common.txt 中导入, 而无需重复包名, 格式如下:</p>
+<pre><code>$ cat demo.txt
+  -r common.txt
+  ForgerPy==0.1
+</code></pre><h3 id="6-创建数据库"><a href="#6-创建数据库" class="headerlink" title="6. 创建数据库"></a>6. 创建数据库</h3><p>要在新数据库中创建数据表。如果使用 Flask-Migrate 跟踪迁移，可使用如下命令创建数据表或者升级到最新修订版本：</p>
+<pre><code>$ python manage.py shell
+    &gt; db.create_all()
+$ python manage.py db upgrade
+</code></pre><h2 id="四-Flask-模板"><a href="#四-Flask-模板" class="headerlink" title="四. Flask 模板"></a>四. Flask 模板</h2><h3 id="1-Jinja2"><a href="#1-Jinja2" class="headerlink" title="1. Jinja2"></a>1. Jinja2</h3><h3 id="2-Mako"><a href="#2-Mako" class="headerlink" title="2. Mako"></a>2. Mako</h3><h2 id="五-Flask-其他"><a href="#五-Flask-其他" class="headerlink" title="五. Flask 其他"></a>五. Flask 其他</h2><h3 id="1-url-for"><a href="#1-url-for" class="headerlink" title="1. url_for()"></a>1. url_for()</h3><p>url_for() 辅助函数 : 使用程序 URL 映射中保存的信息, 生成 URL. 可用于 视图函数中, 或者 Jinja2 模板中.</p>
+<ol>
+<li><p>相对地址</p>
+<p> url_for(view_func)</p>
+<p> 示例 :</p>
+<pre><code>url_for(&apos;index&apos;)    
+</code></pre></li>
+<li><p>绝对地址</p>
+<pre><code>url_for(view_func, exterual=True)
+</code></pre></li>
+<li><p>动态地址</p>
+<pre><code>url_for(view_func, key=value)
+</code></pre></li>
+<li><p>动态参数</p>
+<pre><code>url_for(view_func, page=2)
+</code></pre></li>
+<li><p>静态文件</p>
+<pre><code>url_for(&apos;static&apos;, filename=&quot;filename&quot;)
+</code></pre></li>
+<li><p>在 蓝本 中</p>
+<pre><code>url_for(Blueprint_Name.view_func)
+</code></pre></li>
+</ol>
+<h3 id="2-Flash-消息"><a href="#2-Flash-消息" class="headerlink" title="2. Flash 消息"></a>2. Flash 消息</h3><p>消息是 Flask 的核心特性.</p>
+<h4 id="1-在视图函数中使用消息"><a href="#1-在视图函数中使用消息" class="headerlink" title="1) 在视图函数中使用消息"></a>1) 在视图函数中使用消息</h4><p>示例代码 : </p>
+<pre><code>from flask import flash
+
+@app.route(&quot;/&quot;, methods=[&quot;GET&quot;, &quot;POST&quot;])
+def index():
+    form = NameForm()
+    if form.validate_on_submit():
+        old_name = session.get(&quot;name&quot;)
+        if old_name is not None and old_name != form.name.data :
+            flash(&quot;Looks lick you have changed your name !&quot;)
+        session[&quot;name&quot;] = form.name.data
+        return redirect(url_for(&apos;index&apos;))
+    return render_template(&apos;index.html&apos;, form=form, name=session.get(&quot;name&quot;))
+</code></pre><h4 id="2-在模板中渲染消息"><a href="#2-在模板中渲染消息" class="headerlink" title="2) 在模板中渲染消息."></a>2) 在模板中渲染消息.</h4><p>Flask 把 get_flashed_messages() 函数开放给模板, 用来获取并渲染消息.</p>
+<p>仅在 视图函数中调用 flash() 函数并不能把消息显示出来, 程序使用的模板需要渲染这些消息. 最好在基模板中渲染 Flash 消息, 因为这样所有的页面都能使用这些消息.</p>
+<pre><code>{% block content %}
+        < div class="container">
+        {% for message in get_flashed_messages() %}
+        < div class="alert alert-warning">
+            < button type="button" class="close" data-dismiss="alert" >&times;
+            {{ message }}
+        < /div >
+        {% endfor %}
+            {% block page_content %}{% endblock %}
+    &lt;/div &gt;
+{% endblock %}
+</code></pre><p>在模板中使用循环是因为在之前的请求循环中每次调用 flash() 函数都会生成一个消息, 所以可能有很多消息在排队等待显示.</p>
+<p>get_flash_messages() 函数获取的消息在下次调用时不会再次返回, 因此 Flash 消息只显示一次, 然后就消失了.</p>
+<h2 id="六-Flask-扩展"><a href="#六-Flask-扩展" class="headerlink" title="六. Flask 扩展"></a>六. Flask 扩展</h2><p>Flask 被设计为可扩展模式, 故而没有提供一些重要的功能, 如数据库和用户认证, 所以开发者可以自由选择最合适程序的包, 或者自行开发.</p>
+<p>专为 Flask 开发的扩展都暴露在 flask.ext 命名空间下. </p>
+<p>Flask 扩展的通用初始化方法 : <strong>把程序实例作为参数传给构造函数, 初始化主类的实例. 创建的对象可以在各个扩展中使用.</strong></p>
+<ol>
+<li>werkzeug : WSGI 工具集</li>
+<li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-script/">flask-script</a></li>
+<li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-moment/">flask-moment</a></li>
+<li>flask-wtf : 表单处理</li>
+<li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-mail/">flask-mail</a> : 邮件发送</li>
+<li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-sqlalchemy/">flask-sqlalchemy</a> : SQL ORM </li>
+<li>flask-migrate : 数据库迁移</li>
+<li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-login/">flask-login</a> : 登录用户管理</li>
+<li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-pagedown/">flask-pagedown</a> : Markdown 支持</li>
+<li>flask-HTTPAuth : HTTP 认证</li>
+<li>Flask-Babel : 提供国际化和本地化支持。</li>
+<li>FLask-RESTful : 开发 REST API 的工具。</li>
+<li><a href="http://www.pyfdtic.com/2018/03/16/python-celery-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/">Celery</a> : 处理后台作业的任务队列。</li>
+<li>Frozen-Flask : 把 Flask 程序转换成静态网站。</li>
+<li>Flask-Debug Toolbar : 在浏览器中使用的调试工具。</li>
+<li>Flask-Assets : 用于合并、压缩、编译 CSS 和 Java Script 静态资源文件。</li>
+<li>Flask-OAuth : 使用 OAuth 服务进行认证。</li>
+<li>Flask-Open ID : 使用 Open ID 服务进行认证。</li>
+<li>Flask-Whoosh Alchemy : 使用 Whoosh 实现 Flask-SQLAlchemy 模型的全文搜索。</li>
+<li>Flask-KVsession : 使用服务器端存储实现的另一种用户会话。</li>
+<li><a href="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-socketio/">flask-socketio</a> : 服务器端与客户端双向通信.实时数据流.</li>
+<li><a href="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-sse/">flask-sse</a> : 服务器端向客户端发送事件.实时数据流.</li>
+<li><a href="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-whooshee/">flask-whooshee</a> : 基于 whooshee 的全文索引flask 插件, 可与 SQLAlchemy 无缝集成.</li>
+</ol>
+<h2 id="七-Flask-信号"><a href="#七-Flask-信号" class="headerlink" title="七. Flask 信号"></a>七. Flask 信号</h2><pre><code>$ pip search blinker
+</code></pre><h2 id="八-参考链接"><a href="#八-参考链接" class="headerlink" title="八. 参考链接"></a>八. 参考链接</h2><p><a href="https://www.amazon.cn/Flask-Web%E5%BC%80%E5%8F%91-%E5%9F%BA%E4%BA%8EPython%E7%9A%84Web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98-%E7%BE%8E-%E6%A0%BC%E6%9E%97%E5%B8%83%E6%88%88/dp/B0153177A6/ref=sr_1_1?ie=UTF8&amp;qid=1490938750&amp;sr=8-1&amp;keywords=flask+web+%E5%BC%80%E5%8F%91" target="_blank" rel="noopener">Flask web 开发 : 基于Python的Web应用开发实战</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web-development/" rel="tag"># web development</a>
+          
+            <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/14/Sublime-Text-使用总结/" rel="next" title="Sublime-Text-使用总结">
+                <i class="fa fa-chevron-left"></i> Sublime-Text-使用总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/14/python-专题/" rel="prev" title="Python 汇总">
+                Python 汇总 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#零-virtualenv-虚拟环境配置"><span class="nav-text">零. virtualenv 虚拟环境配置.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一-基本配置"><span class="nav-text">一. 基本配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建并启动程序实例"><span class="nav-text">1. 创建并启动程序实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置"><span class="nav-text">2. 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-路由-装饰器-视图函数"><span class="nav-text">3. 路由 = 装饰器 + 视图函数.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-请求-响应模型"><span class="nav-text">二. 请求-响应模型.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-上下文"><span class="nav-text">1. 上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-请求钩子-注册通用函数"><span class="nav-text">2. 请求钩子(注册通用函数)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-响应-响应内容-响应码-响应首部"><span class="nav-text">3. 响应 : 响应内容, 响应码, 响应首部.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-大型程序组织结构"><span class="nav-text">三. 大型程序组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-项目结构示例"><span class="nav-text">1. 项目结构示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置选项-层次的配置类"><span class="nav-text">2. 配置选项 : 层次的配置类.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-程序包"><span class="nav-text">3. 程序包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序工厂函数"><span class="nav-text">1) 程序工厂函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-蓝本"><span class="nav-text">2) 蓝本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-启动脚本"><span class="nav-text">4. 启动脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-需求文件"><span class="nav-text">5. 需求文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-创建数据库"><span class="nav-text">6. 创建数据库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-Flask-模板"><span class="nav-text">四. Flask 模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Jinja2"><span class="nav-text">1. Jinja2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Mako"><span class="nav-text">2. Mako</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-Flask-其他"><span class="nav-text">五. Flask 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-url-for"><span class="nav-text">1. url_for()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Flash-消息"><span class="nav-text">2. Flash 消息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-在视图函数中使用消息"><span class="nav-text">1) 在视图函数中使用消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-在模板中渲染消息"><span class="nav-text">2) 在模板中渲染消息.</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-Flask-扩展"><span class="nav-text">六. Flask 扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七-Flask-信号"><span class="nav-text">七. Flask 信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-参考链接"><span class="nav-text">八. 参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

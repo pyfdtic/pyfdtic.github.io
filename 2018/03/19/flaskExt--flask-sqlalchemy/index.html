@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Flask,Flask 扩展," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一. 安装$ pip install flask-sqlalchemy 二. 配置配置选项列表 :    选项 说明     SQLALCHEMY_DATABASE_URI 用于连接的数据库 URI 。例如:sqlite:////tmp/test.db 或 mysql://username:password@server/db   SQLALCHEMY_BINDS 一个映射 binds 到连接 U">
+<meta name="keywords" content="Flask,Flask 扩展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fask 扩展之--flask-sqlalchemy">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-sqlalchemy/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="一. 安装$ pip install flask-sqlalchemy 二. 配置配置选项列表 :    选项 说明     SQLALCHEMY_DATABASE_URI 用于连接的数据库 URI 。例如:sqlite:////tmp/test.db 或 mysql://username:password@server/db   SQLALCHEMY_BINDS 一个映射 binds 到连接 U">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-01T08:37:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fask 扩展之--flask-sqlalchemy">
+<meta name="twitter:description" content="一. 安装$ pip install flask-sqlalchemy 二. 配置配置选项列表 :    选项 说明     SQLALCHEMY_DATABASE_URI 用于连接的数据库 URI 。例如:sqlite:////tmp/test.db 或 mysql://username:password@server/db   SQLALCHEMY_BINDS 一个映射 binds 到连接 U">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-sqlalchemy/"/>
+
+
+
+
+
+  <title>Fask 扩展之--flask-sqlalchemy | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-sqlalchemy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Fask 扩展之--flask-sqlalchemy</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:49:18+08:00">
+                2018-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-安装"><a href="#一-安装" class="headerlink" title="一. 安装"></a>一. 安装</h2><pre><code>$ pip install flask-sqlalchemy
+</code></pre><h2 id="二-配置"><a href="#二-配置" class="headerlink" title="二. 配置"></a>二. 配置</h2><p>配置选项列表 :</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQLALCHEMY_DATABASE_URI</td>
+<td>用于连接的数据库 URI 。例如:sqlite:////tmp/test.db 或 mysql://username:password@server/db</td>
+</tr>
+<tr>
+<td>SQLALCHEMY_BINDS</td>
+<td>一个映射 binds 到连接 URI 的字典。更多 binds 的信息见 用 Binds 操作多个数据库 。</td>
+</tr>
+<tr>
+<td>SQLALCHEMY_ECHO</td>
+<td>如果设置为 Ture ， SQLAlchemy 会记录所有 发给 stderr 的语句，这对调试有用。</td>
+</tr>
+<tr>
+<td>SQLALCHEMY_RECORD_QUERIES</td>
+<td>可以用于显式地禁用或启用查询记录。查询记录 在调试或测试模式自动启用。更多信息见 get_debug_queries() 。</td>
+</tr>
+</tbody>
+</table>
+<p>SQLALCHEMY_NATIVE_UNICODE   |  可以用于显式禁用原生 unicode 支持。当使用 不合适的指定无编码的数据库默认值时，这对于 一些数据库适配器是必须的（比如 Ubuntu 上某些版本的 PostgreSQL ）。|<br>| SQLALCHEMY_POOL_SIZE   |   数据库连接池的大小。默认是引擎默认值（通常 是 5 ） |<br>| SQLALCHEMY_POOL_TIMEOUT |  设定连接池的连接超时时间。默认是 10 。 |<br>| SQLALCHEMY_POOL_RECYCLE |  多少秒后自动回收连接。这对 MySQL 是必要的， 它默认移除闲置多于 8 小时的连接。注意如果 使用了 MySQL ， Flask-SQLALchemy 自动设定这个值为 2 小时。|</p>
+<pre><code>app.config[&quot;SQLALCHEMY_DATABASE_URI&quot;] = DATABASE_URI
+app.config[&quot;SQLALCHEMY_COMMIT_ON_TEARDOWN&quot;] = True/False  # 每次请求结束后都会自动提交数据库中的变动.
+
+app.config[&quot;&quot;] = 
+app.config[&quot;&quot;] = 
+app.config[&quot;&quot;] = 
+app.config[&quot;&quot;] = 
+
+DATABASE_URI :
+    mysql : mysql://username:password@hostname/database
+
+    pgsql : postgresql://username:password@hostname/database
+
+    sqlite(linux)  : sqlite:////absolute/path/to/database
+
+    sqlite(windows) : sqlite:///c:/absolute/path/to/database
+</code></pre><h2 id="三-初始化示例"><a href="#三-初始化示例" class="headerlink" title="三. 初始化示例"></a>三. 初始化示例</h2><pre><code>from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+base_dir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__)
+
+app.config[&quot;SQLALCHEMY_DATABASE_URI&quot;] = &apos;sqlite:///&apos; + os.path.join(base_dir, &apos;data.sqlite&apos;)
+app.config[&quot;SQLALCHEMY_COMMIT_ON_TEARDOWN&quot;] = True
+
+db = SQLAlchemy(app)
+</code></pre><h2 id="四-定义模型"><a href="#四-定义模型" class="headerlink" title="四. 定义模型"></a>四. 定义模型</h2><p>模型 表示程序使用的持久化实体. 在 ORM 中, 模型一般是一个 Python 类, 类中的属性对应数据库中的表.</p>
+<p>Flaks-SQLAlchemy 创建的数据库实例为模型提供了一个基类以及一些列辅助类和辅助函数, 可用于定义模型的结构.</p>
+<pre><code>db.Model    # 创建模型,
+db.Column   # 创建模型属性.
+</code></pre><p>模型属性类型 : </p>
+<table>
+<thead>
+<tr>
+<th>类型名</th>
+<th>Python类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Integer</td>
+<td>int</td>
+<td>普通整数，一般是 32 位</td>
+</tr>
+<tr>
+<td>SmallInteger</td>
+<td>int</td>
+<td>取值范围小的整数，一般是 16 位</td>
+</tr>
+<tr>
+<td>Big Integer</td>
+<td>int 或 long</td>
+<td>不限制精度的整数</td>
+</tr>
+<tr>
+<td>Float</td>
+<td>float</td>
+<td>浮点数</td>
+</tr>
+<tr>
+<td>Numeric</td>
+<td>decimal.Decimal</td>
+<td>定点数</td>
+</tr>
+<tr>
+<td>String</td>
+<td>str</td>
+<td>变长字符串</td>
+</tr>
+<tr>
+<td>Text</td>
+<td>str</td>
+<td>变长字符串，对较长或不限长度的字符串做了优化</td>
+</tr>
+<tr>
+<td>Unicode</td>
+<td>unicode</td>
+<td>变长 Unicode 字符串</td>
+</tr>
+<tr>
+<td>Unicode Text</td>
+<td>unicode</td>
+<td>变长 Unicode 字符串，对较长或不限长度的字符串做了优化</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>bool</td>
+<td>布尔值</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>datetime.date</td>
+<td>日期</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>datetime.time</td>
+<td>时间</td>
+</tr>
+<tr>
+<td>DateTime</td>
+<td>datetime.datetime</td>
+<td>日期和时间</td>
+</tr>
+<tr>
+<td>Interval</td>
+<td>datetime.timedelta</td>
+<td>时间间隔</td>
+</tr>
+<tr>
+<td>Enum</td>
+<td>str</td>
+<td>一组字符串</td>
+</tr>
+<tr>
+<td>PickleType</td>
+<td>任何 Python 对象</td>
+<td>自动使用 Pickle 序列化</td>
+</tr>
+<tr>
+<td>LargeBinary</td>
+<td>str</td>
+<td>二进制文件</td>
+</tr>
+</tbody>
+</table>
+<p>常用 SQLAlchemy 列选项</p>
+<table>
+<thead>
+<tr>
+<th>选项名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>primary_key</td>
+<td>如果设为 True，这列就是表的主键</td>
+</tr>
+<tr>
+<td>unique</td>
+<td>如果设为 True，这列不允许出现重复的值</td>
+</tr>
+<tr>
+<td>index</td>
+<td>如果设为 True，为这列创建索引，提升查询效率</td>
+</tr>
+<tr>
+<td>nullable</td>
+<td>如果设为 True，这列允许使用空值；如果设为 False，这列不允许使用空值</td>
+</tr>
+<tr>
+<td>default</td>
+<td>为这列定义默认值</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Flask-SQLAlchemy 要求每个模型都要定义主键, 这一列通常命名为 id .</strong></p>
+<p>示例 : </p>
+<pre><code>class Role(db.Model):
+    __tablename__ = &quot;roles&quot;
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+
+    def __repr__(self):
+        &quot;&quot;&quot;非必须, 用于在调试或测试时, 返回一个具有可读性的字符串表示模型.&quot;&quot;&quot;
+        return &apos;&lt;Role %r&gt;&apos; % self.name
+
+class User(db.Model):
+    __tablename__ = &apos;users&apos;
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+
+    def __repr__(self):          
+        &quot;&quot;&quot;非必须, 用于在调试或测试时, 返回一个具有可读性的字符串表示模型.&quot;&quot;&quot;
+        return &apos;&lt;Role %r&gt;&apos; % self.username
+</code></pre><h2 id="五-关系"><a href="#五-关系" class="headerlink" title="五. 关系"></a>五. 关系</h2><p>关系型数据库使用关系把不同表中的行联系起来.</p>
+<p>常用 SQLAlchemy 关系选项 : </p>
+<table>
+<thead>
+<tr>
+<th>选项名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>backref</td>
+<td>在关系的另一个模型中添加反向引用</td>
+</tr>
+<tr>
+<td>primaryjoin</td>
+<td>明确指定两个模型之间使用的联结条件。只在模棱两可的关系中需要指定.</td>
+</tr>
+<tr>
+<td>lazy</td>
+<td>指定如何加载相关记录。可选值如下 :</td>
+</tr>
+<tr>
+<td></td>
+<td>select（首次访问时按需加载）</td>
+</tr>
+<tr>
+<td></td>
+<td>immediate（源对象加载后就加载）</td>
+</tr>
+<tr>
+<td></td>
+<td>joined（加载记录，但使用联结）</td>
+</tr>
+<tr>
+<td></td>
+<td>subquery（立即加载，但使用子查询）</td>
+</tr>
+<tr>
+<td></td>
+<td>noload（永不加载）</td>
+</tr>
+<tr>
+<td></td>
+<td>dynamic（不加载记录，但提供加载记录的查询）</td>
+</tr>
+<tr>
+<td>uselist</td>
+<td>如果设为 Fales，不使用列表，而使用标量值</td>
+</tr>
+<tr>
+<td>order_by</td>
+<td>指定关系中记录的排序方式</td>
+</tr>
+<tr>
+<td>secondary</td>
+<td>指定多对多关系中关系表的名字</td>
+</tr>
+<tr>
+<td>secondaryjoin</td>
+<td>SQLAlchemy 无法自行决定时，指定多对多关系中的二级联结条件</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-一对多"><a href="#1-一对多" class="headerlink" title="1) 一对多"></a>1) 一对多</h3><p>原理 : 在 “多” 这一侧加入一个外键, 指定 “一” 这一侧联结的记录.</p>
+<p>示例代码 : 一个角色可属于多个用户, 而每个用户只能有一个角色.</p>
+<pre><code>class Role(db.Model):
+    # ...
+    users = db.relationship(&apos;User&apos;, backref=&apos;role&apos;)
+
+class User(db.Model):
+    # ...
+    role_id = db.Column(db.Integer, db.ForeignKey(&apos;roles.id&apos;))  # 外键关系.
+
+
+###############
+db.ForeignKey(&apos;roles.id&apos;) : 外键关系,
+
+Role.users = db.relationship(&apos;User&apos;, backref=&apos;role&apos;) : 代表 外键关系的 面向对象视角. 对于一个 Role 类的实例, 其 users 属性将返回与角色相关联的用户组成的列表. 
+    db.relationship() 第一个参数表示这个关系的另一端是哪个模型. 
+    backref 参数, 向 User 模型添加了一个 role 数据属性, 从而定义反向关系.  这一属性可替代 role_id 访问 Role 模型, 此时获取的是模型对象, 而不是外键的值.
+</code></pre><h3 id="2-多对多"><a href="#2-多对多" class="headerlink" title="2) 多对多"></a>2) 多对多</h3><p>最复杂的关系类型, 需要用到第三章表, 即 <em>关联表</em> , 这样多对多关系可以分解成原表和关联表之间的两个一对多关系.</p>
+<p>查询多对多关系分两步 : 遍历两个关系来获取查询结果.</p>
+<p>代码示例:</p>
+<pre><code>registrations = db.Table(&quot;registrations&quot;,
+                         db.Column(&quot;student_id&quot;, db.Integer, db.ForeignKey(&quot;students.id&quot;)),
+                         db.Column(&quot;class_id&quot;, db.Integer, db.ForeignKey(&quot;classes.id&quot;))
+                         )
+
+class Student(db.Model):
+    __tablename__ = &quot;students&quot;
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    classes = db.relationship(&quot;Class&quot;,
+                              secondary=registrations,
+                              backref=db.backref(&quot;students&quot;, lazy=&quot;dynamic&quot;),
+                              lazy=&quot;dynamic&quot;)
+
+class Class(db.Model):
+    __tablename__ = &quot;classes&quot;
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+</code></pre><p>多对多关系仍然使用定义一对多关系的 db.relationship() 方法进行定义, 但在多对多关系中, 必须把 secondary 参数设为 关联表. </p>
+<p>多对多关系可以在任何一个类中定义, backref 参数会处理好关系的另一侧. </p>
+<p>关联表就是一个简单的表, 不是模型, SQLAlchemy 会自动接管这个表.</p>
+<p>classes 关系使用列表语义, 这样处理多对多关系比较简单.</p>
+<p>Class 模型的 students 关系有 参数 db.backref() 定义. 这个关系还指定了 lazy 参数, 所以, 关系两侧返回的查询都可接受额外的过滤器.</p>
+<p><strong>自引用关系</strong><br>自引用关系可以理解为 多对多关系的特殊形式 : 多对多关系的两边由两个实体变为 一个实体.</p>
+<p><strong>高级多对多关系</strong><br>使用多对多关系时, 往往需要存储所联两个实体之间的额外信息. 这种信息只能存储在关联表中. 对用户之间的关注来说, 可以存储用户关注另一个用户的日期, 这样就能按照时间顺序列出所有关注者. </p>
+<p>为了能在关系中处理自定义的数据, 必须提升关联表的地位, 使其变成程序可访问的模型.</p>
+<p>关注关联表模型实现:</p>
+<pre><code>class Follow(db.Model):
+    __tablename__ = &quot;follows&quot;
+    follower_id = db.Column(db.Integer, db.ForeignKey(&quot;users.id&quot;), primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey(&quot;users.id&quot;), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+# SQLAlchemy 不能直接使用这个关联表, 因为如果这个做程序就无法访问其中的自定义字段. 相反的, 要把这个多对多关系的左右两侧拆分成两个基本的一对多关系, 而且要定义成标准的关系.
+</code></pre><p>使用两个一对多关系实现的多对多关系:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class User(UserMixin, db.Model):</span><br><span class="line">    # ...</span><br><span class="line">    followd = db.relationship(&quot;Follow&quot;,</span><br><span class="line">                              foreign_keys=[Follow.follower_id],</span><br><span class="line">                              backref=db.backref(&quot;follower&quot;, lazy=&quot;joined&quot;),</span><br><span class="line">                              lazy=&quot;dynamic&quot;,</span><br><span class="line">                              cascade=&quot;all, delete-orphan&quot;)</span><br><span class="line">    followrs = db.relationship(&quot;Follow&quot;,</span><br><span class="line">                              foreign_keys=[Follow.followed_id],</span><br><span class="line">                              backref=db.backref(&quot;followed&quot;, lazy=&quot;joined&quot;),</span><br><span class="line">                              lazy=&quot;dynamic&quot;,</span><br><span class="line">                              cascade=&quot;all, delete-orphan&quot;)</span><br><span class="line"></span><br><span class="line"># 这段代码中, followed 和 follower 关系都定义为 单独的 一对多关系. </span><br><span class="line"># 注意: 为了消除外键歧义, 定义关系是必须使用可选参数 foreign_keys 指定的外键. 而且 db.backref() 参数并不是指定这两个关系之间的引用关系, 而是回引 Follow 模型. 回引中的 lazy=&quot;joined&quot; , 该模式可以实现立即从连接查询中加载相关对象.</span><br><span class="line"># 这两个关系中, user 一侧设定的 lazy 参数作用不一样. lazy 参数都在 &quot;一&quot; 这一侧设定, 返回的结果是 &quot;多&quot; 这一侧中的记录. dynamic 参数, 返回的是查询对象.</span><br><span class="line"># cascade 参数配置在父对象上执行的操作相关对象的影响. 比如, 层叠对象可设定为: 将用户添加到数据库会话后, 要自定把所有关系的对象都添加到会话中. 删除对象时, 默认的层叠行为是把对象联结的所有相关对象的外键设为空值. 但在关联表中, 删除记录后正确的行为是把执行该记录的实体也删除, 因为这样才能有效销毁联结. 这就是 层叠选项值 delete-orphan 的作用. 设为 all, delete-orphan 的意思是启动所有默认层叠选项, 并且还要删除孤儿记录.</span><br></pre></td></tr></table></figure>
+<h3 id="3-一对一"><a href="#3-一对一" class="headerlink" title="3) 一对一"></a>3) 一对一</h3><p>可以看做特殊的 一对多 关系. 但调用 db.relationship() 时 要把 uselist 设置 False, 把 多变为 一 .</p>
+<h3 id="4-多对一"><a href="#4-多对一" class="headerlink" title="4) 多对一"></a>4) 多对一</h3><p>将 一对多 关系,反过来即可, 也是 一对多关系.</p>
+<h2 id="六-数据库操作"><a href="#六-数据库操作" class="headerlink" title="六. 数据库操作"></a>六. 数据库操作</h2><h3 id="1-创建数据库及数据表"><a href="#1-创建数据库及数据表" class="headerlink" title="1) 创建数据库及数据表"></a>1) 创建数据库及数据表</h3><p><strong>创建数据库</strong></p>
+<pre><code>db.create_all()
+</code></pre><p>示例 :<br>    $ python myflask.py shell<br>    &gt; from myflask import db<br>    &gt; db.create_all()</p>
+<p>如果使用 sqlite , 会在 SQLALCHEMY_DATABASE_URI 指定的目录下 多一个文件, 文件名为该配置中的文件名.</p>
+<p>如果数据库表已经存在于数据库中, 那么 db.create_all() 不会创建或更新这个表.</p>
+<p><strong>更新数据库</strong><br>方法一 :<br>先删除, 在创建 –&gt; 原有数据库中的数据, 都会消失.</p>
+<pre><code>&gt; db.drop_all()
+&gt; db.create_all()
+</code></pre><p>方法二 :<br>数据库迁移框架 : 可以跟自动数据库模式的变化, 然后增量式的把变化应用到数据库中.</p>
+<p>SQLAlchemy 的主力开发人员编写了一个 迁移框架 Alembic, 除了直接使用 Alembic wait, Flask 程序还可使用 Flask-Migrate 扩展, 该扩展对 Alembic 做了轻量级包装, 并集成到 Flask-Script 中, 所有操作都通过 Flaks-Script 命令完成.</p>
+<p>① 安装 Flask-Migrate<br>    $ pip install flask-migrate</p>
+<p>② 配置</p>
+<pre><code>from flask_migrate import Migrate, MigrateCommand
+
+# ...
+migrate = Migrate(app, db)
+manager.add_command(&apos;db&apos;, MigrateCommand)
+</code></pre><p>③ 数据库迁移<br>    a. 使用 init 自命令创建迁移仓库.<br>        $ python myflask.py db init     # 该命令会创建 migrations 文件夹, 所有迁移脚本都存在其中.</p>
+<pre><code>b. 创建数据路迁移脚本.
+    $ python myflask.py db revision     # 手动创建 Alemic 迁移
+        创建的迁移只是一个骨架, upgrade() 和 downgrade() 函数都是空的. 开发者需要使用 Alembic 提供的 Operations 对象指令实现具体操作.
+
+    $ python myflask.py db migrate -m COMMONT    # 自动创建迁移.
+        自动创建的迁移会根据模型定义和数据库当前的状态之间的差异生成 upgrade() 和 downgrade() 函数的内容.
+
+        ** 自动创建的迁移不一定总是正确的, 有可能漏掉一些细节, 自动生成迁移脚本后一定要进行检查.
+
+
+c. 更新数据库
+    $ python myflask.py db upgrade      # 将迁移应用到数据库中.
+</code></pre><h3 id="2-插入行"><a href="#2-插入行" class="headerlink" title="2) 插入行"></a>2) 插入行</h3><p>模型的构造函数, 接收的参数是使用关键字参数指定的模型属性初始值. 注意, role 属性也可使用, 虽然他不是真正的数据库列, 但却是一对多关系的高级表示. 这些新建对象的 id 属性并没有明确设定, 因为主键是由 Flask-SQLAlchemy 管理的. 现在这些对象只存在于 Python 解释器中, 尚未写入数据库.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; from myflask import db, User, Role</span><br><span class="line"></span><br><span class="line">&gt;&gt; db.create_all()</span><br><span class="line"></span><br><span class="line">&gt;&gt; admin_role = Role(name=&quot;Admin&quot;)</span><br><span class="line"></span><br><span class="line">&gt;&gt; mod_role = Role(name=&quot;Moderator&quot;)</span><br><span class="line"></span><br><span class="line">&gt;&gt; user_role = Role(name=&quot;User&quot;)</span><br><span class="line"></span><br><span class="line">&gt;&gt; user_john = User(username=&quot;john&quot;, role=admin_role)</span><br><span class="line"></span><br><span class="line">&gt;&gt; user_susan = User(username=&quot;susan&quot;, role=mod_role)</span><br><span class="line"></span><br><span class="line">&gt;&gt; user_david = User(username=&quot;david&quot;, role=user_role)</span><br><span class="line"></span><br><span class="line">&gt;&gt; admin_role.name</span><br><span class="line">&apos;Admin&apos;</span><br><span class="line"></span><br><span class="line">&gt;&gt; admin_role.id</span><br><span class="line">None</span><br><span class="line"></span><br><span class="line">---------</span><br><span class="line"></span><br><span class="line">&gt;&gt; db.session.add_all([admin_role, mod_role, user_role, user_john, user_susan, user_david])   # 把对象添加到会话中.</span><br><span class="line">&gt;&gt; db.session.commit()      # 把对象写入数据库, 使用 commit() 提交会话.</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-修改行"><a href="#3-修改行" class="headerlink" title="3) 修改行"></a>3) 修改行</h3><pre><code>&gt;&gt; admin_role = &quot;Administrator&quot;
+&gt;&gt; db.session.add(admin_role)
+&gt;&gt; db.session.commit()
+</code></pre><h3 id="4-删除行"><a href="#4-删除行" class="headerlink" title="4) 删除行"></a>4) 删除行</h3><pre><code>&gt;&gt; db.session.delete(mod_role)
+&gt;&gt; db.session.commit()
+</code></pre><h3 id="5-查询行"><a href="#5-查询行" class="headerlink" title="5) 查询行"></a>5) 查询行</h3><p>Flask-SQLAlchemy 为每个模型类都提供了 query 对象.</p>
+<p><em>获取表中的所有记录</em></p>
+<pre><code>&gt;&gt; Role.query.all()
+  [&lt;Role u&apos;Admin&apos;&gt;, &lt;Role u&apos;Moderator&apos;&gt;, &lt;Role u&apos;User&apos;&gt;]
+&gt;&gt; User.query.all()
+  [&lt;Role u&apos;john&apos;&gt;, &lt;Role u&apos;susan&apos;&gt;, &lt;Role u&apos;david&apos;&gt;]
+</code></pre><p><em>查询过滤器</em> </p>
+<p>filter_by() 等过滤器在 query 对象上调用, 返回一个更精确的 query 对象. 多个过滤器可以一起调用, 直到获取到所需的结果.</p>
+<pre><code>&gt;&gt; User.query.filter_by(role=user_role).all()   # 以列表形式,返回所有结果,
+&gt;&gt; User.query.filter_by(role=user_role).first() # 返回结果中的第一个.
+</code></pre><p>filter()  对查询结果过滤，比”filter_by()”方法更强大，参数是布尔表达式</p>
+<pre><code># WHERE age&lt;20
+users = User.query.filter(User.age&lt;20)
+# WHERE name LIKE &apos;J%&apos; AND age&lt;20
+users = User.query.filter(User.name.startswith(&apos;J&apos;), User.age&lt;20)
+</code></pre><p>查询过滤器 : </p>
+<table>
+<thead>
+<tr>
+<th>过滤器</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filter()</td>
+<td>把过滤器添加到原查询上, 返回一个新查询</td>
+</tr>
+<tr>
+<td>filter_by()</td>
+<td>把等值过滤器添加到原查询上, 返回一个新查询</td>
+</tr>
+<tr>
+<td>limit()</td>
+<td>使用是zing的值限制原查询返回的结果数量, 返回一个新查询</td>
+</tr>
+<tr>
+<td>offset()</td>
+<td>偏移原查询返回的结果, 返回一个新查询</td>
+</tr>
+<tr>
+<td>order_by()</td>
+<td>根据指定条件对原查询结果进行排序, 返回一个新查询</td>
+</tr>
+<tr>
+<td>group_by()</td>
+<td>根据指定条件对原查询结果进行分组, 返回一个新查询</td>
+</tr>
+</tbody>
+</table>
+<p>查询执行函数 : </p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all()</td>
+<td>以列表形式返回查询的所有结果</td>
+</tr>
+<tr>
+<td>first()</td>
+<td>返回查询的第一个结果，如果没有结果，则返回 None</td>
+</tr>
+</tbody>
+</table>
+<p>first_or_404() | 返回查询的第一个结果，如果没有结果，则终止请求，返回 404 错误响应 | |<br>| get() | 返回指定主键对应的行，如果没有对应的行，则返回 None |<br>get_or_404() | 返回指定主键对应的行，如果没找到指定的主键，则终止请求，返回 404  | |错误响应<br>| count() | 返回查询结果的数量 |<br>| paginate() | 返回一个 Paginate 对象，它包含指定范围内的结果 |</p>
+<h3 id="6-会话管理-事务管理"><a href="#6-会话管理-事务管理" class="headerlink" title="6) 会话管理, 事务管理"></a>6) 会话管理, 事务管理</h3><p><em>单个提交</em></p>
+<pre><code>&gt;&gt; db.session.add(ONE)
+&gt;&gt; db.session.commit()
+</code></pre><p><em>多个提交</em></p>
+<pre><code>&gt;&gt; db.session.add_all([LIST_OF_MEMBER])
+&gt;&gt; db.session.commit()
+</code></pre><p><em>删除会话</em></p>
+<pre><code>&gt;&gt; db.session.delete(mod_role)
+&gt;&gt; db.session.commit()
+</code></pre><p><em>事务回滚</em> : 添加到数据库会话中的所有对象都会还原到他们在数据库时的状态.</p>
+<pre><code>&gt;&gt; db.session.rollback()
+</code></pre><h2 id="七-视图函数中操作数据库"><a href="#七-视图函数中操作数据库" class="headerlink" title="七. 视图函数中操作数据库"></a>七. 视图函数中操作数据库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@app.route(&apos;/&apos;, methods=[&apos;GET&apos;, &apos;POST&apos;])</span><br><span class="line">def index():</span><br><span class="line">    form = NameForm()</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        user = User.query.filter_by(username=form.name.data).first()</span><br><span class="line">        if user is None:</span><br><span class="line">            user = User(username=form.name.data)</span><br><span class="line">            db.session.add(user)</span><br><span class="line">            session[&quot;known&quot;] = False</span><br><span class="line">        else:</span><br><span class="line">            session[&quot;known&quot;] = True</span><br><span class="line"></span><br><span class="line">        session[&quot;name&quot;] = form.name.data</span><br><span class="line">        form.name.data = &quot;&quot;             # why empty it ?</span><br><span class="line">        return redirect(url_for(&quot;index&quot;))</span><br><span class="line">    return render_template(&quot;index.html&quot;, current_time=datetime.utcnow(), form=form, name=session.get(&quot;name&quot;), known=session.get(&quot;known&quot;))</span><br></pre></td></tr></table></figure>
+<h2 id="八-分页对象-Pagination"><a href="#八-分页对象-Pagination" class="headerlink" title="八. 分页对象 Pagination"></a>八. 分页对象 Pagination</h2><h3 id="1-paginate-方法"><a href="#1-paginate-方法" class="headerlink" title="1. paginate() 方法"></a>1. paginate() 方法</h3><p>paginate() 方法的返回值是一个 Pagination 类对象, 该类在 Flask-SQLAlchemy 中定义, 用于在模板中生成分页链接.</p>
+<pre><code>paginate(页数[,per_page=20, error_out=True])
+    页数 : 唯一必须指定的参数,
+    per_page : 指定每页现实的记录数量, 默认 20.
+    error_out : True 如果请求的页数超出了返回, 返回 404 错误; False 页数超出范围时返回一个,空列表.
+</code></pre><p>示例代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@main.route(&quot;/&quot;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">def index():</span><br><span class="line">    # ...</span><br><span class="line">    page = request.args.get(&apos;page&apos;, 1, type=int)    # 渲染的页数, 默认第一页, type=int 保证参数无法转换成整数时, 返回默认值.</span><br><span class="line">    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page, per_page=current_app.config[&quot;FLASKY_POSTS_PER_PAGE&quot;], error_out=False)</span><br><span class="line"></span><br><span class="line">    posts = pagination.items</span><br><span class="line">    return render_template(&apos;index.html&apos;, form=form, posts=posts,pagination=pagination)</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-分页对象的属性及方法"><a href="#2-分页对象的属性及方法" class="headerlink" title="2. 分页对象的属性及方法:"></a>2. 分页对象的属性及方法:</h3><p>Flask_SQLAlchemy 分页对象的属性:</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>items</td>
+<td>当前分页中的记录</td>
+</tr>
+<tr>
+<td>query</td>
+<td>分页的源查询</td>
+</tr>
+<tr>
+<td>page</td>
+<td>当前页数</td>
+</tr>
+<tr>
+<td>prev_num</td>
+<td>上一页的页数</td>
+</tr>
+<tr>
+<td>next_num</td>
+<td>下一页的页数</td>
+</tr>
+<tr>
+<td>has_next</td>
+<td>如果有下一页, 返回 True</td>
+</tr>
+<tr>
+<td>has_prev</td>
+<td>如果有上一页, 返回 True</td>
+</tr>
+<tr>
+<td>pages</td>
+<td>查询得到的总页数</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>每页显示的记录数量</td>
+</tr>
+<tr>
+<td>total</td>
+<td>查询返回的记录总数</td>
+</tr>
+</tbody>
+</table>
+<p>在分页对象可调用的方法:</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>iter_pages(left_edge=2,left_current=2,right_current=5,right_edge=2)</td>
+<td>一个迭代器, 返回一个在分页导航中显示的页数列表. 这个列表的最左边显示 left_edge 页, 当前页的左边显式 left_current 页, 当前页的右边显示 right_currnt 页, 最右边显示 right_edge 页. 如 在一个 100 页的列表中, 当前页为 50 页, 使用默认配置, 该方法返回以下页数 : 1, 2, None, 48,49,50,51,52,53,54,55, None, 99 ,100. None 表示页数之间的间隔.</td>
+</tr>
+<tr>
+<td>prev()</td>
+<td>上一页的分页对象</td>
+</tr>
+<tr>
+<td>next()</td>
+<td>下一页的分页对象</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-在模板中与-BootStrap-结合使用示例"><a href="#3-在模板中与-BootStrap-结合使用示例" class="headerlink" title="3. 在模板中与 BootStrap 结合使用示例"></a>3. 在模板中与 BootStrap 结合使用示例</h3><p>使用 Flaks-SQLAlchemy 的分页对象与 Bootstrap 中的分页 CSS, 可以轻松的构造出一个 分页导航.</p>
+<p>分页模板宏 _macros.html : 创建一个 Bootstrap 分页元素, 即一个有特殊样式的无序列表.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;% macro pagination_widget(pagination,endpoint) %&#125;</span><br><span class="line">&lt;ul class=&quot;pagination&quot;&gt;</span><br><span class="line">    &lt;li &#123;% if not pagination.has_prev %&#125; class=&quot;disabled&quot; &#123;% endif %&#125;&gt;</span><br><span class="line">        &lt;a href=&quot;&#123;% if pagination.has_prev %&#125;&#123;&#123;url_for(endpoint, page=paginatin.page - 1, **kwargs)&#125;&#125;&#123;% else %&#125;#&#123;% endif %&#125;&quot;&gt;</span><br><span class="line">            &amp;laquo;</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">    &lt;/li&gt;</span><br><span class="line">    &#123;% for p in pagination,.iter_pages() %&#125;</span><br><span class="line">        &#123;% if p %&#125;</span><br><span class="line">            &#123;% if p == pagination.page %&#125;</span><br><span class="line">            &lt;li class=&quot;active&quot;&gt;</span><br><span class="line">                &lt;a href=&quot;&#123;&#123; url_for(endpoint, page=p, **kwargs) &#125;&#125;&quot;&gt;&#123;&#123;p&#125;&#125;&lt;/a&gt;</span><br><span class="line">            &lt;/li&gt;</span><br><span class="line">            &#123;% else %&#125;</span><br><span class="line">            &lt;li&gt;</span><br><span class="line">                &lt;a href=&quot;&#123;&#123; url_for(endpoint, page = p, **kwargs) &#125;&#125;&quot;&gt;&#123;&#123;p&#125;&#125;&lt;/a&gt;</span><br><span class="line">            &lt;/li&gt;</span><br><span class="line">            &#123;% endif %&#125;</span><br><span class="line">        &#123;% else %&#125;</span><br><span class="line">        &lt;li class=&quot;disabled&quot;&gt;&lt;a href=&quot;#&quot;&gt;&amp;hellip;&lt;/a&gt; &lt;/li&gt;</span><br><span class="line">        &#123;% endif %&#125;</span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">    &lt;li &#123;% if not pagination.has_next %&#125; class=&quot;disabled&quot; &#123;% endif%&#125;&gt;</span><br><span class="line">        &lt;a href=&quot;&#123;% if paginatin.has_next %&#125;&#123;&#123; url_for(endpoint, page=pagination.page+1, **kwargs) &#125;&#125;&#123;% else %&#125;#&#123;% endif %&#125;&quot;&gt;</span><br><span class="line">            &amp;raquo;</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">    &lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line">&#123;% endmacro %&#125;</span><br></pre></td></tr></table></figure>
+<p>导入使用分页导航<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;base.html&quot; %&#125;</span><br><span class="line">&#123;% import &quot;_macros.html&quot; as macros %&#125;</span><br><span class="line">...</span><br><span class="line">&lt;div class=&quot;pagination&quot;&gt;</span><br><span class="line">    &#123;&#123; macro.pagination_widget(pagination, &quot;.index&quot;)&#125;&#125;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="九-监听事件"><a href="#九-监听事件" class="headerlink" title="九. 监听事件"></a>九. 监听事件</h2><h3 id="1-set-事件"><a href="#1-set-事件" class="headerlink" title="1. set 事件"></a>1. set 事件</h3><p>示例代码 :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">from markdown import markdown</span><br><span class="line">import bleach</span><br><span class="line"></span><br><span class="line">class Post(db.Model):</span><br><span class="line">    # ...</span><br><span class="line">    body = db.Colume(db.Text)</span><br><span class="line">    body_html = db.Column(db.Text)</span><br><span class="line">    # ...</span><br><span class="line"></span><br><span class="line">    @staticmethod</span><br><span class="line">    def on_changeed_body(target, value, oldvalue, initiator):</span><br><span class="line">        allowed_tags = [&quot;a&quot;, &quot;abbr&quot;, &quot;acronym&quot;, &quot;b&quot;, &quot;blockquote&quot;, &quot;code&quot;, &quot;em&quot;,</span><br><span class="line">                        &quot;i&quot;, &quot;li&quot;, &quot;ol&quot;, &quot;pre&quot;, &quot;strong&quot;, &quot;ul&quot;, &quot;h1&quot;, &quot;h2&quot;,&quot;h3&quot;,&quot;h4&quot;,&quot;p&quot;]</span><br><span class="line">        target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format=&quot;html&quot;), tags=allowed_tags, strip=True))</span><br><span class="line"></span><br><span class="line">db.event.listen(Post.body, &quot;set&quot;, Post.on_changeed_body) </span><br><span class="line"># on_changed_body 函数注册在 body 字段上, 是 SQLIAlchemy &quot;set&quot; 事件的监听程序, </span><br><span class="line"># 这意味着只要这个类实例的 body 字段设了新值, 函数就会自动被调用. </span><br><span class="line"># on_changed_body 函数把 body 字段中的文本渲染成 HTML 格式, </span><br><span class="line"># 结果保存在 body_html 中, 自动高效的完成 Markdown 文本到 HTML 的转换.</span><br></pre></td></tr></table></figure></p>
+<h2 id="十-记录慢查询"><a href="#十-记录慢查询" class="headerlink" title="十. 记录慢查询."></a>十. 记录慢查询.</h2><h2 id="十一-Binds-操作多个数据库"><a href="#十一-Binds-操作多个数据库" class="headerlink" title="十一. Binds 操作多个数据库"></a>十一. Binds 操作多个数据库</h2><h2 id="十二-其他"><a href="#十二-其他" class="headerlink" title="十二. 其他"></a>十二. 其他</h2><h3 id="1-ORM-在查询时做初始化操作"><a href="#1-ORM-在查询时做初始化操作" class="headerlink" title="1. ORM 在查询时做初始化操作"></a>1. <a href="http://docs.sqlalchemy.org/en/latest/orm/constructors.html" target="_blank" rel="noopener">ORM 在查询时做初始化操作</a></h3><p>当 SQLIAlchemy ORM 从数据库查询数据时, 默认不调用<code>__init__</code> 方法, 其底层实现了 Python 类的 <code>__new__()</code> 方法, 直接实现 对象实例化, 而不是通过 <code>__init__</code> 来实例化对象.</p>
+<p>如果需要在查询时, 依旧希望实现一些初始化操作, 可以使用 <code>orm.reconstructor()</code> 装饰器或 实现 <code>InstanceEvents.load()</code> 监听事件.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># orm.reconstructor</span><br><span class="line">from sqlalchemy import orm</span><br><span class="line"></span><br><span class="line">class MyMappedClass(object):</span><br><span class="line">    def __init__(self, data):</span><br><span class="line">        self.data = data</span><br><span class="line"></span><br><span class="line">        # we need stuff on all instances, but not in the database.</span><br><span class="line">        self.stuff = []</span><br><span class="line"></span><br><span class="line">    @orm.reconstructor</span><br><span class="line">    def init_on_load(self):</span><br><span class="line">        self.stuff = []</span><br><span class="line"></span><br><span class="line"># InstanceEvents.load()</span><br><span class="line">from sqlalchemy import event</span><br><span class="line">## standard decorator style</span><br><span class="line"></span><br><span class="line">@event.listens_for(SomeClass, &apos;load&apos;)</span><br><span class="line">def receive_load(target, context):</span><br><span class="line">    &quot;listen for the &apos;load&apos; event&quot;</span><br><span class="line"></span><br><span class="line">    # ... (event handling logic) ...</span><br></pre></td></tr></table></figure></p>
+<p>如果只是希望在从数据库查询生成的对象中包含某些属性, 也可以使用 <code>property</code> 实现:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class AwsRegions(db.Model):</span><br><span class="line">    name=db.Column(db.String(64))</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    @property</span><br><span class="line">    def zabbix_api(self):</span><br><span class="line">        return ZabbixObj(zabbix_url)</span><br><span class="line"></span><br><span class="line">    @zabbix_api.setter</span><br><span class="line">    def zabbix_api(self):</span><br><span class="line">        raise ValueError(&quot;zabbix can not be setted!&quot;)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+            <a href="/tags/Flask-扩展/" rel="tag"># Flask 扩展</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/19/PyStdLib-unittest/" rel="next" title="PyStdLib--unittest">
+                <i class="fa fa-chevron-left"></i> PyStdLib--unittest
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/19/flaskExt--flask-script/" rel="prev" title="Flask 扩展之--flask-script">
+                Flask 扩展之--flask-script <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-安装"><span class="nav-text">一. 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-配置"><span class="nav-text">二. 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-初始化示例"><span class="nav-text">三. 初始化示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-定义模型"><span class="nav-text">四. 定义模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-关系"><span class="nav-text">五. 关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-一对多"><span class="nav-text">1) 一对多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-多对多"><span class="nav-text">2) 多对多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-一对一"><span class="nav-text">3) 一对一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-多对一"><span class="nav-text">4) 多对一</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-数据库操作"><span class="nav-text">六. 数据库操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建数据库及数据表"><span class="nav-text">1) 创建数据库及数据表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-插入行"><span class="nav-text">2) 插入行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-修改行"><span class="nav-text">3) 修改行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-删除行"><span class="nav-text">4) 删除行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-查询行"><span class="nav-text">5) 查询行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-会话管理-事务管理"><span class="nav-text">6) 会话管理, 事务管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七-视图函数中操作数据库"><span class="nav-text">七. 视图函数中操作数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-分页对象-Pagination"><span class="nav-text">八. 分页对象 Pagination</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-paginate-方法"><span class="nav-text">1. paginate() 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-分页对象的属性及方法"><span class="nav-text">2. 分页对象的属性及方法:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-在模板中与-BootStrap-结合使用示例"><span class="nav-text">3. 在模板中与 BootStrap 结合使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九-监听事件"><span class="nav-text">九. 监听事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-set-事件"><span class="nav-text">1. set 事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十-记录慢查询"><span class="nav-text">十. 记录慢查询.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十一-Binds-操作多个数据库"><span class="nav-text">十一. Binds 操作多个数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十二-其他"><span class="nav-text">十二. 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ORM-在查询时做初始化操作"><span class="nav-text">1. ORM 在查询时做初始化操作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web development,django," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. MTVDjango 的 MVC 含义:  M , 数据存取部分, 有 Django 数据库层处理. V, 选择显示哪些要显示以及怎样显示的部分, 由视图和模板处理; C, 根据用户输入委派视图的部分, 有 django 框架根据 URLconf 设置, 对给定 URL 调用适当的 Python 函数.  由于 C 由框架自行处理, 而 Django 里更关注的是模型(Model), 模板(T">
+<meta name="keywords" content="web development,django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django之三--模型篇">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/django之三--模型篇/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="1. MTVDjango 的 MVC 含义:  M , 数据存取部分, 有 Django 数据库层处理. V, 选择显示哪些要显示以及怎样显示的部分, 由视图和模板处理; C, 根据用户输入委派视图的部分, 有 django 框架根据 URLconf 设置, 对给定 URL 调用适当的 Python 函数.  由于 C 由框架自行处理, 而 Django 里更关注的是模型(Model), 模板(T">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-16T09:59:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="django之三--模型篇">
+<meta name="twitter:description" content="1. MTVDjango 的 MVC 含义:  M , 数据存取部分, 有 Django 数据库层处理. V, 选择显示哪些要显示以及怎样显示的部分, 由视图和模板处理; C, 根据用户输入委派视图的部分, 有 django 框架根据 URLconf 设置, 对给定 URL 调用适当的 Python 函数.  由于 C 由框架自行处理, 而 Django 里更关注的是模型(Model), 模板(T">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/django之三--模型篇/"/>
+
+
+
+
+
+  <title>django之三--模型篇 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/django之三--模型篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">django之三--模型篇</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:00:02+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-MTV"><a href="#1-MTV" class="headerlink" title="1. MTV"></a>1. MTV</h2><p>Django 的 MVC 含义:</p>
+<ul>
+<li>M , 数据存取部分, 有 Django 数据库层处理.</li>
+<li>V, 选择显示哪些要显示以及怎样显示的部分, 由视图和模板处理;</li>
+<li>C, 根据用户输入委派视图的部分, 有 django 框架根据 URLconf 设置, 对给定 URL 调用适当的 Python 函数.</li>
+</ul>
+<p>由于 C 由框架自行处理, 而 Django 里更关注的是模型(Model), 模板(Template), 视图(view), Django 也被称为 MTV 框架.</p>
+<ul>
+<li>M : 代表模型(Model), 即数据存取层. 该层处理与数据相关的所有事务: 如何存取, 如何验证有效性, 包含哪些行为以及数据之间的关系灯.</li>
+<li>T : 代表模板(Template). 表现层, 该层处理与表现相关的决定: 如何在页面或其他类型文档中显示.</li>
+<li>V : 代表视图(View). 即业务逻辑. 该层包含存取模型及调用恰当模板的相关逻辑. 可以视作 模型与模板之间的桥梁.</li>
+</ul>
+<h2 id="2-数据库配置"><a href="#2-数据库配置" class="headerlink" title="2. 数据库配置"></a>2. 数据库配置</h2><ul>
+<li>DATABASE_ENGINE = ‘[postgresql_psycopg2|mysql|sqlite3|oracle]’</li>
+<li>DATABASE_NAME = ‘’</li>
+<li>DATABASE_USER = ‘’</li>
+<li>DATABASE_PASSWORD = ‘’</li>
+<li>DATABASE_HOST = ‘’</li>
+<li>DATABASE_PORT = ‘’</li>
+</ul>
+<p><strong>测试数据库配置</strong></p>
+<pre><code>&gt;&gt;&gt; from django.db import connection
+&gt;&gt;&gt; cursor = connection.cursor()
+</code></pre><h2 id="3-django-models-amp-app"><a href="#3-django-models-amp-app" class="headerlink" title="3. django models &amp; app :"></a>3. django models &amp; app :</h2><p><strong>app</strong> 一个包含模型,视图和 django 代码, 并且形式为独立的 Python 包的完整 Django 应用.</p>
+<p>project 和 app 区别: 一个是配置, 一个是代码;</p>
+<ul>
+<li>一个 project 包含许多个 django app 以及对他们的配置</li>
+<li>技术上, project 的作用是提供配置文件.</li>
+<li>一个 app 是一套 Django 功能的集合, 通常包含模型和视图, 按 Python 的包结构的方式存在.</li>
+<li>Django 本身内建一些 app, 例如注释系统和自动管理界面, app 的一个关键点是他们很容易移植到其他 project 和 被多个 project 复用.</li>
+<li>系统对 app  有一个约定: <strong>如果使用了 django 的数据库层(模型), 就必须创建一个 django app. 模型必须放在 apps 中</strong>. </li>
+</ul>
+<p>Django 模型使用 Python 代码形式表述的数据在数据库中的定义.对数据库层来说他等同于 <code>CREATE TABLE</code> 语句, 只不过执行的是 python 代码而不是 SQL, 而且还包含了比数据字段定义更多的含义. Django 用模型在后台执行 SQL 代码并把结果用 Python 的数据结构来描述. Django 也是用模型来呈现 SQL 无法处理的高级概念.</p>
+<p><strong>Django 提供了使用工具来从现有的数据库表中自动扫描生成模型.这对已有的数据库来说是非常快捷有用的</strong></p>
+<pre><code>$ cd mysite
+$ python manage.py startapp books   # 创建 app
+$ cd books 
+$ vim models.py
+
+    class Publisher(models.Model):
+        name = models.CharField(max_length=30)
+        address = models.CharField(max_length=35)
+        city = models.CharField(max_length=60)
+        state_province = models.CharField(max_length=30)
+        country = models.CharField(max_length=50)
+        website = models.URLField()
+
+        # 添加模块的字符串表现. 返回一个unicode对象.
+        def __unicode__(self):
+            return self.name
+
+        # 指定缺省排序方式.附录B 中有 Meta 中所有可选项的完整参考
+        class Meta:
+            ordering = [&apos;name&apos;]
+
+    class Author(models.Model):
+        first_name = models.CharField(max_length=30)
+        last_name = models.CharField(max_length=40)
+        email = models.EmailField()
+
+        # 添加模块的字符串表现. 返回一个unicode对象.
+        def __unicode__(self):
+            return u&apos;%s %s&apos; % (self.first_name, self.last_name)
+
+    class Book(models.Model):
+        title = models.CharField(max_length=100)
+        authors = models.ManyToManyField(Author)
+        publisher = models.ForeignKey(Publisher)
+        publication_date = models.DateField()    
+
+        # 添加模块的字符串表现. 返回一个unicode对象.
+        def __unicode__(self):
+            return self.title
+</code></pre><p>每个数据模型都是 <code>django.db.models.Model</code> 的子类. 它的父类 Model 包含了所有必要的和数据库交互的方法, 并提供了一个简洁的定义数据库字段的方法.</p>
+<p>每个模型相当于单个数据库表, 每个属性也是这个表中的一个字段. 属性名就是字段名, 它的类型相当于数据库的字段类型.</p>
+<p><strong>每个数据库表对应一个类</strong>, 这条规则的例外情况是多对多关系. 如上示例中, Book 有一个多对多字段叫做 authors. 该字段表明一本书籍有一个或多个作者, 但 Book 数据表并没有 authors 字段. 相反, Django 创建了一个额外的表(多对多链接表)来处理书籍和作者之间的映射关系.</p>
+<p><strong>主键</strong>: 除非单独指明, 否则 Django 会自动为每个模型生成一个自增长的整数主键字段, 每个 Django 模型都要求有单独的主键, id.</p>
+<h2 id="4-模型安装与基本使用"><a href="#4-模型安装与基本使用" class="headerlink" title="4. 模型安装与基本使用"></a>4. 模型安装与基本使用</h2><h3 id="4-1-在-Django-项目中激活这些模型-将-books-app-添加到配置文件的已安装应用列表中即可"><a href="#4-1-在-Django-项目中激活这些模型-将-books-app-添加到配置文件的已安装应用列表中即可" class="headerlink" title="4.1. 在 Django 项目中激活这些模型: 将 books app 添加到配置文件的已安装应用列表中即可."></a>4.1. 在 Django 项目中激活这些模型: 将 books app 添加到配置文件的已安装应用列表中即可.</h3><pre><code>$ vim settings.py
+    MIDDLEWARE_CLASSES = (
+        # &apos;django.middleware.common.CommonMiddleware&apos;,
+        # &apos;django.contrib.sessions.middleware.SessionMiddleware&apos;,
+        # &apos;django.contrib.auth.middleware.AuthenticationMiddleware&apos;,
+    )
+
+    INSTALLED_APPS = (
+        # &apos;django.contrib.auth&apos;,
+        # &apos;django.contrib.contenttypes&apos;,
+        # &apos;django.contrib.sessions&apos;,
+        # &apos;django.contrib.sites&apos;,
+        &apos;mysite.books&apos;,
+    )    
+</code></pre><h3 id="4-2-验证模型的有效性"><a href="#4-2-验证模型的有效性" class="headerlink" title="4.2. 验证模型的有效性"></a>4.2. 验证模型的有效性</h3><pre><code># 检查模型的语法和逻辑是否正确.
+$ python manage.py validate 
+</code></pre><h3 id="4-3-生成数据库"><a href="#4-3-生成数据库" class="headerlink" title="4.3. 生成数据库"></a>4.3. 生成数据库</h3><pre><code>$ python manage.py sqlall books     # 该命令只是打印创建数据库的sql语句.
+$ python manage.py syncdb           # 同步数据模型到数据库. 如果表不存在,则会创建表. 但 syncdb 不能讲模型的修改或删除同步到数据库.如果修改或删除了一个模型, 并向把他提交到数据库, syncdb 不会做任何处理.
+</code></pre><ul>
+<li>生成的表名为 <strong>app名称和模型的小写名称</strong>, 如 books_authors.</li>
+<li>每个表自动添加 id 主键</li>
+<li>Django 添加 <code>_id</code> 后缀到外键字段名.</li>
+<li><code>syncdb</code> 是幂等的, 他不会重复执行 SQL 语句.</li>
+<li>可以使用 <code>python manage.py dbshell</code> 作为数据库客户端连接到数据库查看.</li>
+</ul>
+<h3 id="4-4-基本数据访问"><a href="#4-4-基本数据访问" class="headerlink" title="4.4. 基本数据访问"></a>4.4. 基本数据访问</h3><pre><code>&gt;&gt;&gt; from books.models import Publisher
+
+# 创建对象与保存对象到数据库.
+&gt;&gt;&gt; p1 = Publisher(name=&apos;Apress&apos;, address=&apos;2855 Telegraph Avenue&apos;,
+...     city=&apos;Berkeley&apos;, state_province=&apos;CA&apos;, country=&apos;U.S.A.&apos;,
+...     website=&apos;http://www.apress.com/&apos;)
+&gt;&gt;&gt; p1.save()
+
+&gt;&gt;&gt; p2 = Publisher(name=&quot;O&apos;Reilly&quot;, address=&apos;10 Fawcett St.&apos;,
+...     city=&apos;Cambridge&apos;, state_province=&apos;MA&apos;, country=&apos;U.S.A.&apos;,
+...     website=&apos;http://www.oreilly.com/&apos;)
+&gt;&gt;&gt; p2.save()
+
+&gt;&gt;&gt; publisher_list = Publisher.objects.all()
+&gt;&gt;&gt; publisher_list
+[&lt;Publisher: Publisher object&gt;, &lt;Publisher: Publisher object&gt;]
+
+# 一次性完成对象的创建与存储
+&gt;&gt;&gt; p1 = Publisher.objects.create(name=&apos;Apress&apos;,
+...     address=&apos;2855 Telegraph Avenue&apos;,
+...     city=&apos;Berkeley&apos;, state_province=&apos;CA&apos;, country=&apos;U.S.A.&apos;,
+...     website=&apos;http://www.apress.com/&apos;)        
+</code></pre><ul>
+<li><code>p.save()</code></li>
+<li><p><code>Publisher.objects.all()</code></p>
+<ul>
+<li><code>objects</code> 属性, 被称为<strong>管理器</strong>, 他管理者所有针对<strong>数据包含, 及数据查询的表格级操作</strong>.</li>
+<li><code>all()</code> : 返回数据库中所有的记录, 他是一个 <strong>QuerySet</strong> 对象, 是数据库中一些记录的集合.</li>
+</ul>
+</li>
+<li><p><code>Publisher.objects.filter(name=&quot;Apress&quot;[, country=&quot;U.S.A.&quot;])</code> : 过滤器.</p>
+<p>  和 Python 一样, Django 使用<strong>双下划线</strong>来表明会进行一些<strong>魔法操作</strong>:</p>
+<ul>
+<li><p><code>contains</code> : 被翻译成 <code>LIKE</code> 语句.</p>
+<pre><code>&gt;&gt; Publisher.objects.fileer(name__contains=&quot;press&quot;)
+</code></pre></li>
+<li><code>icontains</code> : 大小写无关的 <code>LIKE</code> 语句.</li>
+<li><code>startswith</code> : </li>
+<li><code>endswith</code> : </li>
+<li><code>range</code> : SQL <code>BETWEEN</code> 查询.</li>
+</ul>
+</li>
+<li><code>Publisher.objects.get(name=&quot;Apress&quot;)</code> : 获取单个对象. 如果结果是多个对象, 会抛出异常. 没有返回结果也抛出异常.</li>
+<li><code>Publisher.objects.order_by(&quot;[-]name&quot;[, &quot;address&quot;])</code> : 数据排序. 减号表示逆序.</li>
+<li>限制返回的数据 : <code>Publisher.objects.order_by(&#39;name&#39;)[0:2]</code>, 不支持负索引.</li>
+<li>链式查询: <code>Publisher.objects.filter(country=&quot;U.S.A.&quot;).order_by(&quot;-name&quot;)</code></li>
+<li>更改某一指定的列 : <code>Publisher.objects.filter(id=52).update(name=&#39;Apress Publishing&#39;)</code>, update()方法对于任何结果集（QuerySet）均有效，这意味着你可以<strong>同时更新多条记录</strong>。</li>
+<li><p>删除对象:</p>
+<ul>
+<li><p>调用对象的 <code>delete</code> 方法:</p>
+<pre><code>&gt; p = Publisher.objects.get(name=&quot;O&apos;Reilly&quot;)
+&gt; p.delete()
+</code></pre></li>
+<li><p>只删除部分数据</p>
+<pre><code>&gt; Publisher.objects.filter(country=&apos;USA&apos;).delete()
+</code></pre></li>
+<li><p>删除某表内的所有数据:</p>
+<pre><code>&gt; Publisher.objects.all().delete()  # 必须显示调用 all() 方法.
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="补充-数据模型"><a href="#补充-数据模型" class="headerlink" title="补充: 数据模型:"></a>补充: 数据模型:</h2><pre><code>from django.db import models
+
+class Publisher(models.Model):
+    name = models.CharField(max_length=30)
+    address = models.CharField(max_length=50)
+    city = models.CharField(max_length=60)
+    state_province = models.CharField(max_length=30)
+    country = models.CharField(max_length=50)
+    website = models.URLField()
+
+    def __unicode__(self):
+        return self.name
+
+class Author(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=40)
+    email = models.EmailField()
+
+    def __unicode__(self):
+        return u&quot;%s %s&quot; % (self.first_name, self.last_name)
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    authors = models.ManyToManyField(Author)
+    publiser = models.ForeignKey(Publisher)
+    publication_date = models.DateFie()
+
+    def __unicode__(self):
+        return self.title
+</code></pre><h2 id="5-外键与多对多关系"><a href="#5-外键与多对多关系" class="headerlink" title="5. 外键与多对多关系"></a>5. 外键与多对多关系</h2><h3 id="5-1-外键"><a href="#5-1-外键" class="headerlink" title="5.1 外键"></a>5.1 外键</h3><h4 id="5-1-1-从多的一端查询一-返回相关的数据模型对象"><a href="#5-1-1-从多的一端查询一-返回相关的数据模型对象" class="headerlink" title="5.1.1 从多的一端查询一, 返回相关的数据模型对象."></a>5.1.1 从多的一端查询一, 返回相关的数据模型对象.</h4><pre><code>&gt;&gt; b = Book.objects.get(id=50)
+&gt;&gt; b.publisher
+&lt;Publisher: Apress Publisheing&gt;
+&gt;&gt; b.publisher.website
+u&quot;http://www.appress.com/&quot;
+</code></pre><h4 id="5-1-2-从一的一端查询多-需要使用-QuerySet-对象"><a href="#5-1-2-从一的一端查询多-需要使用-QuerySet-对象" class="headerlink" title="5.1.2 从一的一端查询多, 需要使用 QuerySet 对象"></a>5.1.2 从一的一端查询多, 需要使用 QuerySet 对象</h4><pre><code>&gt;&gt; p = Publisher.objects.get(name=&quot;Apress Publishing&quot;)
+&gt;&gt; p.book_set.all()
+[&lt;Book: The Django Book&gt;, &lt;Book: Dive Into Python&gt;, ...]
+</code></pre><p><code>boot_set</code> 只是一个 <code>QuerySet</code>, 他可以实现数据的过滤分切.</p>
+<pre><code>&gt;&gt; p = Publisher.objects.gte(name=&quot;Apress Publisher&quot;)
+&gt;&gt; p.book_set.filter(name__icontains=&quot;django&quot;)
+[&lt;Book: The Django Book&gt;, &lt;Book: Pro Django&gt;]
+</code></pre><p>属性名称 <code>book_set</code> 是由模型名称的小写(肉 book)加 <code>_set</code> 组成的.</p>
+<h3 id="5-2-多对多关系"><a href="#5-2-多对多关系" class="headerlink" title="5.2 多对多关系"></a>5.2 多对多关系</h3><p>多对多关系和外键工作方式相同, 只不过处理的是<code>QuerySet</code>而不是模型实例.</p>
+<pre><code># 查看书籍作者.
+&gt;&gt; b = Book.objects.get(id=50)
+&gt;&gt; b.authors.all()
+[&lt;Author: Adrian Holovaty&gt;, &lt;Author: Jacob Kaplan-Moss&gt;]
+&gt;&gt; b.authors.filter(first_name=&quot;Adrian&quot;)
+[&lt;Author: Adrian Holovaty&gt;]
+
+# 查看一个作者的所有书籍, 使用 author.book_set
+&gt;&gt; a = Author.objects.get(first_name=&quot;Adrian&quot;, last_name=&apos;Holovaty&apos;)
+&gt;&gt; a.book_set.all()
+[&lt;Book: The Django Book&gt;, &lt;Book: Adrian&apos;s Other Book&gt;]
+</code></pre><h2 id="6-更改数据库模式-Database-Schema"><a href="#6-更改数据库模式-Database-Schema" class="headerlink" title="6. 更改数据库模式( Database Schema)"></a>6. 更改数据库模式( Database Schema)</h2><p><code>syncdb</code> 仅仅创建数据库里还没有的表, 他并不对数据模型的修改进行同步, 也不处理数据模型的删除. 当新增或者修改数据模型里的字段, 或者删除了一个数据模型, 需要手动在数据库中做相应的修改.</p>
+<p>当处理模型修改的时候, Django 的数据库层的工作流程:</p>
+<ul>
+<li>如果模型包含一个未曾在数据库里建立的字段, Django 会报错. 当第一次用 Django 的数据库 API 请求表中不存在的字段时会导致报错(在运行时报错).</li>
+<li>Django 并不关心数据库表中是否存在未在模型中定义的列.</li>
+<li>Django 并不关系数据库中是否存在未被模型表示的表格.</li>
+</ul>
+<p>改变模型的模式架构意味着需要按照顺序更改 Python 代码和数据库.</p>
+<h3 id="6-1-添加字段"><a href="#6-1-添加字段" class="headerlink" title="6.1. 添加字段"></a>6.1. 添加字段</h3><p>利用 Django 不关心表里是否包含 model 里所没有的列的特性.</p>
+<p><strong>策略</strong> : 先在数据库里添加字段, 然后同步 Django 的模型以包含新的字段. </p>
+<p>首先在测试环境实现变化,步骤如下:</p>
+<ol>
+<li>进入开发环境, </li>
+<li>在模型里添加子弹</li>
+<li>运行<code>manage.py sqlall YOUR_APP</code>来测试模型新的 <code>CREATE TABLE</code>语句.注意为新字段的列定义.</li>
+<li>开启 数据库交互命令行界面. 执行 <code>ALTER TABLE</code>语句来添加新列.</li>
+<li>使用 Python 的 <code>manage.py shell</code>, 通过导入模型和选中表单, 来验证新的字段是否被正确的添加(如, MyModel.objects.all()[:5]), </li>
+<li>如果一切顺利, 所有的语句都不会报错.</li>
+</ol>
+<p>然后, 在产品服务器上实施步骤:</p>
+<ol>
+<li>启动数据库的命令行界面;</li>
+<li>执行在开发环境步骤中, 第三步的 <code>ALTER TABLE</code>语句;</li>
+<li>将新的字段加入到模型中. 然后在生产环境更新代码.</li>
+<li>重新启动 Web server, 使修改生效</li>
+</ol>
+<h3 id="6-2-删除字段"><a href="#6-2-删除字段" class="headerlink" title="6.2. 删除字段"></a>6.2. 删除字段</h3><p>步骤如下:</p>
+<ol>
+<li>从模型中删除字段, 然后重新启动 web 服务器.</li>
+<li>用一下命令从数据库中删除字段<br> <code>ALTER TABLE books_book DROP COLUMN num_pages;</code></li>
+</ol>
+<h3 id="6-3-删除多对多关联字段"><a href="#6-3-删除多对多关联字段" class="headerlink" title="6.3. 删除多对多关联字段"></a>6.3. 删除多对多关联字段</h3><p>步骤如下:</p>
+<ol>
+<li>从模型中删除<code>ManyToManyField</code>, 然后重启 web 服务器.</li>
+<li>用下面的命令从数据库中删除关联表.<br> <code>DROP TABLE books_book_authors;</code></li>
+</ol>
+<h3 id="6-4-删除模型"><a href="#6-4-删除模型" class="headerlink" title="6.4. 删除模型"></a>6.4. 删除模型</h3><p>步骤如下:</p>
+<ol>
+<li>从模型文件中删除你想要删除的模型, 然后重启 web 服务器.</li>
+<li>用一下命令从数据库中删除表<br> <code>DROP TABLE books_book;</code></li>
+<li>当需要从数据库中删除任何有依赖的表时要注意(既任何与表 books_book 有外键的表).</li>
+</ol>
+<h2 id="7-Managers-模型对象的行级别功能"><a href="#7-Managers-模型对象的行级别功能" class="headerlink" title="7. Managers : 模型对象的行级别功能"></a>7. Managers : 模型对象的行级别功能</h2><p>在语句 <code>Book.objects.all()</code> 中, <code>objects</code> 时一个特殊的属性, 需要通过他来查询数据库. 这就是模块的<strong>manager</strong>.</p>
+<p><strong>模块manager</strong> 是一个对象, Django 模块通过他进行数据库查询. 每个 Django 模块至少有一个 manager , 可以创建自定义的 manager 以定制数据库访问.</p>
+<h3 id="7-1-增加额外的-Manager-方法"><a href="#7-1-增加额外的-Manager-方法" class="headerlink" title="7.1 增加额外的 Manager 方法"></a>7.1 增加额外的 Manager 方法</h3><p>增加额外的 manager 方法是为模块添加<strong>表级功能</strong>的首选办法.</p>
+<pre><code># 为 Book 模型定义一个 title_count() 方法, 返回包含指定关键字的书的数量.
+# models.py
+
+from django.db import models
+
+# ... Author and Publisher models here ...
+
+class BookManager(models.Manager):
+    def title_count(self, keyword):
+        return self.filter(title__icontains=keyword).count()
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    authors = models.ManyToManyField(Author)
+    publisher = models.ForeignKey(Publisher)
+    publication_date = models.DateField()
+    num_pages = models.IntegerField(blank=True, null=True)
+    objects = BookManager()
+
+    def __unicode__(self):
+        return self.title
+
+# 使用方法
+&gt;&gt; Book.objects.title_count(&apos;django&apos;)
+4
+&gt;&gt; Book.objects.title_count(&quot;python&quot;)
+19
+</code></pre><p>说明:</p>
+<ul>
+<li><p>创建的 BookManager 类, 继承自 <code>django.db.models.Manager</code>, 这个类只有一个<code>title_count()</code>方法, 用来做统计. 该方法使用了 <code>self.filter()</code> , 此处 self 指 manager 本身</p>
+</li>
+<li><p>将 BookManager() 赋值给模型的 objects 属性, 它将取代模型的默认 manager(objects, 如果没有特别定义, 将被自动创建). 将他命名为 objects 是为了与自动创建的 Manager 保持一致.</p>
+</li>
+</ul>
+<h3 id="7-2-修改初始-Manager-QuerySet"><a href="#7-2-修改初始-Manager-QuerySet" class="headerlink" title="7.2 修改初始 Manager QuerySet"></a>7.2 修改初始 Manager QuerySet</h3><p>manager 的基本 QuerySet 返回系统中的所有对象. 可以通过覆盖 <code>Manager.get_query_set()</code> 方法重写 manager 的基本 QuerySet, 返回一个自定义的 QuerySet.</p>
+<p><code>get_query_set()</code> 返回的是一个 QuerySet 对象, 所以可以使用 <code>filter()</code>,<code>exclude()</code> 和其他一些 QuerySet 的方法.</p>
+<pre><code># 模型有两个 manager, 返回不同的值.
+from django.db import models
+
+# First, define the Manager subclass.
+class DahlBookManager(models.Manager):
+    def get_query_set(self):
+        return super(DahlBookManager, self).get_query_set().filter(author=&apos;Roald Dahl&apos;)
+
+# then hook it into the Book model explicitly.
+class Book(models.Model):
+    title = Model.CharField(max_length=100)
+    author = Model.CharField(max_length=50)
+    # ...
+    objects = models.Manager()  # the default manager
+    dahl_objects = DahlBookManager() # the Dahl-specific manager
+</code></pre><p>以上模型中, <code>Book.objects.all()</code> 返回数据库中的所有书本, 而 <code>Book.dahl_objects.all()</code> 只返回作者是 Roald Dahl 的书.</p>
+<p>以上示例中, 也指出了其他有趣的技术: 在一个模型中使用多个 Manager, 这是为模型添加通用过滤器的简单方法.</p>
+<p>使用自定义 Manager 对象, 需要注意, <strong>Django 会把第一个 Manger 定义为默认 Manager</strong>, Django 的许多部分(不包括 admin 应用)将会明确的为模型使用这个 Manager, 所以需要小心的选择默认的 Manager.</p>
+<h2 id="8-模型方法-模型对象的行级别功能"><a href="#8-模型方法-模型对象的行级别功能" class="headerlink" title="8. 模型方法: 模型对象的行级别功能"></a>8. 模型方法: 模型对象的行级别功能</h2><p>给对象添加行级功能, 需要一个自定义方法, 有鉴于 manager 疆场被用来用一些整表操作, 模型方法应该只针对特殊模型实例起作用.</p>
+<p>这是一项在模型的一个地方集中业务逻辑的技术.</p>
+<pre><code># 模型自定义方法
+from django.contrib.localflavor.us.models import USStateField
+from django.db import models
+
+class Person(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    birth_date = models.DateField()
+    address = models.CharField(max_length=100)
+    city = models.CharField(max_length=50)
+    state = USStateField()  
+
+    def bady_boomer_status(self):
+        &quot;Return the person&apos;s bady-boomer status&quot;
+        import datetime
+        if datetime.date(1945,8,1) &lt;= self.birth_date &lt;= datetime.date(1964,12,31):
+            return &quot;Baby boomer&quot;
+        if self.birth_date &lt; datetime.date(1945,8,1):
+            return &quot;Pre-boomer&quot;
+
+        return &quot;Post-boomer&quot;
+
+    def is_midwestern(self):
+        &quot;Return True if this person is from the Midwest&quot;
+
+        return self.state in (&quot;IL&quot;, &quot;WI&quot;,&quot;MI&quot;,&quot;IN&quot;,&quot;OH&quot;,&quot;IA&quot;,&quot;MO&quot;)
+
+    def _get_full_name(self):
+        &quot;Return the persion&apos;s full name&quot;
+        return u&quot;%s %s&quot; % (self.first_name, self.last_name)
+
+    full_name = property(_get_full_name)
+
+# 使用方法
+    &gt;&gt; p = Person.objects.get(first_name=&quot;Barack&quot;, last_name=&quot;Obama&quot;)
+    &gt;&gt; p.birth_date
+    datetime.date(1962,8,4)
+    &gt;&gt; p.baby_boomer_status()
+    &quot;Boby boomer&quot;
+    &gt;&gt; p.is_midwestern()
+    True
+    &gt;&gt; p.full_name
+    u&quot;Barack Obama&quot;
+</code></pre><h2 id="9-执行原始-SQL-查询"><a href="#9-执行原始-SQL-查询" class="headerlink" title="9. 执行原始 SQL 查询"></a>9. 执行原始 SQL 查询</h2><p>通过导入<code>django.db.connection</code> 对象来实现, 他代表当前数据库连接.  要使用 <code>connection.cursor()</code> 得到一个游标对象; <code>connection.execute(sql,[params])</code>, 来执行SQL 语句; 使用 <code>cursor.fetchone()</code> 或 <code>cursor.fetchall()</code> 来返回记录集.</p>
+<pre><code>&gt;&gt; from django.db import connection
+&gt;&gt; cursor = connection.cursor()
+&gt;&gt; cursor.execute(&quot;&quot;&quot;
+    SELECT DISTINCT first_name FROM people_person WHERE last_name = %s
+&quot;&quot;&quot;, [&quot;Lennon&quot;])
+&gt;&gt; row = cursor.fetchone()
+&gt;&gt; print row
+[&quot;John&quot;]
+</code></pre><p><strong>不要把视图代码和 <code>django.db.connection.cursor</code> 语句混杂在一起, 推荐把他们放在自定义模型或者自定义 manager 方法中</strong>.</p>
+<pre><code># 定义代码
+from django.db import connection, models
+
+class PersonManager(models.Manager):
+    def first_names(self, last_name):
+        cursor = connection.cursor()
+        cursor.execute(&quot;&quot;&quot;
+            SELECT DISTINCT first_name FROM people_person WHERE last_name = %s&quot;&quot;&quot;, [last_name])
+        return (row[0] for row in cursor.fetchone())
+
+class Person(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    objects = PersonManager()
+
+# 使用示例
+&gt;&gt; Person.objects.first_name(&apos;Lennon&apos;)
+[&apos;John&apos;, &quot;Cynthia&quot;]
+</code></pre><h2 id="补充-Unicode"><a href="#补充-Unicode" class="headerlink" title="补充: Unicode"></a>补充: Unicode</h2><blockquote>
+<p>普通的python字符串是经过编码的，意思就是它们使用了某种编码方式（如ASCII，ISO-8859-1或者UTF-8）来编码。 如果你把奇特的字符（其它任何超出标准128个如0-9和A-Z之类的ASCII字符）保存在一个普通的Python字符串里，你一定要跟踪你的字符串是用什么编码的，否则这些奇特的字符可能会在显示或者打印的时候出现乱码。 当你尝试要将用某种编码保存的数据结合到另外一种编码的数据中，或者你想要把它显示在已经假定了某种编码的程序中的时候，问题就会发生。 我们都已经见到过网页和邮件被???弄得乱七八糟。 ?????? 或者其它出现在奇怪位置的字符：这一般来说就是存在编码问题了。1<br>但是Unicode对象并没有编码。它们使用Unicode，一个一致的，通用的字符编码集。 当你在Python中处理Unicode对象的时候，你可以直接将它们混合使用和互相匹配而不必去考虑编码细节。<br>Django 在其内部的各个方面都使用到了 Unicode 对象。 模型 对象中，检索匹配方面的操作使用的是 Unicode 对象，视图 函数之间的交互使用的是 Unicode 对象，模板的渲染也是用的 Unicode 对象。 通常，我们不必担心编码是否正确，后台会处理的很好。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web-development/" rel="tag"># web development</a>
+          
+            <a href="/tags/django/" rel="tag"># django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/django之五--表单/" rel="next" title="django之五--表单">
+                <i class="fa fa-chevron-left"></i> django之五--表单
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/django之二--模板篇/" rel="prev" title="django之二--模板篇">
+                django之二--模板篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MTV"><span class="nav-text">1. MTV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数据库配置"><span class="nav-text">2. 数据库配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-django-models-amp-app"><span class="nav-text">3. django models &amp; app :</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-模型安装与基本使用"><span class="nav-text">4. 模型安装与基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-在-Django-项目中激活这些模型-将-books-app-添加到配置文件的已安装应用列表中即可"><span class="nav-text">4.1. 在 Django 项目中激活这些模型: 将 books app 添加到配置文件的已安装应用列表中即可.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-验证模型的有效性"><span class="nav-text">4.2. 验证模型的有效性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-生成数据库"><span class="nav-text">4.3. 生成数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-基本数据访问"><span class="nav-text">4.4. 基本数据访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充-数据模型"><span class="nav-text">补充: 数据模型:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-外键与多对多关系"><span class="nav-text">5. 外键与多对多关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-外键"><span class="nav-text">5.1 外键</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-1-从多的一端查询一-返回相关的数据模型对象"><span class="nav-text">5.1.1 从多的一端查询一, 返回相关的数据模型对象.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-2-从一的一端查询多-需要使用-QuerySet-对象"><span class="nav-text">5.1.2 从一的一端查询多, 需要使用 QuerySet 对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-多对多关系"><span class="nav-text">5.2 多对多关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-更改数据库模式-Database-Schema"><span class="nav-text">6. 更改数据库模式( Database Schema)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-添加字段"><span class="nav-text">6.1. 添加字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-删除字段"><span class="nav-text">6.2. 删除字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-删除多对多关联字段"><span class="nav-text">6.3. 删除多对多关联字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-删除模型"><span class="nav-text">6.4. 删除模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Managers-模型对象的行级别功能"><span class="nav-text">7. Managers : 模型对象的行级别功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-增加额外的-Manager-方法"><span class="nav-text">7.1 增加额外的 Manager 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-修改初始-Manager-QuerySet"><span class="nav-text">7.2 修改初始 Manager QuerySet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-模型方法-模型对象的行级别功能"><span class="nav-text">8. 模型方法: 模型对象的行级别功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-执行原始-SQL-查询"><span class="nav-text">9. 执行原始 SQL 查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充-Unicode"><span class="nav-text">补充: Unicode</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

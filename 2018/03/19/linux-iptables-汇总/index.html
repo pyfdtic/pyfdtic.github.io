@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,iptables,安全," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一. 背景知识1. 相关网络背景知识(1) Linux 主机内部路由Linux 在 内核中维护由一个路由表, 报文进入本机后, 由该路由表判断目标地址; 报文离开本机之前, 判断经由那个接口发出. (2) TCP 报文格式erg : 紧急指针是否有效. ack : 确认号是否有效. psh : 不再缓冲中停留, 直接发往内核. rst : reset, 重置. syn : 同步, 请求建立连接.">
+<meta name="keywords" content="Linux,iptables,安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iptables 汇总">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/19/linux-iptables-汇总/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="一. 背景知识1. 相关网络背景知识(1) Linux 主机内部路由Linux 在 内核中维护由一个路由表, 报文进入本机后, 由该路由表判断目标地址; 报文离开本机之前, 判断经由那个接口发出. (2) TCP 报文格式erg : 紧急指针是否有效. ack : 确认号是否有效. psh : 不再缓冲中停留, 直接发往内核. rst : reset, 重置. syn : 同步, 请求建立连接.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-19T09:38:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iptables 汇总">
+<meta name="twitter:description" content="一. 背景知识1. 相关网络背景知识(1) Linux 主机内部路由Linux 在 内核中维护由一个路由表, 报文进入本机后, 由该路由表判断目标地址; 报文离开本机之前, 判断经由那个接口发出. (2) TCP 报文格式erg : 紧急指针是否有效. ack : 确认号是否有效. psh : 不再缓冲中停留, 直接发往内核. rst : reset, 重置. syn : 同步, 请求建立连接.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/19/linux-iptables-汇总/"/>
+
+
+
+
+
+  <title>iptables 汇总 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/linux-iptables-汇总/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">iptables 汇总</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T16:02:10+08:00">
+                2018-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机原理与操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机原理与操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一-背景知识"><a href="#一-背景知识" class="headerlink" title="一. 背景知识"></a>一. 背景知识</h1><h2 id="1-相关网络背景知识"><a href="#1-相关网络背景知识" class="headerlink" title="1. 相关网络背景知识"></a>1. 相关网络背景知识</h2><h3 id="1-Linux-主机内部路由"><a href="#1-Linux-主机内部路由" class="headerlink" title="(1) Linux 主机内部路由"></a>(1) Linux 主机内部路由</h3><p>Linux 在 内核中维护由一个路由表, 报文进入本机后, 由该路由表判断目标地址; 报文离开本机之前, 判断经由那个接口发出.</p>
+<h3 id="2-TCP-报文格式"><a href="#2-TCP-报文格式" class="headerlink" title="(2) TCP 报文格式"></a>(2) TCP 报文格式</h3><pre><code>erg : 紧急指针是否有效.
+ack : 确认号是否有效.
+psh : 不再缓冲中停留, 直接发往内核.
+rst : reset, 重置.
+syn : 同步, 请求建立连接. 
+fin : 结束, 请求关闭连接.
+</code></pre><h3 id="3-TCP-协议的三次握手和四次断开"><a href="#3-TCP-协议的三次握手和四次断开" class="headerlink" title="(3) TCP 协议的三次握手和四次断开"></a>(3) TCP 协议的三次握手和四次断开</h3><h3 id="4-TCP-的有限状态机"><a href="#4-TCP-的有限状态机" class="headerlink" title="(4) TCP 的有限状态机"></a>(4) TCP 的有限状态机</h3><h2 id="2-iptables-简介"><a href="#2-iptables-简介" class="headerlink" title="2. iptables 简介"></a>2. iptables 简介</h2><p>iptables 是 Linux 主机上的防火墙软件, 由两部分构成:</p>
+<ol>
+<li>iptables : 命令行工具, 用于编写 规则, 并可以实现规则的语法检查.</li>
+<li>netfilter : 网络过滤器, 内核中工作为 TCP/IP 协议栈上的框架.</li>
+</ol>
+<h2 id="3-netfilter-的四表五链"><a href="#3-netfilter-的四表五链" class="headerlink" title="3. netfilter 的四表五链"></a>3. netfilter 的四表五链</h2><h3 id="0-表与链"><a href="#0-表与链" class="headerlink" title="(0) 表与链"></a>(0) 表与链</h3><p>每个钩子函数上可以防止 n 条规则, 数据包在每条规则上依次匹配, 对应于每个钩子上的多条规则成为一个 <strong>链(CHAIN)</strong>;</p>
+<p>每个功能(表)有多个链, 所以成为 <strong>表</strong></p>
+<h3 id="1-四表"><a href="#1-四表" class="headerlink" title="(1) 四表"></a>(1) 四表</h3><ul>
+<li><p>filter : 包过滤<br>  <code>input --&gt; forward --&gt; output</code></p>
+</li>
+<li><p>NAT : 地址转换<br>  <code>prerouting --&gt; output --&gt; postrouting</code></p>
+</li>
+<li><p>mangle : 修改报文首部中的某些信息;<br>  <code>prerouting --&gt; input --&gt; forward --&gt; output --&gt; postrouting</code></p>
+</li>
+<li><p>raw : 关闭 nat 表上启动的链接追踪功能.<br>  <code>prerouting --&gt; output</code>     </p>
+</li>
+</ul>
+<h3 id="2-五链-5-个-hooks-functions"><a href="#2-五链-5-个-hooks-functions" class="headerlink" title="(2) 五链(5 个 hooks functions)"></a>(2) 五链(5 个 hooks functions)</h3><ul>
+<li>prerouting : 进入本机后, 路由功能发生之前</li>
+<li>input : 到达本机内部</li>
+<li>output : 由本机发出</li>
+<li>forward : 由本机转发</li>
+<li>postrouting : 路由功能发生之后, 即将离开本机之前.</li>
+</ul>
+<h3 id="3-报文流向经由的位置"><a href="#3-报文流向经由的位置" class="headerlink" title="(3) 报文流向经由的位置"></a>(3) 报文流向经由的位置</h3><ul>
+<li><p>到本机内部<br>  <code>prerouting --&gt; input</code></p>
+</li>
+<li><p>由本机发出<br>  <code>output --&gt; postrouting</code></p>
+</li>
+<li><p>由本机转发<br>  <code>prerouting --&gt; forward --&gt; postrouting</code></p>
+</li>
+</ul>
+<h3 id="4-链上规则的检查次序"><a href="#4-链上规则的检查次序" class="headerlink" title="(4) 链上规则的检查次序"></a>(4) 链上规则的检查次序</h3><p>匹配的<code>内部机制</code> : 检查 IP 首部, 检查 TCP,UDP,ICMP 首部; 同时, 基于扩展机制, 可以进行额外的检查, 例如做链接追踪等.</p>
+<ul>
+<li>每个 链 上的规则检查为<code>依次检查</code>; </li>
+<li>当某个链上的某个规则被匹配之后, 则执行该规则的 target, 该链上的其他规则不再执行;</li>
+<li><p>钩子函数(表)的优先级<br>  在每个钩子(链)上, 规则是按不同的功能(表), 分别存放的. 每个数据包到来之后, 按表的优先级, 依次检查每一个链, 完成之后, 转到下一个链.</p>
+<p>  优先级 : <strong>raw &gt; mangle &gt; nat &gt; filter</strong></p>
+</li>
+</ul>
+<p><img src="" alt="数据包过滤优先级表"></p>
+<h3 id="5-规则编写最佳实践"><a href="#5-规则编写最佳实践" class="headerlink" title="(5) 规则编写最佳实践"></a>(5) 规则编写最佳实践</h3><p>写作规则的<strong>最佳实践</strong>:</p>
+<ul>
+<li>同类规则 : 匹配范围<code>小</code>的放在最前面;</li>
+<li>同类规则, 如果能<code>合并</code>, 则尽量合并;</li>
+<li>不同类规则 : 匹配范围几率较大的放前面;</li>
+<li>应该为每个链, 设置<code>默认规则</code>;</li>
+</ul>
+<h1 id="二-iptables-规则编写"><a href="#二-iptables-规则编写" class="headerlink" title="二. iptables 规则编写"></a>二. iptables 规则编写</h1><h2 id="1-添加规则时的考量点"><a href="#1-添加规则时的考量点" class="headerlink" title="1. 添加规则时的考量点"></a>1. 添加规则时的考量点</h2><ol>
+<li>要实现的功能 –&gt; 判断添加到哪个表上;</li>
+<li>报文流向及经由路径 –&gt; 判断添加到哪个链上;</li>
+</ol>
+<h2 id="2-规则和链的计数器"><a href="#2-规则和链的计数器" class="headerlink" title="2. 规则和链的计数器"></a>2. 规则和链的计数器</h2><ul>
+<li>pkts: 由规则或链匹配到的报文的个数；</li>
+<li>bytes：由规则或链匹配到的所有报文大小之和；<br><img src="" alt="iptables 计数器"></li>
+</ul>
+<h2 id="3-规则的编写"><a href="#3-规则的编写" class="headerlink" title="3. 规则的编写."></a>3. 规则的编写.</h2><p><strong>如果同时指定多个匹配条件, 则默认多个条件需要同时被满足.</strong></p>
+<pre><code>iptables [-t TABLE] SUBCOMMAND CHAIN CRETERIA -j TARGET
+
+    -t TABLE:
+        默认为filter, 共有filter, nat, mangle, raw四个可用；
+
+    SUBCOMMAND：
+        链：
+            -F：flush，清空指定表的指定链上所有规则；省略链名时，清空表中的所有链；
+
+            -N：new, 新建一个用户自定义的链；自定义链只能作为默认链上的跳转对象，即在默认链通过引用来生效自定义链；
+
+            -X：drop，删除用户自定义的空链；非空自定义链和内置链无法删除；
+
+            -Z：zero，将规则的计数器置0；
+
+            -P：policy，设置链的默认处理机制；当所有都无法匹配或有匹配有无法做出有效处理机制时，默认策略即生效；
+                filter表的可用策略：ACCEPT, DROP, REJECT
+
+            -E：rename，重命名自定义链；
+
+            注意：被引用中的链，无法删除和改名
+
+        规则：
+            -A：append，在链尾追加一条规则；
+
+            -I：insert，在指定位置插入一条规则；
+
+            -D：delete，删除指定的规则；rule or rulenum
+
+            -R：replace，替换指定的规则；
+
+                $ iptable -t filter -R INPUT 1 -s 172.16.100.2 -d 172.16.100.11 -p tcp -i eth0 -j ACCEPT
+
+        查看：
+            -L：list，列出指定链上的所有规则；
+                -n: numeric，以数字格式显示地址和端口号，即不反解；
+
+                -v: verbose，详细格式，显示规则的详细信息，包括规则计数器等；
+
+                -vv:
+
+                -vvv:
+
+                --line-numbers: 显示规则编号；
+
+                -x: exactly，显示计数器的精确值；
+
+
+            pkts bytes target     prot opt in     out     source               destination
+                pkts: 被本规则所匹配到的包个数；
+                bytes：被本规则所匹配到的所包的大小之和；
+                target: 处理目标 （目标可以为用户自定义的链）
+                prot: 协议 {tcp, udp, icmp}
+                opt: 可选项
+                in: 数据包流入接口
+                out: 数据包流出接口
+                source: 源地址
+                destination: 目标地址；
+    CHAIN :
+        指定要添加规则的链;
+
+        可以是自定义链. 注意：报文不可能经由自定义链(不再内核中)，只有在被内置链上的引用才能生效（即做为自定义目标）
+
+    CRETERIA :
+        指定匹配条件.
+
+        1. 通用匹配
+
+            -s, --src, --source  IP|Network：检查报文中的源IP地址；
+
+            -d, --dst, --destination：检查报文中的目标IP地址/网段
+
+            -p, --protocol：检查报文中的协议，即ip首部中的protocols所标识的协议；tcp、udp或icmp三者之一；
+
+            -i, --in-interface：数据报文的流入接口；通常只用于PREROUTING, INPUT, FORWARD链上的规则；
+
+            -o, --out-interface：检查报文的流出接口；通常只用于FORWARD, OUTPUT, POSTROUTING链上的规则；
+
+        2. 扩展匹配: 使用 iptables 的模块实现扩展检查机制.
+            (1) 隐式扩展 : 
+                ** 如果在通用匹配上使用 -p 选项指明了协议的话，则使用-m选项指明对其协议的扩展就变得可有可无了；
+
+                1) tcp: -m tcp
+                    --dport PORT[-PORT]     # 必须是连续的端口
+                    --sport
+                    --tcp-flags LIST1 LIST2
+                        LIST1: 要检查的标志位；
+                        LIST2：在LIST1中出现过的，且必须为1标记位；而余下的则必须为0; 
+                        例如：--tcp-flags syn,ack,fin,rst syn # 表示 三次握手的第一次. 等同 --syn 
+                    --syn：用于匹配tcp会话三次握手的第一次；新建连接.
+
+                    $ iptable -A INPUT 1 -s 172.16.100.2 -d 172.16.100.11 -p tcp [-m tcp] --dport 80 -j REJECT  # -m tcp 可省略, 因为 -p tcp 指明了协议.
+
+                2) udp: -m udp
+                    --sport
+                    --dport
+
+                3) icmp: -m icmp
+                    --icmp[-type]  # ICMP TYPE CODE 表
+                        8: echo request, ping 请求
+                        0：echo reply, ping 响应
+
+                        # 允许自己 ping 别人. 本机地址 为 172.16.100.11 .
+                        $ iptables -A OUTPUT -s 172.16.100.11 -p icmp --icmp-type 8 -j ACCEPT
+                        $ iptables -A INPUT -d 172.16.100.11 -p icmp --icmp-type 0 -j ACCEPT
+
+            (2) 显式扩展: 必须指明使用的扩展机制.
+
+                0) 通用语法格式:
+
+                    -m 模块名称
+                        每个模块会引入新的匹配机制；
+
+                查看可用模块:
+
+                    小写字母，以.so结尾；
+                    大写通常指 处理方式.
+
+                1) multiport扩展：以离散定义多端口匹配；最多指定15个端口；
+
+                    专用选项：
+                        --source-ports, --sports PORT[,PORT,...]
+                        --destination-ports, --dports PORT[,PORT,...]
+                        --ports PORT[,PORT,...]     # 源和目标端口.
+
+                    例子：
+                        $ iptables -I INPUT 1 -d 172.16.100.11 -p tcp -m multiport --dports 22,80,443 -j ACCEPT
+                        $ iptables -I OUTPUT 1 -s 172.16.100.11 -p tcp -m multiport --sports 22,80,443 -j ACCEPT
+
+                2) iprange扩展：指定连续的ip地址范围；在匹配非整个网络地址时使用；
+
+                    专用选项：
+                        [!] --src-range IP[-IP]     # 也支持单个 ip
+                        [!] --dst-range IP[-IP]     # 也支持单个 ip
+
+                    示例：
+                        $ iptables -A INPUT -d 172.16.100.11 -p tcp --dport 23 -m iprange --src-range 172.16.100.1-172.16.100.100 -j ACCEPT
+                        $ iptables -A OUTPUT -s 172.16.100.11 -p tcp --sport 23 -m iprange --dst-range 172.16.100.1-172.16.100.100 -j ACCEPT
+
+                3) string扩展：对应用层首部和数据进行检查. 检查报文中出现的字符串，与给定的字符串作匹配；
+
+                    字符串匹配检查算法：实现高效匹配. 两者相近.
+                        kmp :  
+                        bm : 
+
+                    专用选项：
+                        --algo {kmp|bm}
+                        --string &quot;STRING&quot;
+                        --hex-string &quot;HEX_STRING&quot;：HEX_STRING为编码成16进制格式的字串；
+
+
+                    示例：
+                        $ iptables -I OUTPUT 1 -s 172.16.100.11 -p tcp --sport 80 -m string --string &quot;sex&quot; --algo kmp -j REJECT
+
+                4) time扩展：基于时间区间做访问控制
+
+                    专用选项：
+                        --datestart YYYY[-MM][-DD][hh[:mm[:ss]]]
+                        --dattestop YYYY[-MM][-DD][hh[:mm[:ss]]]
+
+                        --timestart 
+                        --timestop
+
+                        --weekdays DAY1[,DAY2,...]
+
+                    示例：
+                        $ iptables -R INPUT 1 -d 172.16.100.11 -p tcp --dport 80 -m time --timestart 08:30 --timestop 18:30 --weekdays Mon,Tue,Thu,Fri -j REJECT
+
+                5) connlimit扩展：基于连接数作限制；对每个IP能够发起的并发连接数作限制；
+
+                    专用选项：
+                        --connlimit-above [n]   # 包含 n .
+
+                    $ iptables -I INPUT 2 -d 172.16.100.11 -p tcp --dport 22 -m connlimit --connlimit-above 5 -j REJECT
+
+                6) limit扩展：基于令牌桶算法实现的.基于发包速率作限制；
+
+                    专用选项：令牌桶算法
+                        --limit  n[/second|/min|/hour|/day]
+                        --limit-burst n  # 突发速率时, 最大速率. 
+
+                    $ iptables -R INPUT 3 -d 172.16.100.11 -p icmp --icmp-type 8 -m limit --limit 10/minute --limit-burst 5 -j ACCEPT   
+
+                    ** limit 仅按一定速率匹配数据, 若限制, 先放过一定速率的数据, 然后阻断.  
+                        $ iptables -A FORWARD -p icmp -s 172.16.11.0/24 -m limit --limit 10/s -j ACCEPT
+                        $ iptables -A FORWARD -p icmp -s 172.16.11.0/24 -j DROP                       
+
+                7) state扩展：启用连接追踪模板记录连接，并根据连接匹配连接状态的扩展；
+                    启用连接追踪功能之前：简单包过滤防火墙；
+                    启用连接追踪功能：带状态检测的包过滤防火墙；
+                        # 反弹式木马: 木马可以探测主机开放的端口, 并使用该端口作为客户端,想外发送请求, 从而出入的连接成为 ESTABLISHED 状态.
+
+                    专用选项：
+                        --state STATE
+
+                    $ iptables -I INPUT 1 -d 172.16.100.11 -p tcp -m multiport --dport 22,80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+                    $ iptables -I OUTPUT 1 -d 172.16.100.11 -m state --state ESTABLISHED -j ACCEPT 
+
+                    调整连接追踪功能所能容纳的连接的最大数目：
+
+                        $cat /proc/sys/net/nf_conntrack_max
+
+                        $ lsmod | grep nf_conntrack  # 查看是否打开连接追踪功能.
+                        $ modprobe -r nf_conntrack 
+                        $ modprobe -r nf_conntrack_ipv4
+
+                    当前追踪的所有连接：
+
+                        /proc/net/nf_conntrack
+
+                    不同协议或连接类型追踪时的时长属性：
+
+                        /proc/sys/net/netfilter/
+
+                    如何放行被动模式下的ftp服务：
+
+                        (1) 装载模块：
+                            # modprobe nf_conntrack_ftp
+
+                        (2) 放行请求报文
+                            放行入站请求端口为21的请求报文；
+                            放行所有状态为ESTABLISHED和RELATED状态的入站报文；
+
+                        (3) 放行出站响应报文
+                            放行所有状态为ESTABLISHED的出站报文；
+
+                8) recent 扩展 : 利用iptables的recent模块来抵御DOS攻击.
+                    示例: 
+                        iptables -I INPUT  -p tcp --dport 22 -m state --state NEW -m recent --set --name SSH # SSH 只是个名字, 用于日志记录 /var/log/messages .
+
+                        iptables -I INPUT  -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 300 --hitcount 3 --name SSH -j LOG --log-prefix &quot;SSH Attack: &quot;
+
+                        iptables -I INPUT  -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 300 --hitcount 3 --name SSH -j DROP
+
+                        1.利用connlimit模块将单IP的并发设置为3；会误杀使用NAT上网的用户，可以根据实际情况增大该值；
+
+                        2.利用recent和state模块限制单IP在300s内只能与本机建立2个新连接。被限制五分钟后即可恢复访问。
+
+                        下面对最后两句做一个说明：
+
+                        1.第二句是记录访问tcp 22端口的新连接，记录名称为SSH
+                        --set 记录数据包的来源IP，如果IP已经存在将更新已经存在的条目
+
+                        2.第三句是指SSH记录中的IP，300s内发起超过3次连接则拒绝此IP的连接。
+                        --update 是指每次建立连接都更新列表；
+                        --seconds必须与--rcheck或者--update同时使用
+                        --hitcount必须与--rcheck或者--update同时使用
+
+                        3.iptables的记录：/proc/net/xt_recent/SSH
+
+                    # 防止被探测 SSH 密码
+                        $ iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set --name SSH --rsource -m recent --name SSH --update --seconds 10 --hitcount 4 --rsource -j DROP
+
+
+    TARGET：
+
+        -j: jump，跳转目标
+
+            内置目标：
+
+                ACCEPT : 接受
+                DROP : 丢弃
+                REJECT : 拒绝
+
+                SNAT
+                DNAT
+                MASQUERADE
+
+                LOG：日志
+                REDIRECT：端口重定向；
+                RETURN: 返回至调用者；
+                MARK：防火墙标记, 用于 mangle 表中. 见 LVS.
+</code></pre><h2 id="4-NAT-Network-Address-Translation"><a href="#4-NAT-Network-Address-Translation" class="headerlink" title="4. NAT : Network Address Translation"></a>4. NAT : Network Address Translation</h2><h3 id="1-分类"><a href="#1-分类" class="headerlink" title="(1) 分类:"></a>(1) 分类:</h3><p>NAT : 工作于 3 和 4 层. 并非是用户空间运行的进程完成转换功能，靠的是内核中地址转换规则；</p>
+<p>仅从请求报文判断，地址转换：</p>
+<ul>
+<li><p>源地址转换：SNAT<br>  SNAT: CIP –&gt; SIP: CIP –&gt; SNAT(PIP) –&gt; SIP</p>
+<pre><code>CIP: 本地客户端地址
+</code></pre></li>
+<li><p>目标地址转换：DNAT<br>  DNAT：RemoteIP –&gt; PIP: RemoteIP –&gt; DNAT(SIP) –&gt; SIP</p>
+<pre><code>RemoteIP：远程客户端地址；
+</code></pre></li>
+<li><p>端口转换：PNAT<br>  通常在 DNAT 中实现.</p>
+</li>
+</ul>
+<h3 id="2-SNAT：主要用于实现让内网客户端访问外部主机时使用；"><a href="#2-SNAT：主要用于实现让内网客户端访问外部主机时使用；" class="headerlink" title="(2) SNAT：主要用于实现让内网客户端访问外部主机时使用；"></a>(2) SNAT：主要用于实现让内网客户端访问外部主机时使用；</h3><p><strong>注意</strong>：</p>
+<ul>
+<li>要定义在<code>POSTROUTING</code>链；也可以在OUTPUT上使用(较少)；</li>
+<li><p>需要打开网络间转发:</p>
+<pre><code>echo 1 &gt; /proc/sys/net /ipv4/ip_forward
+</code></pre></li>
+</ul>
+<p>定义方法：</p>
+<pre><code>$ iptables -t nat -A POSTROUTING -s 内网网络或主机地址 -j SNAT --to-source NAT服务器上的某外网地址
+
+另一个TARGET：
+    MASQUERADE：地址伪装；
+        能自行判断该转为哪个源地址；
+
+    iptables -t nat -A POSTROUTING -s 内网网络或主机地址 -j MASQUERADE
+</code></pre><p>示例:</p>
+<pre><code>$ iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -j SNAT --to-source 172.16.100.11     # 172.16.100.11 为本机的一个接口.
+</code></pre><h3 id="3-DNAT：主要用于发布内部服务器，让内网中的服务器在外网中可以被访问到；"><a href="#3-DNAT：主要用于发布内部服务器，让内网中的服务器在外网中可以被访问到；" class="headerlink" title="(3) DNAT：主要用于发布内部服务器，让内网中的服务器在外网中可以被访问到；"></a>(3) DNAT：主要用于发布内部服务器，让内网中的服务器在外网中可以被访问到；</h3><p><strong>注意</strong>：</p>
+<ul>
+<li>要定义在PREROUTING链；</li>
+</ul>
+<p>定义方法：</p>
+<pre><code>$ iptables -t nat -A PREROUTING -d NAT服务器的某外网地址 -p 某协议 --dport 某端口 -j DNAT --to-destination 内网某服务器地址[:PORT]
+</code></pre><p>示例:</p>
+<pre><code>$ iptables -t nat -A PREROUTING -d 172.16.100.11 -p tcp --dport 80 -j DNAT --to-destination 192.168.10.7
+</code></pre><h3 id="4-FULLNAT-全地址转换-见-LVS"><a href="#4-FULLNAT-全地址转换-见-LVS" class="headerlink" title="(4) FULLNAT: 全地址转换, 见 LVS."></a>(4) FULLNAT: 全地址转换, 见 LVS.</h3><p>在请求报文到时：既修改源地址，又修改目标地址; 响应报文也是.</p>
+<h2 id="5-规则的保存与重载"><a href="#5-规则的保存与重载" class="headerlink" title="5. 规则的保存与重载."></a>5. 规则的保存与重载.</h2><p>保存: </p>
+<pre><code>service iptables save   # 保存到 /etc/sysconfig/iptables 文件；
+
+iptables-save &gt; /PATH/TO/SOMEFILE   # 自定义保存文件
+</code></pre><p>重载: </p>
+<pre><code>service iptables reload     # 使用默认保存文件
+
+iptables-restore &lt; /PATH/FROM/SOMEFILE  # 使用自定义保存文件.
+</code></pre><h1 id="三-其他相关"><a href="#三-其他相关" class="headerlink" title="三. 其他相关"></a>三. 其他相关</h1><h3 id="1-REDIRECT-与-DNAT-的区别"><a href="#1-REDIRECT-与-DNAT-的区别" class="headerlink" title="1. REDIRECT 与 DNAT 的区别?"></a>1. REDIRECT 与 DNAT 的区别?</h3><pre><code>$ iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to 3128
+
+$ iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 172.16.11.1:3128
+
+$ iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 3389 -j DNAT --to-destination 172.16.11.250
+</code></pre><p><strong>结论</strong></p>
+<ul>
+<li>REDIRECT 是 DNAT 的一个特例.</li>
+<li>DNAT的功能更强大.</li>
+</ul>
+<h3 id="2-MASQUEREAD-与-SNAT-的区别"><a href="#2-MASQUEREAD-与-SNAT-的区别" class="headerlink" title="2. MASQUEREAD 与 SNAT 的区别?"></a>2. MASQUEREAD 与 SNAT 的区别?</h3><pre><code>$ iptables -t nat -s 172.16.11.0/24 -o eth0 -j MASQUERADE
+
+$ iptables -t nat -s 172.l6.11.0/24 -o eth0 -j SNAT --to 123.123.123.123
+$ iptables -t nat -s 172.l6.11.0/24 -o eth0 -j SNAT --to 123.123.123.1-123.123.123.10
+</code></pre><p><strong>结论</strong>:</p>
+<ul>
+<li>MASQUERADE 自动根据路由选择出口;</li>
+<li>SNAT 适用于固定 IP 的环境, 负责小; 例外, 可实现地址面积映射.</li>
+</ul>
+<h3 id="3-j-与-g-的区别"><a href="#3-j-与-g-的区别" class="headerlink" title="3. -j 与 -g 的区别"></a>3. -j 与 -g 的区别</h3><pre><code>$ iptables -N TESTA
+$ iptables -N TESTB
+$ iptables -A FORWARD -s 172.16.11.1 -j TESTA
+$ iptables -A FORWARD -s 172.16.11.2 -j TESTB
+$ iptables -A TESTA -j MARK --set-mark 1
+$ iptables -A TESTB -j MARK --set-mark 2
+$ iptables -A FORWARD -m mark --mark 1 -j DROP
+$ iptables -A FORWARD -m mark --mark 2 -j DROP
+</code></pre><p><strong>结论</strong></p>
+<ul>
+<li>-j(jump) 相当于调用, 自定链结束后返回</li>
+<li>-g(goto) 一去不复返.</li>
+</ul>
+<h3 id="4-raw-表的用途"><a href="#4-raw-表的用途" class="headerlink" title="4. raw 表的用途"></a>4. raw 表的用途</h3><pre><code>$ iptables -t raw -A PREROUTING -i eth0 -s 172.16.11.250 -j DROP
+</code></pre><p><strong>结论</strong></p>
+<ul>
+<li>raw 表工作于最前端, 在 conntrack 之前 可以明确对某些数据不进行链接追踪;</li>
+<li>raw 可以提前 DROP 数据, 有效降低负载.</li>
+</ul>
+<h3 id="5-如何防止被-tracert"><a href="#5-如何防止被-tracert" class="headerlink" title="5. 如何防止被 tracert ?"></a>5. 如何防止被 tracert ?</h3><p>tracert == TTL 试探</p>
+<pre><code>$ iptables -A INPUT -m ttl --ttl-eq 1 -j DROP
+$ iptables -A INPUT -m ttl --ttl-lt 4 -j DROP
+$ iptables -A FORWARD -m ttl --ttl-lt 6 -j DROP
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/iptables/" rel="tag"># iptables</a>
+          
+            <a href="/tags/安全/" rel="tag"># 安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/python-并发编程/" rel="next" title="python-并发编程">
+                <i class="fa fa-chevron-left"></i> python-并发编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/19/linux-fdisk-非交互式创建分区/" rel="prev" title="fdisk 非交互式创建分区">
+                fdisk 非交互式创建分区 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-背景知识"><span class="nav-text">一. 背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-相关网络背景知识"><span class="nav-text">1. 相关网络背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Linux-主机内部路由"><span class="nav-text">(1) Linux 主机内部路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TCP-报文格式"><span class="nav-text">(2) TCP 报文格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-TCP-协议的三次握手和四次断开"><span class="nav-text">(3) TCP 协议的三次握手和四次断开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-TCP-的有限状态机"><span class="nav-text">(4) TCP 的有限状态机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-iptables-简介"><span class="nav-text">2. iptables 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-netfilter-的四表五链"><span class="nav-text">3. netfilter 的四表五链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-表与链"><span class="nav-text">(0) 表与链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-四表"><span class="nav-text">(1) 四表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-五链-5-个-hooks-functions"><span class="nav-text">(2) 五链(5 个 hooks functions)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-报文流向经由的位置"><span class="nav-text">(3) 报文流向经由的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-链上规则的检查次序"><span class="nav-text">(4) 链上规则的检查次序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-规则编写最佳实践"><span class="nav-text">(5) 规则编写最佳实践</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-iptables-规则编写"><span class="nav-text">二. iptables 规则编写</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-添加规则时的考量点"><span class="nav-text">1. 添加规则时的考量点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-规则和链的计数器"><span class="nav-text">2. 规则和链的计数器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-规则的编写"><span class="nav-text">3. 规则的编写.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-NAT-Network-Address-Translation"><span class="nav-text">4. NAT : Network Address Translation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-分类"><span class="nav-text">(1) 分类:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SNAT：主要用于实现让内网客户端访问外部主机时使用；"><span class="nav-text">(2) SNAT：主要用于实现让内网客户端访问外部主机时使用；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-DNAT：主要用于发布内部服务器，让内网中的服务器在外网中可以被访问到；"><span class="nav-text">(3) DNAT：主要用于发布内部服务器，让内网中的服务器在外网中可以被访问到；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-FULLNAT-全地址转换-见-LVS"><span class="nav-text">(4) FULLNAT: 全地址转换, 见 LVS.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-规则的保存与重载"><span class="nav-text">5. 规则的保存与重载.</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三-其他相关"><span class="nav-text">三. 其他相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-REDIRECT-与-DNAT-的区别"><span class="nav-text">1. REDIRECT 与 DNAT 的区别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-MASQUEREAD-与-SNAT-的区别"><span class="nav-text">2. MASQUEREAD 与 SNAT 的区别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-j-与-g-的区别"><span class="nav-text">3. -j 与 -g 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-raw-表的用途"><span class="nav-text">4. raw 表的用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-如何防止被-tracert"><span class="nav-text">5. 如何防止被 tracert ?</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

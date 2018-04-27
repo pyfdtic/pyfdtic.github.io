@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web development,wsgi," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一. 背景知识WSGI(The Python Web Server Gateway Interface) 为 Web Server 和 Python Web Application 之间提供了标准的数据通道. 是 Python 界的 一个广泛的可用的 WEB API 规范, 使 web server 提供更加规范的 API, 给 web Application, 从而使 开发者更加专注于业务逻辑.">
+<meta name="keywords" content="web development,wsgi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python wsgi 文档翻译">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/13/python-wsgi-doc/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="一. 背景知识WSGI(The Python Web Server Gateway Interface) 为 Web Server 和 Python Web Application 之间提供了标准的数据通道. 是 Python 界的 一个广泛的可用的 WEB API 规范, 使 web server 提供更加规范的 API, 给 web Application, 从而使 开发者更加专注于业务逻辑.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-12T08:51:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python wsgi 文档翻译">
+<meta name="twitter:description" content="一. 背景知识WSGI(The Python Web Server Gateway Interface) 为 Web Server 和 Python Web Application 之间提供了标准的数据通道. 是 Python 界的 一个广泛的可用的 WEB API 规范, 使 web server 提供更加规范的 API, 给 web Application, 从而使 开发者更加专注于业务逻辑.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/13/python-wsgi-doc/"/>
+
+
+
+
+
+  <title>python wsgi 文档翻译 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/13/python-wsgi-doc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python wsgi 文档翻译</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T14:41:11+08:00">
+                2018-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-背景知识"><a href="#一-背景知识" class="headerlink" title="一. 背景知识"></a>一. 背景知识</h2><p>WSGI(The Python Web Server Gateway Interface) 为 Web Server 和 Python Web Application 之间提供了标准的数据通道. 是 Python 界的 一个广泛的可用的 WEB API 规范, 使 web server 提供更加规范的 API, 给 web Application, 从而使 开发者更加专注于业务逻辑.</p>
+<p>WSGI 仅仅作为 Python Web 开发的一个标准, 开发者必须将 WSGI 实践到开始实践之中, 否则不会对现有的 web server 和 web Application 拥有实质影响.</p>
+<h2 id="二-WSGI-规则"><a href="#二-WSGI-规则" class="headerlink" title="二. WSGI 规则"></a>二. WSGI 规则</h2><p>WSGI 涉及到两个方面: ① web server, ② Web Application. </p>
+<p>WebServer 端需要调用一个 可调用对象, 该对象由 WebApplication 提供. 但是, 可调用对象如何进行调用, 取决于 WebServer. 但是, WebServer 在调用 WebApplication 提供的 可调用对象时, 不能有任何依赖或针对某种特定的 可调用对象类型.</p>
+<p>一个可调用对象, 可以是一个 函数, 方法, 类, 或实现了 <strong>call</strong> 方法的实例.</p>
+<h3 id="1-字符串问题"><a href="#1-字符串问题" class="headerlink" title="1. 字符串问题"></a>1. 字符串问题</h3><p>一般来讲, HTTP 中, 字符串以字节流形式传输, 但是在 Python 中, 字符串使用 Unicode 编码, 而不是 bytes. 因此, 需要在可用 API 和 正确的字符串转换之间寻求平衡, 特别是当 python 有多重 str 类型时.</p>
+<p>WSGI 定义了两种类型的 <code>string</code> :</p>
+<ol>
+<li><code>Native String</code>, 文本字符串, 可用<code>str()</code> 函数转换, 用于 请求/响应头 和 元数据.</li>
+<li><code>Bytestrings</code> , 用于 请求体/响应体.</li>
+</ol>
+<p>尽管 Python 的 <code>str</code> 类型使用 Unicode 编码, 但是在底层, 文本字符串任然会被转换为 bytes , 使用 Latin-1 编码.</p>
+<h3 id="2-WebApplication-Framework"><a href="#2-WebApplication-Framework" class="headerlink" title="2. WebApplication/Framework"></a>2. WebApplication/Framework</h3><p>WebApplication 对象应该是一个可调用对象, 它可以是一个 函数, 方法, 类, 或者一个实现了 <strong>call</strong> 方法的实例. 同时, 要确保该可调用对象, 可以被多次调用. 因为事实上, 所有的 WebServer 都会产生这样的重复请求.</p>
+<p>如下是两个 WebApplication 的示例, 其中一个是 funciton, 一个是 类.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">HELLO_WORLD = <span class="string">b'Hello world!\n'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">simple_app</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line">    <span class="string">""" Simplest possible application object. """</span></span><br><span class="line"></span><br><span class="line">    status = <span class="string">"200 OK"</span></span><br><span class="line">    response_headers = [(<span class="string">"Content-type"</span>, <span class="string">"text/plain"</span>)]</span><br><span class="line"></span><br><span class="line">    start_response(status, response_headers)</span><br><span class="line">    <span class="keyword">return</span> [HELLO_WORLD]</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppClass</span>:</span></span><br><span class="line">    <span class="string">"""Produce the same output, but using a class</span></span><br><span class="line"><span class="string">    *AppClass* is the 'application' here, so calling it returns an instance of </span></span><br><span class="line"><span class="string">    *AppClass*, which is then the iterable return value of the `application callable`</span></span><br><span class="line"><span class="string">    as required by the spec. </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If we wanted to use *instances* of *AppClass* as application objects instead,</span></span><br><span class="line"><span class="string">    we would have to implement a `__call__` method, which would be invoked to excute</span></span><br><span class="line"><span class="string">    the applications, and we should be invoked to execute the application, and we</span></span><br><span class="line"><span class="string">    would need to create an instance for use by te server or gateway. </span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        self.environ = environ</span><br><span class="line">        self.start = start_response</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        status = <span class="string">"200 OK"</span></span><br><span class="line">        response_headers = [(<span class="string">"Content-type"</span>, <span class="string">"text/plain"</span>)]</span><br><span class="line">        self.start(status, response_headers)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">yield</span> HELLO_WORLD</span><br></pre></td></tr></table></figure>
+<p>WebApplication 必须接受两个位置参数, 惯例命名为 <code>environ</code> 和 <code>start_response</code>. WebServer 必须采用位置参数的方式, 调用 WebApplication 对象, 如 <code>result = application(environ, start_response)</code></p>
+<ul>
+<li><p><code>environ</code> : </p>
+<p>  是一个字典, 包含 CGI-style 的环境变量.</p>
+<p>  该字典必须是一个 Python 原生字典, 而不能是 dict 的子类, 或 <code>UserDict</code> 其他模拟实现. WebApplication 可以使用 Python 字典支持的任何方法, 使用 <code>environ</code> 对象.</p>
+<p>  <code>environ</code> 对象必须包含一些 WSGI 要求的变量, 和 WebServer 需要的其他扩展参数.</p>
+</li>
+<li><p><code>start_response</code> : </p>
+<p>  <code>start_response</code> 是一个可调用对象, 该对象可接受两个位置参数(惯例命名为 <code>status</code> 和 <code>response_headers</code>), 和一个可选参数(惯例命名为 <code>exc_info</code>).</p>
+<p>  WebApplication 必须使用 上面的位置参数, 调用 <code>start_response</code> , 例如: <code>start_response(status, response_headers)</code>.</p>
+<p>  <code>status</code> 参数是一个 <code>999 Message here</code> 格式的 字符串.<br>  <code>response_headers</code> 参数是一个 格式<code>(header_name, header_value)</code> 元组组成的列表, 用于描述 HTTP 响应头部信息.<br>  <code>exc_info</code> 参数只在 WebApplication 发生错误, 并试图显示错误信息时使用.</p>
+<p>  <code>start_response</code> 可调用对象必须返回一个 <code>write(body_data)</code> 可调用对象, 其中 <code>body_data</code> 参数为一个 bytestring, 是 HTTP 响应体的一部分. (<code>write()</code> callable is provided only to support certain existing frameworks’ imperative output APIs, it should not be used by new applications or frameworks if it can be avoided).</p>
+</li>
+</ul>
+<p>当 WebApplication 被 WebServer 调用时, 它必须返回一个 可迭代的返回 zero 或 bytestring 的可迭代对象. 这可以通过多种方式实现, 如 返回一个 bytestring 组成的列表, 一个生成器, 一个实现了迭代协议的类实例. WebServer 或 WebGateway 返回迭代的字符串给客户端, 并且不缓存任何数据.</p>
+<p>WebApplication 或 WebGateway 将 WebApplication 返回的可迭代的字符串, 当做二进制字符数据来处理. 因此, WebApplication 必须保证其返回的字符串对于客户端是格式化的可显示的格式, 如换行符等.</p>
+<p>如果对 WebApplication 返回的对象调用 <code>__len__(iterable)</code> 方法成功, 则该方法必须正确返回其 长度, 因为 <code>__len__()</code> 返回的值将作为 <code>Content-Length</code> 的值.</p>
+<p>如果 WebApplication 返回的对象, 实现了 <code>__close__()</code> 方法, WebServer 必须在每次请求结束的时候, 调用该方法, 无论该次请求是否正确完成.</p>
+<p>当 WebApplication 返回 生成器或自定义的迭代器时, 不应当假设该生成器或迭代器会被完全消费完, 因为, 它可能会被 WebServer 过早的关闭.</p>
+<p>the application must invoke the <code>start_response()</code> callable before the iterable yields its first body bytestring, so that the server can send the headers before any body content. However, this invocation may be performed by the iterable’s first iteration, so servers must not assume that <code>start_response</code> has been called before they negin iterating over the iterable.</p>
+<p>Finally, server and gateways must not directly use any other attributes of the iterable returned by the application, unless it is an instance of a type specific to that server or gateway, such as a <code>file wrapper</code> return by <code>wsgi.file_wrapper</code>. In the general case, only attributes specified here, or accessed via e.g. the PEP 234 iteration APIs are acceptable.</p>
+<h4 id="2-1-environ-变量"><a href="#2-1-environ-变量" class="headerlink" title="2.1 environ 变量"></a>2.1 environ 变量</h4><p><code>environ</code> 必须包含如下的 CGI 环境变量.</p>
+<ul>
+<li><code>REQUEST_METHOD</code>  : 必选, HTTP 请求方法</li>
+<li><code>SCRIPT_NAME</code> : 请求的 URL 的 path 部分, 一般为 <code>/</code></li>
+<li><code>PATH_INFO</code> : 请求的 URL 的 path 部分, </li>
+<li><code>QUERY_STRING</code> : 可选, 请求 URL 中 <code>?</code>, 后面的部分.</li>
+<li><code>CONTENT_TYPE</code> : 可选, HTTP Content-Type</li>
+<li><code>CONTENT_LENGTH</code> : 可选, HTTP Content-Length</li>
+<li><code>SERVER_NAME, SERVER_PORT</code> : </li>
+<li><code>SERVER_PROTOCOL</code> : “HTTP/1.0” 或 “HTTP/1.1” </li>
+<li><code>HTTP_Variables</code> : 其他对应的客户端支持的 HTTP 请求头.</li>
+</ul>
+<p>一个 WebServer 应当竟可能多的提供 CGI 变量, 例如 HTTPs=on 等.</p>
+<p>除此之外, <code>environ</code> 还可以提供 任意数量的 操作系统环境变量, 并且, 必须包含如下的 WSGI 规定的变量.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wsgi.version</code></td>
+<td>一个元组, WSGI 版本, 当前版本为 <code>(1, 0)</code></td>
+</tr>
+<tr>
+<td><code>wsgi.url_scheme</code></td>
+<td>http 或 https</td>
+</tr>
+<tr>
+<td><code>wsgi.input</code></td>
+<td>An input stream (file-like object) from which the HTTP request body bytes can be read.</td>
+</tr>
+<tr>
+<td><code>wsgi.errors</code></td>
+<td>An output stream (file-like object) to which error output can be written, for the purpose of recording program o rother errors in a standardized and possibly centralized location. This should be a <code>text mode</code> stream, and assume that it will be converted to the correct line ending by the server/gateway.</td>
+</tr>
+<tr>
+<td><code>wsgi.multithread</code></td>
+<td>This value should evaluate true if the application object may be simultaneously invoked by another thread in the same process, and should evaluate false otherwise.</td>
+</tr>
+<tr>
+<td><code>wsgi.multiprocess</code></td>
+<td>This Value shoudl evaluate true if an equivalent application object may be simultaneously invoked another process, and should evaluate false otherwise.</td>
+</tr>
+<tr>
+<td><code>wsgi.run_once</code></td>
+<td>This value should evaluate true it the server or gateway expects(but not guatantee) that the application will only be invoked this one time during the life of its containing process. Normally, this will only be true for a gateway based on CGI (or something similar).</td>
+</tr>
+</tbody>
+</table>
+<p>最后, <code>environ</code> 变量字典可以包含任意的自定义变量, 这些变量应当只包含 小写字符, 数字, 点好, 下划线等, 而且应当使用一个唯一的自定义前缀.</p>
+<h4 id="2-2-Input-and-Error-Streams"><a href="#2-2-Input-and-Error-Streams" class="headerlink" title="2.2 Input and Error Streams"></a>2.2 Input and Error Streams</h4><p>WebServer 提供的 Input 和 Error 流, 必须支持如下的方法.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Stream</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read(size)</code></td>
+<td>input</td>
+<td>a</td>
+</tr>
+<tr>
+<td><code>readline()</code></td>
+<td>input</td>
+<td>a,b</td>
+</tr>
+<tr>
+<td><code>readlines(hint)</code></td>
+<td>input</td>
+<td>a,c</td>
+</tr>
+<tr>
+<td><code>__iter__()</code></td>
+<td>input</td>
+<td></td>
+</tr>
+<tr>
+<td><code>flush()</code></td>
+<td>errors</td>
+<td>d</td>
+</tr>
+<tr>
+<td><code>write(str)</code></td>
+<td>errors</td>
+<td></td>
+</tr>
+<tr>
+<td><code>writelines(seq)</code></td>
+<td>errors</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>a : </p>
+<p>  WebServer 不要求获取传给客户端的 Content-Length, 但是需要提供一个 end-of-line 的条件测试, 方便 WebApplication 读取该字段的内容. 同时, WebApplication 不应当试图读取多于 CONTENT_LENGTH 变量规定大小的数据.</p>
+<p>  WebServer 应当允许被无参数的调用 <code>read()</code> 方法, 并且返回客户端 input stream 数据流的大小.</p>
+<p>  当 WebServer 接收到空的 input stream 或 大量耗尽资源的请求时, 应当返回空的 bytestrings .</p>
+</li>
+<li><p>b : WebServer 应当提供支持可选参数 <code>size</code> 的方法 <code>readline()</code>.</p>
+</li>
+<li>c : <code>readlines()</code> 方法 的 可选参数 <code>hint</code> 对于 调用者和实施者来说都是可选的. WebApplication 可以选择不支持 该方法, WebServer 也可以忽略它.</li>
+<li>d : since the <code>errors</code> stream may not be rewound, servers and gateways are free to forward write opertions immediately, without buffering. In this case, the <code>flush()</code> method may be a no-op. Portable applications, however, cannot assume that output is unbuffered or that <code>flush()</code> is a no-op. They must call <code>flush()</code> if they need to ensure that output has in fact been written.(For example, to minimize intermingling of data from multiple processes writing to the same error log).</li>
+</ul>
+<p>对于考虑兼容性和普适性的 WebServer 来说, 上面表格中的方法必须要支持.</p>
+<p>遵守这些规格实现的 WebApplication, 必须要保证不使用 <code>input</code> 和 <code>output</code> 对象的任何可调用方法和属性. 尤其的, WebApplication 一定不要尝试关闭这些 stream 对象, 即使该对象提供了 <code>close()</code> 方法.</p>
+<h4 id="2-3-start-response-可调用对象"><a href="#2-3-start-response-可调用对象" class="headerlink" title="2.3 start_response() 可调用对象"></a>2.3 <code>start_response()</code> 可调用对象</h4><p>调用方法 <code>start_response(status, response_headers, exc_info=None)</code>, 其中的参数, <strong>必须为位置参数</strong>, 而<strong>不能是关键字参数</strong>. 该方法调用返回的结果是一个 <code>write(body_data)</code> 的可调用对象, 用作 HTTP 响应.</p>
+<p><code>status</code> 参数是一个 HTTP <code>status</code> 字符串, 包含以空格分隔的 HTTP 响应码 和 HTTP 响应字符串, 类似: <code>200 OK</code>, <code>404 Not Found</code>. 该字符串 无需包含控制字符, 如换行符, 回车等.</p>
+<p><code>response_headers</code> 是一个由多个 <code>(header_name, header_value)</code> 元组组成的标准 Python 列表. WebServer 可以使用任何 Python List 支持的方法调用该列表. </p>
+<ul>
+<li>每个 <code>header_name</code> 必须是一个可用的 HTTP 头字段, 并且不包含 特殊标点符号.</li>
+<li>每个 <code>header_value</code> 必须不能包含任何控制字符, 包括回车和换行.</li>
+</ul>
+<p>通常情况下, WebServer 需要保证响应客户端的数据包含正确的响应头, 任何 WebApplication 遗漏的 HTTP 首部, WebServer 需要将该首部添加到 HTTP 响应中. 例如, HTTP 响应中的 <code>Data</code> 首部和 <code>Server</code> 首部通常由 WebServer 添加.</p>
+<p>WebApplication 和 Middleware 应当禁止使用 HTTP/1.1 的 <strong>hop-by-hop</strong> 特性或首部, 同时, 任何等价的 HTTP/1.0 中的特性或首部, 都会影响到客户端到服务端的持久连接. 这些特性只有在特定领域的 web server 中才有, 因此, WebServer 应当将他作为一个 error 并 抛出草屋, 当 WebApplication 尝试发送这些信息的时候.</p>
+<p>当 WebServer 调用 <code>start_response()</code> 时,  应当检查所有首部中的 error, 并在检查出错误时, 将这些 error 抛出.</p>
+<p>然而, <code>start_response()</code> 必须禁止传输 来自 WebApplication 的首部. 反之, 它必须为 WebServer 保存这些信息, 并在 WebApplication 的完成首次迭代的时候返回这些信息 或 WebApplication 首次调用 <code>write()</code> 方法时. 即, 响应首部必须要在有真正的 响应体可用时, 或 WebApplication 返回的迭代器迭代完成之后, 才能返回. 这种延迟的相应首部传输是为了保证 直到最后时刻使用缓存的或者异步的 WebApplication 可以用 Error 信息替换原有的首部信息. 例如, 当一个错误在 WebApplication 缓存内部被抛出, WebApplication 可以把响应首部从 <code>200 OK</code> 修改为 <code>500 Internal Error</code>.</p>
+<p>当提供 <code>exc_info</code> 参数时, 它必须是一个 Python 的 <code>sys.exc_info()</code> 元组. 只有当 <code>start_response()</code> 被一个错误处理器调用时, <code>exc_info</code> 参数才应该被提供. 如果提供 <code>exc_info</code> 参数, 并且 尚未生成 HTTP 首部时, <code>start_response()</code> 方法应当使用当前缓存的 HTTP 响应首部替换新的响应首部, 因此, 以此实现 在错误发生时, 允许 WebApplication 修改返回给客户端的响应内容.</p>
+<p>然而, 当 <code>exc_info</code> 被提供, 并且 响应首部已经发送给客户端, <code>start_response()</code> 必须抛出一个错误, 同时使用 <code>exc_info</code> 元组再次抛出错误.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> exc_info[<span class="number">1</span>].with_traceback(exc_info[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<p>上面的代码会再次抛出被 WebApplication 捕获的错误, 同时, 原则上会终止 WebApplication . 如果 WebApplication 带 <code>exc_info</code> 参数调用 <code>start_response</code> , WebApplication 一定不能捕获任何被 <code>start_response()</code> 抛出的异常. 相反, WebApplication 应当将这样的异常传递给 WebServer , 由它来处理.</p>
+<p>只有当 <code>exc_info</code> 参数提供时, WebApplication 可能会多次调用 <code>start_response</code>. 更精确的讲, <code>start_response</code> 已经被 WebApplication 调用, 如果再次使用 不带 <code>exc_info</code> 的参数调用 <code>start_response</code> 方法, 将是致命的错误, 包括第一个调用 <code>start_response</code> 就抛出错误的情况.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start_response</span><span class="params">(status, response_headers, exc_info=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> exc_info:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># do stuff w/exc_info here</span></span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            exc_info = <span class="keyword">None</span>     <span class="comment"># Avoid circular ref.</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-4-处理-Content-Length-首部"><a href="#2-4-处理-Content-Length-首部" class="headerlink" title="2.4 处理 Content-Length 首部"></a>2.4 处理 <code>Content-Length</code> 首部</h4><p>当 WebApplication 提供 <code>Content-Length</code> 首部时, WebServer 绝对不能传输多余此 <code>Content-Length</code> 指定数量的 bytes 给客户端, 而是在获取足够数据时, 停止迭代响应, 或者在 WebApplication 尝试抛出多个这个数量的数据时, 抛出一个异常. 当然, 如果 WebApplication 未能提供做够的数据符合 <code>Content-Length</code> 的数量时, WebServer 应当关闭链接或记录并报告错误.</p>
+<p>如果 WebApplication 未能提供 <code>Context-Length</code> 首部, WebServer 应当使用适当的手段来处理这种情况. 最简单的办法是 当响应完成时, 关闭到 客户端的链接.</p>
+<p>然而, 在某些情况下, WebServer 可能生成一个 <code>Content-Length</code> 首部或至少避免关闭一个到客户端的链接. 如果 WebApplication 没有调用 <code>write()</code> 可调用方法, 而是返回了一个可迭代的对象, 其长度<code>len()</code>为 1, 则 WebServer 可以自主决定使用迭代对象返回的第一个 bytestring 长度作为 <code>Content-Length</code>.</p>
+<p>如果, WebServer 端和 客户端均支持 HTTP/1.1 <strong>chunked encoding</strong> 特性, WebServer 可能使用 <strong>chunked encoding</strong> 方式 为每次 <code>write()</code> 或 迭代器迭代 发送 chunk, 并为其生成适当的 <code>Content-Length</code> 首部. 这种方式, 将允许 WebServer 保持到客户端的长连接. 这种情况下, WebServer 必须完全遵守 <a href="http://www.faqs.org/rfcs/rfc2616.html" target="_blank" rel="noopener">RFC 2616</a> 规范, 或者使用其他的策略生成 <code>Content-Length</code>.</p>
+<p><strong> WebApplication 决不能在其输出结果中, 生成任何类型的 <code>Transfer-Encoding</code>首部, 这些首部应当有 WebServer 生成</strong></p>
+<h4 id="2-5-Buffering-和-Streaming"><a href="#2-5-Buffering-和-Streaming" class="headerlink" title="2.5 Buffering 和 Streaming"></a>2.5 Buffering 和 Streaming</h4><p>一般来讲, WebApplication 可以通过缓存其输出结果,并一次性发送给 WebServer 达到最佳性能. 现在 Zope 的常用方式是: 将输出缓存到一个 StringIO 或其他类似对象中, 然后一次 将生成的首部和所有结果 传输给 WebServer.</p>
+<p>在 WSGI 中实现这种效果的方式是: 返回一个只包含一个结果的可迭代对象, 该可迭代对象包含 一个单独的 bytestring 形式的响应信息. 这也是一种给 WebApplication 的推荐方式.</p>
+<p>对于大文件 或者 特殊用途的 HTTP streaming (如 multipart server push)来说, WebApplication 可能需要返回小块的相应结果(以避免一次加载太大的文件到内存中).  For large file, however, or for specialized uses of HTTP streaming (such as multipart ‘server push’), an application may need to provide output in smaller blocks (e.g. to avoid loading a large file info memory). It’s also sometimes the case that part of a response may be time-consuming to produce, but it would be useful to send ahead the portion of the response that precedes it.</p>
+<p>这种情况下, WebApplication 通常返回一个迭代器(或生成器), 该迭代器使用 block-by-block 的方式生成响应体. These blocks may be broken to coincide with mulitpart boundaries (for server push), or just before time-consuming tasks (such as reading another block of another block of an on-disk file).</p>
+<p>WebServer 绝对不能延迟传输任何 block, 它要么 一次传输所有的 block 给客户端, 或者保证 持续传输每个 block 给客户端知道 WebApplication 生成它的下一个 block. WebServer 可以采用如下的一种或多种方式实现这种保证:</p>
+<ul>
+<li>在将控制权返回为 WebApplication 之前, 发送整个 block 给操作系统(并且要求 操作系统层级的缓存被清空).</li>
+<li>在 WebApplication 生成下一个 block 的同时, 使用不同的线程来保证整个 block 被持续的传输给客户端, </li>
+<li>发送整个 block 给它的上层 WebServer 或 WebGateway, 这只适用于 Middleware .</li>
+</ul>
+<p>WSGI 协议通过这种保证, 允许 WebApplication 保证, 其响应数据会被均衡的传输给任意节点. By providing this guarantee, WSGI allows applications to ensure that transmission will not become stalled at an arbitraty point in their output data. This is critical for proper functioning of e.g. multipart “server push” streaming, where data between multipart boundaries should be transmitted in full to the client.</p>
+<h4 id="2-6-Middleware-Handling-of-Block-Boundaries"><a href="#2-6-Middleware-Handling-of-Block-Boundaries" class="headerlink" title="2.6 Middleware Handling of Block Boundaries"></a>2.6 Middleware Handling of Block Boundaries</h4><p>为了更好的支持异步 WebApplication 和 WebServer, Middleware 组件不能 在等待 WebApplication 迭代器返回多个值时, 阻塞迭代. 如果 Middleware 组件 在响应请求之前 需要积攒多个数据块, 他必须 yield 一个空的 bytestring.</p>
+<p>这种要求的另一种实现方法是, 一个 Middleware 组件每次必须 从 WebApplication 返回的可迭代对象中 yield 至少一个值. 如果 Middleware 不能 yield 值, 则返回一个 空的 bytestring.</p>
+<p>这种要求可以保证异步 WebApplication 和 WebServer 能够协同合作, 以便减少需要的线程数.</p>
+<p>这种要求同事意味着, Middleware 必须 尽快的从 WebApplication 返回的迭代器中 返回可迭代对象. 这同时也禁止了 Middleware 使用 <code>write()</code> 可调用对象取传输数据. Middleware 组件只能使用其上游 WebServer 的 <code>write()</code> 可调用对象来传输数据.</p>
+<h4 id="2-7-write-可调用方法"><a href="#2-7-write-可调用方法" class="headerlink" title="2.7 write() 可调用方法"></a>2.7 <code>write()</code> 可调用方法</h4><p>一些也已存在的 WebApplication 框架 API 支持无缓存的 删除, 这种方式是与 WSGI 规定的方式不同的. 尤其是, 这些 WebApplication 提供一个 <code>write</code> 函数或方法, 用于写入无缓存的数据块, 或者他们也会提供一个 指出缓存的 <code>write</code> 方法和一个 <code>flush</code> 机制来情况缓存.</p>
+<p>不幸的是, 这些 API 无法按照 遵循WSGI 的 WebApplication 返回的可迭代对象那样执行, 除非使用了线程或其他机制.</p>
+<p>如果可以避免的话, 新的 WSGI WebApplication 不应该使用 <code>write</code> 可调用方法. <code>write()</code> 方法严格讲是一个 hack 方法, 用于支持必要的 streaming API. 通常来讲, WebApplication 应当通过他们返回的可迭代对象来使用其标准输出, 同时, 这也使得 WebApplication 在同一个 Python 线程中交叉运行task 成为可能, 潜在的为 WebServer 提升了更好的吞吐能力.</p>
+<p><code>write</code> 返回由 <code>start_response</code> 方法返回, 它只接受一个参数: 一个字节字符, 用作 HTTP 响应体的一部分. 这种处理方式和 WebApplication 返回的可迭代对象的处理方式是一样的. 换言之, 在 <code>write()</code> 返回之前, 必须保证已被传递的 字节字符, 要么完全被传输给客户端, 要么被 WebApplication 缓存.</p>
+<p>一个 WebApplication 必须返回一个可迭代对象, 即使他使用 <code>write()</code> 来处理部分或全部的数据. 返回的 可迭代对象可以为空, 但是它 yield 非空字节字符, 这些非空的返回结果, 必须被 WebServer 正确的处理. WebApplication 必须不能调用 <code>write</code> 方法在他们的返回迭代器的内部. Applications must not invoke <code>write()</code> from within their return iterable, and therefore any bytestrings yielded by the iterable are transmitted after all bytestrings passed to <code>write</code> have been sent to the client.</p>
+<h4 id="2-8-Unicode-引发的问题"><a href="#2-8-Unicode-引发的问题" class="headerlink" title="2.8 Unicode 引发的问题"></a>2.8 Unicode 引发的问题</h4><p>HTTP 协议不支持 unicode 编码, 所有的 编码和解码 必须有 WebApplication 处理, 任何从 WebServer 传入或传出的字符必须是 <code>str</code> 或 <code>bytes</code> 类型, 而不是 <code>unicode</code>. 在应该使用 string 对象的地方使用 unicode 对象的结果是未定义的.</p>
+<p>同时需要注意的是, 任何传给 <code>start_response</code> 作为 HTTP 响应码和响应首部的字符, 必须遵守 RFC 2616 的编码规定. 即, 这些字符要么是 ISO-8859 编码 或者是 RFC 2047 支持的 MIME 类型编码.</p>
+<p>在 Python 平台中, 所有的 <code>str</code> 或 <code>StringType</code> 类型字符都是 Unicode-based 的. all <code>strings</code> referred to in this specification must contain only code points representable in ISO-885901 encoding. WebApplication 提供的字符包含其他 Unicode 字符串是一个致命的错误. 类似地, WebServer 和 WebGateway 必须不支持 WebApplication 中包含其他的 Unicode 字符.</p>
+<p>Again, all objects referred to in this specification as <code>strings</code> must be of type <code>str</code> or <code>StringType</code>, and must not be of type <code>Unicode</code> or <code>UnicodeType</code>. And, even if a given platform allows for more than 8 bits per character in <code>str/StringType</code> objects, only the lower 8 bits may be used, for any value referred to in this specification as a ‘string’.</p>
+<h4 id="2-9-错误处理"><a href="#2-9-错误处理" class="headerlink" title="2.9 错误处理"></a>2.9 错误处理</h4><p>通常情况下, WebApplication 应当捕获其内部的错误, 并在客户端浏览器展示相关的帮助信息.</p>
+<p>然而, 为了展示这些帮助信息, WebApplication 必须尚未真正的发送任何数据给客户端, 或者 it risks corrupting the response. WSGI 因此提供一种机制, 可用于向允许 WebApplication 发送其错误帮助信息, 或者自动忽略 <code>start_response</code> 的 <code>exc_info</code> 参数.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># regular application code here</span></span><br><span class="line">    status = <span class="string">"200 OK"</span></span><br><span class="line">    response_headers = [(<span class="string">"content-type"</span>, <span class="string">"text/plain"</span>)]</span><br><span class="line">    start_response(status, response_headers)</span><br><span class="line">    <span class="keyword">return</span> [<span class="string">"normal body goes here"</span>]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="comment"># XXX shoule trap runtime issues like MemoryError, KeyboardInterrupt </span></span><br><span class="line">    <span class="comment"># in a separate handler before this bare `except:` ...</span></span><br><span class="line">    status = <span class="string">"500 Oops"</span></span><br><span class="line">    start_response(status, response_headers, sys.exc_info())</span><br><span class="line">    <span class="keyword">return</span> [<span class="string">"error body goes here"</span>]</span><br></pre></td></tr></table></figure>
+<p>当一个异常发生时, 如果没有 输出被写入, 对 <code>start_response</code> 的调用将会正常返回, 并且 WebApplication 会返回错误信息给客户端浏览器. 然而, 如果有任何输出已经被传输给客户端, <code>start_response</code> 将会再次抛出该异常. 这种异常不应当被 WebApplication 捕获, 因此, WebApplication 应当忽略它. 然后又 WebServer 捕获该异常, 并忽略 WebApplication 的返回内容.</p>
+<p>WebServer 应当捕获并记录任何 终止 WebApplication 或 终止 WebApplication 返会迭代对象迭代 的异常结果. 当 WebApplication 发生错误时, 如果响应内容的一部分已经发送给客户端, WebServer 或 WebGateway 可以尝试将错误信息添加到 返回给客户端的结果中. 另外, 如果已发送的响应中包含 <code>text/*</code> 类型内容, 则 WebApplication 知道如何干净的修改.</p>
+<p>一些 Middleware 组件可能希望提供附加的 异常处理服务, 或者拦截并替代 WebApplication 的错误帮助信息. 这种情况下, Middleware 可能选择不再抛出 应用到 <code>start_response</code> 的 <code>exc_info</code> 异常, 取而代之的是, 抛出一个 Middleware 的自定义异常, 或者只是简单的返回不包含任何异常的响应. 这种处理方式, 将会导致 WebApplication 返回 可迭代的错误信息, 并允许 Middleware 捕获并修改这些错误输出信息. These techniques will work as long as appliocation authors.</p>
+<ul>
+<li>Always provide <code>exc_info</code> when beginning an error response.</li>
+<li>Never trap errors raised by <code>start_response</code> when <code>exc_info</code> is being provided.</li>
+</ul>
+<h4 id="2-10-HTTP-1-1-Expect-Continue-机制"><a href="#2-10-HTTP-1-1-Expect-Continue-机制" class="headerlink" title="2.10 HTTP/1.1 Expect/Continue 机制"></a>2.10 HTTP/1.1 Expect/Continue 机制</h4><p>选择支持 HTTP/1.1 的 WebServer 必须要支持 HTTP/1.1 的 <strong>Expect/continue</strong> 机制, 可以有以下几种实现方式:</p>
+<ul>
+<li>Respond to request containing an <code>Expect: 100-continue</code> request with an immediate <code>100 continue</code> resposne, and proceed normally.</li>
+<li>Proceed with the request normally, but provide the application with a <code>wsgi.input</code> stream that will send the <code>100 continue</code> response if/when the application first attempts to read from the input stream. The read request must then remain blocked until the client responds.</li>
+<li>Wait until the client decides that the server does not support expect/continue, and sends the request body on its own (this is suboptimal, and is not recommended).</li>
+</ul>
+<p>Not that these behavior restrictions do not apply for HTTP 1.0 requests, or for requests that are not directed to an application object. For more information on HTTP/1.1 Expect/Continue, see <a href="http://www.faqs.org/rfcs/rfc2616.html" target="_blank" rel="noopener">RFC 2616</a> sections 8.2.3 and 10.1.1 .</p>
+<h4 id="2-11-其他-HTTP-特点"><a href="#2-11-其他-HTTP-特点" class="headerlink" title="2.11 其他 HTTP 特点"></a>2.11 其他 HTTP 特点</h4><p>通常来讲, WebServer 应当 <strong>paly dumb</strong>, 并允许 WebApplication 完全控制它输出. WebServer 只有在不修改 WebApplication 返回结果的语义的情况下, 才可以修改 WebApplication 的原生的返回. WebApplication 开发者可以添加 Middleware 组件来支持额外的功能特性, 所以, WebServer 开发者应当在其开发计划中尽量保守. 某种意义上, WebServer 应当把自己当做 HTTP 的网关服务器, 而把 WebApplication 当做 ‘真正的’ 服务器.</p>
+<p>然而, 由于 WSGI WebServer 和 WebApplication 之间通讯不是走 HTTP 协议, 因此, <a href="http://www.faqs.org/rfcs/rfc2616.html" target="_blank" rel="noopener">RFC 2616</a> 中说明的 <code>hop-by-hop</code> 首部不支持 WSGI 组件之间的通讯. WSGI 的 WebApplication 一定不要生成任何 <code>hop-by-hop</code> 的首部, 尝试使用 这些HTTP 特性可能需要他们生成这些 首部, 或者依赖 传入的 <code>environ</code> 字典中包含 <code>hop-by-hop</code> 首部信息. WSGI WebServer 必须处理任何传入的 <code>hop-by-hop</code> 首部, 例如 编码传入的 <code>Transfer-Encoding</code>.</p>
+<p>这些规则可以应用到多种 HTTP 特性, 应当清楚的是, WebServer 可能会处理缓存有效性, 通过 <code>If-None-Mathc</code> 和 <code>If-Modified-Since</code> 请求头和 <code>Last-Modified</code> 和 <code>Etag</code> 响应首部. 但是这些不是强制性的, WebApplication 应当自主的控制缓存的有效性来支持这些特性.</p>
+<p>类似的, 一个 WebServer 可能会 重新编码 或 传输编码 WebApplication 的相应内容, 但是 WebApplication 应该选择一个适合自己的内容编码方式, 并且, 切忌应用 传输编码( transport encoding). A server may transmit byte ranges of the application’s response if requestd by the client, and the application doesn’t natively support byte ranges. Again, however, the application should perform this function on its own if desired.</p>
+<p>需要注意的是, WebApplication 无需实现所有的 HTTP 特性, 并且有的 HTTP 特性可以部分或完全的 由 Middleware 组件实现.</p>
+<h4 id="2-12-线程支持"><a href="#2-12-线程支持" class="headerlink" title="2.12 线程支持"></a>2.12 线程支持</h4><p>线程支持是依赖于 WebServer 端的支持特性的. 支持并发处理多个请求的 WebServer 也应当同时提供 在一个单独的线程中运行 WebApplication 的方法. 这样, 费线程安全的 WebApplication 和 Web 框架也可以使用这些 WebServer.</p>
+<h4 id="2-13-Application-Configuration"><a href="#2-13-Application-Configuration" class="headerlink" title="2.13 Application Configuration"></a>2.13 Application Configuration</h4><p>WSGI 协议并不定义一个 WebServer 如何选择或者获取一个 WebApplication 来调用, 这些细则是 WebServer 高度定制化实现的. 因此, 只能期望 WebServer 开发者在文档中写清楚 WebServer 是如何执行一个特定的 WebApplication 对象的, 并且需要哪些选项和参数.</p>
+<p>WebServer 开发者应当在文档中记录如何调用框架的功能函数创建一个 WebApplication.</p>
+<p>最终, 一些 WebApplication , 框架, Middleware 可能希望使用 <code>environ</code> 字典来接受简单的字符串配置选项. WebServer 应当通过 允许一个 WebApplication 部署者提供存放在 <code>environ</code> 中的简单的 key-valu 对 来支持这种方式. 最简单的例子就是, 这种方式能支持从 <code>os.environ</code> 中得到的系统环境变量拷贝到 <code>environ</code> 字典中, 因为部署者可以自定义 WebApplication 运行环境的特定的变量, 或者 在使用 CGI 的环境中, 可以通过 WebServer 的环境变量来设置额外变量.</p>
+<p>Application should try to keep such required variables to a minimum, since not all servers will support easy configuration of them. Of course, even in the worst case, persons deploying an application can create a script to supply the necessary configuration values:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> the_app <span class="keyword">import</span> application</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new_app</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line">    environ[<span class="string">"the_app.configval1"</span>] = <span class="string">"something"</span></span><br><span class="line">    <span class="keyword">return</span> application(environ, start_response)</span><br></pre></td></tr></table></figure>
+<p>但是, 目前已存的大多数 WebApplication 和 框架可能只是需要 从 <code>environ</code> 中获取一个简单的值, 来说明当前 WebApplication 的特定配置文件的位置, 然后, WebApplication 会缓存该值的结果.</p>
+<h4 id="2-14-URL-重建"><a href="#2-14-URL-重建" class="headerlink" title="2.14 URL 重建"></a>2.14 URL 重建</h4><p>如果一个 WebApplication 希望重建一个请求的完整的 URL, 它可能使用下面的算法来实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> quote</span><br><span class="line">url = environ[<span class="string">"wsgi.url_scheme"</span>] + <span class="string">"://"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> environ.get(<span class="string">"HTTP_HOST"</span>):</span><br><span class="line">    url += environ[<span class="string">"HTTP_HOST"</span>]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    url += environ[<span class="string">"SERVER_NAME"</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> environ[<span class="string">"wsgi.url_scheme"</span>] == <span class="string">"https"</span>:</span><br><span class="line">        <span class="keyword">if</span> environ[<span class="string">"SERVER_PORT"</span>] != <span class="string">"443"</span>:</span><br><span class="line">            url += <span class="string">":"</span> + environ[<span class="string">"SERVER_PORT"</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> environ[<span class="string">"SERVER_PORT"</span>] != <span class="string">"80"</span>:</span><br><span class="line">            url += <span class="string">":"</span> + environ[<span class="string">"SERVER_PORT"</span>]</span><br><span class="line"></span><br><span class="line">url += quote(environ.get(<span class="string">"SCRIPT_NAME"</span>, <span class="string">""</span>))</span><br><span class="line">url += quote(environ.get(<span class="string">"PATH_INFO"</span>, <span class="string">""</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> environ.get(<span class="string">"QUERY_STRING"</span>):</span><br><span class="line">    url += <span class="string">"?"</span> + environ[<span class="string">"QUERY+STRING"</span>]</span><br></pre></td></tr></table></figure>
+<p>需要注意的是, 上面算法重建出的 URL 可能并不精确的等于 用户请求的 URL. 例如, WebServer 重写的 URL 可能修改了客户单请求的原有的 URL, 并替换为 权威格式.</p>
+<h3 id="3-WebServer-Gateway"><a href="#3-WebServer-Gateway" class="headerlink" title="3. WebServer/Gateway"></a>3. WebServer/Gateway</h3><p>每当 WebServer 端从 HTTP 客户端接受到一个请求, 都会调用一个 WebApplication , 并指向该 WebApplication.</p>
+<p>示例代码: 如下是一个 简单的 CGI gateway, 使用 function 实现, 以一个 application 作为参数.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"></span><br><span class="line">enc, esc = sys.getfilesystemencoding(), <span class="string">"surrogateescape"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unicode_to_wsgi</span><span class="params">(u)</span>:</span></span><br><span class="line">    <span class="comment"># Convert an environment variable to a WSGI 'bytes-as-unicode' string</span></span><br><span class="line">    <span class="comment"># return `u.encode(enc, esc).decode("iso-8859-1")`</span></span><br><span class="line">    <span class="keyword">return</span> u.encode(enc, esc).decode(<span class="string">"iso-8859-1"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wsgi_to_bytes</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> s.encode(<span class="string">"iso-8859-1"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_with_cgi</span><span class="params">(application)</span>:</span></span><br><span class="line">    environ = &#123;k: unicode_to_wsgi(v) <span class="keyword">for</span> k,v <span class="keyword">in</span> os.environ.items()&#125;</span><br><span class="line"></span><br><span class="line">    environ[<span class="string">"wsgi.input"</span>] = sys.stdin.buffer</span><br><span class="line">    environ[<span class="string">"wsgi.errors"</span>] = sys.stderr</span><br><span class="line">    environ[<span class="string">"wsgi.version"</span>] = (<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    environ[<span class="string">"wsgi.multithread"</span>] = <span class="keyword">False</span></span><br><span class="line">    environ[<span class="string">"wsgi.multiprocess"</span>] = <span class="keyword">True</span></span><br><span class="line">    environ[<span class="string">"wsgi.run_once"</span>] = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> environ.get(<span class="string">"HTTPS"</span>, <span class="string">"off"</span>) <span class="keyword">in</span> (<span class="string">"on"</span>, <span class="string">"1"</span>):</span><br><span class="line">        environ[<span class="string">"wsgi.url_scheme"</span>] = <span class="string">"https"</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        environ[<span class="string">"wsgi.url_scheme"</span>] = <span class="string">"http"</span></span><br><span class="line"></span><br><span class="line">    headers_set = []</span><br><span class="line">    headers_sent = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write</span><span class="params">(data)</span>:</span></span><br><span class="line">        out = sys.stdout.buffer</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> headers_set:</span><br><span class="line">            <span class="keyword">raise</span> AssertionError(<span class="string">"Write() before start_response()"</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> <span class="keyword">not</span> headers_sent:</span><br><span class="line">            <span class="comment"># before the first output, send the stored headers.</span></span><br><span class="line">            status, response_headers = headers_sent[:] = headers_set</span><br><span class="line">            out.write(wsgi_to_bytes(<span class="string">"Status: %s\r\n"</span> % status))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> header <span class="keyword">in</span> response_headers:</span><br><span class="line">                out.write(wsgi_to_bytes(<span class="string">"%s: %s\r\n"</span> % header))</span><br><span class="line">            out.write(wsgi_to_bytes(<span class="string">"\r\n"</span>))</span><br><span class="line"></span><br><span class="line">        out.write(data)</span><br><span class="line">        out.flush()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_response</span><span class="params">(status, response_headers, exc_info=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> exc_info:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="keyword">if</span> headers_sent:</span><br><span class="line">                    <span class="comment"># Re-raise original exception if headers sent</span></span><br><span class="line">                    <span class="keyword">raise</span> exc_info[<span class="number">1</span>].with_traceback(exc_info[<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">            <span class="keyword">finally</span>:</span><br><span class="line">                exc_info = <span class="keyword">None</span>     <span class="comment"># avoid dangling circular ref</span></span><br><span class="line">        <span class="keyword">elif</span> headers_set:</span><br><span class="line">            <span class="keyword">raise</span> AssertionError(<span class="string">"headers already set!"</span>)</span><br><span class="line"></span><br><span class="line">        headers_set[:] = [status, response_headers]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Note: error checking on the headers should happen here, </span></span><br><span class="line">        <span class="comment"># *after* the headers are set. That way, if an error occurs,</span></span><br><span class="line">        <span class="comment"># start_response can only be re-called with exc_info set. </span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> write </span><br><span class="line"></span><br><span class="line">    result = application(environ, start_response)   <span class="comment"># 参见上面的 AppClass.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">for</span> data <span class="keyword">in</span> result:</span><br><span class="line">            <span class="keyword">if</span> data:        <span class="comment"># don't send headers until body appears. </span></span><br><span class="line">                write(data)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> headers_sent:</span><br><span class="line">            write(<span class="string">""</span>)       <span class="comment"># sned headers now if body war empty</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> hasattr(result, <span class="string">"close"</span>):</span><br><span class="line">            result.close()</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-WebServer-的高级扩展-API"><a href="#3-2-WebServer-的高级扩展-API" class="headerlink" title="3.2 WebServer 的高级扩展 API"></a>3.2 WebServer 的高级扩展 API</h4><p>WebServer 开发者可以向 WebApplication 暴露特定的 API, 以便实现特殊的用途和目的. </p>
+<p>最简单的情况下, 只需定义一个 <code>environ</code> 变量即可, 比如 <code>mod_python.some_api</code>. 但是, 很多情况下, 可能存在 Middleware 组件会使 API 的暴露变得困难. 例如, 一个暴露 HTTP 首部的 API 可以定义的 <code>environ</code> 中, 但是, 他可能会 由于 Middleware 对 <code>environ</code> 的修改而返回不同的结果.</p>
+<p>通常情况下, 任何复制,代替,绕过 WSGI 功能的 扩展 API 都可能会有与 Middleware 组件不兼容的风险. WebServer 的开发者不应该假设 没有人使用 Middleware 组件, 因为一些框架开发者尤其倾向于使用各种各样的 Middleware 组件组织或者重构框架.</p>
+<p>所以为了最大的兼容性, 提供可以替代 WSGI 部分功能的扩展 API 的 WebServer ,必须设计这些 API, 这样才可以调用那些被替换的原生 API (So, to provide maximum compatibility, servers and gateways that provide extension APIs that replace some WSGI functionality, must design those APIs so that they are invoked using the portion of the APIs that they replace). For example, an extension API to access HTTP request headers must require the application to pass in its current <code>environ</code>, so that the server/gateway may verify that HTTP headers accessible via the API have not been altered by middleware. If the extension API cannot guarantee that it will always agree with <code>environ</code> about the contents of HTTP headers, it must refuse service to the application, e.g. by raising an error, returning <code>None</code> instead of a header collection, or whatever is appropriate to the API.</p>
+<p>类似的, 如果一个扩展 API 提供一个 重写响应体和响应首部的替代方法, 它应当要求 <code>start_response()</code> 方法被传入调用, 在 WebApplication 可以包含这些扩展的服务. 如果传入的对象不是 WebServer 原生提供给 WebApplication 的那个对象, 则不能保证操作的正确性, 而且很可能拒绝为 WebApplication 提供扩展服务.</p>
+<p>该指导方针同样适用于在 Middleware 中添加 cookie 解析, form 变量, session 和 <code>environ</code> 等其他信息. 特别的, Middleware 应当以 函数的方式提供这些 操作 <code>environ</code> 特性, 而不是简单的在 <code>environ</code> 中填充变量(键值对). 这将有助于保证 相关的信息是在经过经过其他 Middleware, 或者 URL 重写, 或者 <code>environ</code> 修改之后, 从 <code>environ</code> 中计算得来.</p>
+<p>在 WebServer 和 Middleware 的开发过程中遵循 <strong>安全扩展(safe extension)</strong>的准则是十分重要的. in order to avoid a future in which middleware developers are forced to delete any and all extension APIs from <code>environ</code> to ensure that their mediation isn’t being bypassed by applications using those extensions.</p>
+<h4 id="3-3-Optional-Platform-Specific-File-Handling"><a href="#3-3-Optional-Platform-Specific-File-Handling" class="headerlink" title="3.3 Optional Platform-Specific File Handling"></a>3.3 Optional Platform-Specific File Handling</h4><p>一个操作系统环境可能提供特殊的高性能的文件传输机制, 例如 Unix 系统的 <code>sendfile()</code> 调用. WebServer 可以通过一个<code>environ</code> 中的可选的 <code>wsgi.file_wrapper</code> 键值来暴露该功能. WebApplication 可以使用这个 <em>file wrapper</em> 来转换一个 文件或类文件对象 为一个可迭代对象:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">'wsgi.file_wrapper'</span> <span class="keyword">in</span> environ:</span><br><span class="line">    <span class="keyword">return</span> environ[<span class="string">"wsgi.file_wrapper"</span>](filelike, block_size)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> iter(<span class="keyword">lambda</span>: filelike.read(block_size), <span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+<p>如果 WebServer 支持 <code>wsgi.file_wrapper</code>, 对象必须是可调用的, 且支持一个必选的位置参数, 一个可选的位置参数. 第一个必选参数是一个要传输的 类文件对象, 第二个可选参数是 建议的 字节大小. 该可调用对象必须返回一个可迭代对象, 并且不能传递(transmission) 任何数据, 直到 WebServer 真正接受从 WebApplication 接到可迭代对象作为返回值.</p>
+<p>被 WebApplication 支持的, 被称为 类文件的对象必须包含一个 <code>read()</code> 方法, 该方法接受一个可选的 <em>size</em> 参数. 该对象可能有一个 <code>close()</code> 方法, 如果有 <code>close()</code> 方法, 被 <code>wsgi.filr_wrapper</code> 返回的 可迭代对象必须包含一个 <code>close()</code> 方法来调用 类文件对象的原声的 <code>close()</code> 方法. 如果该类文件对象包含其他 与Python原声文件对象 相同的方法或属性(如 fileno()), 则 <code>wsgi.file_wrapper</code> 可以假设这些方法和属性与 Python 内置文件对象具有相同的语义.</p>
+<p>任何平台特定的 file handling 实现必须在 WebApplication 返回之后才会发生(处理), 并且 WebServer 会检查 是否返回了该对象. 再次, 由于 Middleware, 错误处理程序等的存在, 不能保证 人恶化 file_wrapper 被真正的使用.</p>
+<p>除了需要包含 <code>close()</code> 方法之外, WebApplication 返回的 file_wrapper 应当与 WebApplication 返回 <code>iter(filelike.read, &quot;&quot;)</code> 一样. In other words, transmission should begin at the current position within the ‘file’ at the time that transmission begins, and continue until the end is reached, or until Content-Length bytes have been written.(If the application doesn’t supply a Content-Length, the server may generate one from the file using its knowledge of the underlying file implemnentation).</p>
+<p>主要注意的是, 即使 对象 不适合平台的 API, <code>wsgi.file_wrapper</code> 必须任然返回一个实现了 <code>read()</code> 方法和 <code>close()</code> 方法的迭代器. 这样, 使用 file_wrapper 的 WebApplication 就可以实现跨平台移植. 如下是一个简单的 平台无关的 file_wrapper 类, 适合 新老版本的 Python</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Filewrapper</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filelike, blksize=<span class="number">8192</span>)</span>:</span></span><br><span class="line">        self.filelike = filelike</span><br><span class="line">        self.blksize = blksize</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> hasattr(filelike, <span class="string">"close"</span>):</span><br><span class="line">            self.close = filelike.close</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line"></span><br><span class="line">        data = self.filelike.read(self.blksize)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> data:</span><br><span class="line">            <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line">        <span class="keyword">raise</span> IndexError</span><br></pre></td></tr></table></figure>
+<p>如下是一个 WebServer 中的代码片段, 用于提供 到特定平台的 API</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">environ[<span class="string">'wsfi.file_wrapper'</span>] = Filewrapper</span><br><span class="line"></span><br><span class="line">result = application(environ, start_response)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">if</span> isinstance(result, Filewrapper):</span><br><span class="line">        <span class="comment"># check if result.filelike is usable w/platform-specific </span></span><br><span class="line">        <span class="comment"># API, and if so, use that API to transmit the result.</span></span><br><span class="line">        <span class="comment"># If not, fall through to normal iterable handling loop below.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> result:</span><br><span class="line">        <span class="comment"># etc.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="keyword">if</span> hasattr(result, <span class="string">"close"</span>):</span><br><span class="line">        result.close()</span><br></pre></td></tr></table></figure>
+<h3 id="4-Middleware"><a href="#4-Middleware" class="headerlink" title="4. Middleware"></a>4. Middleware</h3><p>Middleware 是一个组件, 它同时兼具 Server 和 Application 的角色. 对于 Application 来讲, 它是 Server; 对于 Server , 它又表现为一个 Application.</p>
+<p>Middleware 可能具有如下功能:</p>
+<ol>
+<li>根据请求的 目标URL, 在重写相应的 <code>environ</code> 变量后, 将请求路由到指定的 Application;</li>
+<li>允许多个 Application 同时运行在一个 process 内部.</li>
+<li>通过网络转发请求和响应, 实现负载均衡或者远程处理.</li>
+<li>对内容进行后期处理, 比如应用 XSL 自定义模板.</li>
+</ol>
+<p>Middleware 的存在对于 WebServer 端和 WebApplication 端来讲都应该是透明的, 并且没有特殊的依赖. 用户在使用 Middleware 时, 只需简单的将 Middleware 组件提供给 WebServer 即可, 就像他是一个 WebApplication 一样, 然后配置 Middleware 组件调用 WebApplication 即可. Of course, the “application” that the middleware wraps may in fact be another middleware component wrapping another application, and so on, creating what is referred to as a “middleware stack”.</p>
+<p>大多数情况下, Middleware 必须严格与 WebServer 和 WebApplication 适配, 因此, Middleware 的约束与依赖, 可能要比淡村的 WebServer 和 WebApplication 更多.</p>
+<p>如下是一个 Middleware 示例代码, 用于将 <code>text/plain</code> 转换为 <code>pig Latin</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> piglatin <span class="keyword">import</span> piglatin</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LatinIter</span>:</span></span><br><span class="line">    <span class="string">""" Transform iterated output to piglation, if it's okey to do so </span></span><br><span class="line"><span class="string">    Note that the 'okayness' can change until the application yields its </span></span><br><span class="line"><span class="string">    first non-empty betestring, so `transform_ok` has to be a mutable </span></span><br><span class="line"><span class="string">    truth value.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, result, transform_ok)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> hasattr(result, <span class="string">"close"</span>):</span><br><span class="line">            self.close = result.close</span><br><span class="line"></span><br><span class="line">        self._next = iter(result).__next__</span><br><span class="line">        self.transform_ok = transform_ok</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        result self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.transform_ok:</span><br><span class="line">            <span class="keyword">return</span> piglatin(self._next)     <span class="comment"># call must be byte-safe on Py3</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self._next()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Latinator</span>:</span></span><br><span class="line">    <span class="comment"># by default, don't transform output.</span></span><br><span class="line">    transform = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, application)</span>:</span></span><br><span class="line">        self.application = application</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line">        transform_ok = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">start_latin</span><span class="params">(status, response_handers, exc_info=None)</span>:</span></span><br><span class="line">            <span class="comment"># Reset ok flag,  in case this is a repeat call</span></span><br><span class="line">            <span class="keyword">del</span> transform_ok[:]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> name, vlaue <span class="keyword">in</span> response_handers:</span><br><span class="line">                <span class="keyword">if</span> name.lower() == <span class="string">"content-type"</span> <span class="keyword">and</span> value == <span class="string">"text/plain"</span>:</span><br><span class="line">                    transform_ok.append(<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">                    <span class="comment"># Strip context-length if present, else it'll be wrong.</span></span><br><span class="line"></span><br><span class="line">                    response_handers = [(name, value) <span class="keyword">for</span> name, value <span class="keyword">in</span> response_handers <span class="keyword">if</span> name.lower() != <span class="string">"content-length"</span>]</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            write = start_response(status, response_handers, exc_info)</span><br><span class="line">            <span class="keyword">if</span> transform_ok:</span><br><span class="line">                <span class="function"><span class="keyword">def</span> <span class="title">write_latin</span><span class="params">(data)</span>:</span></span><br><span class="line">                    write(piglatin(data))   <span class="comment"># call must be byte-safe on Py3</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> write_latin</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> write</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> LatinIter(self.application(environ, start_latin), transform_ok)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Run foo_app under a Latinator's control, using the example CGI gateway</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> foo_app <span class="keyword">import</span> foo_app</span><br><span class="line">run_with_cgi(Latinator(foo_app))</span><br></pre></td></tr></table></figure>
+<h2 id="三-杂项"><a href="#三-杂项" class="headerlink" title="三. 杂项"></a>三. 杂项</h2><h3 id="1-pep-0333-和-pep-3333"><a href="#1-pep-0333-和-pep-3333" class="headerlink" title="1. pep-0333 和 pep-3333"></a>1. pep-0333 和 pep-3333</h3><p>pep-3333 是为了适用 python3 而对 pep-0333 的升级.</p>
+<h3 id="2-生词"><a href="#2-生词" class="headerlink" title="2. 生词"></a>2. 生词</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">perface         : 前言 </span><br><span class="line">abstract        : 摘要, 抽象. </span><br><span class="line">rationale       : 基本原理 </span><br><span class="line">specification   : 规则, 说明书. </span><br><span class="line">reconstruction  : 重建, 再建, 改造. </span><br><span class="line">amendments      : 修正 </span><br><span class="line">incorporate     : 包含, 吸收, 体现. </span><br><span class="line">procedural      : 程序性的 </span><br><span class="line">revision        : 修正 </span><br><span class="line">vice            : 恶习, 缺点, 代替的 </span><br><span class="line">By contras      : 作为对比. </span><br><span class="line">implement       : 实现 </span><br><span class="line">illustrate      : 举例说明 </span><br><span class="line">surrogate       : 代理</span><br></pre></td></tr></table></figure>
+<h2 id="四-文档地址"><a href="#四-文档地址" class="headerlink" title="四. 文档地址:"></a>四. 文档地址:</h2><ul>
+<li><a href="https://www.python.org/dev/peps/pep-3333/" target="_blank" rel="noopener">PEP-3333</a></li>
+<li><a href="http://pep-3333-wsgi.readthedocs.io/en/latest/" target="_blank" rel="noopener">PEP-3333 中文</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0333" target="_blank" rel="noopener">PEP-0333</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web-development/" rel="tag"># web development</a>
+          
+            <a href="/tags/wsgi/" rel="tag"># wsgi</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/13/python-类-OOP-元编程/" rel="next" title="python 类, OOP 与 元编程">
+                <i class="fa fa-chevron-left"></i> python 类, OOP 与 元编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/14/markdown-语法总结/" rel="prev" title="markdown 语法总结">
+                markdown 语法总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-背景知识"><span class="nav-text">一. 背景知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-WSGI-规则"><span class="nav-text">二. WSGI 规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-字符串问题"><span class="nav-text">1. 字符串问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-WebApplication-Framework"><span class="nav-text">2. WebApplication/Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-environ-变量"><span class="nav-text">2.1 environ 变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Input-and-Error-Streams"><span class="nav-text">2.2 Input and Error Streams</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-start-response-可调用对象"><span class="nav-text">2.3 start_response() 可调用对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-处理-Content-Length-首部"><span class="nav-text">2.4 处理 Content-Length 首部</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-Buffering-和-Streaming"><span class="nav-text">2.5 Buffering 和 Streaming</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-Middleware-Handling-of-Block-Boundaries"><span class="nav-text">2.6 Middleware Handling of Block Boundaries</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-write-可调用方法"><span class="nav-text">2.7 write() 可调用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-Unicode-引发的问题"><span class="nav-text">2.8 Unicode 引发的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-9-错误处理"><span class="nav-text">2.9 错误处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-10-HTTP-1-1-Expect-Continue-机制"><span class="nav-text">2.10 HTTP/1.1 Expect/Continue 机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-11-其他-HTTP-特点"><span class="nav-text">2.11 其他 HTTP 特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-12-线程支持"><span class="nav-text">2.12 线程支持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-13-Application-Configuration"><span class="nav-text">2.13 Application Configuration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-14-URL-重建"><span class="nav-text">2.14 URL 重建</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-WebServer-Gateway"><span class="nav-text">3. WebServer/Gateway</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-WebServer-的高级扩展-API"><span class="nav-text">3.2 WebServer 的高级扩展 API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-Optional-Platform-Specific-File-Handling"><span class="nav-text">3.3 Optional Platform-Specific File Handling</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Middleware"><span class="nav-text">4. Middleware</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-杂项"><span class="nav-text">三. 杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-pep-0333-和-pep-3333"><span class="nav-text">1. pep-0333 和 pep-3333</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-生词"><span class="nav-text">2. 生词</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-文档地址"><span class="nav-text">四. 文档地址:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

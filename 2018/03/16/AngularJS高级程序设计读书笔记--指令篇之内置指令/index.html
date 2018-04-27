@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="angularjs,前端框架," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="AngularJS 内置超过 50 个内置指令, 包括 数据绑定,表单验证,模板生成,时间处理 和 HTML 操作. 指令暴露了 AngularJS 的核心功能, 如 事件处理,表单验证,模板等. 一. 数据绑定指令数据绑定: 使用模型中的值, 并将其插入到 HTML 文档中.所有的数据绑定指令, 都可以当做一个属性或者类使用.  属性 : &amp;lt;span ng-bind=&amp;quot;todos">
+<meta name="keywords" content="angularjs,前端框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS高级程序设计读书笔记--指令篇之内置指令">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="AngularJS 内置超过 50 个内置指令, 包括 数据绑定,表单验证,模板生成,时间处理 和 HTML 操作. 指令暴露了 AngularJS 的核心功能, 如 事件处理,表单验证,模板等. 一. 数据绑定指令数据绑定: 使用模型中的值, 并将其插入到 HTML 文档中.所有的数据绑定指令, 都可以当做一个属性或者类使用.  属性 : &amp;lt;span ng-bind=&amp;quot;todos">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-01T04:13:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS高级程序设计读书笔记--指令篇之内置指令">
+<meta name="twitter:description" content="AngularJS 内置超过 50 个内置指令, 包括 数据绑定,表单验证,模板生成,时间处理 和 HTML 操作. 指令暴露了 AngularJS 的核心功能, 如 事件处理,表单验证,模板等. 一. 数据绑定指令数据绑定: 使用模型中的值, 并将其插入到 HTML 文档中.所有的数据绑定指令, 都可以当做一个属性或者类使用.  属性 : &amp;lt;span ng-bind=&amp;quot;todos">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/"/>
+
+
+
+
+
+  <title>AngularJS高级程序设计读书笔记--指令篇之内置指令 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">AngularJS高级程序设计读书笔记--指令篇之内置指令</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:09:08+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>AngularJS 内置超过 50 个内置指令, 包括 数据绑定,表单验证,模板生成,时间处理 和 HTML 操作.</p>
+<p>指令暴露了 AngularJS 的核心功能, 如 事件处理,表单验证,模板等.</p>
+<h2 id="一-数据绑定指令"><a href="#一-数据绑定指令" class="headerlink" title="一. 数据绑定指令"></a>一. 数据绑定指令</h2><p><strong>数据绑定</strong>: 使用模型中的值, 并将其插入到 HTML 文档中.所有的数据绑定指令, 都可以当做一个属性或者类使用.</p>
+<ul>
+<li>属性 : <code>&lt;span ng-bind=&quot;todos.length&quot;&gt;&lt;/span&gt;</code> 属性可能会导致其他开发工具的各种问题, 如某些 JavaScript 库对属性名做了若干假设, 而且某些限制性的版本控制系统不允许 HTML 内容中有非标准的属性.</li>
+<li>类  : <code>&lt;span class=&quot;ng-bind: todos.length&quot;&gt;&lt;/span&gt;</code></li>
+</ul>
+<p><strong>数据绑定</strong>: AngularJS 的数据绑定是动态的, 当绑定所关联的值在数据模型中发生变化时, HTML 元素也会被随之更新,显示新的值.</p>
+<ul>
+<li><strong>单向数据绑定</strong> : 从数据模型中获得值并插入到 HTMl 元素中.</li>
+<li><strong>双向数据绑定</strong> : 从两个方向同时跟踪变化, 允许元素从用户处收集数据已修改程序的状态. 双向数据绑定仅能用于那些允许用户输入数据值的元素上, 既 input,select,textarea 元素</li>
+</ul>
+<p>数据绑定的一个很好的特性是, AngularJS 将在需要的时候动态的创建模型属性, 也就说无需费力的定义所有要使用的属性, 就可以和视图关联在一起.</p>
+<p>在请求绑定到一个不存在的模型属性时, AngularJS 也<strong>不会报错</strong>, 因为他假定这个属性将会在之后创建.</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>用作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-bind</td>
+<td>属性, 类</td>
+<td>绑定一个 HTML 元素的 innerText 属性</td>
+</tr>
+<tr>
+<td>ng-bind-html</td>
+<td>属性, 类</td>
+<td>使用一个HTML 元素的 innerHTML 属性创建数据绑定, 这是有潜在风险的, 因为这意味着浏览器把内容解析为 HTML, 而不是内容本身.</td>
+</tr>
+<tr>
+<td>ng-bind-template</td>
+<td>属性, 类</td>
+<td>与 ng-bind 类似, 但允许在属性值中制定多个模板表达式</td>
+</tr>
+<tr>
+<td>ng-model</td>
+<td>属性, 类</td>
+<td>创建一个双向数据绑定</td>
+</tr>
+<tr>
+<td>ng-non-bindable</td>
+<td>属性, 类</td>
+<td>声明一块不会被执行数据绑定的区域</td>
+</tr>
+</tbody>
+</table>
+<p>示例代码 : </p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;exampleApp&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Directives&lt;/title&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, [])
+            .controller(&quot;defaultCtrl&quot;, function ($scope) {
+                $scope.todos = [
+                    { action: &quot;Get groceries&quot;, complete: false },
+                    { action: &quot;Call plumber&quot;, complete: false },
+                    { action: &quot;Buy running shoes&quot;, complete: true },
+                    { action: &quot;Buy flowers&quot;, complete: false },
+                    { action: &quot;Call family&quot;, complete: false }];
+            });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+        &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+
+        &lt;div&gt;There are { {todos.length} } items&lt;/div&gt;      
+
+        &lt;div&gt;
+            There are &lt;span ng-bind=&quot;todos.length&quot;&gt;&lt;/span&gt; items
+        &lt;/div&gt;
+
+        &lt;div ng-bind-template=
+             &quot;First: { {todos[0].action} }. Second: { {todos[1].action} }&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div ng-non-bindable&gt;
+            AngularJS uses { { and } } characters for templates
+        &lt;/div&gt;        
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h3 id="1-ng-bind-与-内联绑定"><a href="#1-ng-bind-与-内联绑定" class="headerlink" title="1. ng-bind 与 { {} }内联绑定"></a>1. <code>ng-bind</code> 与 <code>{ {} }</code>内联绑定</h3><pre><code>&lt;div&gt;There are { {todos.length} } items&lt;/div&gt;      
+---
+&lt;div&gt;
+    There are &lt;span ng-bind=&quot;todos.length&quot;&gt;&lt;/span&gt; items
+&lt;/div&gt;        
+</code></pre><h3 id="2-ng-bind-html"><a href="#2-ng-bind-html" class="headerlink" title="2. ng-bind-html"></a>2. <code>ng-bind-html</code></h3><h3 id="3-ng-bind-template-处理多个数据绑定"><a href="#3-ng-bind-template-处理多个数据绑定" class="headerlink" title="3. ng-bind-template : 处理多个数据绑定."></a>3. <code>ng-bind-template</code> : 处理多个数据绑定.</h3><pre><code>&lt;div ng-bind-template=
+     &quot;First: { {todos[0].action} }. Second: { {todos[1].action} }&quot;&gt;
+&lt;/div&gt;
+</code></pre><h3 id="4-ng-non-bindable-阻止-AngularJS-处理内联绑定"><a href="#4-ng-non-bindable-阻止-AngularJS-处理内联绑定" class="headerlink" title="4. ng-non-bindable : 阻止 AngularJS 处理内联绑定."></a>4. <code>ng-non-bindable</code> : 阻止 AngularJS 处理内联绑定.</h3><pre><code>&lt;div ng-non-bindable&gt;
+    AngularJS uses { { and } } characters for templates
+&lt;/div&gt;        
+</code></pre><h3 id="5-ng-model"><a href="#5-ng-model" class="headerlink" title="5. ng-model"></a>5. <code>ng-model</code></h3><p>ng-model 指令对所应用到的元素内容进行设置, 也通过更新数据模型的方式响应用户所做的更改.<br><strong>数据模型属性上的变化, 会被传播到所有的相关绑定上, 以保证在整个应用中的数据同步</strong>.在下面的代码中, input 元素属性的修改, 将会影响到 <code>{ {} }</code> 内联绑定元素属性的修改.</p>
+<p><strong>原理:</strong> 当 input 元素的内容被修改时, AngularJS 使用标准 JavaScript 事件从 input 元素接受通知, 并且将这一变化通过 $scope 服务进行传播.可以通过浏览器的 开发者工具, 看到 AngularJS 所建立的事件处理器.</p>
+<pre><code>&lt;div class=&quot;well&quot;&gt;
+    &lt;div&gt;The first item is: { {todos[0].action} }&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;form-group well&quot;&gt;
+    &lt;label for=&quot;firstItem&quot;&gt;Set First Item:&lt;/label&gt;
+    &lt;input name=&quot;firstItem&quot; class=&quot;form-control&quot; ng-model=&quot;todos[0].action&quot; /&gt;
+&lt;/div&gt;        
+</code></pre><h2 id="二-模板指令"><a href="#二-模板指令" class="headerlink" title="二. 模板指令"></a>二. 模板指令</h2><p>AngularJS 包含了一组可使用模板生成 HTML 元素的指令, 使得使用数据集合进行工作, 以及向响应数据状态的模板中添加基本逻辑变得简单.可以帮助我们不用写任何 JavaScript 代码就可以向视图中添加简单逻辑.</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>用作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-cloak</td>
+<td>属性, 类</td>
+<td>使用一个 css 样式隐藏内联绑定表达式<code>{ {} }</code>, 在文档第一个加载时会短暂的可见</td>
+</tr>
+<tr>
+<td>ng-include</td>
+<td>元素, 属性, 类</td>
+<td>向 DOM 中加载,处理和插入一段 HTML</td>
+</tr>
+<tr>
+<td>ng-repeat</td>
+<td>属性, 类</td>
+<td>对数组中或对象某个属性中的每一个对象生成一个元素及其内容的若干新拷贝</td>
+</tr>
+<tr>
+<td>ng-repeat-start</td>
+<td>属性, 类</td>
+<td>表示含有多个顶层元素的重复区域的开始部分</td>
+</tr>
+<tr>
+<td>ng-repeat-end</td>
+<td>属性, 类</td>
+<td>表示含有多个顶层元素的重复区域的结束部分</td>
+</tr>
+<tr>
+<td>ng-switch</td>
+<td>属性, 类</td>
+<td>根据数据绑定的值修改 DOM 中的元素.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-ng-repeat"><a href="#1-ng-repeat" class="headerlink" title="1 ng-repeat"></a>1 <code>ng-repeat</code></h3><p>用于为数据集中的各项生成同样的内容.</p>
+<ol>
+<li><p>基础形式<br> ng-repeat 指令属性值的基本形式是 <variable> in <srouce> , 其中 source 是被控制器的 $scope 所定义的一个对象或者数组, 在本例中时 todos 数组. 该指令遍历数组中的对象, 创建元素及其内容的一个新实例, 并且处理所包含的模板. 在指令属性值中赋给 <variable> 的名称可用于引用当前数据内容. </variable></srouce></variable></p>
+<pre><code>&lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+    &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+
+    &lt;table class=&quot;table&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Action&lt;/th&gt;
+                &lt;th&gt;Done&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr ng-repeat=&quot;item in todos&quot;&gt;
+                &lt;td&gt;{ {item.action} }&lt;/td&gt;
+                &lt;td&gt;{ {item.complete} }&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+</code></pre></li>
+<li><p>ng-repeat 的嵌套使用: 用于遍历对象中的属性.</p>
+<pre><code>&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Action&lt;/th&gt;
+            &lt;th&gt;Done&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr ng-repeat=&quot;item in todos&quot;&gt;
+            &lt;td ng-repeat=&quot;prop in item&quot;&gt;{ {prop} }&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;        
+</code></pre><p> 外层 ng-repeat 指令对 todos 数组中的每个对象生成一个 tr 元素, 并且每个对象被赋给变量 item.<br> 内层 ng-repeat 指令对 item 对象的每个属性生成一个 td 元素, 并将属性值赋给变量 prop.<br> 最后 , prob 变量用于一个单项数据绑定, 作为 td 元素的内容.</p>
+<p> 该示例与前例相同, 但是却能够自适应的为数据对象中定义的任何新属性生成 td 元素.</p>
+</li>
+<li><p>使用数据对象的键值工作</p>
+<pre><code>&lt;tbody&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot;&gt;
+        &lt;td ng-repeat=&quot;(key, value) in item&quot;&gt;
+            { {key} }={ {value} }
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/tbody&gt;    
+</code></pre></li>
+<li><p>内置变量 : 可用于提供被处理数据的上下文信息.<br> 内置的 ng-repeat 变量, <strong>索引从 0 开始</strong></p>
+<p> | 变量 | 描述 |<br> | — | — |<br> | $index | 返回当前对象或属性的位置 |<br> | $first | 在当前对象为集合中的第一个元素时, 返回 true |<br> | $middle | 在当前对象既不是集合的第一个也不是集合的最后一个时, 返回 true |<br> | $last | 在当前对象为集合中的最后一个元素时, 返回 true |<br> | $even | 对于集合中偶数编号的对象, 返回 true |<br> | $odd | 对于集合中奇数编号的对象, 返回 true |</p>
+<p> 示例代码:</p>
+<pre><code>&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;#&lt;/th&gt;
+            &lt;th&gt;Action&lt;/th&gt;
+            &lt;th&gt;Done&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot;&gt;
+        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+        &lt;td ng-repeat=&quot;prop in item&quot;&gt;
+            { {prop} }
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+// ng-repeat 与 ng-class 联合使用, 实现条纹效果.       
+
+&lt;style&gt;
+    .odd { background-color: lightcoral}
+    .even { background-color: lavenderblush}
+&lt;/style&gt;            
+// ...
+&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;#&lt;/th&gt;
+            &lt;th&gt;Action&lt;/th&gt;
+            &lt;th&gt;Done&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot; ng-class=&quot;$odd ? &apos;odd&apos; : &apos;even&apos;&quot;&gt;
+        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+        &lt;td ng-repeat=&quot;prop in item&quot;&gt;{ {prop} }&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+// ng-repeat 与 ng-if, ng-class 联合使用
+
+&lt;style&gt;
+    .odd { background-color: lightcoral}
+    .even { background-color: lavenderblush}
+&lt;/style&gt;            
+// ...
+&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;#&lt;/th&gt;
+            &lt;th&gt;Action&lt;/th&gt;
+            &lt;th&gt;Done&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot; ng-class=&quot;$odd ? &apos;odd&apos; : &apos;even&apos;&quot;&gt;
+        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+        &lt;td&gt;{ {item.action} }&lt;/td&gt;
+        &lt;td&gt;&lt;span ng-if=&quot;$first || $last&quot;&gt;{ {item.complete} }&lt;/span&gt;&lt;/td&gt; # 在不是 第一个或最后一个元素时, 移除 item.complete .
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+// track must be the last one.
+&lt;div ng-repeat=&quot;n in [42, 42, 43, 43] track by $index&quot;&gt;
+  { {n} }
+&lt;/div&gt;    
+... 
+&lt;div ng-repeat=&quot;model in collection | orderBy: &apos;id&apos; as filtered_result track by model.id&quot;&gt;
+  { {model.name} }
+&lt;/div&gt;
+</code></pre><h3 id="2-ng-repeat-start-与-ng-repeat-end-对每个数据对象重复生成多个顶层元素"><a href="#2-ng-repeat-start-与-ng-repeat-end-对每个数据对象重复生成多个顶层元素" class="headerlink" title="2 ng-repeat-start 与 ng-repeat-end : 对每个数据对象重复生成多个顶层元素."></a>2 <code>ng-repeat-start</code> 与 <code>ng-repeat-end</code> : 对每个数据对象重复生成多个顶层元素.</h3><p>在需要对每个处理的数据项生成多个表格行时, 最常用到.<br>ng-repeat-start 指令的配置方法类似于 ng-repeat, 但是将会重复生成所有的顶层元素(及其内容)直到 ng-repeat-end 属性所对应的元素(也包含在内).</p>
+ <table class="table"><br>     <tbody><br>         <tr ng-repeat-start="item in todos"><br>             <td>This is item { {$index} }</td><br>         </tr><br>         <tr><br>             <td>The action is: { {item.action} }</td><br>         </tr><br>         <tr ng-repeat-end=""><br>             <td>Item { {$index} } is { {$item.complete? ‘’ : “not “} } complete</td><br>         </tr><br>     </tbody><br> </table>
+
+</li>
+</ol>
+<h3 id="3-ng-include-与-局部视图"><a href="#3-ng-include-与-局部视图" class="headerlink" title="3 ng-include 与 局部视图"></a>3 <code>ng-include</code> 与 局部视图</h3><ol>
+<li><p>基本用法</p>
+<p> ng-include 指令从服务器获取一段 HTML 片段, 编译并处理其中包含的任何指令, 并添加到 DOM 中去. 这些片段被称为<strong>局部视图</strong>. ng-include 允许创建可复用的局部视图.</p>
+<p> 当 AngularJS 处理 html 文件时, 当遇到 ng-include 指令, 就会自动发出一个 Ajax 请求获取 src 指定的文件, 处理文档内容并将其添加到文档中. 被 ng-include 指令所加载的文件内容的处理过程就像在原来的地方所定义的一样, 也就是说, 拥有访问数据模型和控制器中定义的行为的能力.</p>
+<p> <strong>ng-include 参数</strong></p>
+<p> | 名称 | 描述 |<br> | — | — |<br> | src | 指定要加载的内容的 URL, 参数为字符串变量, 用一对引号包含表示. 因为 src 属性是被当做 JavaScript 表达式进行计算的. 另, src 的设置是可以通过计算得到的. |<br> | onload | 指定一个在内容被加载时调用计算的表达式 |<br> | autoscroll | 指定在内容被加载时, AngularJS 是否应该滚动到这部分视图所在的区域. | </p>
+<p> <strong><ng-include></ng-include> : 必须指定开闭标签.</strong></p>
+<p> 示例代码:</p>
+<pre><code>// 主文件
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;exampleApp&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Directives&lt;/title&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, [])
+            .controller(&quot;defaultCtrl&quot;, function ($scope) {
+                $scope.todos = [
+                    { action: &quot;Get groceries&quot;, complete: false },
+                    { action: &quot;Call plumber&quot;, complete: false },
+                    { action: &quot;Buy running shoes&quot;, complete: true },
+                    { action: &quot;Buy flowers&quot;, complete: false },
+                    { action: &quot;Call family&quot;, complete: false }];
+            });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+        &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+        &lt;ng-include src=&quot;&apos;table.html&apos;&quot;&gt;&lt;/ng-include&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+// table.html
+&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;#&lt;/th&gt;
+            &lt;th&gt;Action&lt;/th&gt;
+            &lt;th&gt;Done&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot; ng-class=&quot;$odd ? &apos;odd&apos; : &apos;even&apos;&quot;&gt;
+        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+        &lt;td ng-repeat=&quot;prop in item&quot;&gt;{ {prop} }&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre></li>
+<li><p>动态选择局部视图.</p>
+<pre><code>// list.html
+&lt;ol&gt;
+    &lt;li ng-repeat=&quot;item in todos&quot;&gt;
+        { {item.action} }
+        &lt;span ng-if=&quot;item.complete&quot;&gt; (Done)&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;
+
+// table.html
+&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;#&lt;/th&gt;
+            &lt;th&gt;Action&lt;/th&gt;
+            &lt;th&gt;Done&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot; ng-class=&quot;$odd ? &apos;odd&apos; : &apos;even&apos;&quot;&gt;
+        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+        &lt;td ng-repeat=&quot;prop in item&quot;&gt;{ {prop} }&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+// index.html
+&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;exampleApp&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Directives&lt;/title&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, [])
+            .controller(&quot;defaultCtrl&quot;, function ($scope) {
+                $scope.todos = [
+                    { action: &quot;Get groceries&quot;, complete: false },
+                    { action: &quot;Call plumber&quot;, complete: false },
+                    { action: &quot;Buy running shoes&quot;, complete: true },
+                    { action: &quot;Buy flowers&quot;, complete: false },
+                    { action: &quot;Call family&quot;, complete: false }];
+
+                $scope.viewFile = function () {
+                    return $scope.showList ? &quot;list.html&quot; : &quot;table.html&quot;;
+                };
+            });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+        &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+
+        &lt;div class=&quot;well&quot;&gt;
+            &lt;div class=&quot;checkbox&quot;&gt;
+                &lt;label&gt;
+                    &lt;input type=&quot;checkbox&quot; ng-model=&quot;showList&quot;&gt;
+                    Use the list view
+                &lt;/label&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;ng-include src=&quot;viewFile()&quot;&gt;&lt;/ng-include&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></li>
+<li><p>ng-include 用做<strong>属性</strong></p>
+<p> ng-include 属性可用于任何 HTML 元素, src 参数的值姜葱该属性值中取得.其他的指令配置参数以单独的元素表示, 可以从 onload 的属性中看到. 与 ng-include 用作自定义元素有相同的效果.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;exampleApp&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Directives&lt;/title&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, [])
+            .controller(&quot;defaultCtrl&quot;, function ($scope) {
+                $scope.todos = [
+                    { action: &quot;Get groceries&quot;, complete: false },
+                    { action: &quot;Call plumber&quot;, complete: false },
+                    { action: &quot;Buy running shoes&quot;, complete: true },
+                    { action: &quot;Buy flowers&quot;, complete: false },
+                    { action: &quot;Call family&quot;, complete: false }];
+
+                $scope.viewFile = function () {
+                    return $scope.showList ? &quot;list.html&quot; : &quot;table.html&quot;;
+                };
+
+                $scope.reportChange = function () {
+                    console.log(&quot;Displayed content: &quot; + $scope.viewFile());
+                }
+
+            });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+        &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+
+        &lt;div class=&quot;well&quot;&gt;
+            &lt;div class=&quot;checkbox&quot;&gt;
+                &lt;label&gt;
+                    &lt;input type=&quot;checkbox&quot; ng-model=&quot;showList&quot;&gt;
+                    Use the list view
+                &lt;/label&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div ng-include=&quot;viewFile()&quot; onload=&quot;reportChange()&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></li>
+</ol>
+<h3 id="4-ng-switch-on-ng-switch-when-ng-switch-default"><a href="#4-ng-switch-on-ng-switch-when-ng-switch-default" class="headerlink" title="4 ng-switch+on, ng-switch-when, ng-switch-default"></a>4 <code>ng-switch+on</code>, <code>ng-switch-when</code>, <code>ng-switch-default</code></h3><p>用于在已经存在于文档中的较小代码块之间进行切换.<br><code>ng-switch+on</code> : 可以被当做<strong>元素</strong>或<strong>属性</strong>使用, on 指定一个表达式, 用于计算并决定那部分内容将被显示出来.<br><code>ng-switch-when</code> : 只能被当做 <strong>属性</strong> 使用, 表示与所指定的值相关联的一块内容. 当属性值与 ng-switch 中的 on 属性所指定的表达式相匹配时, AngularJS 将会显示出 ng-switch-when 指令所应用到的元素.其他 ng-switch-when 指令代码块里的元素将被移除.<br><code>ng-switch-default</code> : 只能被当做 <strong>属性</strong> 使用, 用于指定没有任何一个 ng-switch-when 区域匹配到时应当显示的内容.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;exampleApp&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Directives&lt;/title&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, [])
+            .controller(&quot;defaultCtrl&quot;, function ($scope) {
+
+                $scope.data = {};
+
+                $scope.todos = [
+                    { action: &quot;Get groceries&quot;, complete: false },
+                    { action: &quot;Call plumber&quot;, complete: false },
+                    { action: &quot;Buy running shoes&quot;, complete: true },
+                    { action: &quot;Buy flowers&quot;, complete: false },
+                    { action: &quot;Call family&quot;, complete: false }];
+            });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+
+        &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+
+        &lt;div class=&quot;well&quot;&gt;
+            &lt;div class=&quot;radio&quot; ng-repeat=&quot;button in [&apos;None&apos;, &apos;Table&apos;, &apos;List&apos;]&quot;&gt;
+                &lt;label&gt;
+                    &lt;input type=&quot;radio&quot; ng-model=&quot;data.mode&quot; 
+                           value=&quot;{ {button} }&quot; ng-checked=&quot;$first&quot; /&gt;
+                    { {button} }
+                &lt;/label&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div ng-switch on=&quot;data.mode&quot;&gt;
+            &lt;div ng-switch-when=&quot;Table&quot;&gt;
+                &lt;table class=&quot;table&quot;&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;&lt;th&gt;Done&lt;/th&gt;&lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tr ng-repeat=&quot;item in todos&quot; ng-class=&quot;$odd ? &apos;odd&apos; : &apos;even&apos;&quot;&gt;
+                        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+                        &lt;td ng-repeat=&quot;prop in item&quot;&gt;{ {prop} }&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div ng-switch-when=&quot;List&quot;&gt;
+                &lt;ol&gt;
+                    &lt;li ng-repeat=&quot;item in todos&quot;&gt;
+                        { {item.action} }&lt;span ng-if=&quot;item.complete&quot;&gt; (Done)&lt;/span&gt;
+                    &lt;/li&gt;
+                &lt;/ol&gt;
+            &lt;/div&gt;
+            &lt;div ng-switch-default&gt;
+                Select another option to display a layout
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h3 id="5-ng-cloak"><a href="#5-ng-cloak" class="headerlink" title="5 ng-cloak"></a>5 <code>ng-cloak</code></h3><p>能够在 AngularJS 结束对内容的处理之前先将 <code>内联元素指令</code> 隐藏. ng-cloak 指令使用 CSS 对被应用到的元素进行隐藏.</p>
+<p><strong>不建议</strong>对 body 元素使用 ng-cloak 指令, 因为这样当 AngularJS 处理内容时, 用户只能看到一个空白的浏览器窗口. 建议有选择的对部分元素使用该指令, 将其只用到那些具有内联元素表达式的文档部分.</p>
+<pre><code>&lt;div class=&quot;well&quot;&gt;
+    &lt;div class=&quot;radio&quot; ng-repeat=&quot;button in [&apos;None&apos;, &apos;Table&apos;, &apos;List&apos;]&quot;&gt;
+        &lt;label ng-cloak&gt;
+            &lt;input type=&quot;radio&quot; ng-model=&quot;data.mode&quot; 
+                value=&quot;{ {button} }&quot; ng-checked=&quot;$first&quot;&gt;
+            { {button} }
+        &lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre><h2 id="三-元素指令"><a href="#三-元素指令" class="headerlink" title="三. 元素指令"></a>三. 元素指令</h2><p>元素指令, 用于在 DOM 中对元素进行配置和渲染样式的.</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>用作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-if</td>
+<td>属性</td>
+<td>从 DOM 中添加和移除元素</td>
+</tr>
+<tr>
+<td>ng-class</td>
+<td>属性, 类</td>
+<td>为某个元素设置 class 属性</td>
+</tr>
+<tr>
+<td>ng-class-even</td>
+<td>属性, 类</td>
+<td>对 ng-repeat 指令生成的偶数元素设置 class 属性</td>
+</tr>
+<tr>
+<td>ng-class-odd</td>
+<td>属性, 类</td>
+<td>对 ng-repeat 指令生成的奇数元素设置 class 属性</td>
+</tr>
+<tr>
+<td>ng-hide</td>
+<td>属性, 类</td>
+<td>在 DOM 中显示和隐藏元素</td>
+</tr>
+<tr>
+<td>ng-show</td>
+<td>属性, 类</td>
+<td>在 DOM 中显示和隐藏元素</td>
+</tr>
+<tr>
+<td>ng-style</td>
+<td>属性, 类</td>
+<td>设置一个或多个 CSS 属性</td>
+</tr>
+</tbody>
+</table>
+<p>基础示例代码 :</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;exampleApp&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Directives&lt;/title&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, [])
+            .controller(&quot;defaultCtrl&quot;, function ($scope) {
+                $scope.todos = [
+                    { action: &quot;Get groceries&quot;, complete: false },
+                    { action: &quot;Call plumber&quot;, complete: false },
+                    { action: &quot;Buy running shoes&quot;, complete: true },
+                    { action: &quot;Buy flowers&quot;, complete: false },
+                    { action: &quot;Call family&quot;, complete: false }];
+            });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+        &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+
+        &lt;table class=&quot;table&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;&lt;th&gt;Done&lt;/th&gt;&lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tr ng-repeat=&quot;item in todos&quot;&gt;
+                &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+                &lt;td ng-repeat=&quot;prop in item&quot;&gt;{ {prop} }&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h3 id="1-ng-hide-ng-show-隐藏和显示元素"><a href="#1-ng-hide-ng-show-隐藏和显示元素" class="headerlink" title="1. ng-hide, ng-show : 隐藏和显示元素"></a>1. ng-hide, ng-show : 隐藏和显示元素</h3><p>ng-show 和 ng-hide 指令通过添加和移除一个名为 ng-hide(该名称容易与指令名混淆) 的 CSS 类来控制元素的可见性. ng-hide 这个类的 CSS 样式将 display 属性设置为 none, 从而从视图中移除钙元素. </p>
+<p><strong>注意</strong> ng-show 和 ng-hide 指令仍会将所操作的元素保存在 DOM 内, 仅仅只是对用户隐藏. 对浏览器来说他并没有隐藏, 仍然在哪里, 因此类似这种根据位置进行选择的 CSS 选择器讲会把隐藏元素也计算在内. 例如在下面对 item.complete 进行渲染时, (Incomplete) 拥有加粗效果, 而 (Done) 则没有.</p>
+<pre><code>&lt;style&gt;
+    td &gt; *:first-child {font-weight: bold}
+&lt;/style&gt;
+// ... 
+&lt;body&gt;
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+        &lt;h3 class=&quot;panel-header&quot;&gt;To Do List&lt;/h3&gt;
+
+        &lt;div class=&quot;checkbox well&quot;&gt;
+            &lt;label&gt;
+                &lt;input type=&quot;checkbox&quot; ng-model=&quot;todos[2].complete&quot; /&gt;
+                Item 3 is complete
+            &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;table class=&quot;table&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;&lt;th&gt;Done&lt;/th&gt;&lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tr ng-repeat=&quot;item in todos&quot;&gt;
+                &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+                &lt;td&gt;{ {item.action} }&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span ng-hide=&quot;item.complete&quot;&gt;(Incomplete)&lt;/span&gt;
+                    &lt;span ng-show=&quot;item.complete&quot;&gt;(Done)&lt;/span&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+</code></pre><h3 id="2-ng-if"><a href="#2-ng-if" class="headerlink" title="2. ng-if"></a>2. ng-if</h3><pre><code>&lt;td&gt;
+    &lt;span ng-if=&quot;!item.complete&quot;&gt;(Incomplete)&lt;/span&gt;
+    &lt;span ng-if=&quot;item.complete&quot;&gt;(Done)&lt;/span&gt;
+&lt;/td&gt;
+</code></pre><p><strong>不能在同一个元素上, 同时使用 ng-repeat 和 ng-if 指令.</strong></p>
+<h3 id="3-ng-class-ng-class-odd-ng-class-even"><a href="#3-ng-class-ng-class-odd-ng-class-even" class="headerlink" title="3. ng-class, ng-class-odd, ng-class-even"></a>3. ng-class, ng-class-odd, ng-class-even</h3><p>用于将元素添加到类中或者设置单个 CSS 属性的指令.<br>ng-class 可以管理一个元素的 class 属性.</p>
+<pre><code>&lt;tr ng-repeat=&quot;item in todos&quot; ng-class=&quot;settings.Rows&quot;&gt; ... &lt;/tr&gt;
+</code></pre><p>ng-class-odd 和 ng-class-even 配置 ng-repeat 使用, 用于 <strong>仅对</strong> 奇数或偶数行的元素应用 CSS 类.</p>
+<pre><code>&lt;tr ng-repeat=&quot;item in todos&quot; ng-class-even=&quot;settings.Rows&quot;
+        ng-class-odd=&quot;settings.Columns&quot;&gt;
+</code></pre><h3 id="4-ng-style"><a href="#4-ng-style" class="headerlink" title="4. ng-style"></a>4. ng-style</h3><p>用于将元素添加到类中或者设置单个 CSS 属性的指令.<br>使用 ng-style 直接设置 CSS 属性, 而不是通过一个 CSS 类.</p>
+<pre><code>&lt;td ng-style=&quot;{&apos;background-color&apos;: settings.Columns}&quot;&gt;
+    { {item.complete} }
+&lt;/td&gt;
+</code></pre><h2 id="四-事件处理"><a href="#四-事件处理" class="headerlink" title="四. 事件处理"></a>四. 事件处理</h2><p>事件处理指令可以直接用于直接计算一个表达式, 或者调用控制器中的一个行为.</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>用作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-blur</td>
+<td>属性,类</td>
+<td>为 blur 事件制定自定义行为, 在元素失去焦点时被触发</td>
+</tr>
+<tr>
+<td>ng-change</td>
+<td>属性,类</td>
+<td>为 change 事件制定自定义行为, 在表单元素的内容状态发生变化时被触发(例如复选框被选中,输入框元素中的文本被修改等)</td>
+</tr>
+<tr>
+<td>ng-click</td>
+<td>属性,类</td>
+<td>为 click 事件指定自定义行为, 在用户点击鼠标/光标时被触发</td>
+</tr>
+<tr>
+<td>ng-copy, ng-cut, ng-paste</td>
+<td>属性,类</td>
+<td>为 copy,cut,paste 事件指定自定义行为</td>
+</tr>
+<tr>
+<td>ng-dbclick</td>
+<td>属性,类</td>
+<td>为 dbclick 事件指定自定义行为, 在用户双击鼠标/光标时被触发</td>
+</tr>
+<tr>
+<td>ng-focus</td>
+<td>属性,类</td>
+<td>为 focus 事件指定自定义行为, 在元素获得焦点时被触发</td>
+</tr>
+<tr>
+<td>ng-keydown, ng-keypress, ng-keyup</td>
+<td>属性,类</td>
+<td>为 keydown,keypress,keyup 事件指定自定义行为, 在用户按下,释放某个键时被触发</td>
+</tr>
+<tr>
+<td>ng-mousedown, ng-mouseenter,ng-mouseleave, ng-mousemove,ng-mouseover,ng-mouseup</td>
+<td>属性,类</td>
+<td>为 6个标准鼠标事件事件指定自定义行为, 在用户使用鼠标/光标与元素发生交互时被触发</td>
+</tr>
+<tr>
+<td>ng-submit</td>
+<td>属性,类</td>
+<td>为 submit 事件指定自定义行为, 在表单被提交时被触发</td>
+</tr>
+</tbody>
+</table>
+<pre><code>$scope.handleEvent = function (e) {
+    console.log(&quot;Event type: &quot; + e.type);
+    $scope.data.columnColor = e.type == &quot;mouseover&quot; ? &quot;Green&quot; : &quot;Blue&quot;;
+}
+// ... 
+&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;&lt;th&gt;Done&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot; ng-class=&quot;data.rowColor&quot;
+        ng-mouseenter=&quot;handleEvent($event)&quot;
+        ng-mouseleave=&quot;handleEvent($event)&quot;&gt;
+        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+        &lt;td&gt;{ {item.action} }&lt;/td&gt;
+        &lt;td ng-class=&quot;data.columnColor&quot;&gt;{ {item.complete} }&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre><h2 id="五-布尔属性指令"><a href="#五-布尔属性指令" class="headerlink" title="五. 布尔属性指令"></a>五. 布尔属性指令</h2><p>映射指令, 用于在 AngularJS 所依赖的数据绑定的方式和那些被称为布尔属性的 HTML 特性之间进行映射.</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>用作</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-checked</td>
+<td>属性</td>
+<td>管理 checked 属性(在 input 元素上使用)</td>
+</tr>
+<tr>
+<td>ng-disabled</td>
+<td>属性</td>
+<td>管理 disabled 属性(在 input 和 button 上使用)</td>
+</tr>
+<tr>
+<td>ng-open</td>
+<td>属性</td>
+<td>管理 open 属性 (在 details 元素上使用)</td>
+</tr>
+<tr>
+<td>ng-readonly</td>
+<td>属性</td>
+<td>管理 readonly 属性(在 input 元素上使用)</td>
+</tr>
+<tr>
+<td>ng-selected</td>
+<td>属性</td>
+<td>管理 select 属性(在 option 元素上使用)</td>
+</tr>
+<tr>
+<td>ng-href</td>
+<td>属性</td>
+<td>在 a 元素上设置 href 属性</td>
+</tr>
+<tr>
+<td>ng-src</td>
+<td>属性</td>
+<td>在 img 元素上设置 src 属性</td>
+</tr>
+<tr>
+<td>ng-srcset</td>
+<td>属性</td>
+<td>在 img 元素上设置 srcset 属性. srcset 属性时扩展到 html5 的起草标准之一, 允许为显示不同的大小和像素密度而指定多张图片</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;script&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;defaultCtrl&quot;, function ($scope) {
+            $scope.dataValue = false;
+        });
+&lt;/script&gt;
+
+// ... 
+&lt;div class=&quot;checkbox well&quot;&gt;
+    &lt;label&gt;
+        &lt;input type=&quot;checkbox&quot; ng-model=&quot;dataValue&quot;&gt;
+        Set the Data Value
+    &lt;/label&gt;
+&lt;/div&gt;
+
+&lt;button class=&quot;btn btn-success&quot; ng-disabled=&quot;dataValue&quot;&gt;My Button&lt;/button&gt;
+</code></pre><h2 id="六-表单验证"><a href="#六-表单验证" class="headerlink" title="六 表单验证"></a>六 表单验证</h2><h3 id="1-数据绑定"><a href="#1-数据绑定" class="headerlink" title="1 数据绑定"></a>1 数据绑定</h3><h4 id="1-1-ng-model-双向数据绑定"><a href="#1-1-ng-model-双向数据绑定" class="headerlink" title="1.1 ng-model 双向数据绑定"></a>1.1 <code>ng-model</code> 双向数据绑定</h4><p>双向数据绑定与表单元素有内在的关联性, 因为通过他可以接受用户输入数据并更新模型.</p>
+<pre><code>&lt;table class=&quot;table&quot;&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Action&lt;/th&gt;&lt;th&gt;Done&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tr ng-repeat=&quot;item in todos&quot;&gt;
+        &lt;td&gt;{ {$index + 1} }&lt;/td&gt;
+        &lt;td&gt;{ {item.action} }&lt;/td&gt;
+        &lt;td&gt;
+            &lt;input type=&quot;checkbox&quot; ng-model=&quot;item.complete&quot;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre><h4 id="1-2-隐式的创建模型属性"><a href="#1-2-隐式的创建模型属性" class="headerlink" title="1.2. 隐式的创建模型属性"></a>1.2. 隐式的创建模型属性</h4><p>使用表单元素收集用户输入数据, 以便在数据模型中创建一个新的对象或属性.</p>
+<pre><code>&lt;div class=&quot;well&quot;&gt;
+    &lt;div class=&quot;form-group row&quot;&gt;
+        &lt;label for=&quot;actionText&quot;&gt;Action:&lt;/label&gt;
+        &lt;input id=&quot;actionText&quot; class=&quot;form-control&quot;
+                ng-model=&quot;newTodo.action&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-group row&quot;&gt;
+        &lt;label for=&quot;actionLocation&quot;&gt;Location:&lt;/label&gt;
+        &lt;select id=&quot;actionLocation&quot; class=&quot;form-control&quot;
+                ng-model=&quot;newTodo.location&quot;&gt;
+            &lt;option&gt;Home&lt;/option&gt;
+            &lt;option&gt;Office&lt;/option&gt;
+            &lt;option&gt;Mall&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary btn-block&quot;
+            ng-click=&quot;addNewItem(newTodo)&quot;&gt;
+        Add
+    &lt;/button&gt;
+&lt;/div&gt;
+
+# 当网页被首次加载时, newTodo 对象及其 action 和 location 属性并不存在. 在 input 元素或者 select 元素改变时, AngularJS 将会自动创建出 newTodo 对象, 并根据用户正在使用的是哪个元素, 赋值给该对象的 action 或 location 属性.
+</code></pre><p>隐式创建和对象非常灵活, 但有时可能对象尚未创建. AngularJS 访问尚未创建的对象, 会报错, 因此检查所创建的数据模型对象尤其重要.<strong>angular.isDefined(obj[.attr])</strong>可以检查定义的属性或对象是否生成.</p>
+<pre><code>$scope.addNewItem = function (newItem) {
+    if (angular.isDefined(newItem) &amp;&amp; angular.isDefined(newItem.action)
+            &amp;&amp; angular.isDefined(newItem.location)) {
+
+        $scope.todos.push({
+            action: newItem.action + &quot; (&quot; + newItem.location + &quot;)&quot;,
+            complete: false
+        });
+    }
+};
+</code></pre><h3 id="2-校验表单"><a href="#2-校验表单" class="headerlink" title="2 校验表单"></a>2 校验表单</h3><h4 id="2-1-增加表单元素"><a href="#2-1-增加表单元素" class="headerlink" title="2.1 增加表单元素"></a>2.1 增加表单元素</h4><p>AngularJS 对表单校验的支持主要是基于对标准 HTML 元素进行替换的.</p>
+<pre><code>&lt;form name=&quot;myForm&quot; novalidate ng-submit=&quot;addUser(newUser)&quot;&gt;
+</code></pre><ul>
+<li><p><code>name=&quot;myForm&quot;</code>属性<br>  替换表单元素的指令, 将会定义一些有用的变量, 用于表示表单数据的有效性, 并且通过 name 属性的值, 来访问这些变量值.</p>
+</li>
+<li><p><code>novalidate</code>属性<br>  用于禁用浏览器支持的校验功能, 并启用 AngularJS 校验功能. novalidate 属性定义于 HTML5 规范之中, 用于告诉浏览器不要自己校验表单, 从而允许 AngularJS 不受干扰的工作.</p>
+</li>
+<li><p><code>ng-submit=&quot;FUNC(param)&quot;</code>指令<br>  ng-submit 指令为表单提交事件指定了一个自定义的响应行为, 将在用户提交表单时触发.</p>
+</li>
+</ul>
+<h4 id="2-2-使用校验属性"><a href="#2-2-使用校验属性" class="headerlink" title="2.2 使用校验属性"></a>2.2 使用校验属性</h4><p>将标准 HTML 校验属性应用到 input 元素上.</p>
+<pre><code>&lt;label&gt;Name:&lt;/label&gt;
+&lt;input name=&quot;userName&quot; type=&quot;text&quot; class=&quot;form-control&quot;
+            required ng-model=&quot;newUser.name&quot;&gt;
+
+&lt;label&gt;Email:&lt;/label&gt;
+&lt;input name=&quot;userEmail&quot; type=&quot;email&quot; class=&quot;form-control&quot;
+        required ng-model=&quot;newUser.email&quot;&gt;
+</code></pre><ul>
+<li><p>name 属性<br>  正如 form 元素那样, 为各个想要验证的元素添加 name 属性是非常重要的, 这样就可以访问到 AngularJS 所提供的各种特殊变量.</p>
+</li>
+<li><p>type 属性<br>  type 属性指定了 input 元素接收的数据类型. HTML5 为 input 元素定义了 type 属性值的一个新集合, 以及可以被 AngularJS 所校验的值.</p>
+<p>  <strong>input 元素的 type 属性</strong></p>
+<p>  | 属性值 | 描述 |<br>  | — | — |<br>  | checkbox | 创建一个复选框 |<br>  | email | 创建一个接受邮件地址作为输入值的文本输入框 |<br>  | number  | 创建一个接受数值类型为值得文本输入框 |<br>  | radio  | 创建一个单选框 |<br>  | text  | 创建一个接受任何值的标准文本输入框 |<br>  | url  | 创建一个接受 URL 作为值得输入框 |<br>  | 注意 | 邮件地址和 URL 的校验式校验<strong>格式</strong>, 而不是检查地址或 URL 是否存在或被使用. |</p>
+</li>
+<li><p>混合使用 html 标准属性和 AngularJS 指令, 实现进一步约束.</p>
+<ul>
+<li>required : 指定用户必须为待校验的表单提供一个输入值.</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-3-监控表单的有效性"><a href="#2-3-监控表单的有效性" class="headerlink" title="2.3 监控表单的有效性"></a>2.3 监控表单的有效性</h4><p>AngularJS 中用来替换标准表单元素的指令, 定义了一些特殊变量, 可以用来检查表单中各个元素或者整个表单的有效性状态. 这些变量可以联合使用, 以向用户展示校验错误的反馈信息.</p>
+<p><strong>表单指令所定义的校验变量</strong></p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$pristine</td>
+<td>如果用户没有与元素/表单产生交互, 返回 true</td>
+</tr>
+<tr>
+<td>$dirty</td>
+<td>如果用户与元素/表单产生过交互, 返回 true</td>
+</tr>
+<tr>
+<td>$valid</td>
+<td>当元素/表单内容的校验结果为有效时, 返回 true</td>
+</tr>
+<tr>
+<td>$invalid</td>
+<td>当元素/表单内容的校验结果为无效时, 返回 true</td>
+</tr>
+<tr>
+<td>$error</td>
+<td>提供校验错误的详细信息.</td>
+</tr>
+</tbody>
+</table>
+<p>示例代码:</p>
+<pre><code>&lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block&quot;
+        ng-disabled=&quot;myForm.$invalid&quot;&gt;
+    OK
+&lt;/button&gt;
+// 当表单校验结果为 false 时, 表单提交按钮禁用.
+</code></pre><h3 id="3-表单校验反馈"><a href="#3-表单校验反馈" class="headerlink" title="3 表单校验反馈"></a>3 表单校验反馈</h3><p>AngularJS 为报告实时校验信息, 提供两种机制:</p>
+<ul>
+<li>CSS 类</li>
+<li>变量 </li>
+</ul>
+<h4 id="3-1-使用-CSS-提供校验反馈"><a href="#3-1-使用-CSS-提供校验反馈" class="headerlink" title="3.1 使用 CSS 提供校验反馈"></a>3.1 使用 <strong>CSS</strong> 提供校验反馈</h4><p>AngularJS 通过在一个类的集合中增加或者移除被校验的元素, 来报告有效性检查结果, 这一机制可以与 CSS 联合使用, 通过改变元素样式来为用户提供反馈信息.</p>
+<p><strong>AngularJS 校验中使用到的 CSS 类</strong></p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-pristine</td>
+<td>用户未曾交互过的元素, 被添加到这个类</td>
+</tr>
+<tr>
+<td>ng-dirty</td>
+<td>用户曾经交互过的元素, 被添加到这个类</td>
+</tr>
+<tr>
+<td>ng-valid</td>
+<td>校验结果为 <strong>有效</strong> 的元素在这个类中</td>
+</tr>
+<tr>
+<td>ng-invalid</td>
+<td>校验结果为 <strong>无效</strong> 的元素在这个类中</td>
+</tr>
+</tbody>
+</table>
+<p>① <strong>基本 CSS 校验信息</strong></p>
+<p>在每次用户交互之后, AngularJS 会从这些类中添加或移除正在被校验的元素, 也就是说可以使用这些类来向用户提供按键和单击的及时反馈, 无论是这个表单还是单个元素.</p>
+<pre><code>&lt;style&gt;
+    form .ng-invalid.ng-dirty { background-color: lightpink; }
+    form .ng-valid.ng-dirty { background-color: lightgreen; }
+    span.summary.ng-invalid { color: red; font-weight: bold; }
+    span.summary.ng-valid { color: green; }
+&lt;/style&gt;
+// ... 
+&lt;div class=&quot;well&quot;&gt;
+    Message: { {message} }
+    &lt;div&gt;
+        Valid: 
+        &lt;span class=&quot;summary&quot; 
+                ng-class=&quot;myForm.$valid ? &apos;ng-valid&apos; : &apos;ng-invalid&apos;&quot;&gt;
+            { {myForm.$valid} }
+        &lt;/span&gt;
+    &lt;/div&gt;
+</code></pre><p>在 HTML 页面中, </p>
+<ul>
+<li>在发生交互之前, 所有元素都是 ng-pristine 类的成员.</li>
+<li>内容有效的元素时 ng-valid 类的成员</li>
+<li>内容无效的是 ng-invalid 类的成员,</li>
+<li>在 CSS 选这起中将 ng-valid , ng-invalid, ng-dirty 联合使用时, 意味着直到用户开始与元素进行交互时, 才提供关于元素有效性的实时反馈.</li>
+</ul>
+<p>② <strong>扩展的校验信息</strong></p>
+<p>上面的表中的列出的类给出了一个校验元素的整体提示信息, 但是 AngularJS 也会将元素添加到类中, 已给出关于应用到该元素的每一个校验约束的具体信息. 所使用的名字是基于相应的元素的.</p>
+<pre><code>&lt;style&gt;
+    form .ng-invalid-required.ng-dirty { background-color: lightpink; }
+    form .ng-invalid-email.ng-dirty { background-color: lightgoldenrodyellow; }
+    // 这里将两个检验约束应用到一个 input 元素上, 使用 required 属性要求必须输入一个值, 并且将 type 属性设置为 email 要求改属性必须为邮箱地址格式. AngularJS 遵守 required 属性的限制, 将把该元素添加到 ng-valid-required 和 ng-invalid-required 类中, 并准守格式限制使用 ng-valid-email 和 ng-invalid-email 类.
+
+    form .ng-valid.ng-dirty { background-color: lightgreen; }
+    span.summary.ng-invalid {color: red; font-weight: bold; }
+    span.summary.ng-valid { color: green }
+&lt;/style&gt;
+</code></pre><p>使用这些类是必须小心, 因为对于一个元素来说,有可能对于一个约束是有效的, 但对于另一个却不是. 如 对于 type 属性为 email 的元素来说, 在输入为空时是有效的, 也就是说, 该元素此时即在 ng-valid-email 类中, 也在 ng-invalid-required 类中. 这是 HTML 规范的产物, 所以进行完整的测试时必要的.</p>
+<h4 id="3-2-使用特殊变量提供校验反馈"><a href="#3-2-使用特殊变量提供校验反馈" class="headerlink" title="3.2 使用特殊变量提供校验反馈"></a>3.2 使用<strong>特殊变量</strong>提供校验反馈</h4><ul>
+<li><p><code>ng-disable</code></p>
+<pre><code>&lt;button type=&quot;submit&quot; class=&quot;btn btn-primary btn-block&quot; ng-disabled=&quot;myForm.$invalid&quot;&gt;OK&lt;/button&gt;
+</code></pre></li>
+<li><p><code>ng-show</code> </p>
+<pre><code>&lt;div class=&quot;error&quot; ng-show=&quot;myForm.userEmail.$invalid &amp;&amp; myForm.userEmail.$dirty&quot;&gt;                        
+    &lt;span ng-show=&quot;myForm.userEmail.$error.email&quot;&gt;
+        Please enter a valid email address
+    &lt;/span&gt;
+    &lt;span ng-show=&quot;myForm.userEmail.$error.required&quot;&gt;
+        Please enter a value
+    &lt;/span&gt;
+&lt;/div&gt;
+</code></pre></li>
+</ul>
+<h3 id="4-使用表单指令属性"><a href="#4-使用表单指令属性" class="headerlink" title="4 使用表单指令属性"></a>4 使用表单指令属性</h3><p>AngularJS 通过使用指令提供了一些自由的表单特性, 能够用于替换标准表单元素, 如 input,form,select . 这些指令都支持一些可选的属性, 可以用于将表单元素更紧密的集成到 AngularJS 风格的应用开发中去.</p>
+<h4 id="4-1-input-元素"><a href="#4-1-input-元素" class="headerlink" title="4.1 input 元素"></a>4.1 <strong>input</strong> 元素</h4><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-model</td>
+<td>用于指定双向绑定的模型</td>
+</tr>
+<tr>
+<td>ng-change</td>
+<td>用于指定一个表达式, 该表达式在元素内容被改变时被计算求值</td>
+</tr>
+<tr>
+<td>ng-minlength</td>
+<td>设置一个合法元素的最小字符数</td>
+</tr>
+<tr>
+<td>ng-maxlength</td>
+<td>设置一个合法元素的最大字符数</td>
+</tr>
+<tr>
+<td>ng-pattern</td>
+<td>设置一个正则表达式, 合法的元素内容必须匹配该这则表达式</td>
+</tr>
+<tr>
+<td>ng-required</td>
+<td>通过数据绑定设置 required 属性</td>
+</tr>
+</tbody>
+</table>
+<pre><code>***注意**: 
+- 上表中的属性,仅在 input 元素**没有**使用 type 属性或者 type 属性为 text, url, email, 和 number 时适用.
+- 当 type 属性值为 email, url, member 时, AngularJS 将会自动设置 ng-pattern 属性为相应的正则表达式, 并检查格式是否匹配. 对于这些类型的 input 元素不应再设置 ng-pattern 属性.
+
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, [])
+            .controller(&quot;defaultCtrl&quot;, function ($scope) {
+                $scope.requireValue = true;
+                $scope.matchPattern = new RegExp(&quot;^[a-z]&quot;);
+            });
+    &lt;/script&gt;
+
+    // ...
+
+    &lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+        &lt;form name=&quot;myForm&quot; novalidate&gt;
+            &lt;div class=&quot;well&quot;&gt;
+                &lt;div class=&quot;form-group&quot;&gt;
+                    &lt;label&gt;Text:&lt;/label&gt;
+                    &lt;input name=&quot;sample&quot; class=&quot;form-control&quot; ng-model=&quot;inputValue&quot;
+                            ng-required=&quot;requireValue&quot; ng-minlength=&quot;3&quot; 
+                            ng-maxlength=&quot;10&quot; ng-pattern=&quot;matchPattern&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;well&quot;&gt;
+                &lt;p&gt;Required Error: { {myForm.sample.$error.required} }&lt;/p&gt;
+                &lt;p&gt;Min Length Error: { {myForm.sample.$error.minlength} }&lt;/p&gt;
+                &lt;p&gt;Max Length Error: { {myForm.sample.$error.maxlength} }&lt;/p&gt;
+                &lt;p&gt;Pattern Error: { {myForm.sample.$error.pattern} }&lt;/p&gt;
+                &lt;p&gt;Element Valid: { {myForm.sample.$valid} }&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+</code></pre><h4 id="4-2-checkbox-元素"><a href="#4-2-checkbox-元素" class="headerlink" title="4.2 checkbox 元素"></a>4.2 <strong>checkbox</strong> 元素</h4><p>当 type 属性为 checkbox 时, 可用于 input 元素的额外属性.</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-model</td>
+<td>指定双向绑定的模型</td>
+</tr>
+<tr>
+<td>ng-chenge</td>
+<td>用于指定一个表达式, 该表达式在元素内容被改变时被计算求值</td>
+</tr>
+<tr>
+<td>ng-true-value</td>
+<td>指定当元素被勾选中时所绑定的表达式的值</td>
+</tr>
+<tr>
+<td>ng-false-value</td>
+<td>指定当元素被取消勾选中时所绑定的表达式的值</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;form name=&quot;myForm&quot; novalidate&gt;
+    &lt;div class=&quot;well&quot;&gt;
+        &lt;div class=&quot;checkbox&quot;&gt;
+            &lt;label&gt;
+                &lt;input name=&quot;sample&quot; type=&quot;checkbox&quot; ng-model=&quot;inputValue&quot;
+                        ng-true-value=&quot;Hurrah!&quot; ng-false-value=&quot;Boo!&quot;&gt;
+                This is a checkbox
+            &lt;/label&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;well&quot;&gt;
+        &lt;p&gt;Model Value: { {inputValue} }&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+// 此示例中, inputValue 的值等于 ng-true-value 或 ng-false-value 的值.
+</code></pre><p><code>ng-true-value</code> 和 <code>ng-false-value</code> 属性的值将被用于设置所绑定的表达式的值, 但是只在当复选框的勾选状态被改变时生效, 也就是模型属性(如果被印式定义过的话)不会被自动创建, 直到有用户与元素的交互产生时才会被创建 (即使设置了 ng-checked 也是如此).</p>
+<h4 id="4-3-textare-元素"><a href="#4-3-textare-元素" class="headerlink" title="4.3 textare 元素"></a>4.3 <strong>textare</strong> 元素</h4><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ng-model</td>
+<td>用于指定双向绑定的模型</td>
+</tr>
+<tr>
+<td>ng-change</td>
+<td>用于指定一个表达式, 该表达式在元素内容被改变时被计算求值</td>
+</tr>
+<tr>
+<td>ng-minlength</td>
+<td>设置一个合法元素的最小字符数</td>
+</tr>
+<tr>
+<td>ng-maxlength</td>
+<td>设置一个合法元素的最大字符数</td>
+</tr>
+<tr>
+<td>ng-pattern</td>
+<td>设置一个正则表达式, 合法的元素内容必须匹配该这则表达式</td>
+</tr>
+<tr>
+<td>ng-required</td>
+<td>通过数据绑定设置 required 属性</td>
+</tr>
+</tbody>
+</table>
+<pre><code>&lt;script&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;defaultCtrl&quot;, function ($scope) {
+            $scope.requireValue = true;
+            $scope.matchPattern = new RegExp(&quot;^[a-z]&quot;);
+        });
+&lt;/script&gt;
+
+// ...
+
+&lt;div id=&quot;todoPanel&quot; class=&quot;panel&quot; ng-controller=&quot;defaultCtrl&quot;&gt;
+    &lt;form name=&quot;myForm&quot; novalidate&gt;
+        &lt;div class=&quot;well&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+                &lt;label&gt;Text:&lt;/label&gt;
+                &lt;textarea name=&quot;sample&quot; cols=&quot;40&quot; rows=&quot;3&quot; ng-model=&quot;inputValue&quot;
+                ng-required=&quot;requireValue&quot; 
+                ng-minlength=&quot;3&quot; 
+                ng-maxlength=&quot;10&quot; 
+                ng-pattern=&quot;matchPattern&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;well&quot;&gt;
+            &lt;p&gt;Required Error: { {myForm.sample.$error.required} }&lt;/p&gt;
+            &lt;p&gt;Min Length Error: { {myForm.sample.$error.minlength} }&lt;/p&gt;
+            &lt;p&gt;Max Length Error: { {myForm.sample.$error.maxlength} }&lt;/p&gt;
+            &lt;p&gt;Pattern Error: { {myForm.sample.$error.pattern} }&lt;/p&gt;
+            &lt;p&gt;Element Valid: { {myForm.sample.$valid} }&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+</code></pre><h4 id="4-4-select-元素"><a href="#4-4-select-元素" class="headerlink" title="4.4 select 元素"></a>4.4 <strong>select</strong> 元素</h4><p>AngularJS 用于 select 元素的指令包括: </p>
+<ul>
+<li>与 input 元素类似的 <code>ng-required</code> 属性</li>
+<li><p>可用于从数组和对象中生成 option 元素的 <code>ng-options</code> 属性.</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&apos;defaultCtrl&apos;, function ($scope) {
+            $scope.todos = [
+                {id: 100, action: &quot;Get groceries&quot;, complete: false},
+                {id: 200, action: &quot;Call plumber&quot;, complete: false},
+                {id: 300, action: &quot;Buy running shoes&quot;, complete: true},
+                {id: 400, action: &quot;Do somethins&quot;, complete: false},
+            ]
+        });
+&lt;/script&gt;
+
+// ... 
+&lt;form name=&quot;myForm&quot; novalidate&gt;
+    &lt;div class=&quot;well&quot;&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+            &lt;label&gt;Select a Action:&lt;/label&gt;
+            &lt;select ng-model=&quot;selectValue&quot; 
+            ng-options=&quot;item.action for item in todos&quot;&gt;
+
+            &lt;/select&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;well&quot;&gt;
+        &lt;p&gt;Selected : { { selectValue || &quot;None&quot;} }&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+</code></pre></li>
+</ul>
+<p><strong>ng-options</strong>的表现形式</p>
+<ul>
+<li><p>基本形式</p>
+<p>  格式 : <code>&lt;标签&gt; for &lt;项目&gt; in &lt;数组&gt;</code><br>  ng-model 的值为一个<strong>对象</strong>.</p>
+<pre><code>&lt;select ng-model=&quot;selectValue&quot; 
+ng-options=&quot;item.action for item in todos&quot;&gt;            
+&lt;/select&gt;
+</code></pre></li>
+<li><p>改变第一个选项元素</p>
+<p>  ng-model 的值为一个<strong>对象</strong>.</p>
+<p>  当 AngularJS 在 ng-model 属性所指向的变量值为 undefined 时会生成这样的元素. 可以添加一个空值的 option 元素来代替默认的 option 元素.</p>
+<pre><code>&lt;select ng-model=&quot;selectValue&quot; ng-options=&quot;item.action for item in todos&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;(pick one)&lt;/option&gt;
+&lt;/select&gt;
+// 当前情况下, 当用户选定选项时 ng-model 的值会被更新为 集合中的一个 对象 .
+</code></pre><p>  当没有指定第一项时, 第一项的结果为 <code>&lt;option value=&quot;?&quot; selected=&quot;selected&quot;&gt;&lt;/option&gt;</code></p>
+</li>
+<li><p>改变选项值<br>  表达式 : <code>&lt;所选属性&gt; as &lt;标签&gt; for &lt;变量&gt; in &lt;数组&gt;</code></p>
+<pre><code>&lt;select ng-model=&quot;selectValue&quot; 
+ng-options=&quot;item.action as item.id for item in todos&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;(pick one)&lt;/option&gt;
+&lt;/select&gt;    
+</code></pre></li>
+<li><p>选项组元素<br>  ng-options 属性可以用来按照某个属性值将各个选项进行分组, 为每个选项值生成一组 optgroup 元素.</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&apos;defaultCtrl&apos;, function ($scope) {
+            $scope.todos = [
+                {id: 100, action: &quot;Get groceries&quot;, complete: false, place: &quot;Store&quot;},
+                {id: 200, action: &quot;Call plumber&quot;, complete: false, place: &quot;Home&quot;},
+                {id: 300, action: &quot;Buy running shoes&quot;, complete: true, place: &quot;Store&quot;},
+                {id: 400, action: &quot;Do somethins&quot;, complete: false, place: &quot;Home&quot;},
+            ]
+        });
+&lt;/script&gt;
+
+// ... 
+&lt;select ng-model=&quot;selectValue&quot; 
+ng-options=&quot;item.action as item.id group by item.place for item in todos&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;(pick one)&lt;/option&gt;
+&lt;/select&gt;
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angularjs/" rel="tag"># angularjs</a>
+          
+            <a href="/tags/前端框架/" rel="tag"># 前端框架</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/" rel="next" title="AngularJS高级程序设计读书笔记--过滤器篇">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--过滤器篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--大纲篇/" rel="prev" title="AngularJS高级程序设计读书笔记--大纲篇">
+                AngularJS高级程序设计读书笔记--大纲篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-数据绑定指令"><span class="nav-text">一. 数据绑定指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ng-bind-与-内联绑定"><span class="nav-text">1. ng-bind 与 { {} }内联绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ng-bind-html"><span class="nav-text">2. ng-bind-html</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ng-bind-template-处理多个数据绑定"><span class="nav-text">3. ng-bind-template : 处理多个数据绑定.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-ng-non-bindable-阻止-AngularJS-处理内联绑定"><span class="nav-text">4. ng-non-bindable : 阻止 AngularJS 处理内联绑定.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-ng-model"><span class="nav-text">5. ng-model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-模板指令"><span class="nav-text">二. 模板指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ng-repeat"><span class="nav-text">1 ng-repeat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ng-repeat-start-与-ng-repeat-end-对每个数据对象重复生成多个顶层元素"><span class="nav-text">2 ng-repeat-start 与 ng-repeat-end : 对每个数据对象重复生成多个顶层元素.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ng-include-与-局部视图"><span class="nav-text">3 ng-include 与 局部视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-ng-switch-on-ng-switch-when-ng-switch-default"><span class="nav-text">4 ng-switch+on, ng-switch-when, ng-switch-default</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-ng-cloak"><span class="nav-text">5 ng-cloak</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-元素指令"><span class="nav-text">三. 元素指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ng-hide-ng-show-隐藏和显示元素"><span class="nav-text">1. ng-hide, ng-show : 隐藏和显示元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ng-if"><span class="nav-text">2. ng-if</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ng-class-ng-class-odd-ng-class-even"><span class="nav-text">3. ng-class, ng-class-odd, ng-class-even</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-ng-style"><span class="nav-text">4. ng-style</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-事件处理"><span class="nav-text">四. 事件处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-布尔属性指令"><span class="nav-text">五. 布尔属性指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-表单验证"><span class="nav-text">六 表单验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据绑定"><span class="nav-text">1 数据绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-ng-model-双向数据绑定"><span class="nav-text">1.1 ng-model 双向数据绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-隐式的创建模型属性"><span class="nav-text">1.2. 隐式的创建模型属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-校验表单"><span class="nav-text">2 校验表单</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-增加表单元素"><span class="nav-text">2.1 增加表单元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-使用校验属性"><span class="nav-text">2.2 使用校验属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-监控表单的有效性"><span class="nav-text">2.3 监控表单的有效性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-表单校验反馈"><span class="nav-text">3 表单校验反馈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-使用-CSS-提供校验反馈"><span class="nav-text">3.1 使用 CSS 提供校验反馈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-使用特殊变量提供校验反馈"><span class="nav-text">3.2 使用特殊变量提供校验反馈</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-使用表单指令属性"><span class="nav-text">4 使用表单指令属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-input-元素"><span class="nav-text">4.1 input 元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-checkbox-元素"><span class="nav-text">4.2 checkbox 元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-textare-元素"><span class="nav-text">4.3 textare 元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-select-元素"><span class="nav-text">4.4 select 元素</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

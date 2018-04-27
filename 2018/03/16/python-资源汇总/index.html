@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="python 最佳实践 (部分) 一. 结构化工程   文件 功能     README.rst readme   LICENSE 许可证   setup.py 打包和发布管理   requirements.txt 开发依赖   sample/init.py 核心代码   sample/core.py 核心代码   sample/helpers.py 核心代码   docs/conf.py 文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-资源汇总">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/python-资源汇总/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="python 最佳实践 (部分) 一. 结构化工程   文件 功能     README.rst readme   LICENSE 许可证   setup.py 打包和发布管理   requirements.txt 开发依赖   sample/init.py 核心代码   sample/core.py 核心代码   sample/helpers.py 核心代码   docs/conf.py 文档">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-12T09:12:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python-资源汇总">
+<meta name="twitter:description" content="python 最佳实践 (部分) 一. 结构化工程   文件 功能     README.rst readme   LICENSE 许可证   setup.py 打包和发布管理   requirements.txt 开发依赖   sample/init.py 核心代码   sample/core.py 核心代码   sample/helpers.py 核心代码   docs/conf.py 文档">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/python-资源汇总/"/>
+
+
+
+
+
+  <title>python-资源汇总 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/python-资源汇总/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python-资源汇总</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:21:01+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>python 最佳实践 (部分)</p>
+<h1 id="一-结构化工程"><a href="#一-结构化工程" class="headerlink" title="一. 结构化工程"></a>一. 结构化工程</h1><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>README.rst</td>
+<td>readme</td>
+</tr>
+<tr>
+<td>LICENSE</td>
+<td>许可证</td>
+</tr>
+<tr>
+<td>setup.py</td>
+<td>打包和发布管理</td>
+</tr>
+<tr>
+<td>requirements.txt</td>
+<td>开发依赖</td>
+</tr>
+<tr>
+<td>sample/<strong>init</strong>.py</td>
+<td>核心代码</td>
+</tr>
+<tr>
+<td>sample/core.py</td>
+<td>核心代码</td>
+</tr>
+<tr>
+<td>sample/helpers.py</td>
+<td>核心代码</td>
+</tr>
+<tr>
+<td>docs/conf.py</td>
+<td>文档</td>
+</tr>
+<tr>
+<td>docs/index.rst</td>
+<td>文档</td>
+</tr>
+<tr>
+<td>tests/test_basic.py</td>
+<td>单元测试</td>
+</tr>
+<tr>
+<td>tests/test_advanced.py</td>
+<td>单元测试</td>
+</tr>
+</tbody>
+</table>
+<h1 id="二-开发环境"><a href="#二-开发环境" class="headerlink" title="二. 开发环境"></a>二. 开发环境</h1><h2 id="vim"><a href="#vim" class="headerlink" title="vim :"></a>vim :</h2><pre><code>python-mode : 在 vim 中使用 Python 的综合解决方案.
+SuperTab : vim 小插件, 通过使用 &lt;tab&gt; 或任何其他指定的按键, 能够使代码补全变得更方便.
+</code></pre><h2 id="Sublime-Text"><a href="#Sublime-Text" class="headerlink" title="Sublime Text"></a>Sublime Text</h2><h2 id="PyCharm"><a href="#PyCharm" class="headerlink" title="PyCharm"></a>PyCharm</h2><h1 id="三-虚拟环境"><a href="#三-虚拟环境" class="headerlink" title="三. 虚拟环境"></a>三. 虚拟环境</h1><pre><code>virtualenv : 
+[virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/index.html) : 命令的完整列表(http://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html)        
+[virtualenv-burrito](https://github.com/brainsik/virtualenv-burrito) : 能使用单行命令拥有 virtualenv + virtualenvwrapper 的环境.
+[autoenv](https://github.com/kennethreitz/autoenv) : 当 cd 进入一个包含 .env 的目录中, 就会自动激活那个环境.
+</code></pre><h1 id="四-文档"><a href="#四-文档" class="headerlink" title="四. 文档"></a>四. 文档</h1><h3 id="pydoc-在安装-python-时自动安装的-工具-允许在-shell-中快速检索文档"><a href="#pydoc-在安装-python-时自动安装的-工具-允许在-shell-中快速检索文档" class="headerlink" title="pydoc : 在安装 python 时自动安装的 工具, 允许在 shell 中快速检索文档,"></a>pydoc : 在安装 python 时自动安装的 工具, 允许在 shell 中快速检索文档,</h3><pre><code>$ pydoc time    # 查看 time 模块的文档.
+</code></pre><h1 id="五-PEP8-Python-事实上的代码风格指南"><a href="#五-PEP8-Python-事实上的代码风格指南" class="headerlink" title="五. PEP8 : Python 事实上的代码风格指南."></a>五. PEP8 : Python 事实上的代码风格指南.</h1><h3 id="pep8-检查代码的一致性"><a href="#pep8-检查代码的一致性" class="headerlink" title="pep8 : 检查代码的一致性."></a>pep8 : 检查代码的一致性.</h3><pre><code>$ pip install pep8
+$ pep8 optparse.py     # 检查文件是否符合 PEP8 规范
+</code></pre><h3 id="autopep8-自动格式化为-PEP8-风格"><a href="#autopep8-自动格式化为-PEP8-风格" class="headerlink" title="autopep8 : 自动格式化为 PEP8 风格"></a>autopep8 : 自动格式化为 PEP8 风格</h3><pre><code>$ autopep8 [ARGS] optparse.py   # 无参数, 则程序直接将更改的代码输出到控制台.
+    --in-place      # 直接修改文件.
+    --aggressive    # 执行更多实质性的变化, 可以执行多次, 已达到最佳效果.
+</code></pre><h1 id="六-解包"><a href="#六-解包" class="headerlink" title="六. 解包"></a>六. 解包</h1><h3 id="交换变量"><a href="#交换变量" class="headerlink" title="交换变量 :"></a>交换变量 :</h3><pre><code>a,b = b,a
+</code></pre><h3 id="嵌套解包"><a href="#嵌套解包" class="headerlink" title="嵌套解包:"></a>嵌套解包:</h3><pre><code>a, (b,c) = 1, (2,3)
+</code></pre><h3 id="扩展解包-python-3"><a href="#扩展解包-python-3" class="headerlink" title="扩展解包: python 3"></a>扩展解包: python 3</h3><pre><code>a, *rest = range(10)        # a = 0, rest = [1, 2, 3, 4, 5, 6, 7, 8, 9]  
+a, *middle, c = range(11)   # a = 0, middle = [1, 2, 3, 4, 5, 6, 7, 8, 9], c = 10
+</code></pre><h3 id="创建一个被忽略的变量"><a href="#创建一个被忽略的变量" class="headerlink" title="创建一个被忽略的变量:"></a>创建一个被忽略的变量:</h3><pre><code>filename = &apos;foobar.txt&apos;
+basename,_,ext = filename.rpartition(&quot;.&quot;)
+</code></pre><h3 id="创建一个包含-N-个对象的列表"><a href="#创建一个包含-N-个对象的列表" class="headerlink" title="创建一个包含 N 个对象的列表:"></a>创建一个包含 N 个对象的列表:</h3><pre><code>&gt;&gt;&gt; four_none = [None]*4
+&gt;&gt;&gt; four_none
+[None, None, None, None]
+&gt;&gt;&gt; four_one = [1]*4
+&gt;&gt;&gt; four_one
+[1, 1, 1, 1]        
+</code></pre><h3 id="创建一个包含-N-个列表的列表"><a href="#创建一个包含-N-个列表的列表" class="headerlink" title="创建一个包含 N 个列表的列表"></a>创建一个包含 N 个列表的列表</h3><pre><code>four_list = [[] for _ in xrange(4)]
+</code></pre><h1 id="七-约定-pythonnic"><a href="#七-约定-pythonnic" class="headerlink" title="七. 约定 pythonnic"></a>七. 约定 pythonnic</h1><h2 id="检查变量是否等于常量-比较一个值是-True-None-False-0-等-使用-if"><a href="#检查变量是否等于常量-比较一个值是-True-None-False-0-等-使用-if" class="headerlink" title="检查变量是否等于常量 : 比较一个值是 True, None,False, 0 等 : 使用 if"></a>检查变量是否等于常量 : 比较一个值是 True, None,False, 0 等 : 使用 if</h2><pre><code>if attr :
+    print &quot;attr is truthy.&quot;
+
+if not attr:
+    print &quot;attr is falsey.&quot;
+
+# since None is considered false , explicitly check for it .
+if attr is None:
+    print &quot;attr is None.&quot;
+</code></pre><h2 id="访问字典元素"><a href="#访问字典元素" class="headerlink" title="访问字典元素:"></a>访问字典元素:</h2><pre><code>x in d
+dict.get() 
+</code></pre><p>示例: </p>
+<pre><code>d = {&quot;hello&quot;: &quot;world&quot;}
+
+print d.get(&quot;hello&quot;, &quot;default_value&quot;)   # &quot;world&quot;
+print d.get(&quot;thingy&quot;, &quot;default_value&quot;)  # &quot;default_value&quot;
+
+if  &quot;hello&quot; in d:
+    print d[&quot;hello&quot;]
+</code></pre><h2 id="维护列表的捷径"><a href="#维护列表的捷径" class="headerlink" title="维护列表的捷径:"></a>维护列表的捷径:</h2><p>列表推导<br>map()<br>filter()<br>enumerate() : 或得列表中当前位置的计数.</p>
+<p>示例:</p>
+<pre><code># 过滤大于 4 的元素
+
+# 列表推到
+a = range(10)
+b = [i for i in a if i &gt; 4]
+
+# filter
+b = filter(lambda x: x &gt; 4, a)
+
+# 列表的每个元素 + 3
+
+# 列表推导
+a = range(10)
+a = [i + 3 for i in a]
+
+# map
+a = map(lambda x: x + 3, a)
+</code></pre><h2 id="读取文件-with-open"><a href="#读取文件-with-open" class="headerlink" title="读取文件:  with open"></a>读取文件:  with open</h2><pre><code>with open(&apos;file.txt&apos;) as f:
+    for line in f:
+        print line
+</code></pre><h2 id="行的延续-当一个代码逻辑行的长度超多可接受的限制时-需要将至分为多个物理行"><a href="#行的延续-当一个代码逻辑行的长度超多可接受的限制时-需要将至分为多个物理行" class="headerlink" title="行的延续: 当一个代码逻辑行的长度超多可接受的限制时, 需要将至分为多个物理行."></a>行的延续: 当一个代码逻辑行的长度超多可接受的限制时, 需要将至分为多个物理行.</h2><pre><code>使用括号.
+
+my_very_big_line = (
+    &quot;for a long time i used to go to bed early. Sometime ,&quot;
+    &quot;when i had put out my candle , my eyes would close so quickly&quot;
+    &quot;That i had not even time to say &apos;I&apos;m going to sleep.&apos; &quot;
+)
+
+from some.deep.module.inside.a.moule import (
+    a_nice_function, another_nice_function, yet_another_nice_function )
+</code></pre><h1 id="九-密码学"><a href="#九-密码学" class="headerlink" title="九. 密码学"></a>九. 密码学</h1><p><a href="https://cryptography.io/en/latest/" target="_blank" rel="noopener">Cryptography</a> : 提供了加密方法 recipes 和 primitives . Cryptography 分为两个层, 方法(recipes, 提供用于对称加密) 和 危险底层(hazardous materials,简称 hazmat, 提供底层的加密基元).<br><a href="https://www.dlitz.net/software/pycrypto/" target="_blank" rel="noopener">PyCrypto</a> : 提供安全的 哈希函数和各种加密算法.</p>
+<h1 id="十-命令行应用"><a href="#十-命令行应用" class="headerlink" title="十. 命令行应用"></a>十. 命令行应用</h1><p><a href="https://pypi.python.org/pypi/clint/" target="_blank" rel="noopener">Clint</a> : 是一个Python模块，它包含了很多 对命令行应用开发有用的工具。它支持诸如CLI着色以及缩进，简洁而强大的列打印， 基于进度条的迭代以及参数控制的特性。<br><a href="http://click.pocoo.org/" target="_blank" rel="noopener">Click</a> : 它创建了一个命令行接口, 可以尽可能的简化组合代码。命令行接口创建工具（“Command-line Interface Creation Kit”,Click） 支持很多配置但也有开箱可用的默认值设定。<br><a href="http://docopt.org/" target="_blank" rel="noopener">docopt</a> : 是一个轻量级，高度Pythonic风格的包，它支持 简单而直觉地创建命令行接口，它是通过解析POSIX-style的用法指示文本实现的。<br><a href="https://pypi.python.org/pypi/plac" target="_blank" rel="noopener">Plac</a> : Python标准库 argparse [<a href="http://docs.python.org/2/library/argparse.html]" target="_blank" rel="noopener">http://docs.python.org/2/library/argparse.html]</a> 的简单封装，它隐藏了大量声明接口的细节：参数解析器是被推断的，其优于写命令明确处理. 这个模块的面向是不想太复杂的用户，程序员，系统管理员，科学家以及只是想写个只运行一次的脚本的人们，使用这个命令行接口的理由是它可以快速实现并且简单。<br><a href="http://docs.openstack.org/developer/cliff/" target="_blank" rel="noopener">Cliff</a> : 是一个建立命令行程序的框架。 它使用setuptools入口点（entry points）来提供子命令，输出格式化，以及其他的扩展。这个框架 可以用来创建多层命令程序，如subversion与git，其主程序要进行一些简单的参数解析然后调用 一个子命令干活。</p>
+<h1 id="十一-阅读代码"><a href="#十一-阅读代码" class="headerlink" title="十一. 阅读代码"></a>十一. 阅读代码</h1><p><a href="https://github.com/gleitz/howdoi" target="_blank" rel="noopener">Howdoi</a>  : 代码搜寻工具<br><a href="https://github.com/mitsuhiko/flask" target="_blank" rel="noopener">flask</a>   : 基于 Werkzeug 和 Jinja2 , 使用 Python 的微框架.<br><a href="https://github.com/python-diamond/Diamond" target="_blank" rel="noopener">Diamond</a> : Python 的守护进程, 收集指标, 并将它们发布至 Graphite 或其他后端. 能收取 CPU,内存,网络,IO,负载和硬盘指标, 拥有实现自定义收集器的API, 该 API 几乎能从任何资源中获取指标.<br><a href="">Werkzeug</a>    : WSGI 实用模型.包括强大的调试器，功能齐全的请求和响应对象，处理entitytags的HTTP工具，缓存控制标头，HTTP数据，cookie处理，文件上传，强大的URL路由系统和一些社区提供的插件模块。   </p>
+<h1 id="十二-测试"><a href="#十二-测试" class="headerlink" title="十二. 测试"></a>十二. 测试</h1><h3 id="通用规则"><a href="#通用规则" class="headerlink" title="通用规则 :"></a>通用规则 :</h3><ul>
+<li>测试单元应该集中于小部分的功能, 并且证明他是对的.</li>
+<li>每个测试单元都应该完全独立. 每个都能独立运行, 除了调用的命令, 都需在测试套件中. 测试单元应该加载最新的数据集, 之后在做一些清理. 如 setUp() 和 tearDown() 方法.</li>
+<li>尽量使单元测试快速运行.</li>
+<li>实现钩子(hook) 是一个非常好的主意. 因为一旦将代码放入仓库, 这个钩子可以运行所有的测试单元.</li>
+<li>当调试代码的时候, 需要首先写一个精确定位 bug 的测试单元.</li>
+<li>测试函数使用长且描述性的名字.</li>
+</ul>
+<h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><p><a href="http://docs.python.org/library/unittest.html#module-unittest" target="_blank" rel="noopener">unittest</a><br>    unittest.TestCase</p>
+<p><a href="">doctest</a> 文档测试. 模块查找零碎文本, 就像 Python 中 docstrings 内的交互式会话, 执行那些会话以正式工作正常.</p>
+<p><a href="http://readthedocs.org/docs/nose/en/latest/" target="_blank" rel="noopener">Nose</a> :<br>    nose 集成测试单元, 能使测试更加容易.<br>    自动化测试, 发现并节省人工创建测试组件的麻烦</p>
+<p><a href="http://testrun.org/tox/latest/" target="_blank" rel="noopener">tox</a> : 自动化测试管理和针对多种解释器配置测试工具.</p>
+<p><a href="https://docs.python.org/dev/library/unittest.mock" target="_blank" rel="noopener">mock</a> : 测试库. unittest.mock 是 python 中用于测试的一个库.</p>
+<h1 id="十三-持续集成"><a href="#十三-持续集成" class="headerlink" title="十三. 持续集成"></a>十三. 持续集成</h1><p><a href="http://jenkins-ci.org" target="_blank" rel="noopener">Jenkins</a> : 可扩展的持续集成引擎。<br><a href="http://tox.readthedocs.org/en/latest/" target="_blank" rel="noopener">Tox</a> : 是一款为Python软件提供打包、测试和 开发的自动化工具，基于命令行或CI服务器。它是一个通用的虚拟环境管理和测试的命令行 工具</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/云计算生态/" rel="next" title="云计算生态">
+                <i class="fa fa-chevron-left"></i> 云计算生态
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/linux-tcp-wrapper/" rel="prev" title="linux tcp_wrapper">
+                linux tcp_wrapper <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-结构化工程"><span class="nav-text">一. 结构化工程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-开发环境"><span class="nav-text">二. 开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vim"><span class="nav-text">vim :</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sublime-Text"><span class="nav-text">Sublime Text</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyCharm"><span class="nav-text">PyCharm</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三-虚拟环境"><span class="nav-text">三. 虚拟环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四-文档"><span class="nav-text">四. 文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pydoc-在安装-python-时自动安装的-工具-允许在-shell-中快速检索文档"><span class="nav-text">pydoc : 在安装 python 时自动安装的 工具, 允许在 shell 中快速检索文档,</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五-PEP8-Python-事实上的代码风格指南"><span class="nav-text">五. PEP8 : Python 事实上的代码风格指南.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pep8-检查代码的一致性"><span class="nav-text">pep8 : 检查代码的一致性.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autopep8-自动格式化为-PEP8-风格"><span class="nav-text">autopep8 : 自动格式化为 PEP8 风格</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六-解包"><span class="nav-text">六. 解包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#交换变量"><span class="nav-text">交换变量 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#嵌套解包"><span class="nav-text">嵌套解包:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展解包-python-3"><span class="nav-text">扩展解包: python 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个被忽略的变量"><span class="nav-text">创建一个被忽略的变量:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个包含-N-个对象的列表"><span class="nav-text">创建一个包含 N 个对象的列表:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个包含-N-个列表的列表"><span class="nav-text">创建一个包含 N 个列表的列表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七-约定-pythonnic"><span class="nav-text">七. 约定 pythonnic</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#检查变量是否等于常量-比较一个值是-True-None-False-0-等-使用-if"><span class="nav-text">检查变量是否等于常量 : 比较一个值是 True, None,False, 0 等 : 使用 if</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问字典元素"><span class="nav-text">访问字典元素:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#维护列表的捷径"><span class="nav-text">维护列表的捷径:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取文件-with-open"><span class="nav-text">读取文件:  with open</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行的延续-当一个代码逻辑行的长度超多可接受的限制时-需要将至分为多个物理行"><span class="nav-text">行的延续: 当一个代码逻辑行的长度超多可接受的限制时, 需要将至分为多个物理行.</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#九-密码学"><span class="nav-text">九. 密码学</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十-命令行应用"><span class="nav-text">十. 命令行应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十一-阅读代码"><span class="nav-text">十一. 阅读代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十二-测试"><span class="nav-text">十二. 测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用规则"><span class="nav-text">通用规则 :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试"><span class="nav-text">单元测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#十三-持续集成"><span class="nav-text">十三. 持续集成</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

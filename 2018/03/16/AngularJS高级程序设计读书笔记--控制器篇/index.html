@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="angularjs,前端框架," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="作用域组成了一个能够用于在控制器之间形成通信的体系结构. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑. 控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上">
+<meta name="keywords" content="angularjs,前端框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularJS高级程序设计读书笔记--控制器篇">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--控制器篇/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="作用域组成了一个能够用于在控制器之间形成通信的体系结构. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑. 控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E5%A4%8D%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%BB%93%E6%9E%84.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E8%87%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.PNG">
+<meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E5%BD%93%E7%8B%AC%E7%AB%8B%E4%BD%BF%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.PNG">
+<meta property="og:updated_time" content="2018-04-01T04:42:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AngularJS高级程序设计读书笔记--控制器篇">
+<meta name="twitter:description" content="作用域组成了一个能够用于在控制器之间形成通信的体系结构. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑. 控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上">
+<meta name="twitter:image" content="http://oluv2yxz6.bkt.clouddn.com/%E5%A4%8D%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--控制器篇/"/>
+
+
+
+
+
+  <title>AngularJS高级程序设计读书笔记--控制器篇 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--控制器篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">AngularJS高级程序设计读书笔记--控制器篇</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:09:07+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作用域组成了一个能够用于在控制器之间形成通信的体系结构.</p>
+<h2 id="一-控制器和作用域的基本原理"><a href="#一-控制器和作用域的基本原理" class="headerlink" title="一. 控制器和作用域的基本原理"></a>一. 控制器和作用域的基本原理</h2><p>控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑.</p>
+<p>控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上的变化.</p>
+<p>控制器从模型中暴露数据给视图, 以及基于用户与视图的交互使模型产生变化所需的逻辑.</p>
+<p>控制器可用于向所支持的视图提供作用域.</p>
+<p>示例代码:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html ng-app=&quot;exampleApp&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Controllers&lt;/title&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script&gt;
+        angular.module(&quot;exampleApp&quot;, []);
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;well&quot;&gt;
+        Content will go here.
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h3 id="1-创建控制器"><a href="#1-创建控制器" class="headerlink" title="1. 创建控制器"></a>1. 创建控制器</h3><p>控制器是通过 AngularJS 的 Module 对象所提供的的 controller 方法创建出来的. controller 方法的参数是新建控制器的名字和一个将被用于创建控制器的函数. 这个函数应被理解为构造器, 也可以看作为一个工厂函数.</p>
+<p>控制器名称的命名习惯是使用 Ctrl 后缀.</p>
+<p>工厂函数能够使用以来注入特性来声明对 AngularJS 服务的依赖. 几乎每个控制器都要使用 $scope 服务, 用于系那个视图提供作用域, 定义可被视图使用的数据和逻辑.</p>
+<p>严格说来, $scope 并不是一个服务, 而是一个叫 $rootScope 的服务提供的对象.</p>
+<p>区别控制器所支持的视图, 是通过 ng-controller 指令来完成的. 该指令所指定的值,必须与创建的控制器同名. </p>
+<pre><code>&lt;script&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;simpleCtrl&quot;, function ($scope) {
+
+        });
+&lt;/script&gt;
+
+// 将控制器应用于视图.
+&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;
+    Content will go here.
+&lt;/div&gt;
+</code></pre><p>控制器名称的命名习惯是使用 Ctrl 后缀.</p>
+<p>传给 Module.controller 函数的参数用于声明控制器的依赖(依赖注入), 即控制器所需的 AngularJS 组件.</p>
+<p>示例如下:</p>
+<pre><code>myApp.controller(&quot;dayCtrl&quot;, function($scope){...})
+
+$scope : 该服务请求 AngularJS 为控制器提供作用域. 控制器使用 $scope 组件, 这能够允许向视图传递数据. $scope 组件是用于向视图提供数据的, 只有通过 $scope 配置的数据才能用于表达式和数据绑定中.
+</code></pre><p>当控制器生命了对 $scope 服务的依赖时, 就可以使得控制器通过其对应的作用域向视图提供各种能力. 作用于不仅定义了控制器和视图之间的关系, 而且对许多重要的 AngularJS 特性提供了运转机制, 如 数据绑定.</p>
+<p>有两种方法, 通过控制器使用作用域:</p>
+<ul>
+<li>定义数据</li>
+<li>定义行为, 即可以在视图绑定的表达式或指令中调用 JavaScript 函数.</li>
+</ul>
+<p>关于作用域最重要的一点是, 修改会传播下去, 自动更新所有相依赖的数据值, 即使是通过行为产生的.</p>
+<h3 id="2-依赖注入-DI"><a href="#2-依赖注入-DI" class="headerlink" title="2. 依赖注入(DI)"></a>2. 依赖注入(DI)</h3><p>一个 AngularJS 应用程序的一些组件将会依赖于其他的组件. 依赖注入简化了在组件之间处理依赖的过程(解决依赖).<br>AngularJS 应用程序的一个组件通过在工厂函数的参数上声明依赖, 声明的名称要与所依赖的组件相匹配.</p>
+<p>依赖注入改变了函数参数的用途. 没有依赖注入, 参数会被用于接受调用者想要传入的任何对象, 但是又累依赖注入后, 函数使用参数来提出需求, 告诉 AngularJS 他需要什么样的构件.</p>
+<p><strong>AngularJS 中参数的顺序总是与声明依赖的顺序相匹配.</strong></p>
+<h2 id="二-组织控制器"><a href="#二-组织控制器" class="headerlink" title="二. 组织控制器"></a>二. 组织控制器</h2><h3 id="1-单块控制器"><a href="#1-单块控制器" class="headerlink" title="1 单块控制器"></a>1 单块控制器</h3><p>简单, 无需担心各个作用域之间的通信问题, 而且行为将可以被整个 HTML 所用. 当使用一个单块控制器时, 实际上会对整个应用程序创建一个单独的视图.</p>
+<pre><code>&lt;script&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;simpleCtrl&quot;, function ($scope) {
+
+            $scope.addresses = {};
+
+            $scope.setAddress = function (type, zip) {
+                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);
+                $scope.addresses[type] = zip;
+            }
+
+            $scope.copyAddress = function () {
+                $scope.shippingZip = $scope.billingZip;
+            }
+        });
+&lt;/script&gt;
+// ...
+&lt;div class=&quot;well&quot;&gt;
+    &lt;h4&gt;Billing Zip Code&lt;/h4&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;input class=&quot;form-control&quot; ng-model=&quot;billingZip&quot;&gt;
+    &lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;billingZip&apos;, billingZip)&quot;&gt;
+        Save Billing
+    &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;well&quot;&gt;
+    &lt;h4&gt;Shipping Zip Code&lt;/h4&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;input class=&quot;form-control&quot; ng-model=&quot;shippingZip&quot;&gt;
+    &lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;copyAddress()&quot;&gt;
+        Use Billing
+    &lt;/button&gt;
+    &lt;button class=&quot;btn btn-primary&quot; 
+            ng-click=&quot;setAddress(&apos;shippingZip&apos;, shippingZip)&quot;&gt;
+        Save Shipping
+    &lt;/button&gt;
+&lt;/div&gt;  
+</code></pre><h3 id="2-复用控制器"><a href="#2-复用控制器" class="headerlink" title="2 复用控制器"></a>2 复用控制器</h3><p>在同一个应用程序中创建多个视图,并复用同一个控制器. AngularJS 将会调用每个应用到控制器的工厂函数, 结果时每个控制器实例将会拥有自己的作用域.</p>
+<p>这种方法能够简化控制器, 因为所需管理的只是在单块控制器下需要处理的数据值的一个子集. 这样能够工作的原因是, MVC 模式下能够分离职能, 意味着不同的视图能够以不同的方式对同一份数据和功能进行展示.</p>
+<p>每个控制器向其作用域提供的数据和行为都是与另外一个控制相互独立的.</p>
+<pre><code>&lt;script&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;simpleCtrl&quot;, function ($scope) {
+
+            $scope.setAddress = function (type, zip) {
+                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);
+            }
+
+            $scope.copyAddress = function () {
+                $scope.shippingZip = $scope.billingZip;
+            }
+        });
+&lt;/script&gt;
+// ... 
+&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;
+    &lt;h4&gt;Billing Zip Code&lt;/h4&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;input class=&quot;form-control&quot; ng-model=&quot;zip&quot;&gt;
+    &lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;billingZip&apos;, zip)&quot;&gt;
+        Save Billing
+    &lt;/button&gt;
+&lt;/div&gt;
+&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;
+    &lt;h4&gt;Shipping Zip Code&lt;/h4&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+        &lt;input class=&quot;form-control&quot; ng-model=&quot;zip&quot;&gt;
+    &lt;/div&gt;
+    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;copyAddress()&quot;&gt;
+        Use Billing
+    &lt;/button&gt;
+    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;shippingZip&apos;, zip)&quot;&gt;
+        Save Shipping
+    &lt;/button&gt;
+&lt;/div&gt;
+</code></pre><p><strong>创建一个控制器的多个实例</strong><br><img src="http://oluv2yxz6.bkt.clouddn.com/%E5%A4%8D%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8.PNG" alt="创建一个控制器的多个实例"></p>
+<p><strong>作用域之间的通信</strong><br><strong>在使用多个控制器时的作用域的层级结构</strong><br><img src="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%BB%93%E6%9E%84.PNG" alt="在使用多个控制器时的作用域的层级结构"></p>
+<p>作用域实际上是以层级结构的形式组织起来的, 顶层是 <strong>根作用域(root scope)</strong>, 每个控制器都会被赋予一个新的作用域, 该作用域是根作用域的一个子作用域.</p>
+<p>根作用域可以作为一个服务被使用, 所以在控制器中使用 $rootScope(AngularJS的内建服务) 名称声明了对他的依赖. 所有作用域, 包括 $rootScope 服务, 定义了若干可用于发送和接受事件的方法:</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$broadcase(name,args)</td>
+<td>向当前作用域下的所有子作用域发送一个事件. 参数是事件名称, 以及一个用于向事件提供额外数据的对象</td>
+</tr>
+<tr>
+<td>$emit(name, args)</td>
+<td>向当前作用域的父作用域发送一个事件, 直至根作用域</td>
+</tr>
+<tr>
+<td>$on(name, handler)</td>
+<td>注册一个事件处理函数, 该函数在特定的事件被当前作用域收到时会被调用.</td>
+</tr>
+</tbody>
+</table>
+<p>$broadcase 和 $emit 事件都是具有方向性的, 他们沿着作用域的层级结构向上发送事件直至根作用域或者向下发送直至每一个子作用域.</p>
+<pre><code>&lt;script&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;simpleCtrl&quot;, function ($scope, $rootScope) {
+
+            // $scope.$on 用来对 zipCodeUpdated 事件创建一个处理函数.这个事件处理函数接受一个 Event 对象以及一个参数对象, 本例中, 对该参数对象定义了 type 和 zipCode 属性, 然后使用它们在本地作用域上定义一个属性.
+            $scope.$on(&quot;zipCodeUpdated&quot;, function (event, args) {
+                $scope[args.type] = args.zipCode;
+            }); 
+
+            $scope.setAddress = function (type, zip) {
+                $rootScope.$broadcast(&quot;zipCodeUpdated&quot;, {
+                    type: type, zipCode: zip 
+                });
+                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);
+            }
+
+            // 通过 $rootScope 对象上调用 $broadcast 方法实现同步, 传入一个拥有 type 和 zipCode 属性的对象, 这个对象正式时间处理函数所期望得到的.
+            $scope.copyAddress = function () {
+                $scope.zip = $scope.billingZip;
+            };
+        });
+&lt;/script&gt;
+</code></pre><p><strong>使用服务调节作用域事件</strong><br>AngularJS 中的习惯时使用服务来调解作用域之间的通信. 即 使用<code>Module.service</code>方法创建一个服务对象, 该服务可被控制器用来发送和接受时间, 而无需直接与作用域中的事件方法产生交互. 这种方法, 可以减少代码的重复.</p>
+<pre><code>&lt;script&gt;
+    angular.module(&quot;exampleApp&quot;, [])
+        // 声明对 $rootScope 服务的依赖
+        .service(&quot;ZipCodes&quot;, function($rootScope) {
+            return {
+                setZipCode: function(type, zip) {
+                    this[type] = zip;
+                    $rootScope.$broadcast(&quot;zipCodeUpdated&quot;, {
+                        type: type, zipCode: zip 
+                    });
+                }
+            }
+        })
+        // 声明对 ZipCodes 的依赖.
+        .controller(&quot;simpleCtrl&quot;, function ($scope, ZipCodes) {
+
+            $scope.$on(&quot;zipCodeUpdated&quot;, function (event, args) {
+                $scope[args.type] = args.zipCode;
+            });
+
+            $scope.setAddress = function (type, zip) {
+                ZipCodes.setZipCode(type, zip);
+                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);
+            }
+
+            $scope.copyAddress = function () {
+                $scope.zip = $scope.billingZip;
+            }
+        });
+&lt;/script&gt;
+</code></pre><h3 id="3-控制器继承"><a href="#3-控制器继承" class="headerlink" title="3 控制器继承"></a>3 控制器继承</h3><p>ng-controller 指令可被内嵌在 HTML 元素上, 产生一种被称为控制器继承的效果, 这是一种目的在于减少代码重复的特性, 可以在一个父控制器中定义公用功能, 并在一个或多个子控制器中使用.</p>
+<pre><code>// js 代码
+var app = angular.module(&quot;exampleApp&quot;, []);
+
+app.controller(&quot;topLevelCtrl&quot;, function ($scope) {
+
+    $scope.dataValue = &quot;Hello, Adam&quot;;
+
+    $scope.reverseText = function () {
+        $scope.dataValue = $scope.dataValue.split(&quot;&quot;).reverse().join(&quot;&quot;);
+    }
+
+    $scope.changeCase = function () {
+        var result = [];
+        angular.forEach($scope.dataValue.split(&quot;&quot;), function (char, index) {
+            result.push(index % 2 == 1
+                ? char.toString().toUpperCase() : char.toString().toLowerCase());
+        });
+        $scope.dataValue = result.join(&quot;&quot;);
+    };
+});
+
+app.controller(&quot;firstChildCtrl&quot;, function ($scope) {
+
+    $scope.changeCase = function () {
+       $scope.dataValue = $scope.dataValue.toUpperCase();
+    };
+});
+
+app.controller(&quot;secondChildCtrl&quot;, function ($scope) {
+
+    $scope.changeCase = function () {
+       $scope.dataValue = $scope.dataValue.toLowerCase();
+    };
+
+    $scope.shiftFour = function () {
+        var result = [];
+        angular.forEach($scope.dataValue.split(&quot;&quot;), function (char, index) {
+            result.push(index &lt; 4 ? char.toUpperCase() : char);
+        });
+        $scope.dataValue = result.join(&quot;&quot;);
+    }
+});
+
+// HTML 代码
+&lt;body ng-controller=&quot;topLevelCtrl&quot;&gt;
+
+    &lt;div class=&quot;well&quot;&gt;
+        &lt;h4&gt;Top Level Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot; 
+                        ng-click=&quot;reverseText()&quot;&gt;Reverse&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;changeCase()&quot;&gt;Case&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;well&quot; ng-controller=&quot;firstChildCtrl&quot;&gt;
+        &lt;h4&gt;First Child Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;reverseText()&quot;&gt;Reverse&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;changeCase()&quot;&gt;Case&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;    
+
+    &lt;div class=&quot;well&quot; ng-controller=&quot;secondChildCtrl&quot;&gt;
+        &lt;h4&gt;Second Child Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;reverseText()&quot;&gt;Reverse&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;changeCase()&quot;&gt;Case&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;shiftFour()&quot;&gt;Shift&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;    
+&lt;/body&gt;
+// 该例子中, 首次交互为修改 Reverse 按钮时, 所有的 input 框中的内容都将改变; 首次交互修改 第二或第三个 input 框中的内容时, 再次点击 Reverse , 则除了被修改的, 所有的都改变. 
+</code></pre><p><strong>在使用子控制器时的作用域层次结构</strong><br><img src="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E8%87%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.PNG" alt="在使用子控制器时的作用域层次结构"></p>
+<p>当通过 ng-controller 指令将控制器嵌入另一个控制器中时, 子控制器的作用域便继承了父控制器作用域中的数据和行为, 这种嵌套可以为任意层次. 每个控制器都用自己独有的作用域, 但是自控制器的作用域包含了其负作用域的数据值和行为.</p>
+<ul>
+<li>当单机 Reverse 按钮时, 所有的输入框都会改变, 因为 Reverse 调用的 reverseText 行为在顶层控制器中被定义. 自控制器继承了数据值和行为.</li>
+<li>子控制器可以在继承父控制器的基础上, 实现自定义的功能, 扩展被继承的数据和行为.</li>
+<li>子控制器能够覆盖他们的父控制器中的数据和行为, 即数据值和行为能够被同名的局部数据和行为所覆盖. 当查找行为时, AngularJS 会从该指令所应用到的控制器作用域上开始查找, 如果该行为存在, 则执行. 如果不存在, AngularJS 会向作用域的上层继续查找, 直到具有指定名称的行为被找到.</li>
+</ul>
+<p><strong>AngularJS 对作用域上的数据值的继承的处理方式以及如何受ng-model指令影响</strong></p>
+<p>可以使用下面的示例代码与上面的代码做比较.</p>
+<pre><code>// js 代码
+var app = angular.module(&quot;exampleApp&quot;, []);
+
+app.controller(&quot;topLevelCtrl&quot;, function ($scope) {
+
+    $scope.dataValue = &quot;Hello, Adam&quot;;
+
+    $scope.reverseText = function () {
+        $scope.dataValue = $scope.dataValue.split(&quot;&quot;).reverse().join(&quot;&quot;);
+    }
+
+    $scope.changeCase = function () {
+        var result = [];
+        angular.forEach($scope.dataValue.split(&quot;&quot;), function (char, index) {
+            result.push(index % 2 == 1
+                ? char.toString().toUpperCase() : char.toString().toLowerCase());
+        });
+        $scope.dataValue = result.join(&quot;&quot;);
+    };
+});
+
+app.controller(&quot;firstChildCtrl&quot;, function ($scope) {
+
+    $scope.changeCase = function () {
+       $scope.dataValue = $scope.dataValue.toUpperCase();
+    };
+});
+
+app.controller(&quot;secondChildCtrl&quot;, function ($scope) {
+
+    $scope.changeCase = function () {
+       $scope.dataValue = $scope.dataValue.toLowerCase();
+    };
+
+    $scope.shiftFour = function () {
+        var result = [];
+        angular.forEach($scope.dataValue.split(&quot;&quot;), function (char, index) {
+            result.push(index &lt; 4 ? char.toUpperCase() : char);
+        });
+        $scope.dataValue = result.join(&quot;&quot;);
+    }
+});
+
+// html 代码
+&lt;body ng-controller=&quot;topLevelCtrl&quot;&gt;
+
+    &lt;div class=&quot;well&quot;&gt;
+        &lt;h4&gt;Top Level Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot; 
+                        ng-click=&quot;reverseText()&quot;&gt;Reverse&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;changeCase()&quot;&gt;Case&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;data.dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;well&quot; ng-controller=&quot;firstChildCtrl&quot;&gt;
+        &lt;h4&gt;First Child Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;reverseText()&quot;&gt;Reverse&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;changeCase()&quot;&gt;Case&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;data.dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;    
+
+    &lt;div class=&quot;well&quot; ng-controller=&quot;secondChildCtrl&quot;&gt;
+        &lt;h4&gt;Second Child Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;reverseText()&quot;&gt;Reverse&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;changeCase()&quot;&gt;Case&lt;/button&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;shiftFour()&quot;&gt;Shift&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;data.dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;    
+&lt;/body&gt;
+</code></pre><p><strong>原理:</strong> </p>
+<ul>
+<li>当读取一个直接在作用域上定义的属性的值时, AngularJS 会检查在这个控制器的作用域上是否有一个局部属性, 如果没有, 就会沿着作用域层次结构向上查找是否有一个被继承的属性. 然而, 当使用 ng-model 指令来修改这一属性时, AngularJS 会检查当前作用域是否有这样一个名称的属性, 如果没有, 则假定该属性为隐式属性, 结果便是覆盖了该属性的值.</li>
+<li>然而, 如果在作用域上定义一个对象然后在对象上定义数据属性, 则不会发生覆盖的行为.  这是因为 JavaScript 对继承的实现是基于<strong>原型继承</strong>, 这意味着, 使用 ng-model 指令时,将会创建局部变量, 并使用一个对象作为中介. 这个将确保 ng-model 会对在父作用域上定义的数据值进行更新.</li>
+</ul>
+<p>总结: 如果你想数据值在开始的时候是共享的, 但在修改时会被复制一份, 就直接在作用域上定义数据属性; 如果想确保始终只有一份数据值, 就通过一个对象来定义数据属性.</p>
+<h3 id="4-多控制器"><a href="#4-多控制器" class="headerlink" title="4 多控制器"></a>4 多控制器</h3><p><strong>当独立使用控制器时的作用域层次结构</strong><br><img src="http://oluv2yxz6.bkt.clouddn.com/%E5%BD%93%E7%8B%AC%E7%AB%8B%E4%BD%BF%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.PNG" alt="当独立使用控制器时的作用域层次结构" title="当独立使用控制器时的作用域层次结构"></p>
+<pre><code>// js
+&lt;script&gt;
+    var app = angular.module(&quot;exampleApp&quot;, []);
+
+    app.controller(&quot;firstController&quot;, function ($scope) {
+
+        $scope.dataValue = &quot;Hello, Adam&quot;;
+
+        $scope.reverseText = function () {
+            $scope.dataValue = $scope.dataValue.split(&quot;&quot;).reverse().join(&quot;&quot;);
+        }
+    });
+
+    app.controller(&quot;secondController&quot;, function ($scope) {
+
+        $scope.dataValue = &quot;Hello, Jacqui&quot;;
+
+        $scope.changeCase = function () {
+            $scope.dataValue = $scope.dataValue.toUpperCase();
+        };
+    });
+&lt;/script&gt;
+
+// html
+&lt;body&gt;
+    &lt;div class=&quot;well&quot; ng-controller=&quot;firstController&quot;&gt;
+        &lt;h4&gt;First Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot; 
+                        ng-click=&quot;reverseText()&quot;&gt;Reverse&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;well&quot; ng-controller=&quot;secondController&quot;&gt;
+        &lt;h4&gt;Second Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;changeCase()&quot;&gt;
+                    Case
+                &lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;    
+&lt;/body&gt;    
+</code></pre><h3 id="5-使无作用域的控制器"><a href="#5-使无作用域的控制器" class="headerlink" title="5 使无作用域的控制器"></a>5 使无作用域的控制器</h3><p>如果应用程序无需使用继承,以及控制器间通信, 可以使用无作用域的控制器. 这些控制器可以在根本不需要使用作用域的情况下向视图提供数据和行为. 取而代之的是一个提供给视图的代表控制器的特殊变量.即 通过 JavaScript 的关键字 <code>this</code> 定义了自己的数据值和行为.</p>
+<pre><code>// js 代码
+&lt;script&gt;
+    var app = angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;simpleCtrl&quot;, function () {
+            this.dataValue = &quot;Hello, Adam&quot;;
+
+            this.reverseText = function () {
+                this.dataValue = this.dataValue.split(&quot;&quot;).reverse().join(&quot;&quot;);
+            }
+        });
+&lt;/script&gt;
+
+// html 代码
+&lt;body&gt;
+    &lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl as ctrl&quot;&gt;
+        &lt;h4&gt;Top Level Controller&lt;/h4&gt;
+        &lt;div class=&quot;input-group&quot;&gt;
+            &lt;span class=&quot;input-group-btn&quot;&gt;
+                &lt;button class=&quot;btn btn-default&quot; type=&quot;button&quot;
+                        ng-click=&quot;ctrl.reverseText()&quot;&gt;Reverse&lt;/button&gt;
+            &lt;/span&gt;
+            &lt;input class=&quot;form-control&quot; ng-model=&quot;ctrl.dataValue&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+</code></pre><p><strong>要点总结</strong></p>
+<ul>
+<li>使用 JavaScript 的关键字 <code>this</code></li>
+<li>ng-controller 指令的表达式格式有所不同 : <code>&lt;要应用的控制器&gt; as &lt;变量名&gt;</code></li>
+<li>在使用中使用 <code>变量名</code> 访问数据和行为.</li>
+</ul>
+<h2 id="三-显式更新作用域"><a href="#三-显式更新作用域" class="headerlink" title="三. 显式更新作用域"></a>三. 显式更新作用域</h2><p>主要用于与其他的 JavaScript 框架集成.</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$apply(expression)</td>
+<td>向作用域应用变化. 也可以向 $apply 方法传递函数, 在创建自定义指令时尤为有用, 允许在响应用户交互时, 使用指令所管理的元素自定义对作用域的更新方法.</td>
+</tr>
+<tr>
+<td>$watch(expression, handler)</td>
+<td>注册一个处理函数, 当 expression 表达式所引用的值变化时, 该函数会被通知到</td>
+</tr>
+<tr>
+<td>$watchCollection(object, handler)</td>
+<td>注册一个处理函数, 当指定的 object 对象的任意属性变化时, 该函数会被通知到</td>
+</tr>
+</tbody>
+</table>
+<pre><code>// js 代码
+&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js&quot;&gt;&lt;/script&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/sunny/jquery-ui.min.css&quot;&gt;
+&lt;script&gt;
+    $(document).ready(function () {
+        $(&apos;#jqui button&apos;).button().click(function (e) {
+            angular.element(angularRegion).scope().$apply(&apos;handleClick()&apos;);
+        });
+    });
+
+    var app = angular.module(&quot;exampleApp&quot;, [])
+        .controller(&quot;simpleCtrl&quot;, function ($scope) {
+
+            $scope.buttonEnabled = true;
+            $scope.clickCounter = 0;
+
+            $scope.handleClick = function () {
+                $scope.clickCounter++;
+            }
+
+            $scope.$watch(&apos;buttonEnabled&apos;, function (newValue) {
+                $(&apos;#jqui button&apos;).button({
+                    disabled: !newValue
+                });
+            });
+        });
+&lt;/script&gt;
+
+// html 代码
+&lt;body&gt;
+    &lt;div id=&quot;angularRegion&quot; class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;            
+        &lt;h4&gt;AngularJS&lt;/h4&gt;
+        &lt;div class=&quot;checkbox&quot;&gt;
+            &lt;label&gt;
+                &lt;input type=&quot;checkbox&quot; ng-model=&quot;buttonEnabled&quot;&gt; Enable Button
+            &lt;/label&gt;
+        &lt;/div&gt;
+        Click counter: { {clickCounter} }
+    &lt;/div&gt;
+    &lt;div id=&quot;jqui&quot; class=&quot;well&quot;&gt;
+        &lt;h4&gt;jQuery UI&lt;/h4&gt;
+        &lt;button&gt;Click Me!&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angularjs/" rel="tag"># angularjs</a>
+          
+            <a href="/tags/前端框架/" rel="tag"># 前端框架</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--服务篇/" rel="next" title="AngularJS高级程序设计读书笔记--服务篇">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--服务篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之自定义指令/" rel="prev" title="AngularJS高级程序设计读书笔记--指令篇之自定义指令">
+                AngularJS高级程序设计读书笔记--指令篇之自定义指令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-控制器和作用域的基本原理"><span class="nav-text">一. 控制器和作用域的基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建控制器"><span class="nav-text">1. 创建控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖注入-DI"><span class="nav-text">2. 依赖注入(DI)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-组织控制器"><span class="nav-text">二. 组织控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-单块控制器"><span class="nav-text">1 单块控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-复用控制器"><span class="nav-text">2 复用控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-控制器继承"><span class="nav-text">3 控制器继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-多控制器"><span class="nav-text">4 多控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使无作用域的控制器"><span class="nav-text">5 使无作用域的控制器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-显式更新作用域"><span class="nav-text">三. 显式更新作用域</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

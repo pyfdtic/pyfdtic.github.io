@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web development,django," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一. 概述1. 简介管理界面是以网页和有限的可信任管理者为基础的界面. Django 自动管理界面工作原理: 读取模型中的元数据, 然后提供给用户一个强大而且可以使用的界面, 网站管理者可以使用它立即工作. 2. Admin 工作原理当服务启动时, Django 从 urls.py 引导 URLconf, 然后执行 admin.autodiscover() 语句. 该函数遍历 INSTALLED_">
+<meta name="keywords" content="web development,django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django之四--Admin管理工具">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/django之四--Admin管理工具/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="一. 概述1. 简介管理界面是以网页和有限的可信任管理者为基础的界面. Django 自动管理界面工作原理: 读取模型中的元数据, 然后提供给用户一个强大而且可以使用的界面, 网站管理者可以使用它立即工作. 2. Admin 工作原理当服务启动时, Django 从 urls.py 引导 URLconf, 然后执行 admin.autodiscover() 语句. 该函数遍历 INSTALLED_">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-01T08:42:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="django之四--Admin管理工具">
+<meta name="twitter:description" content="一. 概述1. 简介管理界面是以网页和有限的可信任管理者为基础的界面. Django 自动管理界面工作原理: 读取模型中的元数据, 然后提供给用户一个强大而且可以使用的界面, 网站管理者可以使用它立即工作. 2. Admin 工作原理当服务启动时, Django 从 urls.py 引导 URLconf, 然后执行 admin.autodiscover() 语句. 该函数遍历 INSTALLED_">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/django之四--Admin管理工具/"/>
+
+
+
+
+
+  <title>django之四--Admin管理工具 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/django之四--Admin管理工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">django之四--Admin管理工具</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:58:10+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-概述"><a href="#一-概述" class="headerlink" title="一. 概述"></a>一. 概述</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>管理界面是以<strong>网页</strong>和有限的<strong>可信任管理者</strong>为基础的界面.</p>
+<p>Django 自动管理界面<strong>工作原理</strong>: <strong>读取模型中的元数据, 然后提供给用户一个强大而且可以使用的界面, 网站管理者可以使用它立即工作</strong>.</p>
+<h3 id="2-Admin-工作原理"><a href="#2-Admin-工作原理" class="headerlink" title="2. Admin 工作原理"></a>2. Admin 工作原理</h3><p>当服务启动时, Django 从 <code>urls.py</code> 引导 URLconf, 然后执行 <code>admin.autodiscover()</code> 语句. 该函数遍历 <code>INSTALLED_APPS</code> 配置, 并且寻找相关的 <code>admin.py</code> 文件, 如果在执行的 app 目录下找到 <code>admin.py</code> , 他就执行其中的代码.</p>
+<p><strong>模块注册</strong> : 在 books 应用程序的目录下的 <code>admin.py</code> 文件中, 每次调用 <code>admin.site.register()</code> 都将会将该模块注册到管理工具中, <strong>管理工具只为那些明确注册了的模块显示一个编辑/修改页面</strong>.</p>
+<p>应用程序 <code>django.contrib.auth</code> 包含自身的 <code>admin.py</code>, 所以 Users 和 Groups 能在管理工具中自动显示. 其他的 <code>django.contrib</code> 应用程序, 如 <code>django.contrib.redirects</code>, 其他从网上下载的第三方 Django 应用程序一样, 都会自行添加到管理工具.</p>
+<p>管理工具实际就是一个 Django 应用程序, 包含自己的 模块,模板,视图和 URLpatterns. 需要向添加自己的视图一样, 将它添加到 URLconf 里面. 可以在 Django 基本代码中的 <code>django/contrib/admin</code> 目录下查看他的模板,视图和 URLpatterns, 但<strong>不要尝试修改其中的代码</strong>.<br>如果确实想浏览 django 管理工具的代码, 请谨记他在读取关于模块的元数据过程中做了些不简单的工作, 因此最好花些时间阅读和理解那些代码.</p>
+<h2 id="二-django-contrib-包"><a href="#二-django-contrib-包" class="headerlink" title="二. django.contrib 包"></a>二. django.contrib 包</h2><p>Django 自动管理工具集(admin)是 <code>django.contrib</code>的一部分.</p>
+<p><code>django.contrib</code> 是一套庞大的功能集, 他是 Django 基本代码的组成部分, Django 框架就是有众多包含附加组件(add-on)的基本代码构成的. 可以把 <code>django.contrib</code> 看作是可选的 Python 标准库或普遍模式的实际实现. 他们与 Django 捆绑在一起, 这也就无需开发者重复造轮子了.</p>
+<p><code>django.contrib</code> 组成部分:</p>
+<ul>
+<li><code>django.contrib.admin</code> : 自动管理工具.</li>
+<li><code>django.contrib.auth</code> : 用户认证系统.</li>
+<li><code>django.contrib.sessions</code> : 支持匿名会话.</li>
+<li><code>django.contrib.comments</code> : 用户评论系统.</li>
+</ul>
+<h2 id="三-激活管理界面"><a href="#三-激活管理界面" class="headerlink" title="三. 激活管理界面"></a>三. 激活管理界面</h2><ol>
+<li>将 <code>django.contrib.admin</code>加入 <code>setting</code> 的<code>INSTALLED_APPS</code>的配置中.</li>
+<li>保障<code>INSTALLED_APPS</code>中包含 <code>django.contrib.auth</code>,<code>django.contrib.contenttypes</code>,<code>django.contrib.sessions</code> django 管理工具需要这三个包.</li>
+<li><p>确保<code>MIDDLEWARE_CLASSES</code>包含<code>django.middleware.common.CommonMiddleware</code>,<code>django.contrib.sessions.middleware.SessionMiddleware</code>,和<code>django.contrib.auth.middleware.AuthenticationMiddleware</code>.</p>
+</li>
+<li><p>运行 <code>python manage.py syncdb</code>, 用于生成管理界面使用的额外数据库表. 首次运行该命令, 会交互式提醒创建一个<strong>**. 否则需要使用<code>python manage.py createsuperuser</code> 来创建一个 admin 用户账号. </strong>只用当 <code>INSTALLED_APP</code> 包含 <code>django.contrib.auth</code> 时, <code>python manage.py createsuperuser</code> 这个命令才可用**</p>
+</li>
+<li><p>将<code>admin</code>添加到<code>URLconf</code>配置中.</p>
+<pre><code># urls.py
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns(&apos;&apos;,
+    # Uncomment the next line to enable the admin:
+    (r&apos;^admin/&apos;, include(admin.site.urls)),
+)
+</code></pre></li>
+</ol>
+<h2 id="四-使用管理工具"><a href="#四-使用管理工具" class="headerlink" title="四. 使用管理工具"></a>四. 使用管理工具</h2><h3 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h3><p>两个默认的管理-编辑模块: 用户组(Group), 用户(User).</p>
+<p>在 Django 管理页面中, 每种数据类型都有 <code>change list</code> 和 <code>edit form</code>. 前者显示数据库中所有的可用对象; 后者可以添加,更改,删除数据库的某条记录.</p>
+<h3 id="2-将-Model-添加到-Admin-管理中"><a href="#2-将-Model-添加到-Admin-管理中" class="headerlink" title="2. 将 Model 添加到 Admin 管理中."></a>2. 将 Model 添加到 Admin 管理中.</h3><p>将自定义的 Models 添加到 Admin 管理中.</p>
+<pre><code>$ touch mysite/books/admin.py
+$ cat mysite/books/admin.py
+    from django.contrib import admin
+    from mysite.books.models import Publisher,Author,Book
+
+    admin.site.register(Publisher)
+    admin.site.register(Author)
+    admin.site.register(Book)
+
+$ python manage.py runserver 0.0.0.0:8000
+</code></pre><p>管理工具处理外键和多对多关系的方法是: 外键使用一个选择框显示, 多对多关系使用一个多选框显示.</p>
+<h3 id="3-设置字段可选-blank-True"><a href="#3-设置字段可选-blank-True" class="headerlink" title="3.设置字段可选 : blank=True"></a>3.设置字段可选 : <code>blank=True</code></h3><pre><code># mysite/books/models.py
+
+class Author(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=40)
+    email = models.EmailField(blank=True)
+</code></pre><h3 id="4-设置日期型和数字型字段可选-blank-True-null-True"><a href="#4-设置日期型和数字型字段可选-blank-True-null-True" class="headerlink" title="4.设置日期型和数字型字段可选 : blank=True, null=True"></a>4.设置日期型和数字型字段可选 : <code>blank=True</code>, <code>null=True</code></h3><p>Django生成CREATE TABLE语句自动为每个字段显式加上<code>NOT NULL</code>.</p>
+<p>日期型、时间型和数字型字段不接受空字符串。</p>
+<p>如果你想允许一个日期型（DateField、TimeField、DateTimeField）或数字型（IntegerField、DecimalField、FloatField）字段为空，你需要使用null=True 和. blank=True。</p>
+<pre><code>class Book(models.Model):
+    title = models.CharField(max_length=100)
+    authors = models.ManyToManyField(Author)
+    publisher = models.ForeignKey(Publisher)
+    publication_date = models.DateField(blank=True, null=True)ssss
+</code></pre><p>**null=True 改变了数据的定义, 即改变了 CREATE TABLE 语句, 把 publication_date 字段上的 NOT NULL 删除了, 要完成这些, 需要更新数据库:</p>
+<pre><code>$ python manage.py dbshell
+
+    ALTER TABLE books_book ALTER COLUMN publication_date DROP NOT NULL;
+</code></pre><h3 id="5-自定义字段标签-verbose-name-NAME"><a href="#5-自定义字段标签-verbose-name-NAME" class="headerlink" title="5.自定义字段标签 : verbose_name=NAME"></a>5.自定义字段标签 : <code>verbose_name=NAME</code></h3><p>在编辑页面中, 每个字段的标签都是从模板的字段名称生成的, 规则: 用空格替换下划线, 首字母大写.</p>
+<pre><code>class Author(model.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=40)
+    email = models.EmailField(blank=True, verbose_name=&quot;e-mail&quot;)
+
+    # 或者, 如下方式不适用于 ManyToManyField, ForeignKey 字段, 因为他们的第一个参数必须为模块类.
+    email = models.EmailField(&quot;e-mail&quot;, blank=True) 
+</code></pre><h2 id="五-自定义-ModelAdmin-类"><a href="#五-自定义-ModelAdmin-类" class="headerlink" title="五. 自定义 ModelAdmin 类"></a>五. 自定义 ModelAdmin 类</h2><p>django 提供大量选项让你针对特别的模块自定义管理工具, 这些选项都在 <code>ModelAdmin classes</code> 里面, 这些类包含了管理工具中针对特别模块的配置.</p>
+<h3 id="1-自定义列表-list-display-search-fields"><a href="#1-自定义列表-list-display-search-fields" class="headerlink" title="1. 自定义列表 : list_display,search_fields"></a>1. 自定义列表 : <code>list_display</code>,<code>search_fields</code></h3><p>在<strong>列表</strong>中可以看到作者的邮箱地址, 并且按姓氏或名字排序. 为了达到这个目的, 将为 Author 模块定义一个 ModelAdmin 类, 该类是自定义管理工具的关键:</p>
+<pre><code>from django.contrib import admin
+from mysite.books.models import Publisher,Author,Book
+
+class AuthorAdmin(admin.ModelAdmin):
+    list_display=(&quot;first_name&quot;, &quot;last_name&quot;, &quot;email&quot;)
+
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(Publisher)
+admin.site.register(Book)
+</code></pre><p>AuthorAdmin 是从 <code>django.contrib.admin.ModelAdmin</code> 中派生出来的子类, 保存着一个类的自定义配置, 以供管理工具使用.</p>
+<p><code>list_display</code> 是一个字段名称的元组, 用于列表显示. 这些字段名称必须是模块中有的.</p>
+<p><code>admin.site.register(Author,AuthorAdmin)</code> 可以理解为 使用 AuthorAdmin 选项注册 Author 模块.</p>
+<p><code>admin.site.register()</code> 函数接受一个 ModelAdmin 子类作为第二个参数. 如果没有第二个参数, django 将使用默认选项.</p>
+<p>添加一个<strong>快速查询栏</strong>(大小写敏感) : search_fields</p>
+<pre><code>class AuthorAdmin(admin.ModelAdmin):
+    list_display = (&quot;first_name&quot;, &quot;last_name&quot;, &quot;email&quot;)
+    search_fields = (&quot;first_name&quot;, &quot;last_name&quot;)
+</code></pre><h3 id="2-字段过滤器"><a href="#2-字段过滤器" class="headerlink" title="2. 字段过滤器"></a>2. 字段过滤器</h3><p> Django为日期型字段提供了快捷过滤方式，它包含：今天、过往七天、当月和今年。这些是开发人员经常用到的。</p>
+<pre><code>class BookAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;publisher&quot;, &quot;publication_date&quot;)
+    list_filter = (&quot;publication_date&quot;)
+
+admin.site.register(Book, BookAdmin)
+</code></pre><p>过滤器同样适用于其他类型的字段, 而不单是日期型, 请在 布尔型和外键字段上试试. 当有两个以上值时, 过滤器就会显示.</p>
+<h3 id="3-日期过滤器-date-hierarchy"><a href="#3-日期过滤器-date-hierarchy" class="headerlink" title="3. 日期过滤器 : date_hierarchy**"></a>3. 日期过滤器 : <code>date_hierarchy</code>**</h3><pre><code>class BookAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;publisher&quot;, &quot;publication_date&quot;)
+    list_filter = (&quot;publication_date&quot;)
+    date_hierarchy = &quot;publication_date&quot;
+</code></pre><p><code>date_hierarchy</code> 接受的是<strong>字符串</strong>, 而不是元组, 因为只能对一个日期型字段进行层次划分.</p>
+<h3 id="4-排序-ordering"><a href="#4-排序-ordering" class="headerlink" title="4. 排序: ordering"></a>4. 排序: <code>ordering</code></h3><p>列表字段默认按照模块 class Meta 中的 ordering 所指的列排序. <code>ordering</code> 选项基本像模块中 class Meta 的 ordering 那样工作. 见许仅需在传入的元素或者元组的字段前加上一个减号(-).</p>
+<pre><code>class BookAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;publisher&quot;, &quot;publication_date&quot;)
+    list_filter = (&quot;publication_date&quot;)
+    date_hierarchy = &quot;publication_date&quot;
+    ordering = (&quot;-publication_date&quot;)
+</code></pre><h3 id="5-自定义编辑表单"><a href="#5-自定义编辑表单" class="headerlink" title="5. 自定义编辑表单"></a>5. 自定义编辑表单</h3><h4 id="5-1-自定义字段顺序-fields"><a href="#5-1-自定义字段顺序-fields" class="headerlink" title="5.1 自定义字段顺序: fields"></a>5.1 自定义字段顺序: <code>fields</code></h4><p>默认的, 表单中的字段顺序是与模块中定义的一致的. 可以使用<code>ModelAdmin</code>子类中的<code>fields</code>选项来改变他.</p>
+<pre><code>class BookAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;publisher&quot;, &quot;publication_date&quot;)
+    list_filter = (&quot;publication_date&quot;)
+    date_hierarchy = &quot;publication_date&quot;
+    ordering = (&quot;-publication_date&quot;)            
+    fields = (&quot;title&quot;, &quot;authors&quot;, &quot;publisher&quot;, &quot;publication_date&quot;)
+</code></pre><p>完成之后, 编辑表单将按照指定顺序显示各字段.</p>
+<p><code>fields</code>选项可以排除一些不想被其他人编辑的 fields. 当 admin 用户只是被信任可以更改某一部分数据时, 或者, 数据被一些外部的程序自动处理而改变了, 可以使用该功能.</p>
+<p><code>fields = (&quot;title&quot;, &quot;authors&quot;, &quot;publisher&quot;)</code> 可以实现无法对 publication_date 进行改动. 当一个用户使用后这个不包含完整信息的表单添加一本新书时, Django会简单的将 publication_date 设置为 None, 以确保这个字段满足 <code>null=True</code> 的条件.</p>
+<h4 id="5-2-多选框-filter-horizontal-filter-vertical-–-gt-用于多对多字段"><a href="#5-2-多选框-filter-horizontal-filter-vertical-–-gt-用于多对多字段" class="headerlink" title="5.2 多选框 : filter_horizontal, filter_vertical –&gt; 用于多对多字段."></a>5.2 多选框 : <code>filter_horizontal</code>, <code>filter_vertical</code> –&gt; 用于多对多字段.</h4><p>主要用于多对对字段, 它实现了一个简单的搜索框和两个选择区域, 可以将搜索到的多个选项在选择区域之间移动.</p>
+<pre><code>class BookAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;publisher&quot;, &quot;publication_date&quot;)
+    list_filter = (&quot;publication_date&quot;)
+    date_hierarchy = &quot;publication_date&quot;
+    ordering = (&quot;-publication_date&quot;)            
+    filter_horizontal = (&quot;authors&quot;,)        
+</code></pre><p>如上代码, 会在 Author 区中有一个 JavaScript 过滤器, 它允许搜索选项, 然后将选中的 author 从 Available 框移到 Chosen 框,还可以移回来.</p>
+<p><code>filter_horizontal</code>, <code>filter_vertical</code> 只能用于<strong>多对多字段</strong>, 不能用于 ForeignKey 字段.</p>
+<h4 id="5-3-文本框-raw-id-fields-–-gt-ForeignKey"><a href="#5-3-文本框-raw-id-fields-–-gt-ForeignKey" class="headerlink" title="5.3 文本框: raw_id_fields –&gt; ForeignKey"></a>5.3 文本框: <code>raw_id_fields</code> –&gt; ForeignKey</h4><p><code>raw_id_fields</code> 是一个包含外键字段名称的元组, 他包含的字段将被展现为<strong>文本框</strong>, 而不是默认的<br><code>raw_id_fields</code> 是一个包含外键字段名称的元组, 他包含的字段将被展现为<strong>文本框</strong>, 而不是默认的<em>**</em>.</p>
+<pre><code>class BookAdmin(admin.ModelAdmin):
+    list_display = (&quot;title&quot;, &quot;publisher&quot;, &quot;publication_date&quot;)
+    list_filter = (&quot;publication_date&quot;)
+    date_hierarchy = &quot;publication_date&quot;
+    ordering = (&quot;-publication_date&quot;)            
+    filter_horizontal = (&quot;authors&quot;,)  
+    raw_id_fields = (&apos;publisher&apos;,)    
+</code></pre><h2 id="六-用户-用户组-权限"><a href="#六-用户-用户组-权限" class="headerlink" title="六. 用户,用户组,权限"></a>六. 用户,用户组,权限</h2><p>管理工具有一个用户权限系统, 通过他你可以根据用户的需要来指定他们的权限, 从而达到部分访问系统的目的.</p>
+<p>通过管理界面可以变价用户及其许可. 用户对象有标准的用户名,密码,邮箱地址和真实姓名, 同时还有关于使用管理界面的权限定义. 如下三种布尔型标记:</p>
+<ul>
+<li><strong>活动标志</strong> : 控制用户是否已经激活.</li>
+<li><strong>成员标识</strong> : 用来控制该用户是否可以登录管理界面. 用用户系统可以被用于控制公众界面(非管理页面)的访问权限, 这个标志可用来区分公众用户和管理用户.</li>
+<li><strong>超级用户标识</strong> : 赋予用户在管理界面中添加,修改,删除任何项目的权限. 如果一个用户有该标志, 那么所有权限设置都会被忽略.</li>
+</ul>
+<p>普通的活跃,非超级用户的管理用户可以根据一套设定好的许可进入. 管理界面中每种可编辑的对象(如 books, author, publishers)都有三种权限: <strong>创建许可</strong>, <strong>编辑许可</strong>, <strong>删除许可</strong>. 给一个用户授权就表明该用户可以进行许可描述的操作.</p>
+<p>当创建一个用户时, 他没有任何权限, 该有什么权限由你决定. 这些权限时定义在模块级别上的, 而不是对象级别上的. 如 你可以让 tom 账户修改任何图书, 但不能让他仅仅修改由 机械工业出版社 出版的图书. 后面这种基于对象级别的权限设置比较复杂, 可以查看官方文档.</p>
+<p>可以给组中分配用户, <strong>组</strong>简化了组中所有成员应用一套许可的动作. 组在给大量用户特定权限的时候很有用.</p>
+<p>管理界面不应当成为一个公众数据访问接口, 也不允许对数据进行复杂的排序和查询. 它仅提供给可信任的管理员.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web-development/" rel="tag"># web development</a>
+          
+            <a href="/tags/django/" rel="tag"># django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/django之六--部署篇/" rel="next" title="django之六--部署篇">
+                <i class="fa fa-chevron-left"></i> django之六--部署篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/django之五--表单/" rel="prev" title="django之五--表单">
+                django之五--表单 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-概述"><span class="nav-text">一. 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介"><span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Admin-工作原理"><span class="nav-text">2. Admin 工作原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-django-contrib-包"><span class="nav-text">二. django.contrib 包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-激活管理界面"><span class="nav-text">三. 激活管理界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-使用管理工具"><span class="nav-text">四. 使用管理工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基本使用"><span class="nav-text">1. 基本使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-将-Model-添加到-Admin-管理中"><span class="nav-text">2. 将 Model 添加到 Admin 管理中.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-设置字段可选-blank-True"><span class="nav-text">3.设置字段可选 : blank=True</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-设置日期型和数字型字段可选-blank-True-null-True"><span class="nav-text">4.设置日期型和数字型字段可选 : blank=True, null=True</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-自定义字段标签-verbose-name-NAME"><span class="nav-text">5.自定义字段标签 : verbose_name=NAME</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-自定义-ModelAdmin-类"><span class="nav-text">五. 自定义 ModelAdmin 类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-自定义列表-list-display-search-fields"><span class="nav-text">1. 自定义列表 : list_display,search_fields</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-字段过滤器"><span class="nav-text">2. 字段过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-日期过滤器-date-hierarchy"><span class="nav-text">3. 日期过滤器 : date_hierarchy**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-排序-ordering"><span class="nav-text">4. 排序: ordering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-自定义编辑表单"><span class="nav-text">5. 自定义编辑表单</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-自定义字段顺序-fields"><span class="nav-text">5.1 自定义字段顺序: fields</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-多选框-filter-horizontal-filter-vertical-–-gt-用于多对多字段"><span class="nav-text">5.2 多选框 : filter_horizontal, filter_vertical –&gt; 用于多对多字段.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-文本框-raw-id-fields-–-gt-ForeignKey"><span class="nav-text">5.3 文本框: raw_id_fields –&gt; ForeignKey</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-用户-用户组-权限"><span class="nav-text">六. 用户,用户组,权限</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

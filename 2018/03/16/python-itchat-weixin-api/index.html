@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PyPi,itchat,微信," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="itchat一. 安装$ pip install itchat 特殊的字典使用方式通过打印 itchat 的用户以及注册消息的参数, 可以发现这些值都是字典. 但实际上 itchat 精心构造了相应的消息,用户,群聊,公众号等. 其所有的键值都可以通过这一方式访问: @itchat.msg_register(TEXT) def _(msg):     # equals to print(msg[&amp;">
+<meta name="keywords" content="PyPi,itchat,微信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python 微信接口 -- itchat 文档">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/python-itchat-weixin-api/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="itchat一. 安装$ pip install itchat 特殊的字典使用方式通过打印 itchat 的用户以及注册消息的参数, 可以发现这些值都是字典. 但实际上 itchat 精心构造了相应的消息,用户,群聊,公众号等. 其所有的键值都可以通过这一方式访问: @itchat.msg_register(TEXT) def _(msg):     # equals to print(msg[&amp;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-30T08:56:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python 微信接口 -- itchat 文档">
+<meta name="twitter:description" content="itchat一. 安装$ pip install itchat 特殊的字典使用方式通过打印 itchat 的用户以及注册消息的参数, 可以发现这些值都是字典. 但实际上 itchat 精心构造了相应的消息,用户,群聊,公众号等. 其所有的键值都可以通过这一方式访问: @itchat.msg_register(TEXT) def _(msg):     # equals to print(msg[&amp;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/python-itchat-weixin-api/"/>
+
+
+
+
+
+  <title>python 微信接口 -- itchat 文档 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/python-itchat-weixin-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python 微信接口 -- itchat 文档</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:05:25+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="itchat"><a href="#itchat" class="headerlink" title="itchat"></a>itchat</h1><h2 id="一-安装"><a href="#一-安装" class="headerlink" title="一. 安装"></a>一. 安装</h2><pre><code>$ pip install itchat
+</code></pre><p><strong>特殊的字典使用方式</strong><br>通过打印 itchat 的用户以及注册消息的参数, 可以发现这些值都是字典.</p>
+<p>但实际上 itchat 精心构造了相应的消息,用户,群聊,公众号等.</p>
+<p>其所有的键值都可以通过这一方式访问:</p>
+<pre><code>@itchat.msg_register(TEXT)
+def _(msg):
+    # equals to print(msg[&apos;FromUserName&apos;])
+    print(msg.fromUserName)
+</code></pre><p>属性名为键值首字母小写后的内容.</p>
+<pre><code>author = itchat.search_frients(nickName=&quot;LittleCoder&quot;)[0]
+author.send(&quot;greeting ,  LittleCoder!&quot;)
+</code></pre><h2 id="二-登录"><a href="#二-登录" class="headerlink" title="二. 登录"></a>二. 登录</h2><p>一般而言, 会在完成消息的注册后登录.</p>
+<p><strong>强调三点</strong>:</p>
+<ul>
+<li>登录状态缓存, 短时间关闭重连, 关闭程序后一定时间内不需要扫码即可登录. 由于目前微信网页版提供上一次登录的微信号不扫码直接手机确认登录, 所以如果开启登录状态暂存, 将会自动使用这一功能.</li>
+<li>命令行二维码, </li>
+<li>自定义登录内容(如更改提示语, 二维码出现后邮件发送等).</li>
+</ul>
+<h3 id="1-短时间关闭程序后重连"><a href="#1-短时间关闭程序后重连" class="headerlink" title="1. 短时间关闭程序后重连."></a>1. 短时间关闭程序后重连.</h3><p>即使程序关闭，一定时间内重新开启也可以不用重新扫码.</p>
+<p><strong>使用 <code>auto_login</code> 方法传入值为真的 <code>hotReload</code></strong>.<br>该方法会生成一个静态文件 <code>itchat.pkl</code>, 用于存储登录的状态. </p>
+<pre><code>import itchat
+from itchat.content import TEXT
+
+@itchat.msg_register(TEXT)
+def simple_reply(TEXT):
+    print(msg.text)
+
+itchat.auto_login(hotReload=True)
+itchat.run()
+</code></pre><p>通过设置 <code>statusStorageDir</code> 可以将静态文件指定为其他的值. 这一内置选项,相当于使用了以下两个函数的这一段程序:</p>
+<pre><code>import itchat
+from itchat.content import TEXT
+
+if itchat.load_login_status():  # itchat.load_login_status() 用于读取设置
+    @itchat.msg_register(TEXT):
+    def simple_reply(msg):
+        print(msg[&quot;Text&quot;])
+
+    itchat.run()
+    itchat.dump_login_status()  # itchat.dump_login_status() 用于导出设置
+
+else:
+    itchat.auto_login()
+    itchat.dump_login_status()
+    print(&quot;Config stored, so exit.&quot;)
+</code></pre><p>通过设置传入的 <code>fileDir</code> 的值, 可以设定导入导出的文件.</p>
+<h3 id="2-命令行二维码"><a href="#2-命令行二维码" class="headerlink" title="2. 命令行二维码"></a>2. 命令行二维码</h3><p>通过如下命令在登录的时候, 使用命令行显示 二维码.</p>
+<pre><code>itchat.auto_login(enableCmdQR=True)
+</code></pre><p>部分系统可能字符宽度有出入, 可以通过将 enableCmdQR 赋值为特定的倍数进行调整.</p>
+<pre><code># 如部分 Linux 系统, 块字符的宽度为一个字符(正常为两个字符), 故赋值为 2
+itchat.auto_login(enableCmdQR=2)
+</code></pre><p>默认控制台背景颜色为暗色(黑色), 若背景色为浅色, 可将 enableCmdQR 赋值为负值:</p>
+<pre><code>itchat.auto_login(enableCmdQR=-1)
+</code></pre><h3 id="3-自定义登录过程"><a href="#3-自定义登录过程" class="headerlink" title="3. 自定义登录过程"></a>3. 自定义登录过程</h3><p>itchat 提供了登录所需的每一步的方法, 登录的过程按殊勋为:<br>1) 获取二维码 <code>uuid</code>, 并返回该 <code>uuid</code></p>
+<pre><code>- 方法名称: `get_QRuuid()`
+- 参数: 无
+- 返回值: 成功返回 uuid, 失败返回 None
+</code></pre><p>2) 获取二维码 : 根据<code>uuid</code>获取二维码并打开.</p>
+<pre><code>- 方法名: `get_QR()`
+- 参数: uuid
+- 返回值: True, False
+</code></pre><p>3) 判断是否已登录成功</p>
+<pre><code>- 方法名称: `check_login()`
+- 参数: uuid
+- 返回值: 200 登录成功, 201 以扫描二维码, 408 二维码失效, 0 未获取到信息.
+</code></pre><p>4) 获取初始化数据: 获取微信用户信息以及心跳所需要的数据.</p>
+<pre><code>- 方法名称: `web_init()`
+- 参数: 无
+- 返回值: 存储登录微信用户信息的字典.
+</code></pre><p>5) 获取微信通讯录, 获取微信的所有好友信息并更新</p>
+<pre><code>- 方法名称: `get_frients()`
+- 参数: 无
+- 返回值: 存储好友信息的列表
+</code></pre><p>6) 更新微信手机登录状态, 在手机上显示登录状态.</p>
+<pre><code>- 方法名称: `show_mobile_login()`
+- 参数: 无
+- 返回值: 无
+</code></pre><p>7) 循环扫描新信息(开启心跳)</p>
+<pre><code>- 方法名称: `start_receiving()`
+- 参数: 无
+- 返回值: 无
+</code></pre><h3 id="4-auto-login的实现代码"><a href="#4-auto-login的实现代码" class="headerlink" title="4. auto_login的实现代码:"></a>4. <code>auto_login</code>的实现代码:</h3><pre><code>import itchat, time, sys
+
+def output_info(msg):
+    print(&apos;[INFO] %s&apos; % msg)
+
+def open_QR():
+    for get_count in range(10):
+        output_info(&quot;Getting uuid&quot;)
+        uuit = itchat.get_QRuuid()
+        while uuid is None:
+            uuitd = itchat.get_QRuuid();
+            time.sleep(1)
+        output_info(&quot;Getting QR code&quot;)
+        if itchat.get_QR(uuid):
+            break
+        elif get_coun &gt;= 9:
+            output_info(&quot;Failed to get QR code, plz restart the program&quot;)
+            sys.exit()
+
+    output_info(&quot;Plz scan the QE Code&quot;)
+    return uuid
+
+uuid = open_QR()
+waitForConfirm = False
+
+while 1:
+    status = itchat.check_login(uuid)
+    if status == &apos;200&apos;:
+        break
+    elif status = &apos;201&apos;:
+        if waitForConfirm:
+            output_info(&quot;Plz press confirm&quot;)
+            waitForConfirm = True
+    elif status == &apos;408&apos;:
+        output_info(&quot;Reloading QR Code&quot;)
+        uuid = open_QR()
+        waitForConfirm = False
+
+userInfo = itchat.web_init()
+itchat.show_mobile_login()
+itchat.get_friends(True)
+output_info(&quot;Login successfully as %s&quot; % userInfo[&quot;NickName&quot;])
+itchat.start_receiving()
+
+# start auto-replying
+@itchat.msg_register
+def simple_reply(msg):
+    if msg[&quot;Type&quot;] == &quot;Text&quot;:
+        return &quot;I received: %s&quot; % msg[&quot;Content&quot;]
+
+itchat.run()
+</code></pre><h3 id="5-退出及登录完成后调用的特定方法"><a href="#5-退出及登录完成后调用的特定方法" class="headerlink" title="5. 退出及登录完成后调用的特定方法"></a>5. 退出及登录完成后调用的特定方法</h3><p>登录完成后的方法需要赋值在 <code>loginCallback</code> 中<br>退出后的方法,需要赋值在 <code>exitCallback</code> 中.</p>
+<pre><code>import itchat, time
+def lc():
+    print(&quot;Finash Login!&quot;)
+def ec():
+    print(&quot;exit&quot;)
+
+itchat.auto_login(loginCallback=lc, exitCallback=ec)
+time.sleep()
+itchat.logout()
+</code></pre><p>若不设置 <code>loginCallback</code> 的值, 将会自动删除二维码图片并清空命令行显示.</p>
+<h3 id="6-用户多开"><a href="#6-用户多开" class="headerlink" title="6. 用户多开"></a>6. 用户多开</h3><pre><code>import itchat
+netInstance = itchat.new_instance()
+netInstance.auto_login(hotReload=True, statusStorageDir=&quot;newInstance.pkl&quot;)
+
+@newInstance.msg_register(TEXT)
+def reply(msg):
+    return msg.text
+
+netInstance.run()
+</code></pre><h2 id="三-回复"><a href="#三-回复" class="headerlink" title="三. 回复"></a>三. 回复</h2><p>五种回复方法, 建议直接使用 <code>send</code> 方法</p>
+<h3 id="1-send"><a href="#1-send" class="headerlink" title="1. send"></a>1. <code>send</code></h3><ul>
+<li>方法: <code>send(msg=&quot;Text Message&quot;, toUserName=None)</code></li>
+<li><p>参数: </p>
+<ul>
+<li><code>msg</code> : 文本消息内容</li>
+<li><code>@fil@path_to_file</code> : 发送文件</li>
+<li><code>@img@path_to_img</code> : 发送图片</li>
+<li><code>@vid@path_to_video</code> : 发送视频</li>
+<li><code>toUserName</code> : 发送对象, 如果留空, 将发送给自己.</li>
+</ul>
+</li>
+<li><p>返回值: True, False</p>
+</li>
+<li><p>示例代码:</p>
+<pre><code># coding-utf-8
+import itchat
+
+itchat.auto_login()
+itchat.send(&quot;Hello World!&quot;)
+ithcat.send(&quot;@fil@%s&quot; % &apos;/tmp/test.text&apos;)
+ithcat.send(&quot;@img@%s&quot; % &apos;/tmp/test.png&apos;)
+ithcat.send(&quot;@vid@%s&quot; % &apos;/tmp/test.mkv&apos;)
+</code></pre></li>
+</ul>
+<h3 id="2-send-msg"><a href="#2-send-msg" class="headerlink" title="2. send_msg"></a>2. <code>send_msg</code></h3><ul>
+<li>方法: <code>send_msg(msg=&#39;Text Message&#39;, toUserName=None)</code></li>
+<li>参数: <ul>
+<li><code>msg</code>: 消息内容</li>
+<li><code>toUserName</code>: 发送对象, 如果留空, 将发送给自己.</li>
+</ul>
+</li>
+<li>返回值: True, False</li>
+<li><p>示例代码:</p>
+<pre><code>import itchat
+
+itchat.auto_login()
+itchat.send_msg(&quot;hello world.&quot;)
+</code></pre></li>
+</ul>
+<h3 id="3-send-file"><a href="#3-send-file" class="headerlink" title="3. send_file"></a>3. <code>send_file</code></h3><ul>
+<li>方法: <code>send_file(fileDir, toUserName=None)</code></li>
+<li>参数: <ul>
+<li><code>fileDir</code> : 文件路径, 当文件不存在时, 将打印无此文件的提醒.</li>
+<li><code>toUserName</code> : 发送对象, 如果留空, 将发送给自己.</li>
+</ul>
+</li>
+<li>返回值: True, False</li>
+<li><p>示例代码:</p>
+<pre><code>import itchat
+
+itchat.auto_login()
+itchat.send_file(&quot;/tmp/test.txt&quot;)
+</code></pre></li>
+</ul>
+<h3 id="4-send-img"><a href="#4-send-img" class="headerlink" title="4. send_img"></a>4. <code>send_img</code></h3><ul>
+<li>方法: <code>send_img(fileDir, toUserName=None)</code></li>
+<li><p>参数:</p>
+<ul>
+<li><code>fileDir</code> : 文件路径, 当文件不存在时, 将打印无此文件的提醒.</li>
+<li><code>toUserName</code> : 发送对象, 如果留空, 将发送给自己.</li>
+</ul>
+</li>
+<li><p>返回值: True, False</p>
+</li>
+<li><p>示例代码:</p>
+<pre><code>import itchat
+
+itchat.auto_login()
+itchat.send_img(&quot;/tmp/test.txt&quot;)
+</code></pre></li>
+</ul>
+<h3 id="5-send-video"><a href="#5-send-video" class="headerlink" title="5. send_video"></a>5. <code>send_video</code></h3><ul>
+<li>方法: <code>send_video(fileDir, toUserName=None)</code></li>
+<li>参数: <ul>
+<li><code>fileDir</code> : 文件路径, 当文件不存在时, 将打印无此文件的提醒.</li>
+<li><code>toUserName</code> : 发送对象, 如果留空, 将发送给自己.</li>
+</ul>
+</li>
+<li>返回值: True, False</li>
+<li><p>示例代码:</p>
+<pre><code>import itchat
+
+itchat.auto_login()
+itchat.send_video(&quot;/tmp/test.txt&quot;)
+</code></pre></li>
+</ul>
+<h2 id="四-注册消息方法"><a href="#四-注册消息方法" class="headerlink" title="四. 注册消息方法"></a>四. 注册消息方法</h2><p>itchat 将根据接受到的消息类型寻找对应的已注册的方法.</p>
+<p>如果一个消息类型没有对应的注册方法, 该消息将会被<strong>舍弃</strong>.</p>
+<p>在运行过程中也可以动态注册方法, 注册方式与结果不变.</p>
+<h3 id="1-注册方法"><a href="#1-注册方法" class="headerlink" title="1. 注册方法:"></a>1. 注册方法:</h3><p>两种方法注册消息.</p>
+<ul>
+<li><p>不带具体对象注册, 将注册为普通消息的回复方法.</p>
+<pre><code>import itchat
+from itchat.content import *
+
+@itchat.msg_register(TEXT)
+def simple_reply(msg):
+    return &quot;T reveived: %s&quot; % msg[&quot;Text&quot;]
+</code></pre></li>
+<li><p>带对象参数注册, 对应消息对象将调用该方法.</p>
+<pre><code>import itchat
+from itchat.content import *
+
+@itchat.msg_register(TEXT, isFriendChat=True, isGroupChat=True,isMpChat=True)
+def text_reply(msg):
+    msg.user.send(&quot;%s : %s&quot; % (mst.type, msg.text))
+</code></pre></li>
+</ul>
+<h3 id="2-消息类型"><a href="#2-消息类型" class="headerlink" title="2. 消息类型"></a>2. 消息类型</h3><p><strong>向注册方法传入的 <code>msg</code> 包含微信返回的字典的所有内容</strong>.</p>
+<p>itchat 增加 <code>Text</code>, <code>Type</code>(也就是参数) 键值, 方便操作.</p>
+<p><code>itcaht.content</code> 中包含所有的<strong>消息类型参数</strong>, 如下表:</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>Text 键值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TEXT</td>
+<td>文本</td>
+<td>文本内容</td>
+</tr>
+<tr>
+<td>MAP</td>
+<td>地图</td>
+<td>位置文本</td>
+</tr>
+<tr>
+<td>CARD</td>
+<td>名片</td>
+<td>推荐人字典</td>
+</tr>
+<tr>
+<td>NOTE</td>
+<td>通知</td>
+<td>通知文本</td>
+</tr>
+<tr>
+<td>SHARING</td>
+<td>分享</td>
+<td>分享名称</td>
+</tr>
+<tr>
+<td>PICTURE</td>
+<td>图片/表情</td>
+<td>下载方法</td>
+</tr>
+<tr>
+<td>RECORDING</td>
+<td>语音</td>
+<td>下载方法</td>
+</tr>
+<tr>
+<td>ATTACHMENT</td>
+<td>附件</td>
+<td>下载方法</td>
+</tr>
+<tr>
+<td>VIDEO</td>
+<td>小视频</td>
+<td>下载方法</td>
+</tr>
+<tr>
+<td>FRIENDS</td>
+<td>好友邀请</td>
+<td>添加好友所需参数</td>
+</tr>
+<tr>
+<td>SYSTEM</td>
+<td>系统消息</td>
+<td>更新内容的用户或群聊的<code>UserName</code>组成的列表</td>
+</tr>
+</tbody>
+</table>
+<p>代码示例: 存储接受的文件</p>
+<pre><code>@itchat.msg_register(ATTACHMENT)
+def download_files(msg):
+    msg[&quot;Text&quot;](msg[&quot;FileName&quot;])
+</code></pre><p><strong>附件的下载与发送</strong><br>itchat 的附件下载方法存储在 msg 的 Text 键中.</p>
+<p>发送的文件名(图片给出的默认文件名), 都存储在 msg 的 FileName 键中.</p>
+<p>下载方法, 接受一个可用的位置参数(包括文件名), 并将文件响应的存储.</p>
+<pre><code>@itchat.msg_register([PICTURE, RECORDING, ATTACHMENT, VIDEO])
+def download_files(msg):
+    msg.download(msg.fileName)
+    itchat.send(&apos;@%s@%s&apos; % (&apos;img&apos; if msg[&apos;Type&apos;] == &apos;Picture&apos; else &apos;fil&apos;, msg[&quot;FileName&quot;]), msg[&quot;FromUserName&quot;])
+
+    return &quot;%s received&quot; % msg[&quot;Type&quot;]
+</code></pre><p>如果不需要下载到本地, 仅需要读取二进制串进一步处理可以不传入参数, 方法将会返回图片的二进制串.</p>
+<pre><code>@itchat.msg_register([PICTURE, RECORDING, ATTACHMENT, VIDEO])
+def download_files(msg):
+    with open(msg.fileName, &apos;wb&apos;) as f:
+        f.write(msg.download())
+</code></pre><p><strong>群消息</strong>增加了三个键值:</p>
+<ul>
+<li><code>isAt</code> : 判断是否 @ 本号</li>
+<li><code>ActualNickName</code> : 实际 NickName</li>
+<li><code>Content</code> : 实际 Content</li>
+</ul>
+<p>测试程序:</p>
+<pre><code>import itcaht
+from itchat.content import TEXT
+
+@itchat.msg_register(TEXT, isGroupChat=True)
+def text_reply(msg):
+    print(msg.isAt)
+    print(msg.actualNickName)
+    print(msg.text)
+
+itchat.auto_login()
+itchat.run()
+</code></pre><h3 id="3-注册消息的优先级"><a href="#3-注册消息的优先级" class="headerlink" title="3. 注册消息的优先级"></a>3. 注册消息的优先级</h3><p>优先级规则: </p>
+<ul>
+<li>后注册消息 &gt; 先注册消息</li>
+<li>带参数消息 &gt; 不带参数消息</li>
+</ul>
+<h3 id="4-动态注册消息"><a href="#4-动态注册消息" class="headerlink" title="4. 动态注册消息"></a>4. 动态注册消息</h3><ul>
+<li><p>将 <code>itchat.run()</code> 放入另一线程</p>
+<pre><code>import thread
+thread.start_new_thread(itcaht.run(), ())
+</code></pre></li>
+<li><p>使用 <code>configured_reply()</code> 方法处理消息.</p>
+<pre><code>while 1:
+    itcaht.configured_reply()
+    # some other functions
+    time.sleep()
+</code></pre></li>
+</ul>
+<p><strong>示例</strong>: </p>
+<pre><code>#coding=utf-8
+import thread
+
+import itchat
+from itchat.content import *
+
+replyToGroupChat = True
+functionStatus = False
+
+def change_function():
+    if replyToGroupChat != functionStatus:
+        if replyToGroupChat:
+            @itchat.msg_register(TEXT, isGroupChat=True)
+            def group_text_reply(msg):
+                if u&apos;关闭&apos; in msg[&quot;Text&quot;]:
+                    replyToGroupChat = False
+                    return u&quot;以关闭&quot;
+                elif u&quot;开启&quot; in msg[&quot;Text&quot;]:
+                    return u&quot;已经在运行&quot;
+                return u&apos;输入&quot;关闭&quot; 或者 &quot;开启&quot; 测试功能&apos;
+        else:
+            @itcaht.msg_register(TEXT, isGroupCaht=True)
+            def group_text_reply(msg):
+                if u&quot;开启&quot; in msg[&quot;Text&quot;]:
+                    replyToGroupChat = True
+                    return u&quot;重新开启成功&quot;
+
+        functionStatus = replyToGroupChat
+
+thread.start_new_thread(itcaht.run, ())
+while 1:
+    change_function()
+    time.sleep(1)
+
+# 各类消息的注册: 通过如下代码, 微信已经可以就日常的各种信息进行获取与回复.
+
+import  itchat, time
+from itchat.content import *
+
+@itchat.msg_register([TEXT, MAP, NOTE, SHARING])
+def text_replay(msg):
+    msg.user.send(&apos;%s %s&apos; % (msg.type, msg.text))
+
+@itchat.msg_register([PICTURE, RECORDING, ATTACHMENT, VIDEO])
+def download_file(msg):
+    msg.download(msg.fileName)
+    typeSymbol = {
+        PICTURE: &apos;img&apos;,
+        VIDEO: &apos;vid&apos;, }.get(msg.type, &apos;fil&apos;)
+
+    return &quot;@%s@%s&quot; % (typeSymbol, msg.fileName)
+
+@itchat.msg_register(FRIENDS)
+def add_friend(msg):
+    msg.user.verify()
+    msg.user.send(&quot;Nice to meet you!&quot;)
+
+@itchat.msg_register(TEXT, isGroupChat=True)
+def text_replay(msg):
+    if msg.isAt:
+        msg.user.send(u&apos;@$s\u2005I received: %s&apos; % (msg.actualNickName, msg.text))
+
+itchat.auto_login(True)
+itchat.run(True)    
+</code></pre><h2 id="五-消息内容"><a href="#五-消息内容" class="headerlink" title="五. 消息内容"></a>五. 消息内容</h2><h3 id="1-微信一般消息内容"><a href="#1-微信一般消息内容" class="headerlink" title="1. 微信一般消息内容"></a>1. 微信一般消息内容</h3><p>微信回复的所有消息都遵循这一格式.</p>
+<pre><code>{
+    &quot;FromUserName&quot;: &quot;&quot;,
+    &quot;ToUserName&quot;: &quot;&quot;,
+    &quot;Content&quot;: &quot;&quot;,
+    &quot;StatusNotifyUserName&quot;: &quot;&quot;,
+    &quot;ImgWidth&quot;: 0,
+    &quot;PlayLength&quot;: 0,
+    &quot;RecommendInfo&quot;: {},
+    &quot;StatusNotifyCode&quot;: 0,
+    &quot;NewMsgId&quot;: &quot;&quot;,
+    &quot;Status&quot;: 0,
+    &quot;VoiceLength&quot;: 0,
+    &quot;ForwardFlag&quot;: 0,
+    &quot;AppMsgType&quot;: 0,
+    &quot;Ticket&quot;: &quot;&quot;,
+    &quot;AppInfo&quot;: {},
+    &quot;Url&quot;: &quot;&quot;,
+    &quot;ImgStatus&quot;: 0,
+    &quot;MsgType&quot;: 0,
+    &quot;ImgHeight&quot;: 0,
+    &quot;MediaId&quot;: &quot;&quot;,
+    &quot;MsgId&quot;: &quot;&quot;,
+    &quot;FileName&quot;: &quot;&quot;,
+    &quot;HasProductId&quot;: 0,
+    &quot;FileSize&quot;: &quot;&quot;,
+    &quot;CreateTime&quot;: 0,
+    &quot;SubMsgType&quot;: 0
+}
+</code></pre><h3 id="2-消息具体内容"><a href="#2-消息具体内容" class="headerlink" title="2. 消息具体内容"></a>2. 消息具体内容</h3><h4 id="1-初始化消息"><a href="#1-初始化消息" class="headerlink" title="1) 初始化消息"></a>1) 初始化消息</h4><pre><code>MsgType: 51
+FromUserName: 自己ID
+ToUserName: 自己ID
+StatusNotifyUserName: 最近联系的联系人ID
+Content:
+    &lt;msg&gt;
+        &lt;op id=&apos;4&apos;&gt;
+            &lt;username&gt;
+                # 最近联系的联系人
+                filehelper,xxx@chatroom,wxid_xxx,xxx,...
+            &lt;/username&gt;
+            &lt;unreadchatlist&gt;
+                &lt;chat&gt;
+                    &lt;username&gt;
+                    # 朋友圈
+                        MomentsUnreadMsgStatus
+                    &lt;/username&gt;
+                    &lt;lastreadtime&gt;
+                        1454502365
+                    &lt;/lastreadtime&gt;
+                &lt;/chat&gt;
+            &lt;/unreadchatlist&gt;
+            &lt;unreadfunctionlist&gt;
+            # 未读的功能账号消息，群发助手，漂流瓶等
+            &lt;/unreadfunctionlist&gt;
+        &lt;/op&gt;
+    &lt;/msg&gt;
+</code></pre><h4 id="2-文本消息"><a href="#2-文本消息" class="headerlink" title="2) 文本消息"></a>2) 文本消息</h4><pre><code>MsgType: 1
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+Content: 消息内容
+</code></pre><h4 id="3-图片消息"><a href="#3-图片消息" class="headerlink" title="3) 图片消息"></a>3) 图片消息</h4><p>itchat 增加了 Text 键, 键值为 下载该图片的方法.</p>
+<pre><code>MsgType: 3
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+MsgId: 用于获取图片
+Content:
+    &lt;msg&gt;
+        &lt;img length=&quot;6503&quot; hdlength=&quot;0&quot; /&gt;
+        &lt;commenturl&gt;&lt;/commenturl&gt;
+    &lt;/msg&gt;
+</code></pre><h4 id="4-小视频消息"><a href="#4-小视频消息" class="headerlink" title="4) 小视频消息"></a>4) 小视频消息</h4><p>itchat 增加了 Text 键, 键值为 下载该视频的方法.</p>
+<pre><code>MsgType: 62
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+MsgId: 用于获取小视频
+Content:
+    &lt;msg&gt;
+        &lt;img length=&quot;6503&quot; hdlength=&quot;0&quot; /&gt;
+        &lt;commenturl&gt;&lt;/commenturl&gt;
+    &lt;/msg&gt;
+</code></pre><h4 id="5-地理位置消息"><a href="#5-地理位置消息" class="headerlink" title="5) 地理位置消息"></a>5) 地理位置消息</h4><p>itchat 增加了 Text 键, 键值为 该地点的文本形式.</p>
+<pre><code>MsgType: 1
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+Content: http://weixin.qq.com/cgi-bin/redirectforward?args=xxx
+</code></pre><h4 id="6-名片消息"><a href="#6-名片消息" class="headerlink" title="6) 名片消息"></a>6) 名片消息</h4><p>itchat 增加了 Text 键, 键值为 该调用 <code>add_friend</code> 需要的属性.</p>
+<pre><code>MsgType: 42
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+Content:
+    &lt;?xml version=&quot;1.0&quot;?&gt;
+    &lt;msg bigheadimgurl=&quot;&quot; smallheadimgurl=&quot;&quot; username=&quot;&quot; nickname=&quot;&quot;  shortpy=&quot;&quot; alias=&quot;&quot; imagestatus=&quot;3&quot; scene=&quot;17&quot; province=&quot;&quot; city=&quot;&quot; sign=&quot;&quot; sex=&quot;1&quot; certflag=&quot;0&quot; certinfo=&quot;&quot; brandIconUrl=&quot;&quot; brandHomeUrl=&quot;&quot; brandSubscriptConfigUrl=&quot;&quot; brandFlags=&quot;0&quot; regionCode=&quot;&quot; /&gt;
+
+RecommendInfo:
+    {
+        &quot;UserName&quot;: &quot;xxx&quot;, # ID
+        &quot;Province&quot;: &quot;xxx&quot;, 
+        &quot;City&quot;: &quot;xxx&quot;, 
+        &quot;Scene&quot;: 17, 
+        &quot;QQNum&quot;: 0, 
+        &quot;Content&quot;: &quot;&quot;, 
+        &quot;Alias&quot;: &quot;xxx&quot;, # 微信号
+        &quot;OpCode&quot;: 0, 
+        &quot;Signature&quot;: &quot;&quot;, 
+        &quot;Ticket&quot;: &quot;&quot;, 
+        &quot;Sex&quot;: 0, # 1:男, 2:女
+        &quot;NickName&quot;: &quot;xxx&quot;, # 昵称
+        &quot;AttrStatus&quot;: 4293221, 
+        &quot;VerifyFlag&quot;: 0
+    }
+</code></pre><h4 id="7-语音消息"><a href="#7-语音消息" class="headerlink" title="7) 语音消息"></a>7) 语音消息</h4><p>itchat 增加了 Text 键, 键值为 下载该语音文件的方法.</p>
+<pre><code>MsgType: 34
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+MsgId: 用于获取语音
+Content:
+    &lt;msg&gt;
+        &lt;voicemsg endflag=&quot;1&quot; cancelflag=&quot;0&quot; forwardflag=&quot;0&quot; voiceformat=&quot;4&quot; voicelength=&quot;1580&quot; length=&quot;2026&quot; bufid=&quot;216825389722501519&quot; clientmsgid=&quot;49efec63a9774a65a932a4e5fcd4e923filehelper174_1454602489&quot; fromusername=&quot;&quot; /&gt;
+    &lt;/msg&gt;
+</code></pre><h4 id="8-动画表情"><a href="#8-动画表情" class="headerlink" title="8) 动画表情"></a>8) 动画表情</h4><p>itchat添加了Text键，键值为下载该图片表情的方法。</p>
+<p>由于版权问题，部分微信商店提供的表情是无法下载的，注意。</p>
+<pre><code>MsgType: 47
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+Content:
+    &lt;msg&gt;
+        &lt;emoji fromusername = &quot;&quot; tousername = &quot;&quot; type=&quot;2&quot; idbuffer=&quot;media:0_0&quot; md5=&quot;e68363487d8f0519c4e1047de403b2e7&quot; len = &quot;86235&quot; productid=&quot;com.tencent.xin.emoticon.bilibili&quot; androidmd5=&quot;e68363487d8f0519c4e1047de403b2e7&quot; androidlen=&quot;86235&quot; s60v3md5 = &quot;e68363487d8f0519c4e1047de403b2e7&quot; s60v3len=&quot;86235&quot; s60v5md5 = &quot;e68363487d8f0519c4e1047de403b2e7&quot; s60v5len=&quot;86235&quot; cdnurl = &quot;http://emoji.qpic.cn/wx_emoji/eFygWtxcoMF8M0oCCsksMA0gplXAFQNpiaqsmOicbXl1OC4Tyx18SGsQ/&quot; designerid = &quot;&quot; thumburl = &quot;http://mmbiz.qpic.cn/mmemoticon/dx4Y70y9XctRJf6tKsy7FwWosxd4DAtItSfhKS0Czr56A70p8U5O8g/0&quot; encrypturl = &quot;http://emoji.qpic.cn/wx_emoji/UyYVK8GMlq5VnJ56a4GkKHAiaC266Y0me0KtW6JN2FAZcXiaFKccRevA/&quot; aeskey= &quot;a911cc2ec96ddb781b5ca85d24143642&quot; &gt;&lt;/emoji&gt; 
+        &lt;gameext type=&quot;0&quot; content=&quot;0&quot; &gt;&lt;/gameext&gt;
+    &lt;/msg&gt;
+</code></pre><h4 id="9-普通链接或应用分享消息"><a href="#9-普通链接或应用分享消息" class="headerlink" title="9) 普通链接或应用分享消息"></a>9) 普通链接或应用分享消息</h4><pre><code>MsgType: 49
+AppMsgType: 5
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+Url: 链接地址
+FileName: 链接标题
+Content:
+    &lt;msg&gt;
+        &lt;appmsg appid=&quot;&quot;  sdkver=&quot;0&quot;&gt;
+            &lt;title&gt;&lt;/title&gt;
+            &lt;des&gt;&lt;/des&gt;
+            &lt;type&gt;5&lt;/type&gt;
+            &lt;content&gt;&lt;/content&gt;
+            &lt;url&gt;&lt;/url&gt;
+            &lt;thumburl&gt;&lt;/thumburl&gt;
+            ...
+        &lt;/appmsg&gt;
+        &lt;appinfo&gt;
+            &lt;version&gt;&lt;/version&gt;
+            &lt;appname&gt;&lt;/appname&gt;
+        &lt;/appinfo&gt;
+    &lt;/msg&gt;
+</code></pre><h4 id="10-音乐链接消息"><a href="#10-音乐链接消息" class="headerlink" title="10) 音乐链接消息"></a>10) 音乐链接消息</h4><pre><code>MsgType: 49
+AppMsgType: 3
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+Url: 链接地址
+FileName: 音乐名
+
+AppInfo: # 分享链接的应用
+    {
+        Type: 0, 
+        AppID: wx485a97c844086dc9
+    }
+
+Content:
+    &lt;msg&gt;
+        &lt;appmsg appid=&quot;wx485a97c844086dc9&quot;  sdkver=&quot;0&quot;&gt;
+            &lt;title&gt;&lt;/title&gt;
+            &lt;des&gt;&lt;/des&gt;
+            &lt;action&gt;&lt;/action&gt;
+            &lt;type&gt;3&lt;/type&gt;
+            &lt;showtype&gt;0&lt;/showtype&gt;
+            &lt;mediatagname&gt;&lt;/mediatagname&gt;
+            &lt;messageext&gt;&lt;/messageext&gt;
+            &lt;messageaction&gt;&lt;/messageaction&gt;
+            &lt;content&gt;&lt;/content&gt;
+            &lt;contentattr&gt;0&lt;/contentattr&gt;
+            &lt;url&gt;&lt;/url&gt;
+            &lt;lowurl&gt;&lt;/lowurl&gt;
+            &lt;dataurl&gt;
+                http://ws.stream.qqmusic.qq.com/C100003i9hMt1bgui0.m4a?vkey=6867EF99F3684&amp;amp;guid=ffffffffc104ea2964a111cf3ff3edaf&amp;amp;fromtag=46
+            &lt;/dataurl&gt;
+            &lt;lowdataurl&gt;
+                http://ws.stream.qqmusic.qq.com/C100003i9hMt1bgui0.m4a?vkey=6867EF99F3684&amp;amp;guid=ffffffffc104ea2964a111cf3ff3edaf&amp;amp;fromtag=46
+            &lt;/lowdataurl&gt;
+            &lt;appattach&gt;
+                &lt;totallen&gt;0&lt;/totallen&gt;
+                &lt;attachid&gt;&lt;/attachid&gt;
+                &lt;emoticonmd5&gt;&lt;/emoticonmd5&gt;
+                &lt;fileext&gt;&lt;/fileext&gt;
+            &lt;/appattach&gt;
+            &lt;extinfo&gt;&lt;/extinfo&gt;
+            &lt;sourceusername&gt;&lt;/sourceusername&gt;
+            &lt;sourcedisplayname&gt;&lt;/sourcedisplayname&gt;
+            &lt;commenturl&gt;&lt;/commenturl&gt;
+            &lt;thumburl&gt;
+                http://imgcache.qq.com/music/photo/album/63/180_albumpic_143163_0.jpg
+            &lt;/thumburl&gt;
+            &lt;md5&gt;&lt;/md5&gt;
+        &lt;/appmsg&gt;
+        &lt;fromusername&gt;&lt;/fromusername&gt;
+        &lt;scene&gt;0&lt;/scene&gt;
+        &lt;appinfo&gt;
+            &lt;version&gt;29&lt;/version&gt;
+            &lt;appname&gt;摇一摇搜歌&lt;/appname&gt;
+        &lt;/appinfo&gt;
+        &lt;commenturl&gt;&lt;/commenturl&gt;
+    &lt;/msg&gt;
+</code></pre><h4 id="11-群消息"><a href="#11-群消息" class="headerlink" title="11) 群消息"></a>11) 群消息</h4><p>itchat 增加了三个群聊相关的键值:</p>
+<ul>
+<li><code>isAt</code> : 判断是否 @ 本号</li>
+<li><code>ActualNickName</code> : 实际 NickName</li>
+<li><p><code>Content</code> : 实际 Content</p>
+<pre><code>MsgType: 1
+FromUserName: @@xxx
+ToUserName: @xxx
+Content:
+    @xxx:&lt;br/&gt;xxx
+</code></pre></li>
+</ul>
+<h4 id="12-红包消息"><a href="#12-红包消息" class="headerlink" title="12) 红包消息"></a>12) 红包消息</h4><pre><code>MsgType: 49
+AppMsgType: 2001
+FromUserName: 发送方ID
+ToUserName: 接收方ID
+Content: 未知
+</code></pre><h4 id="13-系统消息"><a href="#13-系统消息" class="headerlink" title="13) 系统消息"></a>13) 系统消息</h4><pre><code>MsgType: 10000
+FromUserName: 发送方ID
+ToUserName: 自己ID
+Content:
+    &quot;你已添加了 xxx ，现在可以开始聊天了。&quot;
+    &quot;如果陌生人主动添加你为朋友，请谨慎核实对方身份。&quot;
+    &quot;收到红包，请在手机上查看&quot;
+</code></pre><h2 id="六-账号类型"><a href="#六-账号类型" class="headerlink" title="六. 账号类型"></a>六. 账号类型</h2><p>itchat 为三种账号都提供了 整体获取方法与搜索方法.</p>
+<p><strong>群聊</strong>多出了获取用户列表方法以及创建群聊,增加/删除用户的方法.</p>
+<h3 id="1-好友"><a href="#1-好友" class="headerlink" title="1. 好友"></a>1. 好友</h3><ul>
+<li><p><code>get_friends</code> : 返回完整的好友列表</p>
+<ul>
+<li>每个好友为一个字典, 其中第一项为本人的账号信息;</li>
+<li>传入 update=True, 将更新好友列表并返回, <code>get_friends(update=True)</code>.</li>
+</ul>
+</li>
+<li><p><code>search_friends</code> : 好友搜索,  有<strong>四种</strong>搜索方式</p>
+<ul>
+<li><p>仅获取自己的用户信息</p>
+<pre><code># 获取自己的用户信息，返回自己的属性字典
+itchat.search_friends()
+</code></pre></li>
+<li><p>获取特定 <code>UserName</code> 的用户信息</p>
+<pre><code># 获取特定UserName的用户信息
+itchat.search_friends(userName=&apos;@abcdefg1234567&apos;)
+</code></pre></li>
+<li><p>获取备注,微信号, 昵称中的任何一项等于<code>name</code>键值的用户. (可以与下一项配置使用.)</p>
+<pre><code># 获取任何一项等于name键值的用户
+itchat.search_friends(name=&apos;littlecodersh&apos;)
+</code></pre></li>
+<li><p>获取备注,微信号, 昵称分别等于相应键值的用户. (可以与上一项配置使用.)</p>
+<pre><code># 获取分别对应相应键值的用户
+itchat.search_friends(wechatAccount=&apos;littlecodersh&apos;)
+# 三、四项功能可以一同使用
+itchat.search_friends(name=&apos;LittleCoder机器人&apos;, wechatAccount=&apos;littlecodersh&apos;)
+</code></pre></li>
+</ul>
+</li>
+<li><p><code>update_friend</code> : 好友更新</p>
+<ul>
+<li>特定用户: 传入用户<code>UserName</code>, 返回指定用户的最新信息.</li>
+<li><p>用户列表: 传入 <code>UserName</code> 组成的列表, 返回用户最新信息组成的列表.</p>
+<p><code>memberList = itchat.update_friend(&#39;@abcdefg1234567&#39;)</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-公众号"><a href="#2-公众号" class="headerlink" title="2. 公众号"></a>2. 公众号</h3><ul>
+<li><p><code>get_mps</code> : 将返回完整的工作号列表.</p>
+<ul>
+<li>每个公众号为一个字典,</li>
+<li>传入 <code>update=True</code> 将更新公众号列表, 并返回.</li>
+</ul>
+</li>
+<li><p><code>search_mps</code> : 有两种搜索方法:</p>
+<ul>
+<li><p>获取特定<code>UserName</code>的公众号</p>
+<pre><code># 获取特定UserName的公众号，返回值为一个字典
+itchat.search_mps(userName=&apos;@abcdefg1234567&apos;)
+</code></pre></li>
+<li><p>获取名字中还有特定字符的公众号.</p>
+<pre><code># 获取名字中含有特定字符的公众号，返回值为一个字典的列表
+itchat.search_mps(name=&apos;LittleCoder&apos;)
+</code></pre></li>
+<li><p>当两项都是勇士, 将仅返回特定<code>UserName</code>的公众号.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-群聊"><a href="#3-群聊" class="headerlink" title="3. 群聊"></a>3. 群聊</h3><ul>
+<li><p><code>get_chatrooms</code> : 返回完整的群聊列表.</p>
+</li>
+<li><p><code>search_chatrooms</code> : 群聊搜索.</p>
+</li>
+<li><p><code>update_chatroom</code> : 获取群聊用户列表或更新该群聊.</p>
+<p>  群聊在首次获取中不会获取群聊的用户列表, 所以需要调用该命令才能获取群聊成员.</p>
+<ul>
+<li>传入群聊的 <code>UserName</code> , 返回特定群聊的详细信息.</li>
+<li><p>传入<code>UserName</code>组成的列表, 返回指定用户的最新信息组成的列表.</p>
+<p><code>memberList = itchat.update_chatroom(&#39;@@abcdefg1234567&#39;, detailedMember=True)</code></p>
+</li>
+</ul>
+</li>
+<li><p>创建群聊,增加/删除群聊用户:</p>
+<ul>
+<li>由于之前通过群聊检测是否被好友拉黑的程序, 目前这三个方法都被严格限制了使用频率.</li>
+<li>删除群聊需要本账号为管理员, 否则无效.</li>
+<li>将用户加入群聊有<code>直接加入</code>与<code>发送邀请</code>, 通过 <code>useInvitation</code> 设置.</li>
+<li><p>超过 40 人的群聊无法使用直接加入的加入方式.</p>
+<pre><code>memberList = itchat.get_frients()[1:]
+# 创建群聊, topic 键值为群聊名称.
+chatroomUserName = itchat.create_chatroom(memberList, &quot;test chatroom&quot;)
+# 删除群聊内的用户
+itchat.delete_member_from_chatroom(chatroomUserName, memberList[0])
+# 增加用户进入群聊.
+itchat.add_member_into_chatroom(chatroomUserName, memberList[0], useInvitation=False)
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-Uins-通过Uin唯一的确定好友与群聊。"><a href="#4-Uins-通过Uin唯一的确定好友与群聊。" class="headerlink" title="4. Uins : 通过Uin唯一的确定好友与群聊。"></a>4. Uins : 通过Uin唯一的确定好友与群聊。</h3><p>Uin 是微信中用于标识用户的方式, 每一个用户/群聊都有唯一且不同的 Uin.<br>通过 Uin, 即使退出了重新登录, 也可以轻松的确认正在对话的是上一次登录的哪一个用户.</p>
+<p>Uin 与其他值不同, 微信后台做了一些限制, 必须通过特殊的操作才能获取. 首次点开登录用的手机端的某个好友或者群聊, itchat 就能获取到该好友或者群聊 Uin. 如果想要通过程序获取, 可以用程序将某个好友或者群聊置顶(取消置顶).</p>
+<p><strong>示例程序</strong>:</p>
+<pre><code>import re, sys, json
+import itchat
+from itchat.content import *
+
+itcaht.auto_login()
+
+@itchat.msg_register(SYSTEM)
+def get_uin(msg):
+    if msg[&quot;SystemInfo&quot;] != &apos;unis&apos;:
+        return
+    ins = itchat.instanceList[0]
+    fullContact = ins.memberList + ins.chatroomList + ins.mpList
+    print(&quot;** Uin updated **&quot;)
+    for username in msg[&quot;Text&quot;]:
+        member = itchat.utils.search_dict_list(fullContact, &apos;UserName&apos;, username)
+        print((&quot;%s: %s&quot; % (member.get(&quot;NickName&quot;, &apos;&apos;), member[&quot;Uin&quot;])).encode(sys.stdin.encoding, &apos;replace&apos;))
+
+itchat.run(True)
+</code></pre><p>每当 Uin 更新了, 就会打印相应的更新情况. 同样, 吐过希望获取 Uin 更新的情况, 也统过获取<code>SYSTEM</code>类型的消息实现.</p>
+<h2 id="七-Q-amp-A"><a href="#七-Q-amp-A" class="headerlink" title="七. Q &amp; A"></a>七. Q &amp; A</h2><h3 id="1-中文文件名文件上传"><a href="#1-中文文件名文件上传" class="headerlink" title="1. 中文文件名文件上传"></a>1. 中文文件名文件上传</h3><pre><code>Q: 为什么中文的文件没有办法上传？
+
+A: 这是由于requests的编码问题导致的。若需要支持中文文件传输，将fields.py(py3版本见这里)文件放入requests包的packages/urllib3下即可
+</code></pre><h3 id="2-命令行显示二维码"><a href="#2-命令行显示二维码" class="headerlink" title="2. 命令行显示二维码"></a>2. 命令行显示二维码</h3><pre><code>Q: 为什么我在设定了itchat.auto_login()的enableCmdQR为True后还是没有办法在命令行显示二维码？
+
+A: 这是由于没有安装可选的包pillow，可以使用右边的命令安装：pip install pillow
+</code></pre><h3 id="3-如何通过itchat实现控制器"><a href="#3-如何通过itchat实现控制器" class="headerlink" title="3. 如何通过itchat实现控制器"></a>3. 如何通过itchat实现控制器</h3><pre><code>Q: 如何通过这个包将自己的微信号变为控制器？
+
+A: 有两种方式：发送、接受自己UserName的消息；发送接收文件传输助手（filehelper）的消息
+</code></pre><h2 id="八-itchat-方法汇总"><a href="#八-itchat-方法汇总" class="headerlink" title="八. itchat 方法汇总:"></a>八. itchat 方法汇总:</h2><pre><code>itchat.add_friend                  
+itchat.new_instance                
+itchat.add_member_into_chatroom    
+itchat.originInstance              
+itchat.auto_login                  
+itchat.returnvalues                
+itchat.check_login                 
+itchat.run                         
+itchat.components                  
+itchat.search_chatrooms            
+itchat.config                      
+itchat.search_friends              
+itchat.configured_reply            
+itchat.search_mps                  
+itchat.content                     
+itchat.send                        
+itchat.core                        
+itchat.send_file                   
+itchat.Core                        
+itchat.send_image                  
+itchat.create_chatroom             
+itchat.send_msg                    
+itchat.delete_member_from_chatroom 
+itchat.send_raw_msg                
+itchat.dump_login_status           
+itchat.send_video                  
+itchat.get_chatrooms               
+itchat.set_alias                   
+itchat.get_contact                 
+itchat.set_chatroom_name           
+itchat.get_friends                 
+itchat.set_logging                 
+itchat.get_head_img                
+itchat.set_pinned                  
+itchat.get_mps                     
+itchat.show_mobile_login           
+itchat.get_msg                     
+itchat.start_receiving             
+itchat.get_QR                      
+itchat.storage                     
+itchat.get_QRuuid                  
+itchat.update_chatroom             
+itchat.instanceList                
+itchat.update_friend               
+itchat.load_login_status           
+itchat.upload_file                 
+itchat.log                         
+itchat.utils                       
+itchat.login                       
+itchat.VERSION                     
+itchat.logout                      
+itchat.web_init                    
+itchat.msg_register
+</code></pre><h2 id="九-Github"><a href="#九-Github" class="headerlink" title="九. Github"></a>九. Github</h2><p><a href="https://github.com/littlecodersh/ItChat/" target="_blank" rel="noopener">itchat</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PyPi/" rel="tag"># PyPi</a>
+          
+            <a href="/tags/itchat/" rel="tag"># itchat</a>
+          
+            <a href="/tags/微信/" rel="tag"># 微信</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/django之零--入门篇/" rel="next" title="django之零--入门篇">
+                <i class="fa fa-chevron-left"></i> django之零--入门篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--服务篇/" rel="prev" title="AngularJS高级程序设计读书笔记--服务篇">
+                AngularJS高级程序设计读书笔记--服务篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#itchat"><span class="nav-text">itchat</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-安装"><span class="nav-text">一. 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-登录"><span class="nav-text">二. 登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-短时间关闭程序后重连"><span class="nav-text">1. 短时间关闭程序后重连.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-命令行二维码"><span class="nav-text">2. 命令行二维码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-自定义登录过程"><span class="nav-text">3. 自定义登录过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-auto-login的实现代码"><span class="nav-text">4. auto_login的实现代码:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-退出及登录完成后调用的特定方法"><span class="nav-text">5. 退出及登录完成后调用的特定方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-用户多开"><span class="nav-text">6. 用户多开</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-回复"><span class="nav-text">三. 回复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-send"><span class="nav-text">1. send</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-send-msg"><span class="nav-text">2. send_msg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-send-file"><span class="nav-text">3. send_file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-send-img"><span class="nav-text">4. send_img</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-send-video"><span class="nav-text">5. send_video</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-注册消息方法"><span class="nav-text">四. 注册消息方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-注册方法"><span class="nav-text">1. 注册方法:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-消息类型"><span class="nav-text">2. 消息类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-注册消息的优先级"><span class="nav-text">3. 注册消息的优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-动态注册消息"><span class="nav-text">4. 动态注册消息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-消息内容"><span class="nav-text">五. 消息内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-微信一般消息内容"><span class="nav-text">1. 微信一般消息内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-消息具体内容"><span class="nav-text">2. 消息具体内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-初始化消息"><span class="nav-text">1) 初始化消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-文本消息"><span class="nav-text">2) 文本消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-图片消息"><span class="nav-text">3) 图片消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-小视频消息"><span class="nav-text">4) 小视频消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-地理位置消息"><span class="nav-text">5) 地理位置消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-名片消息"><span class="nav-text">6) 名片消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-语音消息"><span class="nav-text">7) 语音消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-动画表情"><span class="nav-text">8) 动画表情</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-普通链接或应用分享消息"><span class="nav-text">9) 普通链接或应用分享消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-音乐链接消息"><span class="nav-text">10) 音乐链接消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-群消息"><span class="nav-text">11) 群消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-红包消息"><span class="nav-text">12) 红包消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-系统消息"><span class="nav-text">13) 系统消息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-账号类型"><span class="nav-text">六. 账号类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-好友"><span class="nav-text">1. 好友</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-公众号"><span class="nav-text">2. 公众号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-群聊"><span class="nav-text">3. 群聊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Uins-通过Uin唯一的确定好友与群聊。"><span class="nav-text">4. Uins : 通过Uin唯一的确定好友与群聊。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七-Q-amp-A"><span class="nav-text">七. Q &amp; A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-中文文件名文件上传"><span class="nav-text">1. 中文文件名文件上传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-命令行显示二维码"><span class="nav-text">2. 命令行显示二维码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-如何通过itchat实现控制器"><span class="nav-text">3. 如何通过itchat实现控制器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-itchat-方法汇总"><span class="nav-text">八. itchat 方法汇总:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九-Github"><span class="nav-text">九. Github</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

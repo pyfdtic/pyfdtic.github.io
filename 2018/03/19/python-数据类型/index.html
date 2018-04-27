@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一. intn1 + n2 --&amp;gt; n1.__add__(n2) int.bit_length()  # 返回二进制长度, 最少.  # 定义 int     n = 123     n = int(3)     n = int.__init__(123)  -5 ~ 257 内存优化数字.  int 范围 : 与计算机类型有关     32bit :      64bit :  二. st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-数据类型.md">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/19/python-数据类型/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="一. intn1 + n2 --&amp;gt; n1.__add__(n2) int.bit_length()  # 返回二进制长度, 最少.  # 定义 int     n = 123     n = int(3)     n = int.__init__(123)  -5 ~ 257 内存优化数字.  int 范围 : 与计算机类型有关     32bit :      64bit :  二. st">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-30T09:02:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python-数据类型.md">
+<meta name="twitter:description" content="一. intn1 + n2 --&amp;gt; n1.__add__(n2) int.bit_length()  # 返回二进制长度, 最少.  # 定义 int     n = 123     n = int(3)     n = int.__init__(123)  -5 ~ 257 内存优化数字.  int 范围 : 与计算机类型有关     32bit :      64bit :  二. st">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/19/python-数据类型/"/>
+
+
+
+
+
+  <title>python-数据类型.md | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/python-数据类型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python-数据类型.md</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T16:57:59+08:00">
+                2018-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-int"><a href="#一-int" class="headerlink" title="一. int"></a>一. int</h2><pre><code>n1 + n2 --&gt; n1.__add__(n2)
+int.bit_length()  # 返回二进制长度, 最少.
+
+# 定义 int
+    n = 123
+    n = int(3)
+    n = int.__init__(123)
+
+-5 ~ 257 内存优化数字.
+
+int 范围 : 与计算机类型有关
+    32bit : 
+    64bit : 
+</code></pre><h2 id="二-str"><a href="#二-str" class="headerlink" title="二. str"></a>二. str</h2><pre><code>str.center(width, fillchar=None)  : 居中, 总长度, 填充字符.
+str.zfill(width) : 返回指定长度的额字符串, 原字符串右对齐, 前面填充 0 
+
+str.count(sub,start=None,end=None)  : 子序列个数.
+
+str.decode(encoding=None, error=None) : 解码
+str.encode(encoding=None, error=None) : 编码, 针对 unicode
+
+str.endswith(suffix, start=None, end=None) : 是否已 suffix 结尾.
+str.startswith(prefix, start=None, end=None) : 
+
+str.expandtabs(tabsize=None) : 将 tab 转换为 空格, 默认一个 tab 转换为 8 个空格.
+
+str.find(sub, start=None, end=None) : 寻找子字符串的位置. 返回字符串索引, 没有找到返回 -1 
+str.rfind(sub, start=None, end=None)
+
+str.index(sub, start=None, end=None)  : 寻找子字符串的位置. 返回字符串索引, 没有找到返回 报错.
+str.rindex(sub, start=None, end=None)
+
+str.format(*args, **kwargs)
+    字符串格式化, 动态参数
+
+str.isalnum()
+str.isalpha()
+str.isdigit()
+
+str.islower()
+str.isspace()
+str.istitle()
+str.isupper()
+
+str.join()
+
+str.ljust(width, fillchar=None)  : 内容左对齐，右侧填充
+str.rjust(width, fillchar=None)  : 
+
+
+str.lower()
+str.upper()
+str.title()
+str.capitalize()
+str.swapcase() : 大写变小写，小写变大写
+str.translate(table, deletechars=None) : 转换，需要先做一个对应表，最后一个表示删除字符集合
+
+str.lstrip()  : 移除左侧空白
+str.rstrip()  : 移除右侧空白
+str.strip()   : 移除两侧空白
+
+str.partition(sep) : 分割，前，中，后三部分
+str.rpartition(sep) : 从右侧索引开始
+
+str.replace(old, new, count=None)
+
+str.split(sep=None, maxsplit=None)  : 字符串切割, 结果为 list
+str.rsplit(sep=None, maxsplit=None) : 字符串切割, 结果为 list
+str.splitlines(keepends=False) : 字符串切割, 以换行符为依据, 结果为 list    
+</code></pre><h2 id="三-list"><a href="#三-list" class="headerlink" title="三. list"></a>三. list</h2><pre><code>l.sort(cmp=None, key=None, reverse=False)  : 同时包含数字,字母,中文等的列表, 无法排序, 会报错.
+l.reverse()  : 倒序
+
+l.remove(value)
+l.pop(index=None) : 默认删除末尾元素
+
+# 删除指定索引, 
+    del l[INDEX]
+
+l.extend(iterable)  : 扩展列表
+    l1 = [1,2,3]
+    l2 = [4,5,6]
+    l1.extend(l2) 
+l.append(p_object)  : 添加元素
+    l1 = [1,2,3]
+    l1.append(4)
+l.insert(index, p_obj)
+
+l.count(value)  : 统计出现的次数.
+l.index(value, start=None, stop=None)
+</code></pre><h2 id="四-tuple"><a href="#四-tuple" class="headerlink" title="四. tuple"></a>四. tuple</h2><pre><code>t.count(index)  
+t.index(value, start=None, stop=None)
+</code></pre><h2 id="五-dict"><a href="#五-dict" class="headerlink" title="五. dict"></a>五. dict</h2><pre><code>d.clear() : 清理所有的元素
+d.copy()  : 浅拷贝
+d.get(k, d=None)   : 依据 key 获取值.
+d.has_key(k) : 判断元素是否存在 
+
+d.pop(k, d=None) : 获取并在字典中移除
+d.popitem() : 随机删除元素
+
+d.setdefault(k,d=None) : 如果 key 不存在, 则创建, 存在则返回原有的值.
+d.update(E=None, **f) : 
+
+d.items() : 所有元素的列表形式
+d.iteritems() : 可迭代 items
+d.iterkeys() : 可迭代 keys
+d.itervalues() : 可迭代 values
+
+d.keys() : keys, 列表
+d.values() : value , 列表
+
+d.viewitems()
+d.viewkeys()
+d.viewvalues()
+
+dict.fromkeys(key_list,default_value)   # 从字典 d 中遍历 寻找key_list对应的 key, 返回 key和 default_value 组成的字典. 用于创建字典, 是一个类方法.
+
+a = dict(a=123,b=234)    
+</code></pre><h2 id="六-dict"><a href="#六-dict" class="headerlink" title="六. dict"></a>六. dict</h2><h2 id="七-set"><a href="#七-set" class="headerlink" title="七. set"></a>七. set</h2><h3 id="1-创建-set"><a href="#1-创建-set" class="headerlink" title="1. 创建 set"></a>1. 创建 set</h3><pre><code>s = set()
+s = set(list)   # list 为可迭代对象的即可
+s = {1,23,4}
+</code></pre><h3 id="2-内建方法"><a href="#2-内建方法" class="headerlink" title="2. 内建方法"></a>2. 内建方法</h3><h4 id="1-一般方法"><a href="#1-一般方法" class="headerlink" title="1) 一般方法:"></a>1) 一般方法:</h4><pre><code>s.add()             # 为集合添加元素 
+s.clear()           # 清空集合
+a.isdisjoint(b)     # 判断有无交集, 有交集返回 False
+a.issubset(b)       # 是否是子集
+a.issuperset(b)     # 是否是父集
+
+s.discard(a)        # 移除指定元素, 元素不存在不报错
+s.remove(a)         # 移除指定元素, 元素不存在报错.
+s.pop()             # 随机移除元素, 并返回 被删除的元素.
+
+s.update(b)         # b 可以为 set, 也可以为 list
+</code></pre><h4 id="2-差集"><a href="#2-差集" class="headerlink" title="2) 差集:"></a>2) 差集:</h4><pre><code>a.difference(b)           # 返回 a 与 b 的差集
+a.difference_update(b)    # 用 a 与 b 的 差集更新 a
+</code></pre><h4 id="3-交集"><a href="#3-交集" class="headerlink" title="3) 交集:"></a>3) 交集:</h4><pre><code>a.intersection(b)         # 返回 a 与 b 的交集, 
+a.intersection_update(b)  # 用 a 与 b 的交集跟新 a
+</code></pre><h4 id="4-补集"><a href="#4-补集" class="headerlink" title="4) 补集:"></a>4) 补集:</h4><pre><code>a.union(b)
+a.union_update(b)
+</code></pre><h4 id="5-对称交集"><a href="#5-对称交集" class="headerlink" title="5) 对称交集:"></a>5) 对称交集:</h4><pre><code>a.symmetric_difference(b)        # 返回 a 存在, b 不存在 和 a 不存在 ,b 存在的 元素组成的 set
+a.symmetric_difference_update(b) # a 和 b 的交叉补集 更新 a.
+</code></pre><h2 id="八-序列通用方法"><a href="#八-序列通用方法" class="headerlink" title="八. 序列通用方法"></a>八. 序列通用方法</h2><pre><code># s为一个序列
+
+len(s)         返回： 序列中包含元素的个数
+
+min(s)         返回： 序列中最小的元素
+
+max(s)         返回： 序列中最大的元素
+
+all(s)         返回： True, 如果所有元素都为True的话
+
+any(s)         返回： True, 如果任一元素为True的话
+
+s.count(x)     返回： x在s中出现的次数
+
+s.index(x)     返回： x在s中第一次出现的下标
+
+
+range(1,10) : 指定范围生成数字列表.
+xrange(1,10) : 指定范围生成数字列表. 可迭代.    
+</code></pre><h2 id="九-enumrate-可迭代对象添加序号"><a href="#九-enumrate-可迭代对象添加序号" class="headerlink" title="九. enumrate() : 可迭代对象添加序号"></a>九. enumrate() : 可迭代对象添加序号</h2><pre><code>l = range(6)
+for k,v in enumerate(l):
+    print k,v
+</code></pre><h2 id="十-标准库-collections-容器数据类型"><a href="#十-标准库-collections-容器数据类型" class="headerlink" title="十. 标准库 collections : 容器数据类型"></a>十. 标准库 collections : 容器数据类型</h2><h3 id="1-collections-namedtuple"><a href="#1-collections-namedtuple" class="headerlink" title="1. collections.namedtuple"></a>1. collections.namedtuple</h3><p>是一个函数,用来创建自定义的 tuple 对象, 并且规定 tuple 的元素个数,并可以用 <strong>属性</strong> 而不是 索引 来引用 tuple 的某个元素.</p>
+<pre><code>In [1]: from collections import namedtuple
+
+In [2]: Point = namedtuple(&apos;Point&apos;,[&apos;x&apos;,&apos;y&apos;])
+
+In [3]: p = Point(1,2)
+
+In [4]: p.x
+Out[4]: 1
+
+In [5]: p.y
+Out[5]: 2
+
+In [6]: isinstance(p,Point)
+Out[6]: True
+
+In [7]: isinstance(p,tuple)
+Out[7]: True
+</code></pre><p>** 可以方便的定义一种数据类型, 具备 tuple 元素的不变性, 又可以根据属性来引用.</p>
+<p>示例 : 用坐标和半径表示一个圆</p>
+<pre><code>Circle = namedtuple(&apos;Circle&apos;, [&apos;x&apos;,&apos;y&apos;,&apos;z&apos;])
+</code></pre><p>定义 : 各种namedtuple 都由其自己的类表示, 使用namedtuple() 工厂函数来创建. 参数就是新类名和一个包含元素名的字符串.</p>
+<pre><code>import collections
+Person = collections.namedtuple(&quot;Person&quot;, &quot;name age gender&quot;)
+
+bob = Person(name=&quot;bob&quot;, age=12, gender=&quot;Male&quot;)     # 匹配定义使用的元素名字符串, 正好匹配, 不多不少.
+print bob[0]
+print bob.name,bob.age,bob.gender
+print bob._fields   # 打印所有预定义字段.
+</code></pre><p><strong> 除了使用标准元组的位置索引外, 还可以使用点记法(obj.attr)按名字访问 namedtuple 的字段.
+</strong> 元素名字符串不可与 Python 关键字冲突, 不可重复.</p>
+<pre><code>&gt;&gt; engineer = collections.namedtuple(&quot;engineer&quot;, &quot;name age job&quot;, rename=True)
+&gt;&gt; print engineer._field
+  # (&apos;name&apos;, &apos;age&apos;, &apos;job&apos;)
+
+&gt;&gt; with_class = collections.namedtuple(&quot;Person&quot;,&quot;name class age gender&quot;,rename=True)
+&gt;&gt; with_class._fields
+    # (&apos;name&apos;, &apos;_1&apos;, &apos;age&apos;, &apos;gender&apos;)
+
+&gt;&gt; two_ages = collections.namedtuple(&quot;Person&quot;,&quot;name age gender age&quot;,rename=True)
+&gt;&gt; two_ages._fields
+   # (&apos;name&apos;, &apos;age&apos;, &apos;gender&apos;, &apos;_3&apos;)
+</code></pre><p>** 重命名的字段的新名字取决于他在 tuple 中的索引, 所以名为 class 的字段会变成 _1, 重复的age字段则变成 _3.</p>
+<h3 id="2-collections-deque-双端队列"><a href="#2-collections-deque-双端队列" class="headerlink" title="2. collections.deque : 双端队列"></a>2. collections.deque : 双端队列</h3><p>支持从任意一端增加和删除元素. 更为常用的两种结构, 即栈和队列, 就是双端队列的退化形式, 其输入和输出限制在一端.</p>
+<p>为了高效实现插入和删除操作的双向列表, 使用于队列和栈.</p>
+<pre><code>In [8]: from collections import deque
+In [9]: q = deque([&apos;a&apos;,&apos;b&apos;,&apos;c&apos;])
+In [10]: q.append(&apos;x&apos;)
+In [12]: q
+Out[12]: deque([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;x&apos;])
+In [16]: q.appendleft(&apos;x&apos;)
+In [17]: q
+Out[17]: deque([&apos;x&apos;, &apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;x&apos;])           
+
+deque.append()
+deque.appendleft()
+deque.pop()
+deque.popleft()
+</code></pre><p>deque 是一种序列容器, 因此同样支持 list 的一些操作.</p>
+<pre><code>d = collections.deque(&quot;abcdefg&quot;)
+print d
+print len(d)
+print d[0]
+print d[-1]
+d.remove(&apos;c&apos;)
+</code></pre><p>填充 : 可以从任意一端填充, 在 Python 中成为 “左端” 和 “右端”</p>
+<pre><code>    d1 = collections.deque()
+
+d.extend()  
+    d1.extend(&quot;abcdefg&quot;)
+    print d1    # deque([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;, &apos;f&apos;, &apos;g&apos;])
+
+d.append()
+    d1.append(&quot;h&quot;)
+    print d1    # deque([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;, &apos;f&apos;, &apos;g&apos;, &apos;h&apos;])
+
+d.extendleft()  : 迭代处理其输入, 对各个元素完成与 appendleft() 同样的处理, 其结果是 deque 将包含逆序的输入序列.
+
+    d1.extendleft(range(5))
+
+d.appendleft()
+    d1.appendleft(&quot;10&quot;)
+
+d.pop() : 从右端删除一个元素
+
+d.popleft() : 从左端删除一个元素
+
+** 由于双端队列是线程安全的, 所以甚至可以在不同线程中同时从两端利用队列内容.
+
+d.rotate() : 旋转, 类似拨号盘.
+
+    d.rotate(NUM)  : 向右旋转, 即从队列右端取元素, 移动到左端
+    d.rotate(-NUM) : 向左旋转, 即从队列左端取元素, 移动到右端
+
+    d2 = collections.deque(range(10))
+    print d2     # deque([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    de.rotate(2) # deque([8, 9, 0, 1, 2, 3, 4, 5, 6, 7])
+    de.rotate(-2) # deque([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+</code></pre><h3 id="3-collections-defaultdict"><a href="#3-collections-defaultdict" class="headerlink" title="3. collections.defaultdict"></a>3. collections.defaultdict</h3><p>使用 dict 使, 当 key 不存在时,返回一个默认值.</p>
+<pre><code>In [20]: from collections import defaultdict
+
+In [21]: dd=defaultdict(lambda: &apos;xyz&apos;)
+
+In [22]: dd[&apos;name&apos;]=&apos;bob&apos;
+
+In [23]: dd[&apos;age&apos;] = 12
+
+In [24]: dd
+Out[24]: defaultdict(&lt;function __main__.&lt;lambda&gt;&gt;, {&apos;age&apos;: 12, &apos;name&apos;: &apos;bob&apos;})
+
+In [25]: dd[&apos;name&apos;]
+Out[25]: &apos;bob&apos;
+
+In [26]: dd[&apos;gaga&apos;]
+Out[26]: &apos;xyz&apos;
+</code></pre><p>** 默认值是调用函数返回的, 而函数在创建 defaultdict 对象时传入.</p>
+<p>** 除了在 key 不存在时返回默认值, defaultdict 的其他行为跟 dict 是完全一样的.</p>
+<p>标准字典 :<br>    dict.setdefault()  # 来获取一个值, 如果这个值不存在则建立一个默认值.</p>
+<p>defaultdict 初始化时,容器会让调用者提前指定默认值.</p>
+<pre><code>import collections
+
+def default_factory():
+    return &quot;default value&quot;
+
+d = collections.defaultdict(defaultdict, foo=&quot;bar&quot;)
+
+print d[&quot;foo&quot;]  # &quot;bar&quot;
+print d[&quot;aaa&quot;]  # &quot;default value&quot;
+print d[&quot;bar&quot;]  # &quot;default value&quot;
+
+** 只要所有键都是相同的默认值并无不妥, 就可以使用这个方法.
+** 如果默认值是一种用于聚集或者累加值的类型, 如 list,set 甚至是 int, 该方法尤其有用.
+</code></pre><h3 id="4-collections-OrderdDict"><a href="#4-collections-OrderdDict" class="headerlink" title="4. collections.OrderdDict"></a>4. collections.OrderdDict</h3><p>使得 dict 保持有序.</p>
+<pre><code>&gt;&gt;&gt; from collections import OrderedDict
+&gt;&gt;&gt; d = dict([(&apos;a&apos;, 1), (&apos;b&apos;, 2), (&apos;c&apos;, 3)])
+&gt;&gt;&gt; d # dict的Key是无序的
+{&apos;a&apos;: 1, &apos;c&apos;: 3, &apos;b&apos;: 2}
+&gt;&gt;&gt; od = OrderedDict([(&apos;a&apos;, 1), (&apos;b&apos;, 2), (&apos;c&apos;, 3)])
+&gt;&gt;&gt; od # OrderedDict的Key是有序的
+OrderedDict([(&apos;a&apos;, 1), (&apos;b&apos;, 2), (&apos;c&apos;, 3)])
+</code></pre><p>** OrderedDict 是按照插入的顺序排列,而不是 key 本身排序.</p>
+<p>** OrderedDict 可以实现一个 FIFO 的 dict, 当容量超出限制时, 先删除最早添加的 key.</p>
+<pre><code>from collections import OrderedDict
+
+class LastUpgradeOrderedDict(OrderedDict):
+    def __init__(self, capacity):
+        super(LastUpgradeOrderedDict, self).__init__()
+        self._capacity = capacity
+
+    def __setitem__(self,key,value):
+        containsKey = 1 if key in self else 0
+        if len(self) - containsKey &gt;= self._capacity:
+            last = self.popitem(last=False)
+            print &apos;remove: &apos;, last
+
+        if containKey:
+            del self[key]
+            print &apos;set:&apos;,(key,value)
+        else:
+            print &apos;add&apos;,(key,value)
+
+        OrderedDict.__setitem__(self,key,value)
+</code></pre><p>标准字典并不跟踪插入顺序, 迭代处理时会根据键在散列表中存储的顺序来生成值. 在 OrderedDict 中则相反, 他会记住元素插入的顺序, 并在创建迭代器时使用这个顺序.</p>
+<p>标准字典在检查相等性时, 会查看其内容; OrderedDict 还会考虑元素增加的顺序.</p>
+<pre><code>od = collections.OrderedDict()
+od[&quot;a&quot;] = &quot;A&quot;
+od[&quot;b&quot;] = &quot;B&quot;
+od[&quot;c&quot;] = &quot;C&quot;
+od[&quot;d&quot;] = &quot;D&quot;
+
+for k,v in od.items():
+    print k,v 
+</code></pre><h3 id="5-collections-Counter"><a href="#5-collections-Counter" class="headerlink" title="5. collections.Counter"></a>5. collections.Counter</h3><p>一个简单的计数器, 例如, 统计字符出现的个数. 可以跟踪相同的值增加了多少次.</p>
+<pre><code>In [35]: from collections import Counter
+
+In [36]: c = Counter()
+
+In [37]: for ch in &apos;programing&apos;:
+...:     c[ch] = c[ch] + 1
+...:     
+
+In [38]: c
+Out[38]: Counter({&apos;a&apos;: 1, &apos;g&apos;: 2, &apos;i&apos;: 1, &apos;m&apos;: 1, &apos;n&apos;: 1, &apos;o&apos;: 1, &apos;p&apos;: 1, &apos;r&apos;: 2})
+</code></pre><p>初始化 : 三种初始化方法</p>
+<pre><code>print collections.Counter([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;a&quot;, &quot;b&quot;, &quot;b&quot;])   # 元素序列
+print collections.Counter({&quot;a&quot;: 2, &quot;b&quot;: 3, &quot;c&quot;: 1})     # 一个包含键和计数的字典
+print collections.Counter(a=2, b=3, c=1)    # 使用关键字参数,将字符串映射到计数.
+</code></pre><p>不提供任何参数, 构造一个空的 Counter, 然后通过 update() 方法填充.</p>
+<pre><code>import collections 
+c = collections.Counter()
+c.update(&quot;abcdaab&quot;)
+print c     # Counter({&apos;a&apos;: 3, &apos;b&apos;: 2, &apos;c&apos;: 1, &apos;d&apos;: 1})
+
+c.update({&quot;a&quot;:1,&quot;d&quot;:5})
+print c     # Counter({&apos;a&apos;: 4, &apos;b&apos;: 2, &apos;c&apos;: 1, &apos;d&apos;: 6})
+</code></pre><p><em>计数值将根据新数据增加, 替换数据不会改变计数.</em></p>
+<p>####访问计数 :</p>
+<ol>
+<li><p>使用字典API 获取</p>
+<pre><code>c = collections.Counter(&quot;abcdaab&quot;)
+for letter in &apos;abcde&apos;:
+    print c[letter]     # 打印字符出现的次数.
+</code></pre><p> ** 未出现的字符, 不会产生 KeyError, 其计数为 0.</p>
+</li>
+<li><p>elements()    : 返回一个迭代器, 将生成 Counter 知道的所有元素.</p>
+<pre><code>c = collections.Counter(&quot;extremely&quot;)
+c[&quot;z&quot;] = 0
+print list(c.elements())  # [&apos;e&apos;, &apos;e&apos;, &apos;e&apos;, &apos;m&apos;, &apos;l&apos;, &apos;r&apos;, &apos;t&apos;, &apos;y&apos;, &apos;x&apos;]
+</code></pre><p> <strong> 不能保证元素的顺序不变, 
+ </strong> 计数小于或者等于0的元素, 不包含在内.</p>
+</li>
+<li><p>most_common() : 生成一个序列, 其中包含 n 个最常遇到的输入值及其相应计数.</p>
+<p> 没有参数时, 返回一个列表, 按词频排序</p>
+<pre><code>print c.most_common()   
+[(&apos;e&apos;, 3), (&apos;m&apos;, 1), (&apos;l&apos;, 1), (&apos;r&apos;, 1), (&apos;t&apos;, 1), (&apos;y&apos;, 1), (&apos;x&apos;, 1)]
+</code></pre></li>
+</ol>
+<pre><code>带参数时, 返回前 3 个词频较大的元素. 当参数大于序列的长度时, 返回所有.
+
+    print c.most_common(3)  
+    [(&apos;e&apos;, 3), (&apos;m&apos;, 1), (&apos;l&apos;, 1)]
+</code></pre><ol>
+<li><p>算数操作,集合操作</p>
+<pre><code>c1 = Counter([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;a&quot;,&quot;b&quot;,&quot;b&quot;])
+c2 = Counter(&apos;alphabet&apos;)
+print c1
+Counter({&apos;a&apos;: 2, &apos;b&apos;: 3, &apos;c&apos;: 1})
+
+print c2
+Counter({&apos;a&apos;: 2, &apos;b&apos;: 1, &apos;e&apos;: 1, &apos;h&apos;: 1, &apos;l&apos;: 1, &apos;p&apos;: 1, &apos;t&apos;: 1})
+
+print c1 + c2
+Counter({&apos;a&apos;: 4, &apos;b&apos;: 4, &apos;c&apos;: 1, &apos;e&apos;: 1, &apos;h&apos;: 1, &apos;l&apos;: 1, &apos;p&apos;: 1, &apos;t&apos;: 1})
+
+print c1 - c2
+Counter({&apos;b&apos;: 2, &apos;c&apos;: 1})
+
+print c1 &amp; c2
+Counter({&apos;a&apos;: 2, &apos;b&apos;: 1})
+
+print c1 | c2
+Counter({&apos;a&apos;: 2, &apos;b&apos;: 3, &apos;c&apos;: 1, &apos;e&apos;: 1, &apos;h&apos;: 1, &apos;l&apos;: 1, &apos;p&apos;: 1, &apos;t&apos;: 1})
+</code></pre><p> <em>每次通过一个操作生成一个新的 Counter 时, 计数为 0 或负数的元素都会被删除.</em></p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/19/博客文档写作规范/" rel="next" title="博客文档写作规范">
+                <i class="fa fa-chevron-left"></i> 博客文档写作规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/19/linux-文件系统/" rel="prev" title="linux 文件系统">
+                linux 文件系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-int"><span class="nav-text">一. int</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-str"><span class="nav-text">二. str</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-list"><span class="nav-text">三. list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-tuple"><span class="nav-text">四. tuple</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-dict"><span class="nav-text">五. dict</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-dict"><span class="nav-text">六. dict</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七-set"><span class="nav-text">七. set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建-set"><span class="nav-text">1. 创建 set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-内建方法"><span class="nav-text">2. 内建方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-一般方法"><span class="nav-text">1) 一般方法:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-差集"><span class="nav-text">2) 差集:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-交集"><span class="nav-text">3) 交集:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-补集"><span class="nav-text">4) 补集:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-对称交集"><span class="nav-text">5) 对称交集:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八-序列通用方法"><span class="nav-text">八. 序列通用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#九-enumrate-可迭代对象添加序号"><span class="nav-text">九. enumrate() : 可迭代对象添加序号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#十-标准库-collections-容器数据类型"><span class="nav-text">十. 标准库 collections : 容器数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-collections-namedtuple"><span class="nav-text">1. collections.namedtuple</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-collections-deque-双端队列"><span class="nav-text">2. collections.deque : 双端队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-collections-defaultdict"><span class="nav-text">3. collections.defaultdict</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-collections-OrderdDict"><span class="nav-text">4. collections.OrderdDict</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-collections-Counter"><span class="nav-text">5. collections.Counter</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,2484 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PyPi,pyecharts,echarts,JavaScript 图表," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="pyecharts 项目地址 https://github.com/chenjiandongx/pyecharts pyecharts 文档地址 https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/documentation.mdhttps://github.com/chenjiandongx/pyechart">
+<meta name="keywords" content="PyPi,pyecharts,echarts,JavaScript 图表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python-pyecharts-文档笔记">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/python-pyecharts-文档笔记/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="pyecharts 项目地址 https://github.com/chenjiandongx/pyecharts pyecharts 文档地址 https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/documentation.mdhttps://github.com/chenjiandongx/pyechart">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-30T08:56:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python-pyecharts-文档笔记">
+<meta name="twitter:description" content="pyecharts 项目地址 https://github.com/chenjiandongx/pyecharts pyecharts 文档地址 https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/documentation.mdhttps://github.com/chenjiandongx/pyechart">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/python-pyecharts-文档笔记/"/>
+
+
+
+
+
+  <title>python-pyecharts-文档笔记 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/python-pyecharts-文档笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">python-pyecharts-文档笔记</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:41:56+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>pyecharts 项目地址</strong></p>
+<p><a href="https://github.com/chenjiandongx/pyecharts" target="_blank" rel="noopener">https://github.com/chenjiandongx/pyecharts</a></p>
+<p><strong>pyecharts 文档地址</strong></p>
+<p><a href="https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/documentation.md" target="_blank" rel="noopener">https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/documentation.md</a><br><a href="https://github.com/chenjiandongx/pyecharts/blob/master/example.md" target="_blank" rel="noopener">https://github.com/chenjiandongx/pyecharts/blob/master/example.md</a><br><a href="https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/doc_flask.md" target="_blank" rel="noopener">https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/doc_flask.md</a></p>
+<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h2><pre><code>$ pip install pyecharts
+</code></pre><h3 id="1-1-简单使用"><a href="#1-1-简单使用" class="headerlink" title="1.1 简单使用"></a>1.1 简单使用</h3><p>降水量与蒸发量柱状图</p>
+<pre><code>attr = [&quot;{} 月&quot;.format(i) for i in range(1,13)]
+v1 = [2.0,4.9,7.0,23.2,25.6,76.7,135.6,162.1,32.6,20.0,6.4,3.3]
+v2 = [2.6,5.9,9.0,26.2,28.6,70.7,175.6,182.1,48.6,18.0,6.4,2.3]
+bar = Bar(&quot;降水量与蒸发量&quot;)
+bar.add(&apos;蒸发量&apos; ,attr, v1, mark_line=[&apos;average&apos;], mark_point=[&quot;max&quot;,&quot;min&quot;])
+bar.add(&apos;降水量&apos; ,attr, v2, mark_line=[&apos;average&apos;], mark_point=[&quot;max&quot;,&quot;min&quot;])
+bar.render(&apos;./rain.html&apos;)
+</code></pre><p>饼图 - 玫瑰图</p>
+<pre><code>from pyecharts import Pie
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;,&quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;,&quot;袜子&quot;]
+v1 = [11,12,13,10,10,10]
+v2 = [19,21,32,20,20,33]
+
+pie = Pie(&quot;饼图-玫瑰图示例&quot;, title_pos=&quot;center&quot;, width=1200)
+
+pie.add(&quot;商品A&quot;, attr, v1, center=[25,50], is_random=True, radius=[30,75], rosetype=&quot;radius&quot;)
+
+pie.add(&quot;商品B&quot;, attr,v2, center=[75,50], is_random=True, radius=[30,75], rosetype=&quot;area&quot;, is_legend_show=False,is_label_show=True)
+
+pie.render(&apos;./rose.html&apos;)
+</code></pre><p>图标嵌套与叠加</p>
+<pre><code>from pyecharts import Bar,Line,Overlap
+attr = [&apos;A&apos;, &quot;B&quot;,&quot;C&quot;,&apos;D&apos;,&apos;E&apos;,&apos;F&apos;]
+v1 = [10,20,30,40,50,60]
+v2 = [38,28,58,48,78,68]
+
+bar = Bar(&quot;Line-Bar Example&quot;)
+bar.add(&apos;bar&apos;,attr,v1)
+
+line =Line()
+line.add(&apos;line&apos;,attr,v2)
+
+overlap = Overlap()
+overlap.add(bar)
+overlap.add(line)
+overlap.render(&apos;./overlap.html&apos;)
+</code></pre><h2 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2. 基本使用"></a>2. 基本使用</h2><h3 id="2-1-基本套路"><a href="#2-1-基本套路" class="headerlink" title="2.1 基本套路"></a>2.1 基本套路</h3><p>基本上所有的图标类型都可使用如下的套路去绘制:</p>
+<ol>
+<li>chart_name = Type()  : 初始化具体类型图表</li>
+<li>add()    : 添加数据及配置项</li>
+<li><p>render() : 生成 html 文件.</p>
+<p> from pyecharts import Bar</p>
+<p> bar = Bar(“My First Bar”, “Second Title Here”)<br> bar.add(“服装”, [“衬衫”, “羊毛衫”, “雪纺衫”, “裤子”, “高跟鞋”, “袜子”], [5, 20, 36, 10, 75, 90])<br> bar.show_config()<br> bar.render()<br> bar.render_embed()</p>
+</li>
+</ol>
+<ul>
+<li><p>Bar.add()             # 主要方法, 用于添加图表的数据和设置各种配置项.</p>
+<ul>
+<li>add() 的数据一般为两个列表(长度一致), 如果数据是字典或者带元组的字典, 可使用 <code>cast()</code> 方法转换.</li>
+<li><p>cast() : 转换数据序列, 将带字典和元组类型的序列转换为 k_lst, v_lst 两个列表. 如下示例:</p>
+<ul>
+<li><p>元组列表<br><code>[(A1, B1), (A2, B2), (A3, B3), (A4, B4)]</code> –&gt; <code>k_lst[ A[i1, i2...] ], v_lst[ B[i1, i2...] ]</code></p>
+</li>
+<li><p>字典列表<br><code>[{A1: B1}, {A2: B2}, {A3: B3}, {A4: B4}]</code> –&gt; <code>k_lst[ A[i1, i2...] ], v_lst[ B[i1, i2...] ]</code></p>
+</li>
+<li><p>字典<br><code>{A1: B1, A2: B2, A3: B3, A4: B4}</code> – &gt; <code>k_lst[ A[i1, i2...] ], v_lst[ B[i1, i2...] ]</code></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Bar.show_config()     # 打印输出图表的所有配置项</p>
+</li>
+<li>Bar.render(“/path/to/myrender.html”)          # 默认在当前目录下, 生成一个 render.html 文件, 支持 path 参数. 文件可用浏览器打开;</li>
+<li>Bar.render_embed()    # 生成 html 内嵌的 script 代码.</li>
+</ul>
+<h3 id="2-2-图表类初始化接受的参数-所有类型的图表都一样"><a href="#2-2-图表类初始化接受的参数-所有类型的图表都一样" class="headerlink" title="2.2 图表类初始化接受的参数(所有类型的图表都一样)"></a>2.2 图表类初始化接受的参数(所有类型的图表都一样)</h3><ul>
+<li><p>title -&gt; str</p>
+<p>  主标题文本，支持 \n 换行，默认为 “”</p>
+</li>
+<li><p>subtitle -&gt; str</p>
+<p>  副标题文本，支持 \n 换行，默认为 “”</p>
+</li>
+<li><p>width -&gt; int</p>
+<p>  画布宽度，默认为 800（px）</p>
+</li>
+<li><p>height -&gt; int</p>
+<p>  画布高度，默认为 400（px）</p>
+</li>
+<li><p>title_pos -&gt; str/int</p>
+<p>  标题距离左侧距离，默认为’left’，有<code>&#39;auto&#39;, &#39;left&#39;, &#39;right&#39;, &#39;center&#39;</code>可选，也可为百分比或整数</p>
+</li>
+<li><p>title_top -&gt; str/int</p>
+<p>  标题距离顶部距离，默认为’top’，有<code>&#39;top&#39;, &#39;middle&#39;, &#39;bottom&#39;</code>可选，也可为百分比或整数</p>
+</li>
+<li><p>title_color -&gt; str</p>
+<p>  主标题文本颜色，默认为 ‘#000’</p>
+</li>
+<li><p>subtitle_color -&gt; str</p>
+<p>  副标题文本颜色，默认为 ‘#aaa’</p>
+</li>
+<li><p>title_text_size -&gt; int</p>
+<p>  主标题文本字体大小，默认为 18</p>
+</li>
+<li><p>subtitle_text_size -&gt; int</p>
+<p>  副标题文本字体大小，默认为 12</p>
+</li>
+<li><p>background_color -&gt; str</p>
+<p>  画布背景颜色，默认为 ‘#fff’</p>
+</li>
+<li><p>is_grid -&gt; bool</p>
+<p>  是否使用 grid 组件，grid 组件用于并行显示图表。<br>  具体实现参见 用户自定义.</p>
+</li>
+</ul>
+<h3 id="2-3-通用配置项-均在-add-中设置"><a href="#2-3-通用配置项-均在-add-中设置" class="headerlink" title="2.3 通用配置项(均在 add() 中设置)"></a>2.3 通用配置项(均在 add() 中设置)</h3><h4 id="2-3-1-xyAxis-直角坐标系中的-x-y-轴-Line-Bar-Scatter-EffectScatter-Kline"><a href="#2-3-1-xyAxis-直角坐标系中的-x-y-轴-Line-Bar-Scatter-EffectScatter-Kline" class="headerlink" title="2.3.1 xyAxis: 直角坐标系中的 x, y 轴(Line, Bar, Scatter, EffectScatter, Kline)"></a>2.3.1 xyAxis: 直角坐标系中的 x, y 轴(Line, Bar, Scatter, EffectScatter, Kline)</h4><ul>
+<li><p>is_convert -&gt; bool</p>
+<p>  是否交换 x 轴与 y 轴</p>
+</li>
+<li><p>is_xaxislabel_align -&gt; bool</p>
+<p>  x 轴刻度线和标签是否对齐，默认为 False</p>
+</li>
+<li><p>is_yaxislabel_align -&gt; bool</p>
+<p>  y 轴刻度线和标签是否对齐，默认为 False</p>
+</li>
+<li><p>x_axis -&gt; list</p>
+<p>  x 轴数据项</p>
+</li>
+<li><p>xaxis_interval -&gt; int</p>
+<p>  x 轴刻度标签的显示间隔，在类目轴中有效。默认会采用标签不重叠的策略间隔显示标签。<br>设置成 0 强制显示所有标签。设置为 1，表示『隔一个标签显示一个标签』，如果值为 2，表示隔两个标签显示一个标签，以此类推</p>
+</li>
+<li><p>xaxis_margin -&gt; int</p>
+<p>  x 轴刻度标签与轴线之间的距离。默认为 8</p>
+</li>
+<li><p>xaxis_name -&gt; str</p>
+<p>  x 轴名称</p>
+</li>
+<li><p>xaxis_name_size -&gt; int</p>
+<p>  x 轴名称体大小，默认为 14</p>
+</li>
+<li><p>xaxis_name_gap -&gt; int</p>
+<p>  x 轴名称与轴线之间的距离，默认为 25</p>
+</li>
+<li><p>xaxis_name_pos -&gt; str</p>
+<p>  x 轴名称位置，有’start’，’middle’，’end’可选</p>
+</li>
+<li><p>xaxis_min -&gt; int/float</p>
+<p>  x 坐标轴刻度最小值，默认为自适应。</p>
+</li>
+<li><p>xaxis_max -&gt; int/float</p>
+<p>  x 坐标轴刻度最大值，默认为自适应。</p>
+</li>
+<li><p>xaxis_type -&gt; str</p>
+<p>  x 坐标轴类型<br>‘value’：数值轴，适用于连续数据。<br>‘category’：类目轴，适用于离散的类目数据，为该类型时必须通过 data 设置类目数据。<br>‘time’：时间轴，适用于连续的时序数据，与数值轴相比时间轴带有时间的格式化，在刻度计算上也有所不同，例如会根据跨度的范围来决定使用月，星期，日还是小时范围的刻度。<br>‘log’：对数轴。适用于对数数据。</p>
+</li>
+<li><p>xaxis_rotate -&gt; int</p>
+<p>  x 轴刻度标签旋转的角度，在类目轴的类目标签显示不下的时候可以通过旋转防止标签之间重叠。默认为 0，即不旋转。旋转的角度从 -90 度到 90 度。</p>
+</li>
+<li><p>y_axis -&gt; list</p>
+<p>  y 坐标轴数据</p>
+</li>
+<li><p>yaxis_interval -&gt; int</p>
+<p>  y 轴刻度标签的显示间隔，在类目轴中有效。默认会采用标签不重叠的策略间隔显示标签。<br>设置成 0 强制显示所有标签。设置为 1，表示『隔一个标签显示一个标签』，如果值为 2，表示隔两个标签显示一个标签，以此类推</p>
+</li>
+<li><p>yaxis_margin -&gt; int</p>
+<p>  y 轴刻度标签与轴线之间的距离。默认为 8</p>
+</li>
+<li><p>yaxis_formatter -&gt; str</p>
+<p>  y 轴标签格式器，如 ‘天’，则 y 轴的标签为数据加’天’(3 天，4 天),默认为 “”</p>
+</li>
+<li><p>yaxis_name -&gt; str</p>
+<p>  y 轴名称</p>
+</li>
+<li><p>yaxis_name_size -&gt; int</p>
+<p>  y 轴名称体大小，默认为 14</p>
+</li>
+<li><p>yaxis_name_gap -&gt; int</p>
+<p>  y 轴名称与轴线之间的距离，默认为 25</p>
+</li>
+<li><p>yaxis_name_pos -&gt; str</p>
+<p>  y 轴名称位置，有’start’, ‘middle’，’end’可选</p>
+</li>
+<li><p>yaxis_min -&gt; int/float</p>
+<p>  y 坐标轴刻度最小值，默认为自适应。</p>
+</li>
+<li><p>yaxis_max -&gt; int/float</p>
+<p>  y 坐标轴刻度最大值，默认为自适应。</p>
+</li>
+<li><p>yaxis_type -&gt; str</p>
+<p>  y 坐标轴类型<br>‘value’：数值轴，适用于连续数据。<br>‘category’：类目轴，适用于离散的类目数据，为该类型时必须通过 data 设置类目数据。<br>‘time’：时间轴，适用于连续的时序数据，与数值轴相比时间轴带有时间的格式化，在刻度计算上也有所不同，例如会根据跨度的范围来决定使用月，星期，日还是小时范围的刻度。<br>‘log’：对数轴。适用于对数数据。</p>
+</li>
+<li><p>yaxis_rotate -&gt; int</p>
+<p>  y 轴刻度标签旋转的角度，在类目轴的类目标签显示不下的时候可以通过旋转防止标签之间重叠。默认为 0，即不旋转。旋转的角度从 -90 度到 90 度。</p>
+</li>
+</ul>
+<h4 id="2-3-2-dataZoom-dataZoome-组件用于区域缩放-从而能自由关注细节的数据信息-或者概览数据整体-或者去除离群点的影响-Line-Bar-Scatter-EffectScatter-Kline"><a href="#2-3-2-dataZoom-dataZoome-组件用于区域缩放-从而能自由关注细节的数据信息-或者概览数据整体-或者去除离群点的影响-Line-Bar-Scatter-EffectScatter-Kline" class="headerlink" title="2.3.2 dataZoom: dataZoome 组件用于区域缩放, 从而能自由关注细节的数据信息, 或者概览数据整体, 或者去除离群点的影响, (Line, Bar, Scatter, EffectScatter, Kline )"></a>2.3.2 dataZoom: dataZoome 组件用于区域缩放, 从而能自由关注细节的数据信息, 或者概览数据整体, 或者去除离群点的影响, (Line, Bar, Scatter, EffectScatter, Kline )</h4><ul>
+<li><p>is_datazoom_show -&gt; bool</p>
+<p>  是否使用区域缩放组件，默认为 False</p>
+</li>
+<li><p>datazoom_type -&gt; str</p>
+<p>  区域缩放组件类型，默认为’slider’，有’slider’, ‘inside’可选</p>
+</li>
+<li><p>datazoom_range -&gt; list</p>
+<p>  区域缩放的范围，默认为[50, 100]</p>
+</li>
+<li><p>datazoom_orient -&gt; str</p>
+<p>  datazomm 组件在直角坐标系中的方向，默认为<br>  ‘horizontal’，效果显示在 x 轴。如若设置为 ‘vertical’ 的话效果显示在 y 轴。</p>
+</li>
+</ul>
+<h4 id="2-3-3-legend-图例组件-图例组件展现了不同系列的标记-Symbol-颜色和名字-可以通过点击图例控制那些系列不显示"><a href="#2-3-3-legend-图例组件-图例组件展现了不同系列的标记-Symbol-颜色和名字-可以通过点击图例控制那些系列不显示" class="headerlink" title="2.3.3  legend: 图例组件. 图例组件展现了不同系列的标记(Symbol), 颜色和名字. 可以通过点击图例控制那些系列不显示."></a>2.3.3  legend: 图例组件. 图例组件展现了不同系列的标记(Symbol), 颜色和名字. 可以通过点击图例控制那些系列不显示.</h4><ul>
+<li><p>is_legend_show -&gt; bool</p>
+<p>  是否显示顶端图例，默认为 True</p>
+</li>
+<li><p>legend_orient -&gt; str</p>
+<p>  图例列表的布局朝向，默认为’horizontal’，有’horizontal’, ‘vertical’可选</p>
+</li>
+<li><p>legend_pos -&gt; str</p>
+<p>  图例组件离容器左侧的距离，默认为’center’，有’left’, ‘center’, ‘right’可选</p>
+</li>
+<li><p>legend_top -&gt; str</p>
+<p>  图例组件离容器上侧的距离，默认为’top’，有’top’, ‘center’, ‘bottom’可选</p>
+</li>
+<li><p>legend_selectedmode -&gt; str/bool</p>
+<p>  图例选择的模式，控制是否可以通过点击图例改变系列的显示状态。默认为’multiple’，可以设成 ‘single’ 或者 ‘multiple’ 使用单选或者多选模式。也可以设置为 False 关闭显示状态。</p>
+</li>
+</ul>
+<h4 id="2-3-4-label-图形上的文本标签-可用于说明图形的一些数据信息-如值-名称等"><a href="#2-3-4-label-图形上的文本标签-可用于说明图形的一些数据信息-如值-名称等" class="headerlink" title="2.3.4 label: 图形上的文本标签, 可用于说明图形的一些数据信息, 如值,名称等."></a>2.3.4 label: 图形上的文本标签, 可用于说明图形的一些数据信息, 如值,名称等.</h4><ul>
+<li><p>is_label_show -&gt; bool</p>
+<p>  是否正常显示标签，默认不显示。标签即各点的数据项信息</p>
+</li>
+<li><p>is_emphasis -&gt; bool</p>
+<p>  是否高亮显示标签，默认显示。高亮标签即选中数据时显示的信息项。</p>
+</li>
+<li><p>label_pos -&gt; str</p>
+<p>  标签的位置，Bar 图默认为’top’。有’top’, ‘left’, ‘right’, ‘bottom’, ‘inside’,’outside’可选</p>
+</li>
+<li><p>label_text_color -&gt; str</p>
+<p>  标签字体颜色，默认为 “#000”</p>
+</li>
+<li><p>label_text_size -&gt; int</p>
+<p>  标签字体大小，默认为 12</p>
+</li>
+<li><p>is_random -&gt; bool</p>
+<p>  是否随机排列颜色列表，默认为 False</p>
+<p>  is_random 可随机打乱图例颜色列表，算是切换风格</p>
+</li>
+<li><p>label_color -&gt; list</p>
+<p>  自定义标签颜色。全局颜色列表，所有图表的图例颜色均在这里修改。如 Bar 的柱状颜色，Line 的线条颜色等等。</p>
+</li>
+<li><p>formatter -&gt; list</p>
+<p>  标签内容格式器，有’series’, ‘name’, ‘value’, ‘percent’可选。如 [“name”, “value”]</p>
+<ul>
+<li>series：图例名称</li>
+<li>name：数据项名称</li>
+<li>value：数据项值</li>
+<li>percent：数据的百分比（主要用于饼图）</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-3-5-lineStyle-带线图形的线的风格选项-Line-Polar-Radar-Graph-Parallel"><a href="#2-3-5-lineStyle-带线图形的线的风格选项-Line-Polar-Radar-Graph-Parallel" class="headerlink" title="2.3.5 lineStyle : 带线图形的线的风格选项, (Line, Polar, Radar, Graph, Parallel)"></a>2.3.5 lineStyle : 带线图形的线的风格选项, (Line, Polar, Radar, Graph, Parallel)</h4><ul>
+<li><p>line_width -&gt; int</p>
+<p>  线的宽度，默认为 1</p>
+</li>
+<li><p>line_opacity -&gt; float</p>
+<p>  线的透明度，0 为完全透明，1 为完全不透明。默认为 1</p>
+</li>
+<li><p>line_curve -&gt; float</p>
+<p>  线的弯曲程度，0 为完全不弯曲，1 为最弯曲。默认为 0</p>
+</li>
+<li><p>line_type -&gt; str</p>
+<p>  线的类型，有’solid’, ‘dashed’, ‘dotted’可选。默认为’solid’</p>
+</li>
+</ul>
+<h4 id="2-3-6-grib3D-3D-笛卡尔坐标系组配置项-适用于-3D-图形-Bar3D-Line3D-Scatter3D"><a href="#2-3-6-grib3D-3D-笛卡尔坐标系组配置项-适用于-3D-图形-Bar3D-Line3D-Scatter3D" class="headerlink" title="2.3.6 grib3D : 3D 笛卡尔坐标系组配置项, 适用于 3D 图形. (Bar3D, Line3D, Scatter3D)"></a>2.3.6 grib3D : 3D 笛卡尔坐标系组配置项, 适用于 3D 图形. (Bar3D, Line3D, Scatter3D)</h4><ul>
+<li><p>grid3D_width -&gt; int</p>
+<p>  三维笛卡尔坐标系组件在三维场景中的高度。默认为 100</p>
+</li>
+<li><p>grid3D_height -&gt; int</p>
+<p>  三维笛卡尔坐标系组件在三维场景中的高度。默认为 100</p>
+</li>
+<li><p>grid3D_depth -&gt; int</p>
+<p>  三维笛卡尔坐标系组件在三维场景中的高度。默认为 100</p>
+</li>
+<li><p>is_grid3D_rotate -&gt; bool</p>
+<p>  是否开启视角绕物体的自动旋转查看。默认为 False</p>
+</li>
+<li><p>grid3D_rotate_speed -&gt; int</p>
+<p>  物体自传的速度。单位为角度 / 秒，默认为 10 ，也就是 36 秒转一圈。</p>
+</li>
+<li><p>grid3D_rotate_sensitivity -&gt; int</p>
+<p>  旋转操作的灵敏度，值越大越灵敏。默认为 1, 设置为 0 后无法旋转。</p>
+</li>
+</ul>
+<h4 id="2-3-7-axis3D-3D-笛卡尔坐标系-X-Y-Z-轴配置项"><a href="#2-3-7-axis3D-3D-笛卡尔坐标系-X-Y-Z-轴配置项" class="headerlink" title="2.3.7 axis3D : 3D 笛卡尔坐标系 X,Y,Z 轴配置项."></a>2.3.7 axis3D : 3D 笛卡尔坐标系 X,Y,Z 轴配置项.</h4><h5 id="2-3-7-1-X轴"><a href="#2-3-7-1-X轴" class="headerlink" title="2.3.7.1 X轴"></a>2.3.7.1 X轴</h5><ul>
+<li><p>xaxis3d_name -&gt; str</p>
+<p>  x 轴名称，默认为 “”</p>
+</li>
+<li><p>xaxis3d_name_size -&gt; int</p>
+<p>  x 轴名称体大小，默认为 16</p>
+</li>
+<li><p>xaxis3d_name_gap -&gt; int</p>
+<p>  x 轴名称与轴线之间的距离，默认为 25</p>
+</li>
+<li><p>xaxis3d_min -&gt; int/float</p>
+<p>  x 坐标轴刻度最小值，默认为自适应。</p>
+</li>
+<li><p>xaxis3d_max -&gt; int/float</p>
+<p>  x 坐标轴刻度最大值，默认为自适应。</p>
+</li>
+<li><p>xaxis3d_interval -&gt; int</p>
+<p>  x 轴刻度标签的显示间隔，在类目轴中有效。默认会采用标签不重叠的策略间隔显示标签。</p>
+<ul>
+<li>设置为 0, 强制显示所有标签。</li>
+<li>设置为 1，表示『隔一个标签显示一个标签』，</li>
+<li>设置为 2，表示隔两个标签显示一个标签，</li>
+<li>以此类推</li>
+</ul>
+</li>
+<li><p>xaxis3d_margin -&gt; int</p>
+<p>  x 轴刻度标签与轴线之间的距离。默认为 8</p>
+</li>
+</ul>
+<h5 id="2-3-7-2-Y轴"><a href="#2-3-7-2-Y轴" class="headerlink" title="2.3.7.2 Y轴"></a>2.3.7.2 Y轴</h5><ul>
+<li><p>yaxis3d_name -&gt; str</p>
+<p>  y 轴名称，默认为 “”</p>
+</li>
+<li><p>yaxis3d_name_size -&gt; int</p>
+<p>  y 轴名称体大小，默认为 16</p>
+</li>
+<li><p>yaxis3d_name_gap -&gt; int</p>
+<p>  y 轴名称与轴线之间的距离，默认为 25</p>
+</li>
+<li><p>yaxis3d_min -&gt; int/float</p>
+<p>  y 坐标轴刻度最小值，默认为自适应。</p>
+</li>
+<li><p>yaxis3d_max -&gt; int/float</p>
+<p>  y 坐标轴刻度最大值，默认为自适应。</p>
+</li>
+<li><p>yaxis3d_interval -&gt; int</p>
+<p>  y 轴刻度标签的显示间隔，在类目轴中有效。默认会采用标签不重叠的策略间隔显示标签。</p>
+<ul>
+<li>设置为 0, 强制显示所有标签。</li>
+<li>设置为 1，表示『隔一个标签显示一个标签』，</li>
+<li>设置为 2，表示隔两个标签显示一个标签，</li>
+<li>以此类推</li>
+</ul>
+</li>
+<li><p>yaxis3d_margin -&gt; int</p>
+<p>  y 轴刻度标签与轴线之间的距离。默认为 8</p>
+</li>
+</ul>
+<h5 id="2-3-7-3-Z轴"><a href="#2-3-7-3-Z轴" class="headerlink" title="2.3.7.3 Z轴"></a>2.3.7.3 Z轴</h5><ul>
+<li><p>zaxis3d_name -&gt; str</p>
+<p>  z 轴名称，默认为 “”</p>
+</li>
+<li><p>zaxis3d_name_size -&gt; int</p>
+<p>  z 轴名称体大小，默认为 16</p>
+</li>
+<li><p>zaxis3d_name_gap -&gt; int</p>
+<p>  z 轴名称与轴线之间的距离，默认为 25</p>
+</li>
+<li><p>zaxis3d_min -&gt; int/float</p>
+<p>  z 坐标轴刻度最小值，默认为自适应。</p>
+</li>
+<li><p>zaxis3d_max -&gt; int/float</p>
+<p>  z 坐标轴刻度最大值，默认为自适应。</p>
+</li>
+<li><p>zaxis3d_margin -&gt; int</p>
+<p>  z 轴刻度标签与轴线之间的距离。默认为 8</p>
+</li>
+</ul>
+<h4 id="2-3-8-visualMap-是视觉映射组件-用于进行-视觉编码-也就是将数据映射视觉元素-视觉通道"><a href="#2-3-8-visualMap-是视觉映射组件-用于进行-视觉编码-也就是将数据映射视觉元素-视觉通道" class="headerlink" title="2.3.8 visualMap : 是视觉映射组件, 用于进行 视觉编码, 也就是将数据映射视觉元素(视觉通道)"></a>2.3.8 visualMap : 是视觉映射组件, 用于进行 视觉编码, 也就是将数据映射视觉元素(视觉通道)</h4><ul>
+<li><p>is_visualmap -&gt; bool</p>
+<p>  是否使用视觉映射组件</p>
+</li>
+<li><p>visual_type -&gt; str</p>
+<p>  制定组件映射方式，默认为’color‘，即通过颜色来映射数值。有’color’, ‘size’可选。’szie’通过数值点的大小，也就是图形点的大小来映射数值。</p>
+</li>
+<li><p>visual_range -&gt; list</p>
+<p>  指定组件的允许的最小值与最大值。默认为 [0, 100]</p>
+</li>
+<li><p>visual_text_color -&gt; list</p>
+<p>  两端文本颜色。</p>
+</li>
+<li><p>visual_range_text -&gt; list</p>
+<p>  两端文本。默认为 [‘low’, ‘hight’]</p>
+</li>
+<li><p>visual_range_color -&gt; list</p>
+<p>  过渡颜色。默认为 [‘#50a3ba’, ‘#eac763’, ‘#d94e5d’]</p>
+</li>
+<li><p>visual_range_size -&gt; list</p>
+<p>  数值映射的范围，也就是图形点大小的范围。默认为 [20, 50]</p>
+</li>
+<li><p>visual_orient -&gt; str</p>
+<p>  visualMap 组件条的方向，默认为’vertical’，有’vertical’, ‘horizontal’可选。</p>
+</li>
+<li><p>visual_pos -&gt; str/int</p>
+<p>  visualmap 组件条距离左侧的位置，默认为’left’。有’right’, ‘center’, ‘right’可选，也可为百分数或整数。</p>
+</li>
+<li><p>visual_top -&gt; str/int</p>
+<p>  visualmap 组件条距离顶部的位置，默认为’top’。有’top’, ‘center’, ‘bottom’可选，也可为百分数或整数。</p>
+</li>
+<li><p>is_calculable -&gt; bool</p>
+<p>  是否显示拖拽用的手柄（手柄能拖拽调整选中范围）。默认为 True</p>
+</li>
+</ul>
+<h3 id="2-2-Python2-的编码问题"><a href="#2-2-Python2-的编码问题" class="headerlink" title="2.2 Python2 的编码问题"></a>2.2 Python2 的编码问题</h3><pre><code>#!/usr/bin/python
+#coding=utf-8           # 通知编辑器, 使用 UTF-8 编码,
+from __future__ import unicode_literals     # 告知 python 解释器, 所有字符均是 UTF-8 编码
+</code></pre><h2 id="3-Bar-柱状图-条形图"><a href="#3-Bar-柱状图-条形图" class="headerlink" title="3. Bar (柱状图/条形图)"></a>3. Bar (柱状图/条形图)</h2><p>全局配置项要在最后一个 <code>add()</code> 上设置，否侧设置会被冲刷掉。</p>
+<h3 id="3-1-Bar-数据堆叠"><a href="#3-1-Bar-数据堆叠" class="headerlink" title="3.1 Bar 数据堆叠"></a>3.1 Bar 数据堆叠</h3><p>Bar.add(name, x_axis, y_axis, is_stack=False, **kwargs)</p>
+<ul>
+<li><p>name –&gt; str</p>
+<p>  图例名称</p>
+</li>
+<li><p>x_axis –&gt; list</p>
+<p>  x 坐标轴数据</p>
+</li>
+<li><p>y_axis –&gt; list</p>
+<p>  y 坐标轴数据</p>
+</li>
+<li><p>is_stack –&gt; bool</p>
+<p>  数据堆叠, 同个类目轴上系列配置相同的 stack 值可以堆叠放置.</p>
+</li>
+</ul>
+<p>数据堆叠示例</p>
+<pre><code>from pyecharts import Bar
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [5, 20, 36, 10, 75, 90]
+v2 = [10, 25, 8, 60, 20, 80]
+bar = Bar(&quot;柱状图数据堆叠示例&quot;)
+bar.add(&quot;商家A&quot;, attr, v1, is_stack=True)
+bar.add(&quot;商家B&quot;, attr, v2, is_stack=True)
+bar.render()
+</code></pre><h3 id="3-2-标记线和标记点"><a href="#3-2-标记线和标记点" class="headerlink" title="3.2 标记线和标记点"></a>3.2 标记线和标记点</h3><p>可选项:</p>
+<ul>
+<li><p>mark_point -&gt; list</p>
+<p>  标记点，有’min’, ‘max’, ‘average’可选</p>
+</li>
+<li><p>mark_line -&gt; list</p>
+<p>  标记线，有’min’, ‘max’, ‘average’可选</p>
+</li>
+<li><p>mark_point_symbol -&gt; str</p>
+<p>  标记点图形，，默认为’pin’，有’circle’, ‘rect’, ‘roundRect’, ‘triangle’, ‘diamond’, ‘pin’, ‘arrow’可选</p>
+</li>
+<li><p>mark_point_symbolsize -&gt; int</p>
+<p>  标记点图形大小，默认为 50</p>
+</li>
+<li><p>mark_point_textcolor -&gt; str</p>
+<p>  标记点字体颜色，默认为’#fff’</p>
+</li>
+</ul>
+<p>代码示例:</p>
+<pre><code>from pyecharts import Bar
+
+bar = Bar(&quot;标记线和标记点示例&quot;)
+bar.add(&quot;商家A&quot;, attr, v1, mark_point=[&quot;average&quot;])
+bar.add(&quot;商家B&quot;, attr, v2, mark_line=[&quot;min&quot;, &quot;max&quot;])
+bar.render()
+</code></pre><h3 id="3-3-X-轴和-Y-轴交换"><a href="#3-3-X-轴和-Y-轴交换" class="headerlink" title="3.3 X 轴和 Y 轴交换"></a>3.3 X 轴和 Y 轴交换</h3><pre><code>bar = Bar(&quot;X 轴和Y轴交换&quot;)
+bar.add(&quot;商家A&quot;, attr, v1)
+bar.add(&quot;商家B&quot;, attr, v2, is_convert=True)
+bar.render(&quot;bar_xy_exchange.html&quot;)
+</code></pre><h3 id="3-4-Bar-datazoom"><a href="#3-4-Bar-datazoom" class="headerlink" title="3.4 Bar - datazoom"></a>3.4 Bar - datazoom</h3><p><strong>datazoom</strong> 适合所有平面直角坐标系图形，也就是(Line、Bar、Scatter、EffectScatter、Kline)</p>
+<h4 id="3-4-1-slide-类型"><a href="#3-4-1-slide-类型" class="headerlink" title="3.4.1 slide 类型"></a>3.4.1 slide 类型</h4><pre><code>import random
+
+attr = [&quot;{}天&quot;.format(i) for i in range(30)]
+v1 = [random.randint(1, 30) for _ in range(30)]
+bar = Bar(&quot;Bar - datazoom - slider 示例&quot;)
+bar.add(&quot;&quot;, attr, v1, is_label_show=True, is_datazoom_show=True)
+bar.render()
+</code></pre><h4 id="3-4-2-inside-类型"><a href="#3-4-2-inside-类型" class="headerlink" title="3.4.2 inside 类型"></a>3.4.2 inside 类型</h4><pre><code>attr = [&quot;{}天&quot;.format(i) for i in range(30)]
+v1 = [random.randint(1, 30) for _ in range(30)]
+bar = Bar(&quot;Bar - datazoom - inside 示例&quot;)
+bar.add(&quot;&quot;, attr, v1, is_datazoom_show=True, datazoom_type=&apos;inside&apos;, datazoom_range=[10, 25])
+bar.show_config()
+bar.render()
+</code></pre><h4 id="3-4-3-坐标轴标签旋转"><a href="#3-4-3-坐标轴标签旋转" class="headerlink" title="3.4.3 坐标轴标签旋转"></a>3.4.3 坐标轴标签旋转</h4><p>当 x 轴或 y 轴由的标签因为过于密集而导致全部显示出来会重叠时, 可采用使 标签旋转的方法.</p>
+<pre><code>attr = [&quot;{}天&quot;.format(i) for i in range(20)]
+v1 = [random.randint(1, 20) for _ in range(20)]
+bar = Bar(&quot;坐标轴标签旋转示例&quot;)
+bar.add(&quot;&quot;, attr, v1, xaxis_interval=0, xaxis_rotate=30, yaxis_rotate=30)
+bar.show_config()
+bar.render()
+</code></pre><p>可通过设置 xaxis_min/xaxis_max/yaxis_min/yaxis_max 来调整 x 轴 和 y 轴上的最大最小值, 针对数值轴有效.</p>
+<p>可通过 label_color 设置柱状颜色, 如 [“#eee”, “#000”], 所有图标类型的图例颜色都可以通过 label_color 来修改.</p>
+<h2 id="4-Bar3D-3D-柱状图"><a href="#4-Bar3D-3D-柱状图" class="headerlink" title="4. Bar3D (3D 柱状图)"></a>4. Bar3D (3D 柱状图)</h2><h2 id="5-EffectScatter-带有涟漪特效动画的散点图"><a href="#5-EffectScatter-带有涟漪特效动画的散点图" class="headerlink" title="5. EffectScatter (带有涟漪特效动画的散点图)"></a>5. EffectScatter (带有涟漪特效动画的散点图)</h2><p>利用动画特效, 可以将某些想要突出的数据进行视觉突出.</p>
+<p>EffectScatter.add(name, x_value, y_value, symbol_size=10, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>x_axis –&gt; list : x 坐标轴数据</li>
+<li>y_axis –&gt; list : y 坐标轴数据</li>
+<li><p>symbol_size –&gt; int : 标记图形大小.</p>
+</li>
+<li><p>symbol –&gt; str : 标记图形, 有 “rect”, “roundRect”, “triangle”, “diamond”, “pin”, “arrow” 可选.</p>
+</li>
+<li>effect_brushtype –&gt; str : 波纹绘制方式, 有 “stroke”, “fill” 可选, 默认为 “stroke”</li>
+<li>effect_scale –&gt; float : 动画中波纹的最大缩放比例, 默认为 2.5</li>
+<li>effect_period –&gt; float : 动画持续时间, 默认为 4s.</li>
+</ul>
+<p>普通散点图:</p>
+<pre><code>from pyecharts import EffectScatter
+
+v1 = [10, 20, 30, 40, 50, 60]
+v2 = [25, 20, 15, 10, 60, 33]
+es = EffectScatter(&quot;动态散点图示例&quot;)
+es.add(&quot;effectScatter&quot;, v1, v2)
+es.render()
+</code></pre><p>各种图形散点示例:</p>
+<pre><code>es = EffectScatter(&quot;动态散点图各种图形示例&quot;)
+es.add(&quot;&quot;, [10], [10], symbol_size=20, effect_scale=3.5, effect_period=3, symbol=&quot;pin&quot;)
+es.add(&quot;&quot;, [20], [20], symbol_size=12, effect_scale=4.5, effect_period=4,symbol=&quot;rect&quot;)
+es.add(&quot;&quot;, [30], [30], symbol_size=30, effect_scale=5.5, effect_period=5,symbol=&quot;roundRect&quot;)
+es.add(&quot;&quot;, [40], [40], symbol_size=10, effect_scale=6.5, effect_brushtype=&apos;fill&apos;,symbol=&quot;diamond&quot;)
+es.add(&quot;&quot;, [50], [50], symbol_size=16, effect_scale=5.5, effect_period=3,symbol=&quot;arrow&quot;)
+es.add(&quot;&quot;, [60], [60], symbol_size=6, effect_scale=2.5, effect_period=3,symbol=&quot;triangle&quot;)
+es.render()
+</code></pre><h2 id="6-Funnel-漏斗图"><a href="#6-Funnel-漏斗图" class="headerlink" title="6. Funnel (漏斗图)"></a>6. Funnel (漏斗图)</h2><p>Funnel.add(name, attr, value, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>attr –&gt; list : 属性名称</li>
+<li>value –&gt; list : 属性对应的值,</li>
+</ul>
+<p>普通示例:</p>
+<pre><code>from pyecharts import Funnel
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+value = [20, 40, 60, 80, 100, 120]
+funnel = Funnel(&quot;漏斗图示例&quot;)
+funnel.add(&quot;商品&quot;, attr, value, is_label_show=True, label_pos=&quot;inside&quot;, label_text_color=&quot;#fff&quot;)
+funnel.render()
+</code></pre><p>示例:</p>
+<pre><code>funnel = Funnel(&quot;漏斗图示例&quot;, width=600, height=400, title_pos=&apos;center&apos;)
+funnel.add(&quot;商品&quot;, attr, value, is_label_show=True, label_pos=&quot;outside&quot;, legend_orient=&apos;vertical&apos;,
+           legend_pos=&apos;left&apos;)
+funnel.show_config()
+funnel.render()
+</code></pre><h2 id="7-Gauge-仪表盘"><a href="#7-Gauge-仪表盘" class="headerlink" title="7. Gauge (仪表盘)"></a>7. Gauge (仪表盘)</h2><p>Gauge.add(name, attr, value, scale_range=None, angle_range=None, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>attr –&gt; list : 属性名称</li>
+<li>value –&gt; list : 属性对应的值</li>
+<li>scale_range –&gt; list : 仪表盘数据范围, 默认为 [0,100]</li>
+<li>angle_range –&gt; list : 仪表盘角度范围, 默认为 [225, -45]</li>
+</ul>
+<p>示例一 :</p>
+<pre><code>from pyecharts import Gauge
+
+gauge = Gauge(&quot;仪表盘示例&quot;)
+gauge.add(&quot;业务指标&quot;, &quot;完成率&quot;, 66.66)
+gauge.show_config()
+gauge.render()
+</code></pre><p>示例二 :</p>
+<pre><code>gauge = Gauge(&quot;仪表盘示例&quot;)
+gauge.add(&quot;业务指标&quot;, &quot;完成率&quot;, 166.66, angle_range=[180, 0], scale_range=[0, 200], is_legend_show=False)
+gauge.show_config()
+gauge.render()
+</code></pre><h2 id="8-Geo-地理坐标系"><a href="#8-Geo-地理坐标系" class="headerlink" title="8. Geo (地理坐标系)"></a>8. Geo (地理坐标系)</h2><p>地理坐标系组件用于地图的绘制, 支持在地理坐标系上绘制散点图, 线集.</p>
+<p>Geo.add(name, attr, value, type=”scatter”, maptype=”china”, symbol_size=12, border_color=”#111”, geo_normal_color=”#323c48”, geo_emphasis_color=”#2a333d”, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>attr –&gt; list : 属性名称</li>
+<li>value –&gt; list : 属性所对应的值</li>
+<li>type –&gt; str : 图例类型, 有 “scatter”, “effectscatter”, “heatmap” 可选, 默认为 “scatter”</li>
+<li>maptype –&gt; str : 地图类型, 目前只支持 “china”</li>
+<li>symbol_size –&gt; int : 标记图形大小, 默认12</li>
+<li>border_color –&gt; str : 地图边界颜色, 默认为 “#111”</li>
+<li>geo_normal_color –&gt; str : 正常状态下地图区域的颜色, 默认为 “#323C48”</li>
+<li>geo_emphasis_color –&gt; str : 高亮状态下地图区域的颜色, 默认为 “#2a333d”</li>
+</ul>
+<h3 id="8-1-scatter"><a href="#8-1-scatter" class="headerlink" title="8.1 scatter"></a>8.1 scatter</h3><p>请配合 通用配置项 中的 visualmap 使用.</p>
+<pre><code>from pyecharts import Geo
+
+data = [
+    (&quot;海门&quot;, 9),(&quot;鄂尔多斯&quot;, 12),(&quot;招远&quot;, 12),(&quot;舟山&quot;, 12),(&quot;齐齐哈尔&quot;, 14),(&quot;盐城&quot;, 15),
+    (&quot;赤峰&quot;, 16),(&quot;青岛&quot;, 18),(&quot;乳山&quot;, 18),(&quot;金昌&quot;, 19),(&quot;泉州&quot;, 21),(&quot;莱西&quot;, 21),
+    (&quot;日照&quot;, 21),(&quot;胶南&quot;, 22),(&quot;南通&quot;, 23),(&quot;拉萨&quot;, 24),(&quot;云浮&quot;, 24),(&quot;梅州&quot;, 25),
+    (&quot;文登&quot;, 25),(&quot;上海&quot;, 25),(&quot;攀枝花&quot;, 25),(&quot;威海&quot;, 25),(&quot;承德&quot;, 25),(&quot;厦门&quot;, 26),
+    (&quot;汕尾&quot;, 26),(&quot;潮州&quot;, 26),(&quot;丹东&quot;, 27),(&quot;太仓&quot;, 27),(&quot;曲靖&quot;, 27),(&quot;烟台&quot;, 28),
+    (&quot;福州&quot;, 29),(&quot;瓦房店&quot;, 30),(&quot;即墨&quot;, 30),(&quot;抚顺&quot;, 31),(&quot;玉溪&quot;, 31),(&quot;张家口&quot;, 31),
+    (&quot;阳泉&quot;, 31),(&quot;莱州&quot;, 32),(&quot;湖州&quot;, 32),(&quot;汕头&quot;, 32),(&quot;昆山&quot;, 33),(&quot;宁波&quot;, 33),
+    (&quot;湛江&quot;, 33),(&quot;揭阳&quot;, 34),(&quot;荣成&quot;, 34),(&quot;连云港&quot;, 35),(&quot;葫芦岛&quot;, 35),(&quot;常熟&quot;, 36),
+    (&quot;东莞&quot;, 36),(&quot;河源&quot;, 36),(&quot;淮安&quot;, 36),(&quot;泰州&quot;, 36),(&quot;南宁&quot;, 37),(&quot;营口&quot;, 37),
+    (&quot;惠州&quot;, 37),(&quot;江阴&quot;, 37),(&quot;蓬莱&quot;, 37),(&quot;韶关&quot;, 38),(&quot;嘉峪关&quot;, 38),(&quot;广州&quot;, 38),
+    (&quot;延安&quot;, 38),(&quot;太原&quot;, 39),(&quot;清远&quot;, 39),(&quot;中山&quot;, 39),(&quot;昆明&quot;, 39),(&quot;寿光&quot;, 40),
+    (&quot;盘锦&quot;, 40),(&quot;长治&quot;, 41),(&quot;深圳&quot;, 41),(&quot;珠海&quot;, 42),(&quot;宿迁&quot;, 43),(&quot;咸阳&quot;, 43),
+    (&quot;铜川&quot;, 44),(&quot;平度&quot;, 44),(&quot;佛山&quot;, 44),(&quot;海口&quot;, 44),(&quot;江门&quot;, 45),(&quot;章丘&quot;, 45),
+    (&quot;肇庆&quot;, 46),(&quot;大连&quot;, 47),(&quot;临汾&quot;, 47),(&quot;吴江&quot;, 47),(&quot;石嘴山&quot;, 49),(&quot;沈阳&quot;, 50),
+    (&quot;苏州&quot;, 50),(&quot;茂名&quot;, 50),(&quot;嘉兴&quot;, 51),(&quot;长春&quot;, 51),(&quot;胶州&quot;, 52),(&quot;银川&quot;, 52),
+    (&quot;张家港&quot;, 52),(&quot;三门峡&quot;, 53),(&quot;锦州&quot;, 54),(&quot;南昌&quot;, 54),(&quot;柳州&quot;, 54),(&quot;三亚&quot;, 54),
+    (&quot;自贡&quot;, 56),(&quot;吉林&quot;, 56),(&quot;阳江&quot;, 57),(&quot;泸州&quot;, 57),(&quot;西宁&quot;, 57),(&quot;宜宾&quot;, 58),
+    (&quot;呼和浩特&quot;, 58),(&quot;成都&quot;, 58),(&quot;大同&quot;, 58),(&quot;镇江&quot;, 59),(&quot;桂林&quot;, 59),(&quot;张家界&quot;, 59),
+    (&quot;宜兴&quot;, 59),(&quot;北海&quot;, 60),(&quot;西安&quot;, 61),(&quot;金坛&quot;, 62),(&quot;东营&quot;, 62),(&quot;牡丹江&quot;, 63),
+    (&quot;遵义&quot;, 63),(&quot;绍兴&quot;, 63),(&quot;扬州&quot;, 64),(&quot;常州&quot;, 64),(&quot;潍坊&quot;, 65),(&quot;重庆&quot;, 66),
+    (&quot;台州&quot;, 67),(&quot;南京&quot;, 67),(&quot;滨州&quot;, 70),(&quot;贵阳&quot;, 71),(&quot;无锡&quot;, 71),(&quot;本溪&quot;, 71),
+    (&quot;克拉玛依&quot;, 72),(&quot;渭南&quot;, 72),(&quot;马鞍山&quot;, 72),(&quot;宝鸡&quot;, 72),(&quot;焦作&quot;, 75),(&quot;句容&quot;, 75),
+    (&quot;北京&quot;, 79),(&quot;徐州&quot;, 79),(&quot;衡水&quot;, 80),(&quot;包头&quot;, 80),(&quot;绵阳&quot;, 80),(&quot;乌鲁木齐&quot;, 84),
+    (&quot;枣庄&quot;, 84),(&quot;杭州&quot;, 84),(&quot;淄博&quot;, 85),(&quot;鞍山&quot;, 86),(&quot;溧阳&quot;, 86),(&quot;库尔勒&quot;, 86),
+    (&quot;安阳&quot;, 90),(&quot;开封&quot;, 90),(&quot;济南&quot;, 92),(&quot;德阳&quot;, 93),(&quot;温州&quot;, 95),(&quot;九江&quot;, 96),
+    (&quot;邯郸&quot;, 98),(&quot;临安&quot;, 99),(&quot;兰州&quot;, 99),(&quot;沧州&quot;, 100),(&quot;临沂&quot;, 103),(&quot;南充&quot;, 104),
+    (&quot;天津&quot;, 105),(&quot;富阳&quot;, 106),(&quot;泰安&quot;, 112),(&quot;诸暨&quot;, 112),(&quot;郑州&quot;, 113),(&quot;哈尔滨&quot;, 114),
+    (&quot;聊城&quot;, 116),(&quot;芜湖&quot;, 117),(&quot;唐山&quot;, 119),(&quot;平顶山&quot;, 119),(&quot;邢台&quot;, 119),(&quot;德州&quot;, 120),
+    (&quot;济宁&quot;, 120),(&quot;荆州&quot;, 127),(&quot;宜昌&quot;, 130),(&quot;义乌&quot;, 132),(&quot;丽水&quot;, 133),(&quot;洛阳&quot;, 134),
+    (&quot;秦皇岛&quot;, 136),(&quot;株洲&quot;, 143),(&quot;石家庄&quot;, 147),(&quot;莱芜&quot;, 148),(&quot;常德&quot;, 152),(&quot;保定&quot;, 153),
+    (&quot;湘潭&quot;, 154),(&quot;金华&quot;, 157),(&quot;岳阳&quot;, 169),(&quot;长沙&quot;, 175),(&quot;衢州&quot;, 177),(&quot;廊坊&quot;, 193),
+    (&quot;菏泽&quot;, 194),(&quot;合肥&quot;, 229),(&quot;武汉&quot;, 273),(&quot;大庆&quot;, 279)]
+
+geo = Geo(&quot;全国主要城市空气质量&quot;, &quot;data from pm2.5&quot;, title_color=&quot;#fff&quot;, title_pos=&quot;center&quot;,
+width=1200, height=600, background_color=&apos;#404a59&apos;)
+attr, value = geo.cast(data)
+geo.add(&quot;&quot;, attr, value, visual_range=[0, 200], visual_text_color=&quot;#fff&quot;, symbol_size=15, is_visualmap=True)
+geo.show_config()
+geo.render()
+</code></pre><h3 id="8-2-effectScatter"><a href="#8-2-effectScatter" class="headerlink" title="8.2 effectScatter"></a>8.2 effectScatter</h3><pre><code>from pyecharts import Geo
+
+data = [(&quot;海门&quot;, 9), (&quot;鄂尔多斯&quot;, 12), (&quot;招远&quot;, 12), (&quot;舟山&quot;, 12), (&quot;齐齐哈尔&quot;, 14), (&quot;盐城&quot;, 15)]
+geo = Geo(&quot;全国主要城市空气质量&quot;, &quot;data from pm2.5&quot;, title_color=&quot;#fff&quot;, title_pos=&quot;center&quot;,
+          width=1200, height=600, background_color=&apos;#404a59&apos;)
+attr, value = geo.cast(data)
+geo.add(&quot;&quot;, attr, value, type=&quot;effectScatter&quot;, is_random=True, effect_scale=5)
+geo.show_config()
+geo.render()
+</code></pre><h3 id="8-3-heatmap"><a href="#8-3-heatmap" class="headerlink" title="8.3 heatmap"></a>8.3 heatmap</h3><pre><code>geo = Geo(&quot;全国主要城市空气质量&quot;, &quot;data from pm2.5&quot;, title_color=&quot;#fff&quot;, title_pos=&quot;center&quot;, width=1200, height=600,
+          background_color=&apos;#404a59&apos;)
+attr, value = geo.cast(data)
+geo.add(&quot;&quot;, attr, value, type=&quot;heatmap&quot;, is_visualmap=True, visual_range=[0, 300], visual_text_color=&apos;#fff&apos;)
+geo.show_config()
+geo.render()
+</code></pre><h2 id="9-Graph-关系图"><a href="#9-Graph-关系图" class="headerlink" title="9. Graph (关系图)"></a>9. Graph (关系图)</h2><h2 id="10-HeatMap-热力图"><a href="#10-HeatMap-热力图" class="headerlink" title="10. HeatMap (热力图)"></a>10. HeatMap (热力图)</h2><h2 id="11-Kline-K线图"><a href="#11-Kline-K线图" class="headerlink" title="11. Kline (K线图)"></a>11. Kline (K线图)</h2><p><strong>红涨蓝跌</strong></p>
+<p>Kline.add(name, x_axis, y_axis, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>x_axis –&gt; list : x 坐标轴数据</li>
+<li>y_axis –&gt; [list] : 包含列表的列表. y 坐标轴数据. 数据中, 每一行是一个 数据项, 每一列属于一个维度. 数据项具体为 [open, close, lowest, highest], 即 [开盘值, 收盘值, 最低值, 最高值].</li>
+</ul>
+<p>示例一 : 普通线</p>
+<pre><code>from pyecharts import Kline
+
+v1 = [[2320.26, 2320.26, 2287.3, 2362.94], [2300, 2291.3, 2288.26, 2308.38],
+      [2295.35, 2346.5, 2295.35, 2345.92], [2347.22, 2358.98, 2337.35, 2363.8],
+      [2360.75, 2382.48, 2347.89, 2383.76], [2383.43, 2385.42, 2371.23, 2391.82],
+      [2377.41, 2419.02, 2369.57, 2421.15], [2425.92, 2428.15, 2417.58, 2440.38],
+      [2411, 2433.13, 2403.3, 2437.42], [2432.68, 2334.48, 2427.7, 2441.73],
+      [2430.69, 2418.53, 2394.22, 2433.89], [2416.62, 2432.4, 2414.4, 2443.03],
+      [2441.91, 2421.56, 2418.43, 2444.8], [2420.26, 2382.91, 2373.53, 2427.07],
+      [2383.49, 2397.18, 2370.61, 2397.94], [2378.82, 2325.95, 2309.17, 2378.82],
+      [2322.94, 2314.16, 2308.76, 2330.88], [2320.62, 2325.82, 2315.01, 2338.78],
+      [2313.74, 2293.34, 2289.89, 2340.71], [2297.77, 2313.22, 2292.03, 2324.63],
+      [2322.32, 2365.59, 2308.92, 2366.16], [2364.54, 2359.51, 2330.86, 2369.65],
+      [2332.08, 2273.4, 2259.25, 2333.54], [2274.81, 2326.31, 2270.1, 2328.14],
+      [2333.61, 2347.18, 2321.6, 2351.44], [2340.44, 2324.29, 2304.27, 2352.02],
+      [2326.42, 2318.61, 2314.59, 2333.67], [2314.68, 2310.59, 2296.58, 2320.96],
+      [2309.16, 2286.6, 2264.83, 2333.29], [2282.17, 2263.97, 2253.25, 2286.33],
+      [2255.77, 2270.28, 2253.31, 2276.22]]
+kline = Kline(&quot;K 线图示例&quot;)
+kline.add(&quot;日K&quot;, [&quot;2017/7/{}&quot;.format(i + 1) for i in range(31)], v1)
+kline.show_config()
+kline.render()
+</code></pre><p>示例二 : 带 datazoom 的 kline.</p>
+<pre><code>kline = Kline(&quot;K 线图示例&quot;)
+kline.add(&quot;日K&quot;, [&quot;2017/7/{}&quot;.format(i + 1) for i in range(31)], v1, mark_point=[&quot;max&quot;], is_datazoom_show=True)
+kline.show_config()
+kline.render()
+</code></pre><p>示例三 : datazoom 添加到 纵坐标轴上.</p>
+<pre><code>kline = Kline(&quot;K 线图示例&quot;)
+kline.add(&quot;日K&quot;, [&quot;2017/7/{}&quot;.format(i + 1) for i in range(31)], v1, mark_point=[&quot;max&quot;],
+          is_datazoom_show=True, datazoom_orient=&apos;vertical&apos;)
+kline.show_config()
+kline.render()
+</code></pre><h2 id="12-Line-折线图-面积图"><a href="#12-Line-折线图-面积图" class="headerlink" title="12. Line (折线图/面积图)"></a>12. Line (折线图/面积图)</h2><p>折线图是用折现将各个数据点标志连接起来的图表, 用以展现数据的变化趋势.</p>
+<p>Line.add(name, x_axis, y_axis, is_symbol_show=True, is_smooth=False, is_stack=False, is_step=False, is_fill=False, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>x_axis –&gt; list : x 坐标轴数据</li>
+<li>y_axis –&gt; list : Y 坐标轴数据</li>
+<li>is_symbol_show –&gt; bool : 是否显示标记图形, 默认为 True</li>
+<li>is_smooth –&gt; bool : 是否显示平滑曲线, 默认为 False</li>
+<li>is_stack –&gt; bool : 数据堆叠, 同个类目轴上系列配置相同的 stack 值可以堆叠放置, 默认为 False.</li>
+<li>is_step –&gt; bool/str : 是否是阶梯线图. 默认为 False. 也支持设置成 “start”, “middle”, “end” 分别配置在当前点, 当前点与下个点的中间, 下个点的拐弯.</li>
+<li><p>is_fill –&gt; bool : 是否填充曲线所绘制面积, 默认为 False.</p>
+</li>
+<li><p>mark_point –&gt; list : 标记点, 有 min, max, average 可选</p>
+</li>
+<li>mark_line –&gt; list : 标记线, 有 min, max, average 可选.</li>
+<li>mark_point_symbol –&gt; str : 标记点图形, 默认为 pin, 有 circle, rect, roundRect, triangle, diamond, pin, arrow 可选.</li>
+<li>mark_point_symbolsize –&gt; int : 标记点图形大小, 默认为 50</li>
+<li><p>mark_point_textcolor –&gt; str : 标记点字体颜色, 默认为 #fff.</p>
+</li>
+<li><p>area_color –&gt; str : 填充区域颜色.</p>
+</li>
+<li>area_opacity –&gt; float : 填充区域透明度</li>
+</ul>
+<p>示例一 :</p>
+<pre><code>from pyecharts import Line
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [5, 20, 36, 10, 10, 100]
+v2 = [55, 60, 16, 20, 15, 80]
+line = Line(&quot;折线图示例&quot;)
+line.add(&quot;商家A&quot;, attr, v1, mark_point=[&quot;average&quot;])
+line.add(&quot;商家B&quot;, attr, v2, is_smooth=True, mark_line=[&quot;max&quot;, &quot;average&quot;])
+line.show_config()
+line.render()
+</code></pre><p>示例二 : 标记点 配置示例.</p>
+<pre><code>line = Line(&quot;折线图示例&quot;)
+line.add(&quot;商家A&quot;, attr, v1, mark_point=[&quot;average&quot;, &quot;max&quot;, &quot;min&quot;],
+         mark_point_symbol=&apos;diamond&apos;, mark_point_textcolor=&apos;#40ff27&apos;)
+line.add(&quot;商家B&quot;, attr, v2, mark_point=[&quot;average&quot;, &quot;max&quot;, &quot;min&quot;],
+         mark_point_symbol=&apos;arrow&apos;, mark_point_symbolsize=40)
+line.show_config()
+line.render()
+</code></pre><p>示例三 : 折线图-数据堆叠示例</p>
+<pre><code>line = Line(&quot;折线图-数据堆叠示例&quot;)
+line.add(&quot;商家A&quot;, attr, v1, is_stack=True, is_label_show=True)
+line.add(&quot;商家B&quot;, attr, v2, is_stack=True, is_label_show=True)
+line.show_config()
+line.render()
+</code></pre><p>示例四 : 折线图-阶梯图示例</p>
+<pre><code>line = Line(&quot;折线图-面积图示例&quot;)
+line.add(&quot;商家A&quot;, attr, v1, is_fill=True, line_opacity=0.2, area_opacity=0.4, symbol=None)
+line.add(&quot;商家B&quot;, attr, v2, is_fill=True, area_color=&apos;#000&apos;, area_opacity=0.3, is_smooth=True)
+line.show_config()
+line.render()
+</code></pre><p>示例五 : 折线图-面积图示例</p>
+<pre><code>line = Line(&quot;折线图-面积图示例&quot;)
+line.add(&quot;商家A&quot;, attr, v1, is_fill=True, line_opacity=0.2, area_opacity=0.4, symbol=None)
+line.add(&quot;商家B&quot;, attr, v2, is_fill=True, area_color=&apos;#000&apos;, area_opacity=0.3, is_smooth=True)
+line.show_config()
+line.render()
+</code></pre><h2 id="13-Line3D-3D折线图"><a href="#13-Line3D-3D折线图" class="headerlink" title="13. Line3D (3D折线图)"></a>13. Line3D (3D折线图)</h2><h2 id="14-Liquid-水球图"><a href="#14-Liquid-水球图" class="headerlink" title="14. Liquid (水球图)"></a>14. Liquid (水球图)</h2><p>主要用来突出数据的百分比.</p>
+<p>Liquid.add(name, data, shape=”circle”, liquid_color=None, is_liquid_animation=True,is_liquid_outline_show=True, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>data –&gt; list : 数据项</li>
+<li>shape –&gt; str : 水球外形, 有 circle, rect, roundRect, triangle, diamond, pin, arrow 可选. 默认为 circle.</li>
+<li>liquid_color –&gt; list : 波浪颜色, 默认颜色列表为 [“#294D99”, “#156ACF”, “#1598ED”, “#45BDFF”]</li>
+<li>is_liquid_animation –&gt; bool : 是否显示波浪动画, 默认为 True.</li>
+<li>is_liquid_outline_show –&gt; bool : 是否显示边框, 默认为 True.</li>
+</ul>
+<p>示例一 : 有边界, 单波浪</p>
+<pre><code>from pyecharts import Liquid
+
+liquid = Liquid(&quot;水球图示例&quot;)
+liquid.add(&quot;Liquid&quot;, [0.6])
+liquid.show_config()
+liquid.render()
+</code></pre><p>示例二 : 无边界, 多波浪</p>
+<pre><code>from pyecharts import Liquid
+
+liquid = Liquid(&quot;水球图示例&quot;)
+liquid.add(&quot;Liquid&quot;, [0.6, 0.5, 0.4, 0.3], is_liquid_outline_show=False)
+liquid.show_config()
+liquid.render()
+</code></pre><h2 id="15-Map-地图"><a href="#15-Map-地图" class="headerlink" title="15. Map (地图)"></a>15. Map (地图)</h2><p>地图主要用于地理区域数据的可视化.</p>
+<p>Map.add(name, attr, value, is_roam=True, maptype=”china”, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>attr –&gt; list : 属性名称</li>
+<li>value –&gt; list : 属性所对应的值.</li>
+<li>is_roam –&gt; bool/str : 是否开启鼠标缩放和平移漫游, 默认为 True. 如果只开启缩放或者平移, 可以设置成 “scale” 或者 “move”, 设置为 True ,表示两个都开启.</li>
+<li>maptype –&gt; str : 地图烈性, 支持 china, world, 安徽、澳门、北京、重庆、福建、福建、甘肃、广东，广西、广州、海南、河北、黑龙江、河南、湖北、湖南、江苏、江西、吉林、辽宁、内蒙古、宁夏、青海、山东、上海、陕西、四川、台湾、天津、香港、新疆、西藏、云南、浙江. 地图提供了(自定义模式)[<a href="https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/user-customize-map.md]" target="_blank" rel="noopener">https://github.com/chenjiandongx/pyecharts/blob/master/document/zh-cn/user-customize-map.md]</a>.</li>
+</ul>
+<p>示例一 : 全国地图示例</p>
+<pre><code>from pyecharts import Map
+
+value = [155, 10, 66, 78]
+attr = [&quot;福建&quot;, &quot;山东&quot;, &quot;北京&quot;, &quot;上海&quot;]
+map = Map(&quot;全国地图示例&quot;, width=1200, height=600)
+map.add(&quot;&quot;, attr, value, maptype=&apos;china&apos;)
+map.show_config()
+map.render()
+</code></pre><p>示例二 : Map + VisualMap</p>
+<pre><code># 中国地图
+from pyecharts import Map
+value = [155, 10, 66, 78, 33, 80, 190, 53, 49.6]
+attr = [&quot;福建&quot;, &quot;山东&quot;, &quot;北京&quot;, &quot;上海&quot;, &quot;甘肃&quot;, &quot;新疆&quot;, &quot;河南&quot;, &quot;广西&quot;, &quot;西藏&quot;]
+map = Map(&quot;Map 结合 VisualMap 示例&quot;, width=1200, height=600)
+map.add(&quot;&quot;, attr, value, maptype=&apos;china&apos;, is_visualmap=True, visual_text_color=&apos;#000&apos;)
+map.show_config()
+map.render()
+
+# 广东地图
+from pyecharts import Map
+value = [20, 190, 253, 77, 65]
+attr = [&apos;汕头市&apos;, &apos;汕尾市&apos;, &apos;揭阳市&apos;, &apos;阳江市&apos;, &apos;肇庆市&apos;]
+map = Map(&quot;广东地图示例&quot;, width=1200, height=600)
+map.add(&quot;&quot;, attr, value, maptype=&apos;广东&apos;, is_visualmap=True, visual_text_color=&apos;#000&apos;)
+map.show_config()
+map.render()
+</code></pre><p>示例三 : 世界地图示例</p>
+<pre><code>value = [95.1, 23.2, 43.3, 66.4, 88.5]
+attr= [&quot;China&quot;, &quot;Canada&quot;, &quot;Brazil&quot;, &quot;Russia&quot;, &quot;United States&quot;]
+map = Map(&quot;世界地图示例&quot;, width=1200, height=600)
+map.add(&quot;&quot;, attr, value, maptype=&quot;world&quot;, is_visualmap=True, visual_text_color=&apos;#000&apos;)
+map.render()
+</code></pre><h2 id="16-Parallel-平行坐标系"><a href="#16-Parallel-平行坐标系" class="headerlink" title="16. Parallel (平行坐标系)"></a>16. Parallel (平行坐标系)</h2><h2 id="17-Pie-饼图-玫瑰图"><a href="#17-Pie-饼图-玫瑰图" class="headerlink" title="17. Pie (饼图-玫瑰图)"></a>17. Pie (饼图-玫瑰图)</h2><p>饼图用于表现不同类目的数据在总和中的占比. 每个弧度表示数据数量的比例.</p>
+<p>Pie.add(name, attr, value, radius=None, center=None, rosetype=None, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>attr –&gt; list : 属性名称</li>
+<li>value –&gt; list : 属性对应的值.</li>
+<li>radius –&gt; list : 饼图的半径, 数组的第一项是内半径, 第二项为 外半径(默认为 [0.75]). 默认设置成百分比, 相对于容器高宽中较小的一项的一半.</li>
+<li>center –&gt; list : 饼图的中心(圆心)坐标, 数组的第一项是横坐标, 第二项是纵坐标, 默认为 [50,50]. 默认设置成百分比, 设置成百分比时第一项是相对于容器宽度, 第二项是相对于容器高度.</li>
+<li>rosetype –&gt; str : 是否展示位 南丁格尔图, 通过半径区分数据大小, 有 “radius” 和 “area” 两种模式. 默认为 “radius”.<ul>
+<li>radius : 扇区圆心角展现数据的百分比, 半径展现数据的大小</li>
+<li>area : 所有扇区圆心角相同, 仅通过半径展现数据大小.</li>
+</ul>
+</li>
+</ul>
+<p>示例一 : 饼图</p>
+<pre><code>from pyecharts import Pie
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [11, 12, 13, 10, 10, 10]
+pie = Pie(&quot;饼图示例&quot;)
+pie.add(&quot;&quot;, attr, v1, is_label_show=True)
+pie.show_config()
+pie.render()
+</code></pre><p>示例二 : 饼图-圆环图示例</p>
+<pre><code>from pyecharts import Pie
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [11, 12, 13, 10, 10, 10]
+pie = Pie(&quot;饼图-圆环图示例&quot;, title_pos=&apos;center&apos;)
+pie.add(&quot;&quot;, attr, v1, radius=[40, 75], label_text_color=None, is_label_show=True, legend_orient=&apos;vertical&apos;, legend_pos=&apos;left&apos;)
+pie.show_config()
+pie.render()
+</code></pre><p>示例三 : 饼图-玫瑰图示例</p>
+<pre><code>from pyecharts import Pie
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [11, 12, 13, 10, 10, 10]
+v2 = [19, 21, 32, 20, 20, 33]
+pie = Pie(&quot;饼图-玫瑰图示例&quot;, title_pos=&apos;center&apos;, width=900)
+pie.add(&quot;商品A&quot;, attr, v1, center=[25, 50], is_random=True, radius=[30, 75], rosetype=&apos;radius&apos;)
+pie.add(&quot;商品B&quot;, attr, v2, center=[75, 50], is_random=True, radius=[30, 75], rosetype=&apos;area&apos;,
+        is_legend_show=False, is_label_show=True)
+pie.show_config() 
+pie.render()
+</code></pre><h2 id="18-Polar-极坐标系"><a href="#18-Polar-极坐标系" class="headerlink" title="18. Polar (极坐标系)"></a>18. Polar (极坐标系)</h2><p>可用以散点图和折线图.</p>
+<p>Polar.add(name, data, angle_data=None, radius_data=None, type=”line”, symbol_siza=4, start_angle=90, rotate_step=0, boundary_gap=True, clockwise=True, **kwargs)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>data –&gt; [list] : 包含列表的列表, 数据项, [极径, 极角, [ 数据值]]</li>
+<li>angle_data –&gt; list : 角度类目数据</li>
+<li>radius_data –&gt; list : 半径类目数据</li>
+<li>type –&gt; str : 图例类型, 有 line, scatter, effectScatter, barAngle, barRadius 可选, 默认为 line.</li>
+<li>symbol_size –&gt; int : 标记图形大小, 默认为 4</li>
+<li>start_angle –&gt; int : 起始刻度的角度, 默认为 90 度, 即圆形的正上方, 0 度为圆心的正右方.</li>
+<li>rotate_step –&gt; int : 刻度标签旋转的角度, 在类目轴的类目标签显示不下的时候,可以通过旋转防止标签之间重叠. 旋转的角度从 -90 度 到 90 度, 默认为 0.</li>
+<li>boundary_gap –&gt; bool : 坐标两边留白策略. 默认为 True, 这是刻度只是作为分割线, 标签和数据点都会在两个刻度之间的带(band) 中间.</li>
+<li>clockwise –&gt; bool : 刻度增长是否按顺时针, 默认为 True</li>
+<li>is_stack –&gt; bool : 数据堆叠, 同个类目轴上系列配置相同的 stack 值可以堆叠放置 .</li>
+<li>axis_range –&gt; list : 坐标轴刻度范围, 默认为 [None, None].</li>
+<li>is_angleaxis_show –&gt; bool : 是否显示极坐标系的角度轴, 默认为 True.</li>
+<li><p>is_radiusaxis_show –&gt; bool : 是否显示极坐标系的经向轴, 默认为 True.</p>
+</li>
+<li><p>is_splitline_show –&gt; bool : 是否显示分割线, 默认为 True</p>
+</li>
+<li>is_axisline_show –&gt; bool : 是否显示坐标轴线, 默认为 True</li>
+<li>area_opacity –&gt; float : 填充区域透明度</li>
+<li>area_color –&gt; str : 填充区域颜色.</li>
+</ul>
+<p><strong>可配置 lineStyle 参数</strong></p>
+<p>示例一 : 极坐标系 - 散点图示例</p>
+<pre><code># 极坐标系 - 散点
+from pyecharts import Polar
+import random
+data = [(i, random.randint(1, 100)) for i in range(101)]
+polar = Polar(&quot;极坐标系-散点图示例&quot;)
+polar.add(&quot;&quot;, data, boundary_gap=False, type=&apos;scatter&apos;, is_splitline_show=False, area_color=None, is_axisline_show=True)
+polar.show_config()
+polar.render()
+
+
+# 极坐标系 - 多重散点
+from pyecharts import Polar
+import random
+data_1 = [(10, random.randint(1, 100)) for i in range(300)]
+data_2 = [(11, random.randint(1, 100)) for i in range(300)]
+polar = Polar(&quot;极坐标系-散点图示例&quot;, width=1200, height=600)
+polar.add(&quot;&quot;, data_1, type=&apos;scatter&apos;)
+polar.add(&quot;&quot;, data_2, type=&apos;scatter&apos;)
+polar.show_config()
+polar.render()
+
+# 极坐标系 - 动态散点图
+from pyecharts import Polar
+import random
+data = [(i, random.randint(1, 100)) for i in range(10)]
+polar = Polar(&quot;极坐标系-动态散点图示例&quot;, width=1200, height=600)
+polar.add(&quot;&quot;, data, type=&apos;effectScatter&apos;, effect_scale=10, effect_period=5)
+polar.show_config()
+polar.render()
+</code></pre><p>示例二 : 极坐标系 - 堆叠柱状图示例 - barRadius</p>
+<pre><code>from pyecharts import Polar
+
+radius = [&apos;周一&apos;, &apos;周二&apos;, &apos;周三&apos;, &apos;周四&apos;, &apos;周五&apos;, &apos;周六&apos;, &apos;周日&apos;]
+polar = Polar(&quot;极坐标系-堆叠柱状图示例&quot;, width=1200, height=600)
+polar.add(&quot;A&quot;, [1, 2, 3, 4, 3, 5, 1], radius_data=radius, type=&apos;barRadius&apos;, is_stack=True)
+polar.add(&quot;B&quot;, [2, 4, 6, 1, 2, 3, 1], radius_data=radius, type=&apos;barRadius&apos;, is_stack=True)
+polar.add(&quot;C&quot;, [1, 2, 3, 4, 1, 2, 5], radius_data=radius, type=&apos;barRadius&apos;, is_stack=True)
+polar.show_config()
+polar.render()
+</code></pre><p>示例三 : 极坐标系 - 堆叠柱状图 – &gt; barAngle</p>
+<pre><code>from pyecharts import Polar
+radius = [&apos;周一&apos;, &apos;周二&apos;, &apos;周三&apos;, &apos;周四&apos;, &apos;周五&apos;, &apos;周六&apos;, &apos;周日&apos;]
+polar = Polar(&quot;极坐标系-堆叠柱状图示例&quot;, width=1200, height=600)
+polar.add(&quot;&quot;, [1, 2, 3, 4, 3, 5, 1], radius_data=radius, type=&apos;barAngle&apos;, is_stack=True)
+polar.add(&quot;&quot;, [2, 4, 6, 1, 2, 3, 1], radius_data=radius, type=&apos;barAngle&apos;, is_stack=True)
+polar.add(&quot;&quot;, [1, 2, 3, 4, 1, 2, 5], radius_data=radius, type=&apos;barAngle&apos;, is_stack=True)
+polar.show_config()
+polar.render()
+</code></pre><h2 id="19-Radar-雷达图"><a href="#19-Radar-雷达图" class="headerlink" title="19. Radar (雷达图)"></a>19. Radar (雷达图)</h2><h2 id="20-Scatter-散点图"><a href="#20-Scatter-散点图" class="headerlink" title="20. Scatter (散点图)"></a>20. Scatter (散点图)</h2><h2 id="21-Scatter3D-3D散点图"><a href="#21-Scatter3D-3D散点图" class="headerlink" title="21. Scatter3D (3D散点图)"></a>21. Scatter3D (3D散点图)</h2><h2 id="22-WordCloud-词云图"><a href="#22-WordCloud-词云图" class="headerlink" title="22. WordCloud (词云图)"></a>22. WordCloud (词云图)</h2><p>WordCloud.add(name, attr, value, shape=”circle”, word_gap=20, word_size_range=None, rotate_step=45)</p>
+<ul>
+<li>name –&gt; str : 图例名称</li>
+<li>attr –&gt; list : 属性名称</li>
+<li>value –&gt; list : 属性所对应的值</li>
+<li>shape –&gt; list : 词云图轮廓, 有 cicle, cardioid, diamond, triangle-forward, triangle, pentagon, star 可选. </li>
+<li>word_gap –&gt; int : 单词间隔, 默认为 20</li>
+<li>word_size_range –&gt; list : 单词字体大小范围, 默认为 [12, 60]</li>
+<li>rotate_step –&gt; int : 旋转单词角度, 默认为 45.</li>
+</ul>
+<p><strong>当且仅当 shape 为默认的’circle’时 rotate_step 参数才生效</strong></p>
+<p>示例一 : </p>
+<pre><code>from pyecharts import WordCloud
+name = [&apos;Sam S Club&apos;, &apos;Macys&apos;, &apos;Amy Schumer&apos;, &apos;Jurassic World&apos;, &apos;Charter Communications&apos;,
+        &apos;Chick Fil A&apos;, &apos;Planet Fitness&apos;, &apos;Pitch Perfect&apos;, &apos;Express&apos;, &apos;Home&apos;, &apos;Johnny Depp&apos;,
+        &apos;Lena Dunham&apos;, &apos;Lewis Hamilton&apos;, &apos;KXAN&apos;, &apos;Mary Ellen Mark&apos;, &apos;Farrah Abraham&apos;,
+        &apos;Rita Ora&apos;, &apos;Serena Williams&apos;, &apos;NCAA baseball tournament&apos;, &apos;Point Break&apos;]
+value = [10000, 6181, 4386, 4055, 2467, 2244, 1898, 1484, 1112, 965, 847, 582, 555,
+         550, 462, 366, 360, 282, 273, 265]
+wordcloud = WordCloud(width=1300, height=620)
+wordcloud.add(&quot;&quot;, name, value, word_size_range=[20, 100])
+wordcloud.show_config()
+wordcloud.render()
+</code></pre><p>示例二 : </p>
+<pre><code>wordcloud = WordCloud(width=1300, height=620)
+wordcloud.add(&quot;&quot;, name, value, word_size_range=[30, 100], shape=&apos;diamond&apos;)
+wordcloud.show_config()
+wordcloud.render()
+</code></pre><h2 id="23-用户自定义"><a href="#23-用户自定义" class="headerlink" title="23. 用户自定义"></a>23. 用户自定义</h2><h3 id="23-1-Grib-并行显示多张图"><a href="#23-1-Grib-并行显示多张图" class="headerlink" title="23.1 Grib : 并行显示多张图"></a>23.1 Grib : 并行显示多张图</h3><p>用户可以自定义集合 Line/Bar/Kline/Scatter/EffectScatter/Pie/HeatMap 图表, 将不同类型图表画在多张图上.</p>
+<p><strong>Grid 类的使用</strong></p>
+<ol>
+<li>引入 <code>Grid</code> 类, <code>from pyecharts import Grid</code></li>
+<li>实例化 <code>Grid</code> 类, <code>grid = Grid()</code></li>
+<li><p>使用 <code>add()</code> 向 <code>grid</code> 中添加图, 至少需要设置 <code>grid_top</code>, <code>grid_bottom</code>, <code>grid_left</code>, <code>grid_right</code> 四个参数中的一个. <code>grid_width</code> 和 <code>grid_height</code> 一般不用设置, 默认即可.</p>
+<p> <code>add()</code> 参数如下:</p>
+<ul>
+<li><code>grid_width</code> –&gt; str/int : grid 组件的宽度, 默认自适应</li>
+<li><code>grid_height</code> –&gt; str/int : grid 组件的高度, 默认自适应</li>
+<li><code>grid_top</code> –&gt; str/int : grid 组件离容器顶部的距离. 默认为 None, 有 top,center,middle 可选, 也可为 百分数或者整数.</li>
+<li><code>grid_bottom</code> –&gt; str/int : grid 组件离容器底部的距离. 默认为 None, 有 top,center,middle 可选, 也可为 百分数或者整数.</li>
+<li><code>grid_left</code> –&gt; str/int : grid 组件离容器左侧的距离. 默认为 None, 有 top,center,middle 可选, 也可为 百分数或者整数.</li>
+<li><code>grid_right</code> –&gt; str/int : grid 组件离容器右侧的距离. 默认为 None, 有 top,center,middle 可选, 也可为 百分数或者整数.</li>
+</ul>
+</li>
+<li><p>使用 <code>render()</code> 方法渲染成 <code>.html</code> 文件.</p>
+</li>
+</ol>
+<p><strong>Grid 类中的其他方法</strong><br><code>render_embed()</code> : 在 Flask/Django 中可以使用该方法渲染.<br><code>show_config()</code> : 打印输出所有配置项.<br><code>chart</code> : chart 属性返回图形示实例.</p>
+<p>示例一 : 上下类型, Bar + Line</p>
+<pre><code>from pyecharts import Bar, Line, Grid
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [5, 20, 36, 10, 75, 90]
+v2 = [10, 25, 8, 60, 20, 80]
+bar = Bar(&quot;柱状图示例&quot;, height=720)
+bar.add(&quot;商家A&quot;, attr, v1, is_stack=True)
+bar.add(&quot;商家B&quot;, attr, v2, is_stack=True)
+
+line = Line(&quot;折线图示例&quot;, title_top=&quot;50%&quot;)
+attr = [&apos;周一&apos;, &apos;周二&apos;, &apos;周三&apos;, &apos;周四&apos;, &apos;周五&apos;, &apos;周六&apos;, &apos;周日&apos;]
+line.add(&quot;最高气温&quot;, attr, [11, 11, 15, 13, 12, 13, 10], mark_point=[&quot;max&quot;, &quot;min&quot;], mark_line=[&quot;average&quot;])
+line.add(&quot;最低气温&quot;, attr, [1, -2, 2, 5, 3, 2, 0], mark_point=[&quot;max&quot;, &quot;min&quot;], mark_line=[&quot;average&quot;], legend_top=&quot;50%&quot;)
+
+grid = Grid()
+grid.add(bar, grid_bottom=&quot;60%&quot;)
+grid.add(line, grid_top=&quot;60%&quot;)
+bar.show_config()
+grid.render()
+</code></pre><p>示例二 : 左右类型, Scatter + EffectScatter</p>
+<pre><code>from pyecharts import Scatter, EffectScatter, Grid
+v1 = [5, 20, 36, 10, 75, 90]
+v2 = [10, 25, 8, 60, 20, 80]
+scatter = Scatter(width=1200)
+scatter.add(&quot;散点图示例&quot;, v1, v2, legend_pos=&quot;70%&quot;)
+es = EffectScatter()
+es.add(&quot;动态散点图示例&quot;, [11, 11, 15, 13, 12, 13, 10], [1, -2, 2, 5, 3, 2, 0], effect_scale=6, legend_pos=&quot;20%&quot;)
+
+grid = Grid()
+grid.add(scatter, grid_left=&quot;60%&quot;)
+grid.add(es, grid_right=&quot;60%&quot;)
+grid.render()
+</code></pre><p>示例三 : 上下左右类型, Bar + Line + Scatter + EffectScatter</p>
+<pre><code>from pyecharts import Bar, Line, Scatter, EffectScatter, Grid  
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [5, 20, 36, 10, 75, 90]
+v2 = [10, 25, 8, 60, 20, 80]
+bar = Bar(&quot;柱状图示例&quot;, height=720, width=1200, title_pos=&quot;65%&quot;)
+bar.add(&quot;商家A&quot;, attr, v1, is_stack=True)
+bar.add(&quot;商家B&quot;, attr, v2, is_stack=True, legend_pos=&quot;80%&quot;)
+line = Line(&quot;折线图示例&quot;)
+attr = [&apos;周一&apos;, &apos;周二&apos;, &apos;周三&apos;, &apos;周四&apos;, &apos;周五&apos;, &apos;周六&apos;, &apos;周日&apos;]
+line.add(&quot;最高气温&quot;, attr, [11, 11, 15, 13, 12, 13, 10], mark_point=[&quot;max&quot;, &quot;min&quot;], mark_line=[&quot;average&quot;])
+line.add(&quot;最低气温&quot;, attr, [1, -2, 2, 5, 3, 2, 0], mark_point=[&quot;max&quot;, &quot;min&quot;],
+         mark_line=[&quot;average&quot;], legend_pos=&quot;20%&quot;)
+v1 = [5, 20, 36, 10, 75, 90]
+v2 = [10, 25, 8, 60, 20, 80]
+scatter = Scatter(&quot;散点图示例&quot;, title_top=&quot;50%&quot;, title_pos=&quot;65%&quot;)
+scatter.add(&quot;scatter&quot;, v1, v2, legend_top=&quot;50%&quot;, legend_pos=&quot;80%&quot;)
+es = EffectScatter(&quot;动态散点图示例&quot;, title_top=&quot;50%&quot;)
+es.add(&quot;es&quot;, [11, 11, 15, 13, 12, 13, 10], [1, -2, 2, 5, 3, 2, 0], effect_scale=6,
+        legend_top=&quot;50%&quot;, legend_pos=&quot;20%&quot;)
+
+grid = Grid()
+grid.add(bar, grid_bottom=&quot;60%&quot;, grid_left=&quot;60%&quot;)
+grid.add(line, grid_bottom=&quot;60%&quot;, grid_right=&quot;60%&quot;)
+grid.add(scatter, grid_top=&quot;60%&quot;, grid_left=&quot;60%&quot;)
+grid.add(es, grid_top=&quot;60%&quot;, grid_right=&quot;60%&quot;)
+grid.render()
+</code></pre><h3 id="23-2-Overlap-结合不同类型图表叠加画在同张图上"><a href="#23-2-Overlap-结合不同类型图表叠加画在同张图上" class="headerlink" title="23.2 Overlap : 结合不同类型图表叠加画在同张图上."></a>23.2 Overlap : 结合不同类型图表叠加画在同张图上.</h3><p>用户可以自定义结合 Line/Bar/Kline, Scatter/EffectScatter 图表, 将不同类型图表画在一张图上, 利用第一个图表为基础, 之后的数据都将画在第一个图表上.</p>
+<p><strong>Overlap 使用方法</strong></p>
+<ol>
+<li>引入 <code>Overlap</code> 类, <code>from pyecharts import Overlap</code></li>
+<li>实例化 <code>Overlap</code> 类, <code>overlap = Overlap()</code></li>
+<li>使用 <code>add()</code> 向 <code>overlap</code> 添加图</li>
+<li>使用 <code>render()</code> 渲染生成 <code>.html</code> 文件</li>
+</ol>
+<p><strong>Overlap 类中的其他方法</strong></p>
+<ol>
+<li><code>render_embed()</code> : 在 Flask/Django 中可用该方法渲染.</li>
+<li><code>show_config()</code> : 打印输出所有配置项</li>
+<li><code>chart</code> : 返回图形示例.</li>
+</ol>
+<p>示例一 : Line + Bar</p>
+<pre><code>from pyecharts import Bar, Line, Overlap
+attr = [&apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;D&apos;, &apos;E&apos;, &apos;F&apos;]
+v1 = [10, 20, 30, 40, 50, 60]
+v2 = [38, 28, 58, 48, 78, 68]
+bar = Bar(&quot;Line - Bar 示例&quot;)
+bar.add(&quot;bar&quot;, attr, v1)
+line = Line()
+line.add(&quot;line&quot;, attr, v2)
+
+overlap = Overlap()
+overlap.add(bar)
+overlap.add(line)
+overlap.render()
+</code></pre><p>示例二 : </p>
+<pre><code>from pyecharts import Scatter, EffectScatter, Overlap
+v1 = [10, 20, 30, 40, 50, 60]
+v2 = [30, 30, 30, 30, 30, 30]
+v3 = [50, 50, 50, 50, 50, 50]
+v4 = [10, 10, 10, 10, 10, 10]
+es = EffectScatter(&quot;Scatter - EffectScatter 示例&quot;)
+es.add(&quot;es&quot;, v1, v2)
+scatter = Scatter()
+scatter.add(&quot;scatter&quot;, v1, v3)
+es_1 = EffectScatter()
+es_1.add(&quot;es_1&quot;, v1, v4, symbol=&apos;pin&apos;, effect_scale=5)
+
+overlap = Overlap()
+overlap.add(es)
+overlap.add(scatter)
+overlap.add(es_1)
+overlap.render()
+</code></pre><p>示例三 : Kline + Line</p>
+<pre><code>import random
+from pyecharts import Line, Kline, Overlap
+
+v1 = [[2320.26, 2320.26, 2287.3, 2362.94],
+      [2300, 2291.3, 2288.26, 2308.38],
+      [2295.35, 2346.5, 2295.35, 2345.92],
+      [2347.22, 2358.98, 2337.35, 2363.8],
+      [2360.75, 2382.48, 2347.89, 2383.76],
+      [2383.43, 2385.42, 2371.23, 2391.82],
+      [2377.41, 2419.02, 2369.57, 2421.15],
+      [2425.92, 2428.15, 2417.58, 2440.38],
+      [2411, 2433.13, 2403.3, 2437.42],
+      [2432.68, 2334.48, 2427.7, 2441.73],
+      [2430.69, 2418.53, 2394.22, 2433.89],
+      [2416.62, 2432.4, 2414.4, 2443.03],
+      [2441.91, 2421.56, 2418.43, 2444.8],
+      [2420.26, 2382.91, 2373.53, 2427.07],
+      [2383.49, 2397.18, 2370.61, 2397.94],
+      [2378.82, 2325.95, 2309.17, 2378.82],
+      [2322.94, 2314.16, 2308.76, 2330.88],
+      [2320.62, 2325.82, 2315.01, 2338.78],
+      [2313.74, 2293.34, 2289.89, 2340.71],
+      [2297.77, 2313.22, 2292.03, 2324.63],
+      [2322.32, 2365.59, 2308.92, 2366.16],
+      [2364.54, 2359.51, 2330.86, 2369.65],
+      [2332.08, 2273.4, 2259.25, 2333.54],
+      [2274.81, 2326.31, 2270.1, 2328.14],
+      [2333.61, 2347.18, 2321.6, 2351.44],
+      [2340.44, 2324.29, 2304.27, 2352.02],
+      [2326.42, 2318.61, 2314.59, 2333.67],
+      [2314.68, 2310.59, 2296.58, 2320.96],
+      [2309.16, 2286.6, 2264.83, 2333.29],
+      [2282.17, 2263.97, 2253.25, 2286.33],
+      [2255.77, 2270.28, 2253.31, 2276.22]]
+attr = [&quot;2017/7/{}&quot;.format(i + 1) for i in range(31)]
+kline = Kline(&quot;Kline - Line 示例&quot;)
+kline.add(&quot;日K&quot;, attr, v1)
+line_1 = Line()
+line_1.add(&quot;line-1&quot;, attr, [random.randint(2400, 2500) for _ in range(31)])
+line_2 = Line()
+line_2.add(&quot;line-2&quot;, attr, [random.randint(2400, 2500) for _ in range(31)])
+
+overlap = Overlap()
+overlap.add(kline)
+overlap.add(line_1)
+overlap.add(line_2)
+overlap.render()
+</code></pre><h3 id="23-4-Page-同一网页按顺序展示多图"><a href="#23-4-Page-同一网页按顺序展示多图" class="headerlink" title="23.4 Page : 同一网页按顺序展示多图."></a>23.4 Page : 同一网页按顺序展示多图.</h3><p><strong>Page 类的使用</strong></p>
+<ol>
+<li>引入 <code>Page</code> 类, <code>from pyecharts import Page</code></li>
+<li>实例化 <code>Page</code> 类, <code>page = Page()</code></li>
+<li>使用 <code>add()</code> 向 <code>page</code> 实例中添加图片</li>
+<li>使用 <code>render()</code> 渲染生成 <code>.html</code> 文件.</li>
+</ol>
+<p><strong>Page 类中的其他方法</strong></p>
+<ol>
+<li><code>render_embed()</code> : 在 Flask/Django 中可以使用该方法渲染</li>
+<li><code>show_config()</code> : 打印输出所有配置项</li>
+<li><code>chart</code> : chart 属性返回图形实例.</li>
+</ol>
+<p>示例 : </p>
+<pre><code>#coding=utf-8
+from __future__ import unicode_literals
+
+from pyecharts import Line, Pie, Kline, Radar
+from pyecharts import Page
+
+
+page = Page()
+
+# line
+attr = [&apos;周一&apos;, &apos;周二&apos;, &apos;周三&apos;, &apos;周四&apos;, &apos;周五&apos;, &apos;周六&apos;, &apos;周日&apos;]
+line = Line(&quot;折线图示例&quot;)
+line.add(&quot;最高气温&quot;, attr, [11, 11, 15, 13, 12, 13, 10], mark_point=[&quot;max&quot;, &quot;min&quot;], mark_line=[&quot;average&quot;])
+line.add(&quot;最低气温&quot;, attr, [1, -2, 2, 5, 3, 2, 0], mark_point=[&quot;max&quot;, &quot;min&quot;], mark_line=[&quot;average&quot;])
+page.add(line)
+
+# pie
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+v1 = [11, 12, 13, 10, 10, 10]
+pie = Pie(&quot;饼图-圆环图示例&quot;, title_pos=&apos;center&apos;)
+pie.add(&quot;&quot;, attr, v1, radius=[40, 75], label_text_color=None, is_label_show=True, legend_orient=&apos;vertical&apos;,
+        legend_pos=&apos;left&apos;)
+page.add(pie)
+
+# kline
+v1 = [[2320.26, 2320.26, 2287.3, 2362.94],
+      [2300, 2291.3, 2288.26, 2308.38],
+      [2295.35, 2346.5, 2295.35, 2345.92],
+      [2347.22, 2358.98, 2337.35, 2363.8],
+      [2360.75, 2382.48, 2347.89, 2383.76],
+      [2383.43, 2385.42, 2371.23, 2391.82],
+      [2377.41, 2419.02, 2369.57, 2421.15],
+      [2425.92, 2428.15, 2417.58, 2440.38],
+      [2411, 2433.13, 2403.3, 2437.42],
+      [2432.68, 2334.48, 2427.7, 2441.73],
+      [2430.69, 2418.53, 2394.22, 2433.89],
+      [2416.62, 2432.4, 2414.4, 2443.03],
+      [2441.91, 2421.56, 2418.43, 2444.8],
+      [2420.26, 2382.91, 2373.53, 2427.07],
+      [2383.49, 2397.18, 2370.61, 2397.94],
+      [2378.82, 2325.95, 2309.17, 2378.82],
+      [2322.94, 2314.16, 2308.76, 2330.88],
+      [2320.62, 2325.82, 2315.01, 2338.78],
+      [2313.74, 2293.34, 2289.89, 2340.71],
+      [2297.77, 2313.22, 2292.03, 2324.63],
+      [2322.32, 2365.59, 2308.92, 2366.16],
+      [2364.54, 2359.51, 2330.86, 2369.65],
+      [2332.08, 2273.4, 2259.25, 2333.54],
+      [2274.81, 2326.31, 2270.1, 2328.14],
+      [2333.61, 2347.18, 2321.6, 2351.44],
+      [2340.44, 2324.29, 2304.27, 2352.02],
+      [2326.42, 2318.61, 2314.59, 2333.67],
+      [2314.68, 2310.59, 2296.58, 2320.96],
+      [2309.16, 2286.6, 2264.83, 2333.29],
+      [2282.17, 2263.97, 2253.25, 2286.33],
+      [2255.77, 2270.28, 2253.31, 2276.22]]
+kline = Kline(&quot;K 线图示例&quot;)
+kline.add(&quot;日K&quot;, [&quot;2017/7/{}&quot;.format(i + 1) for i in range(31)], v1)
+page.add(kline)
+
+# radar
+schema = [(&quot;销售&quot;, 6500), (&quot;管理&quot;, 16000), (&quot;信息技术&quot;, 30000), (&quot;客服&quot;, 38000), (&quot;研发&quot;, 52000), (&quot;市场&quot;, 25000)]
+v1 = [[4300, 10000, 28000, 35000, 50000, 19000]]
+v2 = [[5000, 14000, 28000, 31000, 42000, 21000]]
+radar = Radar(&quot;雷达图示例&quot;)
+radar.config(schema)
+radar.add(&quot;预算分配&quot;, v1, is_splitline=True, is_axisline_show=True)
+radar.add(&quot;实际开销&quot;, v2, label_color=[&quot;#4e79a7&quot;], is_area_show=False, legend_selectedmode=&apos;single&apos;)
+page.add(radar)
+
+page.render()
+</code></pre><h3 id="23-5-Timeline-提供时间线轮播多张图"><a href="#23-5-Timeline-提供时间线轮播多张图" class="headerlink" title="23.5 Timeline : 提供时间线轮播多张图"></a>23.5 Timeline : 提供时间线轮播多张图</h3><p><strong>Timeline 类的使用</strong></p>
+<ol>
+<li>引入 <code>TimeLIne</code> 类, <code>from pyecharts import Timeline</code></li>
+<li><p>实例化 <code>Timeline</code> 类, <code>timeline = Timeline()</code></p>
+<p> 实例化 Timeline 类时接受设置参数.</p>
+<ul>
+<li><p>is_auto_play -&gt; bool</p>
+<p>  是否自动播放，默认为 Flase</p>
+</li>
+<li><p>is_loop_play -&gt; bool</p>
+<p>  是否循环播放，默认为 True</p>
+</li>
+<li><p>is_rewind_play -&gt; bool</p>
+<p>  是否方向播放，默认为 Flase</p>
+</li>
+<li><p>is_timeline_show -&gt; bool</p>
+<p>  是否显示 timeline 组件。默认为 True，如果设置为false，不会显示，但是功能还存在。</p>
+</li>
+<li><p>timeline_play_interval -&gt; int</p>
+<p>  播放的速度（跳动的间隔），单位毫秒（ms）。</p>
+</li>
+<li><p>timeline_symbol -&gt; str</p>
+<p>  标记的图形。ECharts 提供的标记类型包括 ‘circle’, ‘rect’, ‘roundRect’, ‘triangle’, ‘diamond’, ‘pin’, ‘arrow’</p>
+</li>
+<li><p>timeline_symbol_size -&gt; int/list</p>
+<p>  标记的图形大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为 20，高为 10。</p>
+</li>
+<li><p>timeline_left -&gt; int/str</p>
+<p>  timeline 组件离容器左侧的距离。</p>
+<p>  left 的值可以是像 20 这样的具体像素值，可以是像 ‘20%’ 这样相对于容器高宽的百分比，也可以是 ‘left’, ‘center’, ‘right’。如果 left 的值为’left’, ‘center’, ‘right’，组件会根据相应的位置自动对齐。</p>
+</li>
+<li><p>timeline_right -&gt; int/str</p>
+<p>  timeline 组件离容器右侧的距离。同 left</p>
+</li>
+<li><p>timeline_top -&gt; int/str</p>
+<p>  timeline 组件离容器顶侧的距离。同 left</p>
+</li>
+<li><p>timeline_bottom -&gt; int/str</p>
+<p>  timeline 组件离容器底侧的距离。同 left</p>
+</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li>使用 <code>add()</code> 向 <code>timeline</code> 中添加图. 该方法接受两个参数, 第一个为 <strong>图实例</strong> , 第二个为时间线的<strong>时间点</strong>.</li>
+<li>使用 <code>render() 渲染成</code>.html` 文件.</li>
+</ol>
+<p><strong>Timeline 类中的其他</strong></p>
+<ol>
+<li><code>render_embed()</code> : 在 Flask/Django 中可以使用该方法渲染</li>
+<li><code>show_config()</code> : 打印输出所有配置项</li>
+<li><code>chart</code> : chart 属性返回图形实例.</li>
+</ol>
+<p>示例一 : </p>
+<pre><code>from pyecharts import Bar, Timeline
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+bar_1 = Bar(&quot;2012 年销量&quot;, &quot;数据纯属虚构&quot;)
+bar_1.add(&quot;春季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_1.add(&quot;夏季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_1.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_1.add(&quot;冬季&quot;, attr, [randint(10, 100) for _ in range(6)])
+
+bar_2 = Bar(&quot;2013 年销量&quot;, &quot;数据纯属虚构&quot;)
+bar_2.add(&quot;春季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_2.add(&quot;夏季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_2.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_2.add(&quot;冬季&quot;, attr, [randint(10, 100) for _ in range(6)])
+
+bar_3 = Bar(&quot;2014 年销量&quot;, &quot;数据纯属虚构&quot;)
+bar_3.add(&quot;春季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_3.add(&quot;夏季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_3.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_3.add(&quot;冬季&quot;, attr, [randint(10, 100) for _ in range(6)])
+
+bar_4 = Bar(&quot;2015 年销量&quot;, &quot;数据纯属虚构&quot;)
+bar_4.add(&quot;春季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_4.add(&quot;夏季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_4.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_4.add(&quot;冬季&quot;, attr, [randint(10, 100) for _ in range(6)])
+
+bar_5 = Bar(&quot;2016 年销量&quot;, &quot;数据纯属虚构&quot;)
+bar_5.add(&quot;春季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_5.add(&quot;夏季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_5.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)])
+bar_5.add(&quot;冬季&quot;, attr, [randint(10, 100) for _ in range(6)], is_legend_show=True)
+
+timeline = Timeline(is_auto_play=True, timeline_bottom=0)
+timeline.add(bar_1, &apos;2012 年&apos;)
+timeline.add(bar_2, &apos;2013 年&apos;)
+timeline.add(bar_3, &apos;2014 年&apos;)
+timeline.add(bar_4, &apos;2015 年&apos;)
+timeline.add(bar_5, &apos;2016 年&apos;)
+timeline.render()
+</code></pre><p>示例二 : </p>
+<pre><code>from pyecharts import Pie, Timeline
+
+attr = [&quot;衬衫&quot;, &quot;羊毛衫&quot;, &quot;雪纺衫&quot;, &quot;裤子&quot;, &quot;高跟鞋&quot;, &quot;袜子&quot;]
+pie_1 = Pie(&quot;2012 年销量比例&quot;, &quot;数据纯属虚构&quot;)
+pie_1.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)],
+          is_label_show=True, radius=[30, 55], rosetype=&apos;radius&apos;)
+
+pie_2 = Pie(&quot;2013 年销量比例&quot;, &quot;数据纯属虚构&quot;)
+pie_2.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)],
+          is_label_show=True, radius=[30, 55], rosetype=&apos;radius&apos;)
+
+pie_3 = Pie(&quot;2014 年销量比例&quot;, &quot;数据纯属虚构&quot;)
+pie_3.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)],
+          is_label_show=True, radius=[30, 55], rosetype=&apos;radius&apos;)
+
+pie_4 = Pie(&quot;2015 年销量比例&quot;, &quot;数据纯属虚构&quot;)
+pie_4.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)],
+          is_label_show=True, radius=[30, 55], rosetype=&apos;radius&apos;)
+
+pie_5 = Pie(&quot;2016 年销量比例&quot;, &quot;数据纯属虚构&quot;)
+pie_5.add(&quot;秋季&quot;, attr, [randint(10, 100) for _ in range(6)],
+          is_label_show=True, radius=[30, 55], rosetype=&apos;radius&apos;)
+
+timeline = Timeline(is_auto_play=True, timeline_bottom=0)
+timeline.add(pie_1, &apos;2012 年&apos;)
+timeline.add(pie_2, &apos;2013 年&apos;)
+timeline.add(pie_3, &apos;2014 年&apos;)
+timeline.add(pie_4, &apos;2015 年&apos;)
+timeline.add(pie_5, &apos;2016 年&apos;)
+timeline.show_config()
+timeline.render()
+</code></pre><h2 id="24-pyecharts-集成-Flask"><a href="#24-pyecharts-集成-Flask" class="headerlink" title="24. pyecharts 集成 Flask"></a>24. pyecharts 集成 Flask</h2><p>核心原理: 使用 render_template 将 Type.render_embed() 返回的 js 代码, 作为参数传入 template 中, template 需要事先加载 所需要的 js 库.</p>
+<p>template 代码示例</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;ECharts&lt;/title&gt;
+    &lt;script src=&quot;http://oog4yfyu0.bkt.clouddn.com/echarts.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;http://oog4yfyu0.bkt.clouddn.com/echarts-gl.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript &quot; src=&quot;http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript &quot; src=&quot;http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript &quot; src=&quot;http://oog4yfyu0.bkt.clouddn.com/wordcloud.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  {{myechart|safe}}
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre><p>flaks 代码示例</p>
+<pre><code>from flask import Flask, render_template
+app = Flask(__name__)
+
+
+@app.route(&quot;/&quot;)
+def hello():
+    return render_template(&apos;pyecharts.html&apos;, myechart=scatter3d())
+
+
+def scatter3d():
+    from pyecharts import Scatter3D
+
+    import random
+    data = [[random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)] for _ in range(80)]
+    range_color = [&apos;#313695&apos;, &apos;#4575b4&apos;, &apos;#74add1&apos;, &apos;#abd9e9&apos;, &apos;#e0f3f8&apos;, &apos;#ffffbf&apos;,
+                   &apos;#fee090&apos;, &apos;#fdae61&apos;, &apos;#f46d43&apos;, &apos;#d73027&apos;, &apos;#a50026&apos;]
+    scatter3D = Scatter3D(&quot;3D scattering plot demo&quot;, width=1200, height=600)
+    scatter3D.add(&quot;&quot;, data, is_visualmap=True, visual_range_color=range_color)
+    return scatter3D.render_embed()
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PyPi/" rel="tag"># PyPi</a>
+          
+            <a href="/tags/pyecharts/" rel="tag"># pyecharts</a>
+          
+            <a href="/tags/echarts/" rel="tag"># echarts</a>
+          
+            <a href="/tags/JavaScript-图表/" rel="tag"># JavaScript 图表</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/flaskExt--flask-whooshee/" rel="next" title="Flask 扩展之 -- flask-whooshee">
+                <i class="fa fa-chevron-left"></i> Flask 扩展之 -- flask-whooshee
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/flaskExt--flask-socketio/" rel="prev" title="Flask 扩展之--flask-socketio">
+                Flask 扩展之--flask-socketio <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装"><span class="nav-text">1. 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-简单使用"><span class="nav-text">1.1 简单使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-基本使用"><span class="nav-text">2. 基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-基本套路"><span class="nav-text">2.1 基本套路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-图表类初始化接受的参数-所有类型的图表都一样"><span class="nav-text">2.2 图表类初始化接受的参数(所有类型的图表都一样)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-通用配置项-均在-add-中设置"><span class="nav-text">2.3 通用配置项(均在 add() 中设置)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-xyAxis-直角坐标系中的-x-y-轴-Line-Bar-Scatter-EffectScatter-Kline"><span class="nav-text">2.3.1 xyAxis: 直角坐标系中的 x, y 轴(Line, Bar, Scatter, EffectScatter, Kline)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-dataZoom-dataZoome-组件用于区域缩放-从而能自由关注细节的数据信息-或者概览数据整体-或者去除离群点的影响-Line-Bar-Scatter-EffectScatter-Kline"><span class="nav-text">2.3.2 dataZoom: dataZoome 组件用于区域缩放, 从而能自由关注细节的数据信息, 或者概览数据整体, 或者去除离群点的影响, (Line, Bar, Scatter, EffectScatter, Kline )</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-legend-图例组件-图例组件展现了不同系列的标记-Symbol-颜色和名字-可以通过点击图例控制那些系列不显示"><span class="nav-text">2.3.3  legend: 图例组件. 图例组件展现了不同系列的标记(Symbol), 颜色和名字. 可以通过点击图例控制那些系列不显示.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-label-图形上的文本标签-可用于说明图形的一些数据信息-如值-名称等"><span class="nav-text">2.3.4 label: 图形上的文本标签, 可用于说明图形的一些数据信息, 如值,名称等.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-5-lineStyle-带线图形的线的风格选项-Line-Polar-Radar-Graph-Parallel"><span class="nav-text">2.3.5 lineStyle : 带线图形的线的风格选项, (Line, Polar, Radar, Graph, Parallel)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-6-grib3D-3D-笛卡尔坐标系组配置项-适用于-3D-图形-Bar3D-Line3D-Scatter3D"><span class="nav-text">2.3.6 grib3D : 3D 笛卡尔坐标系组配置项, 适用于 3D 图形. (Bar3D, Line3D, Scatter3D)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-7-axis3D-3D-笛卡尔坐标系-X-Y-Z-轴配置项"><span class="nav-text">2.3.7 axis3D : 3D 笛卡尔坐标系 X,Y,Z 轴配置项.</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-7-1-X轴"><span class="nav-text">2.3.7.1 X轴</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-7-2-Y轴"><span class="nav-text">2.3.7.2 Y轴</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-7-3-Z轴"><span class="nav-text">2.3.7.3 Z轴</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-8-visualMap-是视觉映射组件-用于进行-视觉编码-也就是将数据映射视觉元素-视觉通道"><span class="nav-text">2.3.8 visualMap : 是视觉映射组件, 用于进行 视觉编码, 也就是将数据映射视觉元素(视觉通道)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Python2-的编码问题"><span class="nav-text">2.2 Python2 的编码问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Bar-柱状图-条形图"><span class="nav-text">3. Bar (柱状图/条形图)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Bar-数据堆叠"><span class="nav-text">3.1 Bar 数据堆叠</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-标记线和标记点"><span class="nav-text">3.2 标记线和标记点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-X-轴和-Y-轴交换"><span class="nav-text">3.3 X 轴和 Y 轴交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Bar-datazoom"><span class="nav-text">3.4 Bar - datazoom</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-slide-类型"><span class="nav-text">3.4.1 slide 类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-inside-类型"><span class="nav-text">3.4.2 inside 类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-3-坐标轴标签旋转"><span class="nav-text">3.4.3 坐标轴标签旋转</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Bar3D-3D-柱状图"><span class="nav-text">4. Bar3D (3D 柱状图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-EffectScatter-带有涟漪特效动画的散点图"><span class="nav-text">5. EffectScatter (带有涟漪特效动画的散点图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Funnel-漏斗图"><span class="nav-text">6. Funnel (漏斗图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Gauge-仪表盘"><span class="nav-text">7. Gauge (仪表盘)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Geo-地理坐标系"><span class="nav-text">8. Geo (地理坐标系)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-scatter"><span class="nav-text">8.1 scatter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-effectScatter"><span class="nav-text">8.2 effectScatter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-heatmap"><span class="nav-text">8.3 heatmap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Graph-关系图"><span class="nav-text">9. Graph (关系图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-HeatMap-热力图"><span class="nav-text">10. HeatMap (热力图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Kline-K线图"><span class="nav-text">11. Kline (K线图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Line-折线图-面积图"><span class="nav-text">12. Line (折线图/面积图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-Line3D-3D折线图"><span class="nav-text">13. Line3D (3D折线图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-Liquid-水球图"><span class="nav-text">14. Liquid (水球图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-Map-地图"><span class="nav-text">15. Map (地图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-Parallel-平行坐标系"><span class="nav-text">16. Parallel (平行坐标系)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-Pie-饼图-玫瑰图"><span class="nav-text">17. Pie (饼图-玫瑰图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-Polar-极坐标系"><span class="nav-text">18. Polar (极坐标系)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-Radar-雷达图"><span class="nav-text">19. Radar (雷达图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-Scatter-散点图"><span class="nav-text">20. Scatter (散点图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-Scatter3D-3D散点图"><span class="nav-text">21. Scatter3D (3D散点图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-WordCloud-词云图"><span class="nav-text">22. WordCloud (词云图)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-用户自定义"><span class="nav-text">23. 用户自定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#23-1-Grib-并行显示多张图"><span class="nav-text">23.1 Grib : 并行显示多张图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-2-Overlap-结合不同类型图表叠加画在同张图上"><span class="nav-text">23.2 Overlap : 结合不同类型图表叠加画在同张图上.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-4-Page-同一网页按顺序展示多图"><span class="nav-text">23.4 Page : 同一网页按顺序展示多图.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-5-Timeline-提供时间线轮播多张图"><span class="nav-text">23.5 Timeline : 提供时间线轮播多张图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-pyecharts-集成-Flask"><span class="nav-text">24. pyecharts 集成 Flask</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

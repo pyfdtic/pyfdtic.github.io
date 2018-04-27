@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Flask,Flask 扩展,sse,Server-Sent Event," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="flask-sse 1. Server-Sent Events, SSEServer-Sent Events 让服务器向客户端流式发送文本消息, 如服务器生生成的实时通知或者更新. SSE 提供的是一个高效, 跨浏览器的 XHR 流实现, 消息交付只使用一个长 HTTP 连接. 与我们自己实现的 XHR 流不同, 浏览器会帮我们管理连接, 解析消息, 从而让我们只关注业务逻辑. 1.1 SSE 组">
+<meta name="keywords" content="Flask,Flask 扩展,sse,Server-Sent Event">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask 扩展之--flask-sse">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-sse/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="flask-sse 1. Server-Sent Events, SSEServer-Sent Events 让服务器向客户端流式发送文本消息, 如服务器生生成的实时通知或者更新. SSE 提供的是一个高效, 跨浏览器的 XHR 流实现, 消息交付只使用一个长 HTTP 连接. 与我们自己实现的 XHR 流不同, 浏览器会帮我们管理连接, 解析消息, 从而让我们只关注业务逻辑. 1.1 SSE 组">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-19T10:57:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask 扩展之--flask-sse">
+<meta name="twitter:description" content="flask-sse 1. Server-Sent Events, SSEServer-Sent Events 让服务器向客户端流式发送文本消息, 如服务器生生成的实时通知或者更新. SSE 提供的是一个高效, 跨浏览器的 XHR 流实现, 消息交付只使用一个长 HTTP 连接. 与我们自己实现的 XHR 流不同, 浏览器会帮我们管理连接, 解析消息, 从而让我们只关注业务逻辑. 1.1 SSE 组">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-sse/"/>
+
+
+
+
+
+  <title>Flask 扩展之--flask-sse | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/flaskExt--flask-sse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Flask 扩展之--flask-sse</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:45:09+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>flask-sse</p>
+<h2 id="1-Server-Sent-Events-SSE"><a href="#1-Server-Sent-Events-SSE" class="headerlink" title="1. Server-Sent Events, SSE"></a>1. Server-Sent Events, SSE</h2><p>Server-Sent Events 让服务器向客户端流式发送文本消息, 如服务器生生成的实时通知或者更新.</p>
+<p>SSE 提供的是一个高效, 跨浏览器的 XHR 流实现, 消息交付只使用一个长 HTTP 连接. 与我们自己实现的 XHR 流不同, 浏览器会帮我们管理连接, 解析消息, 从而让我们只关注业务逻辑.</p>
+<h3 id="1-1-SSE-组件"><a href="#1-1-SSE-组件" class="headerlink" title="1.1 SSE 组件"></a>1.1 SSE 组件</h3><ul>
+<li>浏览器中的 EventSource API : 可以让客户端以 DOM 事件的形式, 接收到服务器推送的通知.</li>
+<li><code>事件流</code> 数据格式 : 新数据格式用于交付每一次更新.</li>
+</ul>
+<h4 id="1-1-1-EventSource-API"><a href="#1-1-1-EventSource-API" class="headerlink" title="1.1.1 EventSource API"></a>1.1.1 EventSource API</h4><h5 id="1-1-1-1-API"><a href="#1-1-1-1-API" class="headerlink" title="1.1.1.1 API"></a>1.1.1.1 API</h5><p>EventSource 接口通过一个简单的浏览器 API 隐藏了所有的底层细节: 包括建立链接和解析消息.</p>
+<p>使用 SSE , 只需指定 SSE 事件流资源的 URL, 并在该对象上注册响应的 Javascript 事件监听器即可.</p>
+<pre><code>// 示例代码
+// 打开到流终点的 SSE 连接
+var source = new EventSource(&quot;/path/to/stream-url&quot;)     
+
+// 可选回调, 建立连接时调用
+source.onopen = function () { ... }
+
+// 可选回调, 连接失败时调用
+source.operrpr = function () { ... }
+
+// 监听 &quot;foo&quot; 事件, 调用自定义代码
+source.addEventListener(&quot;foo&quot;, function (event) {
+    processFoo(event.data);
+})
+
+// 监听所有事件, 不明确指定事件类型.
+source.onmessage = function (event) {
+    log_message(event.id, event.data);
+
+    // 如果 服务器发送 &quot;CLOSE&quot; 消息 ID, 关闭 SSE 连接.
+    if (event.id == &quot;CLOSE&quot;) {
+        source.close();
+    }
+}
+</code></pre><p><strong>EventSource 可以像常规 XHR 一样利用 CORS 许可及选择同意机制, 实现客户端到远程服务器的流式事件数据传输</strong>.</p>
+<p>以上是 客户端API 的全部. 浏览器会帮我们处理一切: 协商建立连接, 接受并递增的解析数据, 标识消息范围, 最终触发 DOM 事件.</p>
+<h5 id="1-1-1-2-自动重连机制"><a href="#1-1-1-2-自动重连机制" class="headerlink" title="1.1.1.2 自动重连机制"></a>1.1.1.2 自动重连机制</h5><p>EventSource 接口能自动重新连接并跟踪最近接受的消息: 如果链接断开了, EventSource 会自动重新连接到服务器, 还可以向服务器发送上一次收到的消息 ID, 一遍服务器重传跌势的消失并恢复流.</p>
+<p>浏览器如何确定每个消息的 ID, 类型 和 范围: 使用<strong>事件流协议</strong>. EventSource API 和 定义完善的数据格式, 密切协同, 使得浏览器中的应用完全不必理会底层数据协议.</p>
+<h4 id="1-1-2-Event-Strema-协议"><a href="#1-1-2-Event-Strema-协议" class="headerlink" title="1.1.2 Event Strema 协议"></a>1.1.2 Event Strema 协议</h4><p>SSE 事件流是以<strong>流式 HTTP 响应</strong>形式交付的: 客户端发起常规 HTTP 请求, 服务器以自定义的 “text/event-stream” 内容类型响应, 然后交付 UTF-8 编码的事件数据.</p>
+<pre><code>=&gt; 请求
+GET /stream HTTP/1.1        # 客户端通过 EventSource 接口发起连接
+Host: example.com
+Accept: text/event-stream
+
+&lt;= 响应
+HTTP/1.1 200 OK 
+Connection: keep-alive
+Content-Type: text/event-stream     # 服务器以 &quot;text/event-stream&quot; 内容类型响应
+Transfer-Encoding: chunked     
+
+retry: 15000        # 服务器设置连接中断后重新连接的时间间隔
+
+data: First message is a simple string  # 不带消息类型的简单文本事件
+
+data: {&apos;message&apos;: &apos;JSON payload&apos;}   # 不带消息类型的 JSON 数据载荷
+
+evnet: foo      # 类型为 foo 的简单文本事件
+data: Message of type &quot;foo&quot;
+
+id: 42          # 带消息 ID 和类型的多行时间
+event: bar
+data: Multi-line message of
+data: type &quot;bar&quot; and id &quot;42&quot;
+
+id: 43          # 带可选 ID 的简单文本事件
+data: Last message, id &quot;43&quot;
+</code></pre><p>以上事件流协议, 容易理解, 容易实现:</p>
+<ul>
+<li>事件载荷就是一个或多个相邻 data 字段的值</li>
+<li>事件可以带 ID 和 event 表示事件类型</li>
+<li>事件边界用换行符标识</li>
+</ul>
+<p>在接收端, EventSource API 通过检查换行分割符来解析到来的数据流, 从 data 字段中提取有效载荷, 检查可选的 ID 和类型, 最后再分派一个 DOM 事件告知应用. 如果存在某个类型, 那么就会触发自定义的 DOM 事件处理程序, 否则, 就会调动通用的 onmessage 回调.</p>
+<p>EventSource 不会对实际载荷进行任何额外处理, 从多个 data 字段中提取出的消息, 会被拼接起来直接交给应用. 因此, 服务器可以推送任何文本格式(字符串, JSON等), 应用必须自己解码. 所有事件源数据都是 UTF-8 编码的, SSE 不是传输 二进制载荷 而设计的, 但可以把二进制对象编码为 base64 格式, 然后使用 SSE, 但会导致很高(33%)的开销.</p>
+<p>SSE 连接本质上是 HTTP 流式响应, 因此响应时可以压缩的, 就跟压缩其他 HTTP 响应一样, 而且是动态压缩. </p>
+<p>除了自动解析事件数据, SSE 还内置支持<strong>断线重连</strong>, 以及恢复客户端因断线而丢失的消息. 默认情况下, 如果连接中断, 浏览器会自动重新连接, SSE 规范建议间隔时间为 2~3 s, 这也是大多数浏览器采用的默认值. 服务器也可以设置一个自定义的时间间隔, 只要在推送任何消息时, 向客户端发送一个 retry 命令即可.</p>
+<p>服务器还可以给每条消息关联任意 ID 字符串. 浏览器会自定记录最后一次收到的消息ID, 并在发送重连请求时自动在 HTTP 首部追加 <strong>Last-Event-ID</strong> 值.</p>
+<pre><code># 既有 SSE 连接
+retry: 4500         // 服务器将客户端的重连事件设置为 4.5s
+
+id: 43              // 简单文本事件, ID 43
+data: Lorem ipsum  
+
+# 连接断开, 4500 ms 之后
+
+=&gt; 请求
+GET /stream HTTP/1.1    // 带 Last-Event-ID 的客户端重连请求.
+Host: example.com
+Accept: text/event-stream
+Last-Event-ID: 43
+
+&lt;= 响应
+HTTP/1.1 200 OK     // 服务器响应.
+Content-Type: text/event-stream
+Connection: keep-alive
+Transfer-Encoding: chunked
+
+id: 44              // 简单文本事件, ID 44
+data: dolor sit amet
+</code></pre><p>浏览器负责重新连接和记录上一次事件 ID , 然后服务器根据应用的要求和数据流, 采取不同实现策略来恢复:</p>
+<ul>
+<li>如果丢失消息可以接受, 就无需事件 ID 或特殊逻辑, 只要让客户端重连并恢复数据流即可.</li>
+<li>如果必须恢复消息. 同样, 服务器也需要实现某种形式的本地缓存, 以便恢复并向客户端重传错过的数据.</li>
+</ul>
+<h3 id="1-2-特点-与局限"><a href="#1-2-特点-与局限" class="headerlink" title="1.2 特点 与局限"></a>1.2 特点 与局限</h3><ol>
+<li>特点</li>
+</ol>
+<ul>
+<li>通过一个长连接低延迟交付</li>
+<li>高效的浏览器消息解析, 不会出现无限缓冲</li>
+<li>自动跟踪最后看到的消息及自动重新连接.</li>
+<li>消息通知在客户端以 DOM 事件形式呈现.</li>
+</ul>
+<ol>
+<li>局限</li>
+</ol>
+<ul>
+<li>只能从服务器向客户端发送数据, 不能满足需要请求流的场景.</li>
+<li>事件流协议设计为只能传输 UTF-8 数据, 即使可以传输二进制数据, 效率也不高. </li>
+<li>SSE 在服务端和客户端都比较容易实现, 但网络中间设备如 代理, 防火墙等不支持 SSE, 因此, 中间设备可能会缓冲事件流数据, 导致额外延迟, 甚至彻底毁掉 SSE 链接, 可以考虑通过 TLS 发送 SSE 事件流.</li>
+</ul>
+<h2 id="2-flask-sse"><a href="#2-flask-sse" class="headerlink" title="2. flask-sse"></a>2. flask-sse</h2><h3 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h3><p>Server-sent event <strong>do not</strong> work with Flask’s built-in development server, because it handlers HTTP requests one at a time. The SSE stream is intended to be an infinite stream of events, so it will never complete. You must use a web server with asychronous workers, like gunicorn with gevent.</p>
+<p>You will also need a Redis server running locally for this example to work.</p>
+<pre><code>$ pip install gunicorn flask flask-sse gevent
+</code></pre><h3 id="2-2-简单示例"><a href="#2-2-简单示例" class="headerlink" title="2.2 简单示例"></a>2.2 简单示例</h3><pre><code># cat sse.py
+from flask import Flask, render_template
+from flask_sse import sse
+
+app = Flask(__name__)
+app.config[&quot;REDIS_URL&quot;] = &quot;redis://localhost&quot;
+app.register_blueprint(sse, url_prefix=&quot;/stream&quot;)
+
+@app.route(&quot;/&quot;)
+def index():
+    return render_template(&apos;index.html&apos;)
+
+@app.route(&apos;/hello&apos;)
+def publish(&apos;/hello&apos;):
+    sse.publish({&quot;message&quot;: &quot;Hello!&quot;}, type=&quot;greeting&quot;)
+    return &quot;Message Sent!&quot;
+
+
+# cat templates/index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt; Flask-SSE Quickstart &lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Flash-SSE Quickstart&lt;/h1&gt;
+        &lt;script&gt;
+            var source = new EventSource(&quot;{{ url_for('sse.stream') }}&quot;)
+            source.addEventListener(&apos;greeting&apos;, function(event){
+                var data = JSON.parse(event.data);
+                alert(&quot;The Server Says: &quot; + data.message);
+            }, false);
+
+            source.addEventListener(&quot;error&quot;, function(event){
+                alert(&quot;Failed to connect to event stream.&quot;)
+            }, false);
+
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+
+# run code
+$ gunicorn sse:app --worker-class gevent --bind 127.0.0.1:8000
+$ curl 127.0.0.1:8000
+</code></pre><h3 id="2-3-配置"><a href="#2-3-配置" class="headerlink" title="2.3 配置"></a>2.3 配置</h3><h4 id="2-3-1-Redis"><a href="#2-3-1-Redis" class="headerlink" title="2.3.1 Redis"></a>2.3.1 Redis</h4><p>In order to use Flask-SSE , you need a Redis server to handle <strong>pubsub</strong>. Flask-SSE will search the application config for a Redis connection URL to use. It will try the following configuration values, in order:</p>
+<ul>
+<li>SSE_REDIS_URL</li>
+<li>REDIS_URL</li>
+</ul>
+<p>If it doesn’t find a Redis connection URL, Flask-SSE will raise a <em>**KeyError</em> any time a client tries to access the SSE stream.</p>
+<p>If the Redis server has a password:</p>
+<pre><code>app.config[&quot;REDIS_URL&quot;] = &quot;redis://:password@localhost&quot;
+</code></pre><h4 id="2-3-2-应用服务器"><a href="#2-3-2-应用服务器" class="headerlink" title="2.3.2 应用服务器"></a>2.3.2 应用服务器</h4><p>Flask-SSE <strong>does not</strong> work with Flask’s built-in development server, due to the nature of the server-sent events protocol. This protocol uses long-lived HTTP requests to push data from the server to the client, which means that an HTTP request to the event stream will effectively never complete.  Flask’s built-in development server is single threaded, so it can only handle one HTTP request at a time. Once a client connects to the event stream, it will not be able to make any other HTTP requests to your site.</p>
+<p>Instead, you must use a web server with asychronous workers. Asynchronous workers allow one worker to continuously handle the long-lived HTTP request that server-sent events require, while other workers simultaneously handle other HTTP requests to the server. Gunicorn is an excellent choice for an application server, since it can work with gevent to use asychronous workers.</p>
+<h3 id="2-4-高级设置"><a href="#2-4-高级设置" class="headerlink" title="2.4 高级设置"></a>2.4 高级设置</h3><h4 id="2-4-1-Channels"><a href="#2-4-1-Channels" class="headerlink" title="2.4.1 Channels"></a>2.4.1 Channels</h4><p>Sometimes, you may not want all events to be published to all clients. When  publishing an event, you can select which channel to direct the event to. If you do , only clients that are checking that particular channel will receive the event.</p>
+<pre><code># this event will be sent to the `users.social` channel
+sse.publish({&apos;user&apos;: &quot;alice&quot;, &apos;status&apos;: &apos;Life is short, I use python&apos;}, channel=&quot;users.social&quot;)
+</code></pre><p>Channel names can be any string you want, and are created dynamically as soon as they are referenced. The default channel name that Flask-SSE uses is “sse”.</p>
+<p>To subscribe to a channel , the client only needs to be provide a <code>channel</code> query parameter when connecting to the event stream. </p>
+<pre><code># event stream is at /stream, and you channel is &quot;users.social&quot; the url is as follow:
+/stream?channel=users.social
+
+# url_for() function
+url_for(&quot;sse.stream&quot;, channel=&quot;users.social&quot;)
+</code></pre><p><strong>By default, all channels are publicly accessible to all users</strong>.</p>
+<h4 id="2-4-2-Access-Control"><a href="#2-4-2-Access-Control" class="headerlink" title="2.4.2 Access Control"></a>2.4.2 Access Control</h4><p>Since Flask-SSE is implemented as a blueprint, you can attach a <strong>before_request()</strong> handler to implement access control.</p>
+<pre><code>@sse.before_request
+def check_access():
+    if request.args.get(&quot;channel&quot;) == &quot;analytucs&quot; and not g.user.is_admin():
+        abort(403)
+</code></pre><h2 id="3-AngularJS-amp-SSE"><a href="#3-AngularJS-amp-SSE" class="headerlink" title="3. AngularJS &amp; SSE"></a>3. <a href="http://www.smartjava.org/content/html5-server-sent-events-angularjs-nodejs-and-expressjs" target="_blank" rel="noopener">AngularJS &amp; SSE</a></h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+            <a href="/tags/Flask-扩展/" rel="tag"># Flask 扩展</a>
+          
+            <a href="/tags/sse/" rel="tag"># sse</a>
+          
+            <a href="/tags/Server-Sent-Event/" rel="tag"># Server-Sent Event</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/flaskExt--flask-socketio/" rel="next" title="Flask 扩展之--flask-socketio">
+                <i class="fa fa-chevron-left"></i> Flask 扩展之--flask-socketio
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/django-模板原理及扩展/" rel="prev" title="django-模板原理及扩展">
+                django-模板原理及扩展 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Server-Sent-Events-SSE"><span class="nav-text">1. Server-Sent Events, SSE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-SSE-组件"><span class="nav-text">1.1 SSE 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-EventSource-API"><span class="nav-text">1.1.1 EventSource API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1-1-API"><span class="nav-text">1.1.1.1 API</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1-2-自动重连机制"><span class="nav-text">1.1.1.2 自动重连机制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-Event-Strema-协议"><span class="nav-text">1.1.2 Event Strema 协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-特点-与局限"><span class="nav-text">1.2 特点 与局限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-flask-sse"><span class="nav-text">2. flask-sse</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-安装"><span class="nav-text">2.1 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-简单示例"><span class="nav-text">2.2 简单示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-配置"><span class="nav-text">2.3 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-Redis"><span class="nav-text">2.3.1 Redis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-应用服务器"><span class="nav-text">2.3.2 应用服务器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-高级设置"><span class="nav-text">2.4 高级设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-Channels"><span class="nav-text">2.4.1 Channels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-Access-Control"><span class="nav-text">2.4.2 Access Control</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-AngularJS-amp-SSE"><span class="nav-text">3. AngularJS &amp; SSE</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
