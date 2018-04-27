@@ -517,7 +517,7 @@ browser.find_by_tag(&apos;h1&apos;)[1]
 <pre><code>browser.find_by_css(&apos;h1&apos;).first.value
 </code></pre></li>
 </ol>
-<ol start="2">
+<ol>
 <li><p>查找 URL </p>
 <p> 返回<strong>列表</strong>作为结果.</p>
 <pre><code>links_found = browser.find_link_by_text(&apos;Link for Example.com&apos;)
@@ -546,7 +546,7 @@ within_elements = divs.first.find_by_name(&quot;name&quot;)
 <p> But if you try to access an element in this list, the method will raise the <code>splinter.exceptions.ElementDoesNotExist</code> exception.</p>
 </li>
 </ol>
-<ol start="5">
+<ol>
 <li><p>Clicking buttons</p>
 <p> You can click in buttons. Splinter follows any redirects, and submits forms associated with buttons.</p>
 <pre><code>browser.find_by_name(&apos;send&apos;).first.click()

@@ -762,7 +762,7 @@ app.register_blueprint(auth_blueprint, url_prefix=&quot;/auth&quot;)         # u
 return app
 </code></pre></li>
 </ol>
-<ol start="3">
+<ol>
 <li><p>蓝本中的错误处理程序</p>
 <p> 在蓝本中编写错误处理程序, 如果使用 errorhandler 装饰器, 那么只有蓝本中的错误才能触发处理程序; 要想注册程序全局的错误处理程序, 必须使用 app_errorhandler .</p>
 <p> 示例 : </p>
@@ -906,7 +906,7 @@ def index():
 <h2 id="六-Flask-扩展"><a href="#六-Flask-扩展" class="headerlink" title="六. Flask 扩展"></a>六. Flask 扩展</h2><p>Flask 被设计为可扩展模式, 故而没有提供一些重要的功能, 如数据库和用户认证, 所以开发者可以自由选择最合适程序的包, 或者自行开发.</p>
 <p>专为 Flask 开发的扩展都暴露在 flask.ext 命名空间下. </p>
 <p>Flask 扩展的通用初始化方法 : <strong>把程序实例作为参数传给构造函数, 初始化主类的实例. 创建的对象可以在各个扩展中使用.</strong></p>
-<ol start="0">
+<ol>
 <li>werkzeug : WSGI 工具集</li>
 <li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-script/">flask-script</a></li>
 <li><a href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-moment/">flask-moment</a></li>

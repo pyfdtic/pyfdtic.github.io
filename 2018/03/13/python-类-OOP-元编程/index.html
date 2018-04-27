@@ -1415,7 +1415,7 @@ if __name__ == &quot;__main__&quot;:
     21.1
 &gt;&gt; date
     (2012,12,21)
-</code></pre><ol start="2">
+</code></pre><ol>
 <li><p>星号表达式 : 解压可迭代对象赋值给多个变量 : Python3</p>
 <blockquote>
 <blockquote>
@@ -1458,7 +1458,7 @@ if __name__ == &quot;__main__&quot;:
     &gt;&gt;&gt; name,*_,(*_,year) = record
     &gt;&gt;&gt; name
     &apos;ACME&apos;
-</code></pre><ol start="3">
+</code></pre><ol>
 <li>双端队列, deque : 保留最后 N 个元素<blockquote>
 <blockquote>
 <p>from collections import deque<br>q = deque(maxlen=3)<br>q.append(1)<br>q.append(2)<br>q.append(3)<br>q </p>
@@ -1513,7 +1513,7 @@ if __name__ == &quot;__main__&quot;:
 
 
 ** 在双端队列两端插入或删除元素时间复杂度都是 O(1) 的, 而在 列表的开头插入或删除元素的时间复杂度是 O(n) .
-</code></pre><ol start="4">
+</code></pre><ol>
 <li><p>堆数据结构 : 查找最大或最小的 N 个元素.</p>
 <p>heapq.nlargest() &amp; heapq.nsmallest()</p>
 <pre><code>import heapq
@@ -1595,7 +1595,7 @@ heapq.heappush() &amp; heapq.heappop() : heapq.heappop() 删除并返回优先�
         Item(&apos;foo&apos;)
     &gt;&gt;&gt; q.pop()
         Item(&apos;grok&apos;)
-</code></pre><ol start="5">
+</code></pre><ol>
 <li><p>字典</p>
 <p> 字典中键映射多个值</p>
 <pre><code>from collections import defaultdict
@@ -1686,7 +1686,7 @@ OrderedDict内部维护着一个根据键插入顺序排序的双向链表。每
     # Make a dictionary of tech stocks
     tech_names = {&apos;AAPL&apos;, &apos;IBM&apos;, &apos;HPQ&apos;, &apos;MSFT&apos;}
     p2 = {key: value for key, value in prices.items() if key in tech_names}
-</code></pre><ol start="6">
+</code></pre><ol>
 <li><p>命名切片</p>
 <pre><code>&gt;&gt;&gt; items = [0, 1, 2, 3, 4, 5, 6]
 &gt;&gt;&gt; a = slice(2, 4)
@@ -1871,7 +1871,7 @@ def sort_notcompare():
 [User(3), User(23), User(99)]
 </code></pre></li>
 </ol>
-<ol start="9">
+<ol>
 <li><p>itertools.groupby() : 有一个字典或实例的序列, 然后根据某个特定的字段来分组迭代访问.   </p>
 <p> groupby() 函数扫描整个序列并且查找连续相同值(或者根据指定key函数返回值相同)的元素序列。在每次迭代的时候，它会返回一个值和一个迭代器对象，这个迭代器对象可以生成元素值全部等于上面那个值的组中所有对象。</p>
 <p> 一个非常重要的准备步骤是要根据指定的字段将数据排序。因为 groupby() 仅仅检查连续的元素，如果事先并没有排序完成的话，分组函数将得不到想要的结果。</p>
@@ -1911,7 +1911,7 @@ for date, items in groupby(rows, key=itemgetter(&apos;date&apos;)):
 07/04/2012
   {&apos;date&apos;: &apos;07/04/2012&apos;, &apos;address&apos;: &apos;5148 N CLARK&apos;}
   {&apos;date&apos;: &apos;07/04/2012&apos;, &apos;address&apos;: &apos;1039 W GRANVILLE&apos;}
-</code></pre><ol start="10">
+</code></pre><ol>
 <li><p>多个字典或映射, 从逻辑上合并为一个单一的映射后执行某些操作.</p>
 <p>ChainMap对于编程语言中的作用范围变量(比如globals, locals等)是非常有用的。</p>
 <pre><code>a = {&apos;x&apos;: 1, &apos;z&apos;: 3 }
@@ -2042,7 +2042,7 @@ print(c[&apos;z&apos;])   # Outputs 3 (from a)
 # fnmatchcase()
 &gt;&gt;&gt; fnmatchcase(&apos;foo.txt&apos;, &apos;*.TXT&apos;)
     False
-</code></pre><ol start="3">
+</code></pre><ol>
 <li><p>str.find()</p>
 <p> 如果匹配到, 则返回匹配第一个字符的索引;<br> 如果没有匹配到, 则返回负数(-1)</p>
 </li>
@@ -2279,7 +2279,7 @@ print(c[&apos;z&apos;])   # Outputs 3 (from a)
 &gt;&gt;&gt; os.chmod(&quot;script.py&quot;, 0o755)    // 注意 0o755
 </code></pre></li>
 </ol>
-<ol start="5">
+<ol>
 <li><p>整数与字节字符串: int.from_bytes(), int.to_bytes(), int.bit_length(). <strong>Python3</strong> </p>
 <p> 字节顺序规则 (little或big) 仅仅指定了构建整数时的字节的低位高位排列方式。</p>
 <p> <code>int.from_bytes()</code> 将 bytes 解析为整数.</p>
@@ -2674,7 +2674,7 @@ d.replace(day=1)    # datetime.date(2017, 12, 1)
 d.replace(month=1)  # datetime.date(2017, 1, 11)
 </code></pre></li>
 </ol>
-<ol start="2">
+<ol>
 <li><p>字符串转换为日期</p>
 <p> <code>datetime.strptime</code></p>
 <pre><code>&gt;&gt;&gt; from datetime import datetime
@@ -2717,7 +2717,7 @@ d.replace(month=1)  # datetime.date(2017, 1, 11)
     [&apos;Asia/Kolkata&apos;]
 
 &gt;&gt;&gt; pytz.country_names      # 所有国家全名与 ISO 3166 对应字典.
-</code></pre><h2 id="迭代器与生成器"><a href="#迭代器与生成器" class="headerlink" title="迭代器与生成器"></a>迭代器与生成器</h2><ol start="0">
+</code></pre><h2 id="迭代器与生成器"><a href="#迭代器与生成器" class="headerlink" title="迭代器与生成器"></a>迭代器与生成器</h2><ol>
 <li><p>迭代协议机制</p>
 <p> <code>__iter__()</code><br> <code>__next__()</code><br> <code>StopIteration</code></p>
 <p> Python 的迭代协议要求一个 <code>__iter__()</code> 方法, 返回一个特殊的迭代器对象, 这个迭代器对象实现了 <code>__next__()</code> 方法并通过 <code>StopIteration</code> 异常标识迭代完成.</p>
@@ -2801,7 +2801,7 @@ if __name__ == &apos;__main__&apos;:
     Traceback (most recent call last):
         File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
     StopIteration
-</code></pre><ol start="4">
+</code></pre><ol>
 <li><p>实现迭代器协议</p>
 <p> <code>depth_first()</code> 方法 首先返回自己本身并迭代每一个子节点, 并通过调用子节点的 <code>depth_first()</code> 方法(使用 <code>yield from</code> 语句) 返回对应元素.</p>
 <pre><code>class Node(object):
@@ -2891,7 +2891,7 @@ if __name__ == &apos;__main__&apos;:
             else:
                 self._child_iter = next(self._children_iter).depth_first()
                 return next(self)
-</code></pre><ol start="5">
+</code></pre><ol>
 <li><p>实现一个反方向的迭代</p>
 <p> 使用内置的 <code>reversed()</code> 函数: 反向迭代仅仅当对象的大小可预先确定或者对象实现了 <code>__reversed__()</code> 的特殊方法时才能生效. 如果两者都不符合, 则必须手动转换为一个列表才可以.</p>
 <pre><code>&gt;&gt;&gt; a = range(1,5)
@@ -2972,7 +2972,7 @@ with open(&quot;/path/to/somefile.txt&quot;) as f:
     17
     18
     19
-</code></pre><ol start="8">
+</code></pre><ol>
 <li><p>跳过可迭代对象的开始部分<code>itertools.dropwhile()</code> 和 <code>itertools.islice()</code></p>
 <p> <code>itertools.dropwhile()</code> 接受一个函数对象和一个可迭代对象作为参数, 它返回一个迭代器对象, 丢弃原有序列知道函数返回 True 之前的所有元素, 然后返回后面所有的元素.</p>
 <pre><code># 跳过文件 开头的, 以 `#` 开始的行.
@@ -2997,7 +2997,7 @@ with open(&quot;/etc/fstab&quot;) as f:
 
     for x in islice(iterms, 3, None):
         print x
-</code></pre><ol start="9">
+</code></pre><ol>
 <li><p>迭代遍历一个集合中元素的所有可能的排列或组合</p>
 <p> <code>itertools.permutations()</code> 它接受一个集合并产生一个元素序列, 每个元组由集合中的所有元素的一个可能排列组成, 即通过打乱集合中元素排列顺序生成一个元组. 另, 可以传递一个可选的长度参数, 得到指定长度的所有排列.</p>
 <pre><code>items = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
@@ -3054,7 +3054,7 @@ for p in permutations(items):
     (&apos;b&apos;, &apos;b&apos;, &apos;c&apos;)
     (&apos;b&apos;, &apos;c&apos;, &apos;c&apos;)
     (&apos;c&apos;, &apos;c&apos;, &apos;c&apos;)
-</code></pre><ol start="10">
+</code></pre><ol>
 <li><p>在迭代一个序列的同时, 跟踪正在被处理的元素索引</p>
 <p><code>enumerate()</code> 可以实现在迭代一个序列的同时, 跟踪正在被处理的元素索引.</p>
 <pre><code>items = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
@@ -3194,7 +3194,7 @@ pylines = gen_grep(&apos;(?i)python&apos;, lines)
 bytecolumn = (line.rsplit(None, 1)[1] for line in pylines)
 all_bytes = (int(x) for x in bytecolumn if x != &apos;-&apos;)
 print(&quot;Total&quot;, sum(all_bytes))
-</code></pre><ol start="14">
+</code></pre><ol>
 <li><p>将一个多层嵌套的序列展开成一个单层列表 <code>yield from</code>.</p>
 <p><code>yield from</code> 在希望在生成器中调用其他生成器作为子例程时非常有用.</p>
 <p><code>yield from</code> 在涉及到基于协程和生成器的并发编程中扮演着更加重要的角色.</p>
@@ -3363,7 +3363,7 @@ with gzip.open(&apos;somefile.gz&apos;, &apos;wt&apos;) as f:
     f = open(&apos;somefile.gz&apos;, &apos;rb&apos;)
     with gzip.open(f, &apos;rt&apos;) as g:
         text = g.read()
-</code></pre><ol start="5">
+</code></pre><ol>
 <li><p>内存映射的二进制文件<code>mmp</code></p>
 <p> 内存映射一个二进制文件到一个可变字节数组中, 目的可能是为了随机访问他的内容或是原地做些修改.</p>
 <pre><code>import os
@@ -3456,7 +3456,7 @@ def echo_server(address):
         echo_client(client, addr)
 </code></pre></li>
 </ol>
-<ol start="8">
+<ol>
 <li><p>创建临时文件和文件夹: 使用完成之后, 自动销毁掉.</p>
 <p> <code>tempfile</code> 模块</p>
 <p> <code>tempfile.TemporaryFile(mode)</code> 创建临时匿名文件</p>
@@ -3862,7 +3862,7 @@ with conn as s:
     s.send(b&apos;\r\n&apos;)
     resp = b&apos;&apos;.join(iter(partial(s.recv, 8192), b&apos;&apos;))
     # conn.__exit__() executes: connection closed
-</code></pre><ol start="3">
+</code></pre><ol>
 <li><p><code>__slots__</code> 属性来减少实例所占的内存</p>
 <p> <code>__slots__</code> 更多的使用来做为一个内存优化工具. 当定义 <code>__slots__</code> 后, Python 会为实例使用一种更加紧凑的内部表示. 实例通过一个很小的固定大小的数组来构建, 而不是为每个实例定义一个字典. 在 <code>__slots__</code> 中列出的属性名在内部被映射到这个数组的指定小标上.</p>
 <p> 使用 <code>__slots__</code> 后,不能再给实例添加新的属性了, 只能使用在 <code>__slots__</code> 中定义的属性.</p>
@@ -3881,7 +3881,7 @@ with conn as s:
 <p> 大多数情况下, 应该使用非公共名称以单下划线开头, 但是如果涉及到子类, 并且有些内部属性应该在子类中隐藏起来, 才考虑使用双下划线方案.</p>
 </li>
 </ol>
-<ol start="5">
+<ol>
 <li><p>property: 给实例增加除了访问与修改之外的其他处理逻辑.</p>
 <p> property 的一个关键特征是他看上与普通的 attribute 没什么两样, 但是访问他的时候会自动触发 <code>getter</code>, <code>setter</code> 和 <code>deleter</code> 方法.</p>
 <pre><code>class Person:
@@ -4064,7 +4064,7 @@ C.__init__
 MRO 列表中的类顺序会让你定义的任意类层级关系变得有意义. 当使用 `super()` 函数时, Python 会在 MRO 列表上继续搜索下一个类. 只要每一个重定义的方法统一使用 `super()` 并只调用它一次, 那么控制流会遍历整个 MRO 列表, 每个方法也只会被调用一次. 这也是为什么在第二个例子中不会出现调用两次 `Base.__init__()` 的原因.
 
 `super()` 不一定去查找某个类在 MRO 中下一个直接父类, 因此, 甚至可以在一个没有直接父类的类中使用它.
-</code></pre><ol start="7">
+</code></pre><ol>
 <li><p>在子类中扩展定义在父类中的 property 功能</p>
 <pre><code>class Person:
     def __init__(self, name):
@@ -4160,7 +4160,7 @@ class SUbPerson(Person):
         super(SubPerson, SubPerson).name.__delete__(self)
 </code></pre></li>
 </ol>
-<ol start="8">
+<ol>
 <li><p>创建新的类或实例属性: 描述器</p>
 <p> 一个描述器就是一个实现了三个核心的属性访问操作(get, set, delete)的类, 分别为 <code>__get__()</code>, <code>__set__()</code>, <code>__delete__()</code> 这三个特殊的方法. 这些方法接受一个实例作为输入, 之后相应的操作实例底层的字典. 为了使用一个描述器, 需将这个描述器的实例作为类属性放到一个类的定义中. 当使用一个描述器之后, 所有对描述器属性的访问都会被 <code>__get__()</code>, <code>__set__()</code>, <code>__delete__()</code> 方法捕获到.</p>
 <p> 作为输入, 描述器的每一个方法会接受一个操作实例. 为了实现请求操作, 会相应的操作实例底层的字典(dict 属性).</p>
@@ -4252,7 +4252,7 @@ class SUbPerson(Person):
             self.name = name
             self.shares = shares
             self.price = price
-</code></pre><ol start="9">
+</code></pre><ol>
 <li><p>使用延迟计算属性: 使用一个描述器类.</p>
 <p> 构建延迟计算属性的主要目的是为了提升性能.他通过以非常高效的方式使用描述器的一个精妙特性来达到这种效果.</p>
 <p> 当一个描述器被放入一个类的定义时, 每次访问属性时他的 <code>__get__()</code>, <code>__set__()</code>, <code>__delete__()</code> 方法就会被触发. 不过, 如果一个描述器只定义了一个 <code>__get__()</code> 方法的话, 他比通常的具有更弱的绑定. 特别的, 只有在当被访问属性不在实例底层的字典中时 <code>__get__()</code> 方法才会被触发. lazyproperty 类利用了这一点, 使用 <code>__get__()</code> 方法在实例中存储计算出来的值, 这个实例使用相同的名字作为他的 property. 这样一来, 结果值被存储在实力字典中, 并且以后就不需要再去计算这个 property 了.</p>
@@ -4329,7 +4329,7 @@ class Circle:
                 setattr(self, name, value)
                 return value
         return lazy
-</code></pre><ol start="10">
+</code></pre><ol>
 <li><p>简化数据结构的初始化:</p>
 <p>很多仅仅作为数据结构的类, 不想写太多 <code>__init__()</code> 函数. 可以在一个基类中写一个公用的 <code>__init__()</code> 函数.</p>
 <pre><code># 支持位置参数
@@ -4406,7 +4406,7 @@ class Stock(Structure3):
 
 s1 = Stock(&quot;ACME&quot;, 50, 91.1)
 s2 = Stock(&quot;ACME&quot;, 50, 91.1, date=&quot;8/2/2012&quot;)
-</code></pre><ol start="11">
+</code></pre><ol>
 <li><p>定义接口或抽象基类, 并通过执行类型检查来确保子类实现了某些特定的方法: abc 模块</p>
 <p>抽象类的一个特点是他不能直接被实例化. 使用 <code>abc</code> 模块可以轻松定义抽象基类. 抽象类的目的就是<strong>让别的类继承并实现特定的抽象方法</strong>.</p>
 <pre><code>class Stock(IStream):
@@ -4481,7 +4481,7 @@ print(isinstance(f, IStream))   # True
 
 
 尽管 ABCs 可以很方便的进行类型检查, 但是在代码中不要过多的使用它. 因为 Python 本质是一门动态编程语言, 其目的是提供更多的灵活性, 强制类型检查会使代码变得更加复杂.
-</code></pre><ol start="12">
+</code></pre><ol>
 <li><p>实现数据模型的类型约束</p>
 <p>希望定义某些在属性赋值上面有限制的数据结构.所以, 要自定义属性赋值函数, 这种情况下最好使用描述器.</p>
 <pre><code># Base class. Usea a descriptor to set a value.
@@ -4702,7 +4702,7 @@ class Descriptor:
             self.name = name
             self.shares = shares
             self.price = price
-</code></pre><ol start="13">
+</code></pre><ol>
 <li><p>实现自定义容器</p>
 <p><code>collections</code> 定义了很多抽象基类, 当需要自定义容器类的时候, 他们会非常有用. 但是, 有时候需要实现 <code>collections</code> 抽象基类中的所有抽象方法.</p>
 <pre><code># 继承自 Sequence 抽象类, 并且实现元素按照顺序存储.
@@ -4969,7 +4969,7 @@ class Date:
     @LoggedMapping
     class LoggedDict(dict):
         pass
-</code></pre><ol start="18">
+</code></pre><ol>
 <li><p>实现状态对象或状态机: 状态模式</p>
 <p>有很多程序中, 有些对象会根据状态的不同来执行不同的操作. 使用<strong>状态模式</strong>, 为每个状态定义一个对象(类), 代码如下:</p>
 <pre><code>class Connection1:
@@ -5343,7 +5343,7 @@ class StackCode(NodeVisitor):
 
             e = Evaluator()
             print(e.visit(a))       # 4999950000
-</code></pre><ol start="21">
+</code></pre><ol>
 <li><p>循环引用数据结构的内存管理.</p>
 <p>当程序创建了很多循环引用数据结构(如树, 图, 观察者模式等), 此时, 即处理内存管理.</p>
 <pre><code>import weakref
@@ -5466,7 +5466,7 @@ class Room:
         __gt__ = lambda self, other: not (self &lt; other or self == other)
         __ge__ = lambda self, other: not (self &lt; other)
         __ne__ = lambda self, other: not self == other
-</code></pre><ol start="23">
+</code></pre><ol>
 <li><p>创建缓存实例</p>
 <p>在创建一个类对象时, 如果之前使用同样参数创建过这个对象, 希望返回它的缓存引用.</p>
 <ol>
@@ -6179,7 +6179,7 @@ print(spam)         # &lt;__main__.tracer object at 0x035C4470&gt;
                 return func(*args, **kwargs)
             wrapper.calls = 0
             return wrapper 
-</code></pre><ol start="3">
+</code></pre><ol>
 <li><p>装饰类方法</p>
 <p> 使用基于类的装饰器装饰类的时候失败了(如下), 其根本原因在于 tracer 类的 <strong>call</strong> 方法的 self , 它必须是  tracer 对象, 以提供对 tracer 的状态信息的访问. 但是, 当我们用 <strong>call</strong> 把装饰方法名重绑定到一个类实例对象的时候, Python 指向 self 传递了 tracer 实例, 根本没有在参数列表中传递 Person 主体. 此外, 由于 tracer 不知道我们要用方法调用处理的 Person 实例的任何信息, 没有办法创建一个带有一个实例的绑定的方法, 因此, 没有办法正确的分配调用.</p>
 <pre><code>class tracer:
@@ -6318,7 +6318,7 @@ bob.giveRaise(0.25)     # 失败, TypeError: giveRaise() missing 1 required posi
                 def wrapper(*args, **kwargs):
                     return self(instance, *args, **kwargs)
                 return wrapper
-</code></pre><ol start="4">
+</code></pre><ol>
 <li><p>计时调用</p>
 <p> 对一个装饰的函数的调用进行及时.</p>
 <pre><code>import time
@@ -6352,7 +6352,7 @@ for i in [5, 50000, 500000, 1000000]:
     listcomp(i)
     mapcall(i)
     print(&quot;-&quot; * 20)
-</code></pre><ol start="5">
+</code></pre><ol>
 <li><p>添加装饰器参数 : 让装饰器可配置.</p>
 <p> 以下代码把最初的 Timer类 嵌入了一个封闭的函数中, 以便创建一个作用域以保持装饰器参数. 外围的 timer 函数在装饰发生前调用, 并且它只是返回 Timer类 作为实际的装饰器. 在装饰时, 创建了一个 Timer类的实例来记录装饰函数自身, 而且访问了位于封闭函数作用于中的装饰器参数.</p>
 <pre><code>import time
@@ -6439,7 +6439,7 @@ def getInstance(aClass, *args):
     def onCall(*args):
         return getInstance(aClass, *args)
     return onCall 
-</code></pre><ol start="2">
+</code></pre><ol>
 <li><p>使用封闭作用域</p>
 <pre><code>def singleton(aClass):
     &quot;&quot;&quot;不依赖于装饰器之外的全局作用域中的名称. 只用于 python3 .&quot;&quot;&quot;
@@ -7046,7 +7046,7 @@ code = func.__code__ if sys.version_info[0] == 3 else func.func_code
 </ul>
 </li>
 </ol>
-<ol start="2">
+<ol>
 <li><p>元类是 <code>type</code> 的子类</p>
 <p> 在 Python3 及 Python2.6 的新式类中:</p>
 <ul>
@@ -7325,7 +7325,7 @@ print(&quot;data&quot;, X.data)
         # Making instance
         # data 1
         # page 12
-</code></pre><ol start="4">
+</code></pre><ol>
 <li><p>实例与继承的关系.</p>
 <p> 由于元类以类似于继承超类的方式来定会, 因此, 他们看上去有点容易令人混淆, 一些关键点有助于概括和澄清这一模型:</p>
 <ul>
@@ -7507,7 +7507,7 @@ class Client2:
     bob = Person(&quot;bob&quot;, 40, 50)
     print(bob.name)
     print(bob.pay())
-</code></pre><ol start="2">
+</code></pre><ol>
 <li><p>自动装饰所有方法</p>
 <p> 使用元类追踪:</p>
 <pre><code>def tracer(func):

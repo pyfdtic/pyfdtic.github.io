@@ -503,7 +503,7 @@ selector = Selector(text=html)
 from scrapy.http import HtmlResponse
 response = HtmlResponse(url=&quot;http://www.example.com&quot;, body=body, encoding=&apos;utf-8&apos;)
 selector = Selector(response=response)
-</code></pre><ol start="2">
+</code></pre><ol>
 <li><p>RESPONSE 内置 selector : 在第一次访问一个 Response 对象的 selector 属性时, Response 对象内部会以自身为参数, 自动创建 Selector 对象, 并将该 Selector 对象缓存, 以便下次使用.</p>
 <pre><code>class TextResponse(Response):
     def __init__(self, *args, **kwargs):
@@ -527,7 +527,7 @@ selector = Selector(response=response)
         return self.selector.css(query)
 </code></pre></li>
 </ol>
-<ol start="3">
+<ol>
 <li><p>选中数据 <code>XPATH/CSS</code></p>
 </li>
 <li><p>提取数据 <code>extract()/re()/extract_first()/re_first()</code></p>
@@ -1249,7 +1249,7 @@ $ scrapy crawl wallpaper
     True
 </code></pre></li>
 </ol>
-<ol start="2">
+<ol>
 <li><p>调用 FormRequest 的 from_response 方法</p>
 <p> 调用时, 只需传入一个 Response 对象作为第一个参数, 该方法会解析 Response 对象所包含的页面中的 <form> 元素, 帮助用户创建 FormRequest 对象, 并将隐藏 <input> 中的信息自动填入表单数据.</form></p>
 <pre><code>$ scrapy shell http://example.webscraping.com/places/default/user/login
@@ -1838,7 +1838,7 @@ from scrapy_splash import SplashRequest
         if href:
             url = response.urljoin(href)
             yield SplashRequest(url, args=self.splash_base_args)
-</code></pre><ol start="2">
+</code></pre><ol>
 <li><p>jd 图书 爬取</p>
 <pre><code>import scrapy
 from scrapy import Request
