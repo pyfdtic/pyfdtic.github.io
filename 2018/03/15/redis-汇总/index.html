@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/redisObject.png">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/ziplist_%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84.png">
 <meta property="og:image" content="http://i1.itc.cn/20170216/3084_5417a9b7_6050_0614_09f1_ce8565f04eca_1.png">
-<meta property="og:updated_time" content="2018-03-16T02:19:25.000Z">
+<meta property="og:updated_time" content="2018-04-20T00:25:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis 汇总">
 <meta name="twitter:description" content="1. Redis 介绍1.1 使用场景Redis是远程字典服务器 的缩写, 适用于如下场景:  数据库 缓存 队列系统  1.2 Redis所支持的数据类型 字符串类型  当存储的字符串类型是整数形式时, 可以对其进行递增操作, 比如：set age 1, incr age, 返回递增后的值, 递增操作是原子操作.   散列类型  列表类型 集合类型 有序集合类型  2. 安装配置与优化2.1 源">
@@ -569,7 +569,7 @@ $ echo &quot;REDIS_CMD&quot; | redis-cli -h HOST -p PORT
 PONG
 </code></pre></li>
 </ol>
-<ol>
+<ol start="2">
 <li><p>错误回复 : 当出现命令不存在或命令格式有错误等情况时 Redis 会返回错误回复(error reply). 错误回复以<code>error</code>开头, 并在后面跟上错误信息. </p>
 </li>
 <li><p>整数回复 : 整数回复(integer reply)以(integer)开头, 并在后面跟上整数数据</p>
@@ -2041,7 +2041,7 @@ min-slaves-max-lag 10
 <pre><code>积压队列在本质上是一个固定长度的循环队列, **默认情况下积压队列的大小为 1 MB**, 可以通过配置文件的repl-backlog-size选项来调整. 很容易理解的是, 积压队列越大, 其允许的主从数据库断线的时间就越长. 
 
 根据主从数据库之间的网络状态, 设置一个合理的积压队列很重要. 因为**积压队列存储的内容是命令本身**, 如 `SET foo bar`, 所以估算积压队列的大小只需要**估计主从数据库断线的时间中主数据库可能执行的命令的大小即可**. 
-</code></pre><ol>
+</code></pre><ol start="2">
 <li><p><code>repl-backlog-ttl</code> : 当主从连接断开之后,经过多久可以释放积压队列的内存空间,<strong>默认1h</strong>.</p>
 <p> 与积压队列相关的另一个配置选项是repl-backlog-ttl, 即当所有从数据库与主数据库断开连接后, 经过多久时间可以释放积压队列的内存空间. 默认时间是1小时. </p>
 </li>
@@ -2072,7 +2072,7 @@ $ redis-server /etc/redis/sentinel.conf --sentinel
     14641:X 28 Sep 14:59:14.771 # +monitor master mymaster 127.0.0.1 6379 quorum 1
     14641:X 28 Sep 14:59:14.772 * +slave slave 127.0.0.1:6380 127.0.0.1 6380 @ mymaster 127.0.0.1 6379
     14641:X 28 Sep 14:59:14.774 * +slave slave 127.0.0.1:6381 127.0.0.1 6381 @ mymaster 127.0.0.1 6379
-</code></pre><h4 id="14-2-2-其他配置"><a href="#14-2-2-其他配置" class="headerlink" title="14.2.2. 其他配置"></a>14.2.2. 其他配置</h4><ol>
+</code></pre><h4 id="14-2-2-其他配置"><a href="#14-2-2-其他配置" class="headerlink" title="14.2.2. 其他配置"></a>14.2.2. 其他配置</h4><ol start="0">
 <li><p>一个哨兵节点可以同时监控多个Redis主从系统, 只需要提供多个sentinel monitor配置即可. 同时,多个哨兵节点也可以同时监控同一个 Redis 主从系统, 从而形成网状结构.      </p>
 <pre><code># 一个哨兵监控多个集群
 sentinel monitor mymaster 127.0.0.1 6379 2
@@ -2174,7 +2174,7 @@ rdb_changes_since_last_save : 进行监控来知道如果这时候出现故障, 
 <p>Redis 提供了 <code>SLOWLOG</code> 指令来获取最近的慢日志, Redis 的慢日志是直接存在内存中的, 所以它的慢日志开销并不大, 在实际应用中, 我们通过 crontab 任务执行 SLOWLOG 命令来获取慢日志, 然后将慢日志存到文件中, 并用 Kibana 生成实时的性能图表来实现性能监控. </p>
 <p>Redis 的慢日志记录的时间, 仅仅包括 Redis 自身对一条命令的执行时间, 不包括 IO 的时间, 比如接收客户端数据和发送客户端数据这些时间. </p>
 <p>Redis 的慢日志和其它数据库的慢日志有一点不同, 其它数据库偶尔出现 100ms 的慢日志可能都比较正常, 因为一般数据库都是多线程并发执行, 某个线程执行某个命令的性能可能并不能代表整体性能, 但是对 Redis 来说, 它是单线程的, 一旦出现慢日志, 可能就需要马上得到重视, 最好去查一下具体是什么原因了. </p>
-<ol>
+<ol start="0">
 <li><p>配置 </p>
 <pre><code># 选项指定执行时间超过多少微秒(1 秒等于 1,000,000 微秒)的命令请求会被记录到日志上. 设置的单位是微妙, 默认是10000微妙, 也就是10ms 
 slowlog-log-slower-than
@@ -2547,10 +2547,10 @@ include /redis/conf/redis-common.conf
               
               
               <div class="site-state-item site-state-categories">
-                
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
-                
+                </a>
               </div>
             
 
@@ -2558,10 +2558,10 @@ include /redis/conf/redis-common.conf
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 

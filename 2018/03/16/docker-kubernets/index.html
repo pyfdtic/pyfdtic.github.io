@@ -100,7 +100,7 @@
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/kube-proxy.png">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/kube-dns.png">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/federation-api-4x.png">
-<meta property="og:updated_time" content="2018-04-02T03:27:11.000Z">
+<meta property="og:updated_time" content="2018-04-20T00:25:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kubernets 学习笔记">
 <meta name="twitter:description" content="版本: 基于 Kubernetes v1.6 及以上. 主要功能:  基于容器的应用部署, 维护和滚动升级 负载均衡和服务发现 跨机器和跨地区的集群调度 自动伸缩 无状态服务 和 有状态服务 广泛的 Volume 支持 插件机制保证扩展性.  1. 简介1.1 核心组件: etcd : 保存整个集群的状态; apiserver : 提供资源的操作的唯一入口, 并提供认证,授权,访问控制, API">
@@ -785,7 +785,7 @@ $ kubectl cluster-info
 </ul>
 <p>Kubernetes 还提供完善的管理工具, 涵盖开发, 部署测试和运维监控等各个环节.</p>
 <p><strong>Kubernetes 分层架构</strong></p>
-<ol>
+<ol start="0">
 <li><p>Container Runtime, Network Plugin, Volume Plugin, Image Registry, Cloud Provider, Identify Provider.</p>
 </li>
 <li><p>Nuclens: API and Execution</p>
@@ -3719,7 +3719,7 @@ spec:
 </ol>
 </li>
 </ol>
-<ol>
+<ol start="2">
 <li><p>nodeAffinity : 功能更丰富的 Node 选择器, 如支持集合操作</p>
 <p> nodeAffinity 目前支持两种: </p>
 <ul>
@@ -4133,7 +4133,7 @@ spec:
 </ul>
 </li>
 </ol>
-<ol>
+<ol start="5">
 <li><p>容器运行时(Container Runtime)</p>
 <p> 容器运行时是 Kubernetes 最重要的组件之一, 负责真正管理镜像和容器的生命周期. Kubelet 通过 <strong>Container Runtime Interface (CRI)</strong> 与容器运行时交互, 以管理镜像和容器.</p>
 <ul>
@@ -4445,10 +4445,10 @@ $ kubectl config use-context fellowship
               
               
               <div class="site-state-item site-state-categories">
-                
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
-                
+                </a>
               </div>
             
 
@@ -4456,10 +4456,10 @@ $ kubectl config use-context fellowship
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 

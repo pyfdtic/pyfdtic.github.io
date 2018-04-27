@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="一. Docker Daemon 配置参数 限制容器之间网络通信 在同一台主机上若不限制容器之间通信，容器之间就会暴露些隐私的信息，所以推荐关闭 docker daemon –icc=false    使用安全模式访问镜像仓库  Docker Daemon支持安全模式（默认）和非安全模式（–insecure-registry）访问镜像仓库，推荐镜像仓库配置CA证书，Docker Daemon配置安">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-01T01:09:16.000Z">
+<meta property="og:updated_time" content="2018-04-20T00:25:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker-daemon-参数最佳实践.md">
 <meta name="twitter:description" content="一. Docker Daemon 配置参数 限制容器之间网络通信 在同一台主机上若不限制容器之间通信，容器之间就会暴露些隐私的信息，所以推荐关闭 docker daemon –icc=false    使用安全模式访问镜像仓库  Docker Daemon支持安全模式（默认）和非安全模式（–insecure-registry）访问镜像仓库，推荐镜像仓库配置CA证书，Docker Daemon配置安">
@@ -411,7 +411,7 @@
 <pre><code>docker daemon –icc=false
 </code></pre></li>
 </ol>
-<ol>
+<ol start="2">
 <li><p>使用安全模式访问镜像仓库</p>
 <p> Docker Daemon支持安全模式（默认）和非安全模式（–insecure-registry）访问镜像仓库，推荐镜像仓库配置CA证书，Docker Daemon配置安全访问模式，采用TLS安全传输协议；</p>
 </li>
@@ -493,7 +493,7 @@
 </tr>
 </tbody>
 </table>
-<ol>
+<ol start="9">
 <li><p>存储驱动</p>
 <p> 推荐使用Overlayfs作为Docker的存储驱动：Docker支持很多种储存驱动，CentOS默认的Docker存储驱动为devicemapper，Ubuntu默认的Docker存储驱动为aufs，</p>
 </li>
@@ -744,10 +744,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
+                <a href="/categories/index.html">
                   <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
-                
+                </a>
               </div>
             
 
@@ -755,10 +755,10 @@
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 
