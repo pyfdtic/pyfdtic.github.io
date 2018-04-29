@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="作用域组成了一个能够用于在控制器之间形成通信的体系结构. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑. 控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上">
+<meta name="description" content="控制器通过作用域向视图提供数据和逻辑. 作用域组成了一个能够用于在控制器之间形成通信的体系结构.  当控制器声明了对 $scope 服务的依赖时, 就可以使得控制器通过其对应的作用于向试图提供各种能力. 作用于不仅定义了控制器和视图之间的关系, 而且对许多最重要的 AngularJS 特性提供了运转机制, 如数据绑定. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构">
 <meta name="keywords" content="angularjs,前端框架">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AngularJS高级程序设计读书笔记--控制器篇">
 <meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--控制器篇/index.html">
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
-<meta property="og:description" content="作用域组成了一个能够用于在控制器之间形成通信的体系结构. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑. 控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上">
+<meta property="og:description" content="控制器通过作用域向视图提供数据和逻辑. 作用域组成了一个能够用于在控制器之间形成通信的体系结构.  当控制器声明了对 $scope 服务的依赖时, 就可以使得控制器通过其对应的作用于向试图提供各种能力. 作用于不仅定义了控制器和视图之间的关系, 而且对许多最重要的 AngularJS 特性提供了运转机制, 如数据绑定. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E5%A4%8D%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8.PNG">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%BB%93%E6%9E%84.PNG">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E8%87%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.PNG">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/%E5%BD%93%E7%8B%AC%E7%AB%8B%E4%BD%BF%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.PNG">
-<meta property="og:updated_time" content="2018-04-29T07:05:54.000Z">
+<meta property="og:updated_time" content="2018-04-29T08:31:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AngularJS高级程序设计读书笔记--控制器篇">
-<meta name="twitter:description" content="作用域组成了一个能够用于在控制器之间形成通信的体系结构. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑. 控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上">
+<meta name="twitter:description" content="控制器通过作用域向视图提供数据和逻辑. 作用域组成了一个能够用于在控制器之间形成通信的体系结构.  当控制器声明了对 $scope 服务的依赖时, 就可以使得控制器通过其对应的作用于向试图提供各种能力. 作用于不仅定义了控制器和视图之间的关系, 而且对许多最重要的 AngularJS 特性提供了运转机制, 如数据绑定. 一. 控制器和作用域的基本原理控制器是一个 AngularJS 程序中最大的构">
 <meta name="twitter:image" content="http://oluv2yxz6.bkt.clouddn.com/%E5%A4%8D%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8.PNG">
 
 
@@ -416,52 +416,23 @@
       
 
       
-        <p>作用域组成了一个能够用于在控制器之间形成通信的体系结构.</p>
+        <p>控制器通过作用域向视图提供数据和逻辑.</p>
+<p>作用域组成了一个能够用于在控制器之间形成通信的体系结构. </p>
+<p>当控制器声明了对 <code>$scope</code> 服务的依赖时, 就可以使得控制器通过其对应的作用于向试图提供各种能力. 作用于不仅定义了控制器和视图之间的关系, 而且对许多最重要的 AngularJS 特性提供了运转机制, 如数据绑定.</p>
 <h2 id="一-控制器和作用域的基本原理"><a href="#一-控制器和作用域的基本原理" class="headerlink" title="一. 控制器和作用域的基本原理"></a>一. 控制器和作用域的基本原理</h2><p>控制器是一个 AngularJS 程序中最大的构件之一, 它扮演了模型和视图之间的渠道的角色. 大多数 AngularJS 项目拥有多个控制器, 每一个向应用程序的一部分提供所需的数据和逻辑.</p>
 <p>控制器就像领域模型与视图之间的纽带, 他给视图提供数据与服务, 并且定义了所需的业务逻辑, 从而将用户行为转换成模型上的变化.</p>
 <p>控制器从模型中暴露数据给视图, 以及基于用户与视图的交互使模型产生变化所需的逻辑.</p>
 <p>控制器可用于向所支持的视图提供作用域.</p>
-<p>示例代码:</p>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html ng-app=&quot;exampleApp&quot;&gt;
-&lt;head&gt;
-    &lt;title&gt;Controllers&lt;/title&gt;
-    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
-    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
-    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
-    &lt;script&gt;
-        angular.module(&quot;exampleApp&quot;, []);
-    &lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div class=&quot;well&quot;&gt;
-        Content will go here.
-    &lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><h3 id="1-创建控制器"><a href="#1-创建控制器" class="headerlink" title="1. 创建控制器"></a>1. 创建控制器</h3><p>控制器是通过 AngularJS 的 Module 对象所提供的的 controller 方法创建出来的. controller 方法的参数是新建控制器的名字和一个将被用于创建控制器的函数. 这个函数应被理解为构造器, 也可以看作为一个工厂函数.</p>
-<p>控制器名称的命名习惯是使用 Ctrl 后缀.</p>
+<p>示例代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html ng-app=&quot;exampleApp&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Controllers&lt;/title&gt;</span><br><span class="line">    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;</span><br><span class="line">    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        angular.module(&quot;exampleApp&quot;, []);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div class=&quot;well&quot;&gt;</span><br><span class="line">        Content will go here.</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-创建控制器"><a href="#1-创建控制器" class="headerlink" title="1. 创建控制器"></a>1. 创建控制器</h3><p>控制器是通过 AngularJS 的 Module 对象所提供的的 controller 方法创建出来的. controller 方法的参数是新建控制器的名字和一个将被用于创建控制器的函数. 这个函数应被理解为构造器, 也可以看作为一个工厂函数.</p>
+<p>控制器名称的命名习惯是使用 <code>Ctrl</code> 后缀.</p>
 <p>工厂函数能够使用以来注入特性来声明对 AngularJS 服务的依赖. 几乎每个控制器都要使用 $scope 服务, 用于系那个视图提供作用域, 定义可被视图使用的数据和逻辑.</p>
-<p>严格说来, $scope 并不是一个服务, 而是一个叫 $rootScope 的服务提供的对象.</p>
-<p>区别控制器所支持的视图, 是通过 ng-controller 指令来完成的. 该指令所指定的值,必须与创建的控制器同名. </p>
-<pre><code>&lt;script&gt;
-    angular.module(&quot;exampleApp&quot;, [])
-        .controller(&quot;simpleCtrl&quot;, function ($scope) {
-
-        });
-&lt;/script&gt;
-
-// 将控制器应用于视图.
-&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;
-    Content will go here.
-&lt;/div&gt;
-</code></pre><p>控制器名称的命名习惯是使用 Ctrl 后缀.</p>
-<p>传给 Module.controller 函数的参数用于声明控制器的依赖(依赖注入), 即控制器所需的 AngularJS 组件.</p>
-<p>示例如下:</p>
-<pre><code>myApp.controller(&quot;dayCtrl&quot;, function($scope){...})
-
-$scope : 该服务请求 AngularJS 为控制器提供作用域. 控制器使用 $scope 组件, 这能够允许向视图传递数据. $scope 组件是用于向视图提供数据的, 只有通过 $scope 配置的数据才能用于表达式和数据绑定中.
-</code></pre><p>当控制器生命了对 $scope 服务的依赖时, 就可以使得控制器通过其对应的作用域向视图提供各种能力. 作用于不仅定义了控制器和视图之间的关系, 而且对许多重要的 AngularJS 特性提供了运转机制, 如 数据绑定.</p>
+<p>严格说来, <code>$scope</code> 并不是一个服务, 而是一个叫 <code>$rootScope</code> 的服务提供的<strong>对象</strong>. 在实际应用上, <code>$scope</code> 与服务极为相像, 所以简单起见, 可以成为一个服务.</p>
+<p>区别控制器所支持的视图, 是通过 ng-controller 指令来完成的. 该指令所指定的值,必须与创建的控制器同名. <strong>每一个控制器实例对应一个作用域</strong>.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    angular.module(&quot;exampleApp&quot;, [])</span><br><span class="line">        .controller(&quot;simpleCtrl&quot;, function ($scope) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// 将控制器应用于视图.</span><br><span class="line">&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;</span><br><span class="line">    Content will go here.</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>控制器名称的命名习惯是使用 <code>Ctrl</code> 后缀.</p>
+<p>传给 <code>Module.controller</code> 函数的参数用于声明控制器的依赖(依赖注入), 即控制器所需的 AngularJS 组件.</p>
+<p>示例如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">myApp.controller(&quot;dayCtrl&quot;, function($scope)&#123;...&#125;)</span><br><span class="line"></span><br><span class="line">$scope : 该服务请求 AngularJS 为控制器提供作用域. 控制器使用 $scope 组件, 这能够允许向视图传递数据. $scope 组件是用于向视图提供数据的, 只有通过 $scope 配置的数据才能用于表达式和数据绑定中.</span><br></pre></td></tr></table></figure></p>
+<p>当控制器生命了对 $scope 服务的依赖时, 就可以使得控制器通过其对应的作用域向视图提供各种能力. 作用于不仅定义了控制器和视图之间的关系, 而且对许多重要的 AngularJS 特性提供了运转机制, 如 数据绑定.</p>
 <p>有两种方法, 通过控制器使用作用域:</p>
 <ul>
 <li>定义数据</li>
@@ -472,86 +443,12 @@ $scope : 该服务请求 AngularJS 为控制器提供作用域. 控制器使用 
 <p>依赖注入改变了函数参数的用途. 没有依赖注入, 参数会被用于接受调用者想要传入的任何对象, 但是又累依赖注入后, 函数使用参数来提出需求, 告诉 AngularJS 他需要什么样的构件.</p>
 <p><strong>AngularJS 中参数的顺序总是与声明依赖的顺序相匹配.</strong></p>
 <h2 id="二-组织控制器"><a href="#二-组织控制器" class="headerlink" title="二. 组织控制器"></a>二. 组织控制器</h2><h3 id="1-单块控制器"><a href="#1-单块控制器" class="headerlink" title="1 单块控制器"></a>1 单块控制器</h3><p>简单, 无需担心各个作用域之间的通信问题, 而且行为将可以被整个 HTML 所用. 当使用一个单块控制器时, 实际上会对整个应用程序创建一个单独的视图.</p>
-<pre><code>&lt;script&gt;
-    angular.module(&quot;exampleApp&quot;, [])
-        .controller(&quot;simpleCtrl&quot;, function ($scope) {
-
-            $scope.addresses = {};
-
-            $scope.setAddress = function (type, zip) {
-                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);
-                $scope.addresses[type] = zip;
-            }
-
-            $scope.copyAddress = function () {
-                $scope.shippingZip = $scope.billingZip;
-            }
-        });
-&lt;/script&gt;
-// ...
-&lt;div class=&quot;well&quot;&gt;
-    &lt;h4&gt;Billing Zip Code&lt;/h4&gt;
-    &lt;div class=&quot;form-group&quot;&gt;
-        &lt;input class=&quot;form-control&quot; ng-model=&quot;billingZip&quot;&gt;
-    &lt;/div&gt;
-    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;billingZip&apos;, billingZip)&quot;&gt;
-        Save Billing
-    &lt;/button&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;well&quot;&gt;
-    &lt;h4&gt;Shipping Zip Code&lt;/h4&gt;
-    &lt;div class=&quot;form-group&quot;&gt;
-        &lt;input class=&quot;form-control&quot; ng-model=&quot;shippingZip&quot;&gt;
-    &lt;/div&gt;
-    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;copyAddress()&quot;&gt;
-        Use Billing
-    &lt;/button&gt;
-    &lt;button class=&quot;btn btn-primary&quot; 
-            ng-click=&quot;setAddress(&apos;shippingZip&apos;, shippingZip)&quot;&gt;
-        Save Shipping
-    &lt;/button&gt;
-&lt;/div&gt;  
-</code></pre><h3 id="2-复用控制器"><a href="#2-复用控制器" class="headerlink" title="2 复用控制器"></a>2 复用控制器</h3><p>在同一个应用程序中创建多个视图,并复用同一个控制器. AngularJS 将会调用每个应用到控制器的工厂函数, 结果时每个控制器实例将会拥有自己的作用域.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    angular.module(&quot;exampleApp&quot;, [])</span><br><span class="line">        .controller(&quot;simpleCtrl&quot;, function ($scope) &#123;</span><br><span class="line"></span><br><span class="line">            $scope.addresses = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">            $scope.setAddress = function (type, zip) &#123;</span><br><span class="line">                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);</span><br><span class="line">                $scope.addresses[type] = zip;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            $scope.copyAddress = function () &#123;</span><br><span class="line">                $scope.shippingZip = $scope.billingZip;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// ...</span><br><span class="line">&lt;div class=&quot;well&quot;&gt;</span><br><span class="line">    &lt;h4&gt;Billing Zip Code&lt;/h4&gt;</span><br><span class="line">    &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">        &lt;input class=&quot;form-control&quot; ng-model=&quot;billingZip&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;billingZip&apos;, billingZip)&quot;&gt;</span><br><span class="line">        Save Billing</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;well&quot;&gt;</span><br><span class="line">    &lt;h4&gt;Shipping Zip Code&lt;/h4&gt;</span><br><span class="line">    &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">        &lt;input class=&quot;form-control&quot; ng-model=&quot;shippingZip&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;copyAddress()&quot;&gt;</span><br><span class="line">        Use Billing</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">    &lt;button class=&quot;btn btn-primary&quot; </span><br><span class="line">            ng-click=&quot;setAddress(&apos;shippingZip&apos;, shippingZip)&quot;&gt;</span><br><span class="line">        Save Shipping</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2-复用控制器"><a href="#2-复用控制器" class="headerlink" title="2 复用控制器"></a>2 复用控制器</h3><p><img src="http://oluv2yxz6.bkt.clouddn.com/%E5%A4%8D%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8.PNG" alt="创建一个控制器的多个实例" title="创建一个控制器的多个实例"></p>
+<p>在同一个应用程序中创建多个视图,并复用同一个控制器. AngularJS 将会调用每个应用到控制器的工厂函数, 结果是每个控制器实例将会拥有自己的作用域.</p>
 <p>这种方法能够简化控制器, 因为所需管理的只是在单块控制器下需要处理的数据值的一个子集. 这样能够工作的原因是, MVC 模式下能够分离职能, 意味着不同的视图能够以不同的方式对同一份数据和功能进行展示.</p>
-<p>每个控制器向其作用域提供的数据和行为都是与另外一个控制相互独立的.</p>
-<pre><code>&lt;script&gt;
-    angular.module(&quot;exampleApp&quot;, [])
-        .controller(&quot;simpleCtrl&quot;, function ($scope) {
-
-            $scope.setAddress = function (type, zip) {
-                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);
-            }
-
-            $scope.copyAddress = function () {
-                $scope.shippingZip = $scope.billingZip;
-            }
-        });
-&lt;/script&gt;
-// ... 
-&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;
-    &lt;h4&gt;Billing Zip Code&lt;/h4&gt;
-    &lt;div class=&quot;form-group&quot;&gt;
-        &lt;input class=&quot;form-control&quot; ng-model=&quot;zip&quot;&gt;
-    &lt;/div&gt;
-    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;billingZip&apos;, zip)&quot;&gt;
-        Save Billing
-    &lt;/button&gt;
-&lt;/div&gt;
-&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;
-    &lt;h4&gt;Shipping Zip Code&lt;/h4&gt;
-    &lt;div class=&quot;form-group&quot;&gt;
-        &lt;input class=&quot;form-control&quot; ng-model=&quot;zip&quot;&gt;
-    &lt;/div&gt;
-    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;copyAddress()&quot;&gt;
-        Use Billing
-    &lt;/button&gt;
-    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;shippingZip&apos;, zip)&quot;&gt;
-        Save Shipping
-    &lt;/button&gt;
-&lt;/div&gt;
-</code></pre><p><strong>创建一个控制器的多个实例</strong><br><img src="http://oluv2yxz6.bkt.clouddn.com/%E5%A4%8D%E7%94%A8%E6%8E%A7%E5%88%B6%E5%99%A8.PNG" alt="创建一个控制器的多个实例"></p>
-<p><strong>作用域之间的通信</strong><br><strong>在使用多个控制器时的作用域的层级结构</strong><br><img src="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%BB%93%E6%9E%84.PNG" alt="在使用多个控制器时的作用域的层级结构"></p>
+<p>每个控制器向其作用域提供的数据和行为都是与另外一个控制<strong>相互独立</strong>的.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    angular.module(&quot;exampleApp&quot;, [])</span><br><span class="line">        .controller(&quot;simpleCtrl&quot;, function ($scope) &#123;</span><br><span class="line"></span><br><span class="line">            $scope.setAddress = function (type, zip) &#123;</span><br><span class="line">                console.log(&quot;Type: &quot; + type + &quot; &quot; + zip);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            $scope.copyAddress = function () &#123;</span><br><span class="line">                $scope.shippingZip = $scope.billingZip;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">// ... </span><br><span class="line">&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;</span><br><span class="line">    &lt;h4&gt;Billing Zip Code&lt;/h4&gt;</span><br><span class="line">    &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">        &lt;input class=&quot;form-control&quot; ng-model=&quot;zip&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;billingZip&apos;, zip)&quot;&gt;</span><br><span class="line">        Save Billing</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;well&quot; ng-controller=&quot;simpleCtrl&quot;&gt;</span><br><span class="line">    &lt;h4&gt;Shipping Zip Code&lt;/h4&gt;</span><br><span class="line">    &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">        &lt;input class=&quot;form-control&quot; ng-model=&quot;zip&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;copyAddress()&quot;&gt;</span><br><span class="line">        Use Billing</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">    &lt;button class=&quot;btn btn-primary&quot; ng-click=&quot;setAddress(&apos;shippingZip&apos;, zip)&quot;&gt;</span><br><span class="line">        Save Shipping</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-1-作用域之间的通信"><a href="#2-1-作用域之间的通信" class="headerlink" title="2.1 作用域之间的通信"></a>2.1 作用域之间的通信</h4><p><img src="http://oluv2yxz6.bkt.clouddn.com/%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E6%8E%A7%E5%88%B6%E5%99%A8%E6%97%B6%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%BB%93%E6%9E%84.PNG" alt="在使用多个控制器时的作用域的层级结构" title="在使用多个控制器时的作用域的层级结构"></p>
 <p>作用域实际上是以层级结构的形式组织起来的, 顶层是 <strong>根作用域(root scope)</strong>, 每个控制器都会被赋予一个新的作用域, 该作用域是根作用域的一个子作用域.</p>
 <p>根作用域可以作为一个服务被使用, 所以在控制器中使用 $rootScope(AngularJS的内建服务) 名称声明了对他的依赖. 所有作用域, 包括 $rootScope 服务, 定义了若干可用于发送和接受事件的方法:</p>
 <table>
@@ -1003,8 +900,8 @@ app.controller(&quot;secondChildCtrl&quot;, function ($scope) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之自定义指令/" rel="next" title="AngularJS高级程序设计读书笔记--指令篇之自定义指令">
-                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--指令篇之自定义指令
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--服务篇/" rel="next" title="AngularJS高级程序设计读书笔记--服务篇">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--服务篇
               </a>
             
           </div>
@@ -1013,8 +910,8 @@ app.controller(&quot;secondChildCtrl&quot;, function ($scope) {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/" rel="prev" title="AngularJS高级程序设计读书笔记--指令篇之内置指令">
-                AngularJS高级程序设计读书笔记--指令篇之内置指令 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之自定义指令/" rel="prev" title="AngularJS高级程序设计读书笔记--指令篇之自定义指令">
+                AngularJS高级程序设计读书笔记--指令篇之自定义指令 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1157,7 +1054,7 @@ app.controller(&quot;secondChildCtrl&quot;, function ($scope) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-控制器和作用域的基本原理"><span class="nav-text">一. 控制器和作用域的基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建控制器"><span class="nav-text">1. 创建控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖注入-DI"><span class="nav-text">2. 依赖注入(DI)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-组织控制器"><span class="nav-text">二. 组织控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-单块控制器"><span class="nav-text">1 单块控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-复用控制器"><span class="nav-text">2 复用控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-控制器继承"><span class="nav-text">3 控制器继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-多控制器"><span class="nav-text">4 多控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使无作用域的控制器"><span class="nav-text">5 使无作用域的控制器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-显式更新作用域"><span class="nav-text">三. 显式更新作用域</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-控制器和作用域的基本原理"><span class="nav-text">一. 控制器和作用域的基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建控制器"><span class="nav-text">1. 创建控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-依赖注入-DI"><span class="nav-text">2. 依赖注入(DI)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-组织控制器"><span class="nav-text">二. 组织控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-单块控制器"><span class="nav-text">1 单块控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-复用控制器"><span class="nav-text">2 复用控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-作用域之间的通信"><span class="nav-text">2.1 作用域之间的通信</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-控制器继承"><span class="nav-text">3 控制器继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-多控制器"><span class="nav-text">4 多控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使无作用域的控制器"><span class="nav-text">5 使无作用域的控制器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-显式更新作用域"><span class="nav-text">三. 显式更新作用域</span></a></li></ol></div>
             
 
           </div>

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="一. 模块基础1. 创建模块1234567891011121314151617&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html ng-app=&amp;quot;exampleApp&amp;quot;&amp;gt;&amp;lt;head&amp;gt;    &amp;lt;title&amp;gt;Test&amp;lt;/title&amp;gt;    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-29T07:31:07.000Z">
+<meta property="og:updated_time" content="2018-04-29T07:55:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AngularJS高级程序设计读书笔记--模块篇">
 <meta name="twitter:description" content="一. 模块基础1. 创建模块1234567891011121314151617&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html ng-app=&amp;quot;exampleApp&amp;quot;&amp;gt;&amp;lt;head&amp;gt;    &amp;lt;title&amp;gt;Test&amp;lt;/title&amp;gt;    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;">
@@ -536,7 +536,7 @@
 <p>Module 对象所定义的方法, 有三种不同的方式来创建服务: service, factory, provide. 这三者时紧密相关的.</p>
 <h3 id="5-0-内置服务"><a href="#5-0-内置服务" class="headerlink" title="5.0 内置服务"></a>5.0 内置服务</h3><p>AngularJS 提供一些以 <code>$</code> 开头的内置服务特性.</p>
 <ul>
-<li><code>$scope</code> 该服务请求 AngularJS 为控制器提供作用域. 在创建控制器时制定给参数的 $scope 组件是用于向视图提供数据的, 只有通过 $scope 配置的数据才能用于表达式和数据绑定.</li>
+<li><code>$scope</code> 该服务请求 AngularJS 为控制器提供作用域. 在创建控制器时制定给参数的 $scope 组件是用于向视图提供数据的, 只有通过 $scope 配置的数据才能用于表达式和数据绑定. 严格说来, <code>$scope</code> 并不是一个服务, 而是一个叫 <code>$rootScope</code> 的服务提供的<strong>对象</strong>. 在实际应用上, <code>$scope</code> 与服务极为相像, 所以简单起见, 可以成为一个服务.</li>
 <li><code>$filter</code> 该服务可以访问所有已定义的过滤器, 包括自定义的过滤器. <code>$filter(&quot;myFilter&quot;)</code></li>
 <li><code>$http</code> </li>
 </ul>
@@ -573,10 +573,8 @@
 <li><code>angular.fromJson</code></li>
 <li><code>angular.toJson</code></li>
 <li><code>angular.identity</code></li>
-<li><p><code>angular.injector</code></p>
-</li>
-<li><p><code>angular.merge</code></p>
-</li>
+<li><code>angular.injector</code></li>
+<li><code>angular.merge</code></li>
 <li><code>angular.module</code></li>
 <li><code>angular.noop</code></li>
 <li><p><code>angular.reloadWithDebugInfo</code></p>
@@ -617,8 +615,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/" rel="next" title="AngularJS高级程序设计读书笔记--过滤器篇">
-                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--过滤器篇
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/" rel="next" title="AngularJS高级程序设计读书笔记--指令篇之内置指令">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--指令篇之内置指令
               </a>
             
           </div>
