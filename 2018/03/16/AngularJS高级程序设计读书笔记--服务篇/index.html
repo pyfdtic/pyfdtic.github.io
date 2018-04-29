@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="服务是提供在整个应用程序中所使用的任何功能的单例对象.单例 : 只用一个对象实例会被 AngularJS 创建出来, 并被程序需要服务的各个不同部分所共享. 一. 内置服务一些关键方法也被 AngularJS 成为服务. 如 $scope, $http. 二. 自定义服务1. Module.service(name, constructor)service 方法由两个参数: 服务名和调用后用来创建">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-20T00:25:12.000Z">
+<meta property="og:updated_time" content="2018-04-29T16:20:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AngularJS高级程序设计读书笔记--服务篇">
 <meta name="twitter:description" content="服务是提供在整个应用程序中所使用的任何功能的单例对象.单例 : 只用一个对象实例会被 AngularJS 创建出来, 并被程序需要服务的各个不同部分所共享. 一. 内置服务一些关键方法也被 AngularJS 成为服务. 如 $scope, $http. 二. 自定义服务1. Module.service(name, constructor)service 方法由两个参数: 服务名和调用后用来创建">
@@ -414,79 +414,10 @@
         <p>服务是提供在整个应用程序中所使用的任何功能的单例对象.<br><strong>单例 :</strong> 只用一个对象实例会被 AngularJS 创建出来, 并被程序需要服务的各个不同部分所共享.</p>
 <h2 id="一-内置服务"><a href="#一-内置服务" class="headerlink" title="一. 内置服务"></a>一. 内置服务</h2><p>一些关键方法也被 AngularJS 成为服务. 如 $scope, $http.</p>
 <h2 id="二-自定义服务"><a href="#二-自定义服务" class="headerlink" title="二. 自定义服务"></a>二. 自定义服务</h2><h3 id="1-Module-service-name-constructor"><a href="#1-Module-service-name-constructor" class="headerlink" title="1. Module.service(name, constructor)"></a>1. Module.service(name, constructor)</h3><p>service 方法由两个参数: 服务名和调用后用来创建服务对象的工厂函数. 当 AngularJS 调用工厂函数时, 会分配一个可通过 this 关键字访问的新对象, 我们就可以使用这个对象来定义 today 和 tomorrow 属性.</p>
-<p>示例代码: </p>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html ng-app=&quot;exampleApp&quot;&gt;
-&lt;head&gt;
-    &lt;title&gt;AngularJS Demo&lt;/title&gt;
-    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;
-    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;
-    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
-    &lt;script&gt;
+<p>示例代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html ng-app=&quot;exampleApp&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;AngularJS Demo&lt;/title&gt;</span><br><span class="line">    &lt;link href=&quot;bootstrap.css&quot; rel=&quot;stylesheet&quot; /&gt;</span><br><span class="line">    &lt;link href=&quot;bootstrap-theme.css&quot; rel=&quot;stylesheet&quot; /&gt;</span><br><span class="line">    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line"></span><br><span class="line">        var myApp = angular.module(&quot;exampleApp&quot;, []);</span><br><span class="line"></span><br><span class="line">        myApp.controller(&quot;dayCtrl&quot;, function ($scope, days) &#123;   // 依赖注入服务</span><br><span class="line">            $scope.day = days.today;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        myApp.controller(&quot;tomorrowCtrl&quot;, function ($scope, days) &#123;  // 依赖注入服务</span><br><span class="line">            $scope.day = days.tomorrow;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        myApp.directive(&quot;highlight&quot;, function ($filter) &#123;</span><br><span class="line"></span><br><span class="line">            var dayFilter = $filter(&quot;dayName&quot;);</span><br><span class="line">            </span><br><span class="line">            return function (scope, element, attrs) &#123;</span><br><span class="line">                if (dayFilter(scope.day) == attrs[&quot;highlight&quot;]) &#123;</span><br><span class="line">                    element.css(&quot;color&quot;, &quot;red&quot;);</span><br><span class="line">                &#125; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">         </span><br><span class="line">        myApp.filter(&quot;dayName&quot;, function () &#123;</span><br><span class="line">            var dayNames = [&quot;Sunday&quot;, &quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;,</span><br><span class="line">                            &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;];</span><br><span class="line">            return function (input) &#123;</span><br><span class="line">                return angular.isNumber(input) ? dayNames[input] : input;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        myApp.service(&quot;days&quot;, function () &#123;     // 创建服务</span><br><span class="line">            this.today = new Date().getDay();</span><br><span class="line">            this.tomorrow = (this.today + 1)%7;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt; </span><br><span class="line">    &lt;div class=&quot;panel&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;page-header&quot;&gt;</span><br><span class="line">            &lt;h3&gt;AngularJS App&lt;/h3&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">        &lt;h4 ng-controller=&quot;dayCtrl&quot; highlight=&quot;Monday&quot;&gt;</span><br><span class="line">            Today is &#123; &#123;day || &quot;(unknown)&quot; | dayName&#125; &#125;</span><br><span class="line">        &lt;/h4&gt;</span><br><span class="line">        &lt;h4 ng-controller=&quot;tomorrowCtrl&quot;&gt;</span><br><span class="line">            Tomorrow is &#123; &#123;day || &quot;(unknown)&quot; | dayName&#125; &#125;</span><br><span class="line">        &lt;/h4&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-Module-factory-name-provider"><a href="#2-Module-factory-name-provider" class="headerlink" title="2. Module.factory(name, provider)"></a>2. Module.factory(name, provider)</h3><h3 id="3-Module-provider-name-type"><a href="#3-Module-provider-name-type" class="headerlink" title="3. Module.provider(name, type)"></a>3. Module.provider(name, type)</h3><h3 id="4-Module-value-name-value"><a href="#4-Module-value-name-value" class="headerlink" title="4. Module.value(name, value)"></a>4. Module.value(name, value)</h3><p>用于创建返回固定值和对象的服务, 这意味着可以为任何值或对象使用依赖注入, 而不仅仅是 module 方法创建的那些对象.</p>
+<p>示例代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    var myAPP = angular.module(&quot;exampleApp&quot;, [])</span><br><span class="line">    var now = new Date();   // 将 Date() 对象赋给自定义的 now 变量</span><br><span class="line">    myApp.value(&quot;nowValue&quot;, now)    // 创建一个值服务</span><br><span class="line"></span><br><span class="line">    myApp.service(&quot;days&quot;, function(nowValue)&#123;   // 定义对 nowValue 服务的依赖.</span><br><span class="line">        this.today = nowValue.getDay();</span><br><span class="line">        this.tomorrow = this.today + 1;</span><br><span class="line">    &#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
 
-        var myApp = angular.module(&quot;exampleApp&quot;, []);
-
-        myApp.controller(&quot;dayCtrl&quot;, function ($scope, days) {   // 依赖注入服务
-            $scope.day = days.today;
-        });
-
-        myApp.controller(&quot;tomorrowCtrl&quot;, function ($scope, days) {  // 依赖注入服务
-            $scope.day = days.tomorrow;
-        });
-
-        myApp.directive(&quot;highlight&quot;, function ($filter) {
-
-            var dayFilter = $filter(&quot;dayName&quot;);
-
-            return function (scope, element, attrs) {
-                if (dayFilter(scope.day) == attrs[&quot;highlight&quot;]) {
-                    element.css(&quot;color&quot;, &quot;red&quot;);
-                } 
-            }
-        });
-
-        myApp.filter(&quot;dayName&quot;, function () {
-            var dayNames = [&quot;Sunday&quot;, &quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;,
-                            &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot;];
-            return function (input) {
-                return angular.isNumber(input) ? dayNames[input] : input;
-            };
-        });
-
-        myApp.service(&quot;days&quot;, function () {     // 创建服务
-            this.today = new Date().getDay();
-            this.tomorrow = (this.today + 1)%7;
-        });
-
-    &lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt; 
-    &lt;div class=&quot;panel&quot;&gt;
-        &lt;div class=&quot;page-header&quot;&gt;
-            &lt;h3&gt;AngularJS App&lt;/h3&gt;
-        &lt;/div&gt;
-        &lt;h4 ng-controller=&quot;dayCtrl&quot; highlight=&quot;Monday&quot;&gt;
-            Today is { {day || &quot;(unknown)&quot; | dayName} }
-        &lt;/h4&gt;
-        &lt;h4 ng-controller=&quot;tomorrowCtrl&quot;&gt;
-            Tomorrow is { {day || &quot;(unknown)&quot; | dayName} }
-        &lt;/h4&gt;
-    &lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><h3 id="2-Module-factory-name-provider"><a href="#2-Module-factory-name-provider" class="headerlink" title="2. Module.factory(name, provider)"></a>2. Module.factory(name, provider)</h3><h3 id="3-Module-provider-name-type"><a href="#3-Module-provider-name-type" class="headerlink" title="3. Module.provider(name, type)"></a>3. Module.provider(name, type)</h3><h3 id="4-Module-value-name-value"><a href="#4-Module-value-name-value" class="headerlink" title="4. Module.value(name, value)"></a>4. Module.value(name, value)</h3><p>用于创建返回固定值和对象的服务, 这意味着可以为任何值或对象使用依赖注入, 而不仅仅是 module 方法创建的那些对象.</p>
-<p>示例代码:</p>
-<pre><code>&lt;script&gt;
-    var myAPP = angular.module(&quot;exampleApp&quot;, [])
-    var now = new Date();   // 将 Date() 对象赋给自定义的 now 变量
-    myApp.value(&quot;nowValue&quot;, now)    // 创建一个值服务
-
-    myApp.service(&quot;days&quot;, function(nowValue){   // 定义对 nowValue 服务的依赖.
-        this.today = nowValue.getDay();
-        this.tomorrow = this.today + 1;
-    });
-&lt;/script&gt;
-</code></pre>
       
     </div>
     
@@ -518,8 +449,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/16/python-itchat-weixin-api/" rel="next" title="python 微信接口 -- itchat 文档">
-                <i class="fa fa-chevron-left"></i> python 微信接口 -- itchat 文档
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/" rel="next" title="AngularJS高级程序设计读书笔记--服务篇">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--服务篇
               </a>
             
           </div>
@@ -528,8 +459,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--控制器篇/" rel="prev" title="AngularJS高级程序设计读书笔记--控制器篇">
-                AngularJS高级程序设计读书笔记--控制器篇 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之自定义指令/" rel="prev" title="AngularJS高级程序设计读书笔记--指令篇之自定义指令">
+                AngularJS高级程序设计读书笔记--指令篇之自定义指令 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -607,7 +538,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">108</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -629,7 +560,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">87</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
