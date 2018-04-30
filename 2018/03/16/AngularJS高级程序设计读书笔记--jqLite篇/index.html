@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="jqLite 是 AngularJS 实现的一个剪裁版的 jQuery,  可以与 AngularJS 一起工作创建, 操作, 管理 HTML 元素. jqLite 的每一个方法的实现, 都对应一个 jQuery 的同名方法. jQuery API. 1. 对文档对象模型(DOM)导航AngularJS 用于表示 HTML 元素的对象( jqLite对象 ), 实际上可以表示零个, 一个或多个 H">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-30T03:26:57.000Z">
+<meta property="og:updated_time" content="2018-04-30T07:30:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AngularJS高级程序设计读书笔记--jqLite">
 <meta name="twitter:description" content="jqLite 是 AngularJS 实现的一个剪裁版的 jQuery,  可以与 AngularJS 一起工作创建, 操作, 管理 HTML 元素. jqLite 的每一个方法的实现, 都对应一个 jQuery 的同名方法. jQuery API. 1. 对文档对象模型(DOM)导航AngularJS 用于表示 HTML 元素的对象( jqLite对象 ), 实际上可以表示零个, 一个或多个 H">
@@ -567,6 +567,7 @@
 </tr>
 </tbody>
 </table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    var app = angular.module(&quot;exampleApp&quot;, [])</span><br><span class="line">        .directive(&apos;demoDirective&apos;, function () &#123;</span><br><span class="line">            return function(scope, element, attrs)&#123;</span><br><span class="line">                // 错误版本</span><br><span class="line">                // var listItem = element.append(&quot;&lt;ol&gt;&quot;);   </span><br><span class="line">                // for (var i=0; i&lt;scope.names.length; i++)&#123;</span><br><span class="line">                //     listItem.append(&quot;&lt;li&gt;&quot;).append(&quot;&lt;span&gt;&quot;).text(scope.names[i]);</span><br><span class="line">                // &#125;</span><br><span class="line"></span><br><span class="line">                // 正确版本</span><br><span class="line">                var listItem = angular.element(&quot;&lt;ol&gt;&quot;);</span><br><span class="line">                element.append(listItem);</span><br><span class="line">                for (var i=0; i&lt;scope.names.length; i++)&#123;</span><br><span class="line">                    listItem.append(</span><br><span class="line">                        angular.element(&quot;&lt;li&gt;&quot;).append(angular.element(&quot;&lt;span&gt;&quot;).text(scope.names[i]))</span><br><span class="line">                        );</span><br><span class="line">                &#125;;</span><br><span class="line"></span><br><span class="line">                var buttons = element.find(&quot;button&quot;);</span><br><span class="line">                // 注册 click 事件</span><br><span class="line">                buttons.on(&quot;click&quot;, function(e)&#123;</span><br><span class="line">                    element.find(&quot;li&quot;).toggleClass(&quot;bold&quot;)  // 切换 bold class 属性.</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .controller(&quot;defaultCtrl&quot;, function ($scope) &#123;</span><br><span class="line">            $scope.names = [&quot;Apples&quot;, &quot;Namamas&quot;, &quot;Oranges&quot;]</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body ng-app=&quot;exampleApp&quot; ng-controller=&quot;defaultCtrl&quot;&gt;</span><br><span class="line">    &lt;h3&gt;Fruit&lt;/h3&gt;</span><br><span class="line">    &lt;div demo-directive&gt;</span><br><span class="line">        &lt;button&gt;Click Me&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
 <h3 id="5-其他-jqLite-方法"><a href="#5-其他-jqLite-方法" class="headerlink" title="5. 其他 jqLite 方法"></a>5. 其他 jqLite 方法</h3><table>
 <thead>
 <tr>
@@ -576,39 +577,25 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
+<td>data(key), data(key, value)</td>
+<td>将任意数据与 jqLite 对象代表的所有元素关联起来, 或者从 jqLite 对象代表的<strong>第一个元素</strong>中获取制定 key 的值.</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>removeData(key)</td>
+<td>从 jqLite 对象代表的元素中移除与指定 key 相关联的数据</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>html()</td>
+<td>返回 jqLite 对象所代表的第一个元素的内容的 HTML 表达上形式.</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
+<td>ready(handler)</td>
+<td>注册一个监听器函数, 该函数将在 DOM 的内容被<strong>完全加载</strong>时调用一次.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="6-从-jqLite-访问-AngularJS-特性"><a href="#6-从-jqLite-访问-AngularJS-特性" class="headerlink" title="6. 从 jqLite 访问 AngularJS 特性"></a>6. 从 jqLite 访问 AngularJS 特性</h3><table>
+<h3 id="6-从-jqLite-访问-AngularJS-特性"><a href="#6-从-jqLite-访问-AngularJS-特性" class="headerlink" title="6. 从 jqLite 访问 AngularJS 特性"></a>6. 从 jqLite 访问 AngularJS 特性</h3><p>jqLite 还提供了一些方法, 可以提供对 AngularJS 专属的特性的访问.</p>
+<table>
 <thead>
 <tr>
 <th>名称</th>
@@ -617,39 +604,28 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
+<td>controller(), controller(name)</td>
+<td>返回与当前元素或其父元素相关联的控制器. 控制器可以与指令交互.</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>injector()</td>
+<td>返回与当前元素相关的注入器.</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>isolatedScope()</td>
+<td>如果当前元素有相关联的独立的作用域, 则返回该作用域.</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>scope()</td>
+<td>返回与当前元素或其父元素相关联的作用域.</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
+<td>inheritedData(key)</td>
+<td>该方法与 jQuery 的 data 方法执行同样的功能, 但是会沿着元素层次结构向上查找与制定 key 相匹配的值.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="7-使用-jQuery-替代-jqLite"><a href="#7-使用-jQuery-替代-jqLite" class="headerlink" title="7. 使用 jQuery 替代 jqLite"></a>7. 使用 jQuery 替代 jqLite</h3>
+
       
     </div>
     
@@ -685,8 +661,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/16/python-itchat-weixin-api/" rel="next" title="python 微信接口 -- itchat 文档">
-                <i class="fa fa-chevron-left"></i> python 微信接口 -- itchat 文档
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--服务篇/" rel="next" title="AngularJS高级程序设计读书笔记--服务篇">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--服务篇
               </a>
             
           </div>
@@ -695,8 +671,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--服务篇/" rel="prev" title="AngularJS高级程序设计读书笔记--服务篇">
-                AngularJS高级程序设计读书笔记--服务篇 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之自定义指令/" rel="prev" title="AngularJS高级程序设计读书笔记--指令篇之自定义指令">
+                AngularJS高级程序设计读书笔记--指令篇之自定义指令 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -839,7 +815,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-对文档对象模型-DOM-导航"><span class="nav-text">1. 对文档对象模型(DOM)导航</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-修改元素"><span class="nav-text">2. 修改元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-创建和移除元素"><span class="nav-text">3. 创建和移除元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-处理事件"><span class="nav-text">4. 处理事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-其他-jqLite-方法"><span class="nav-text">5. 其他 jqLite 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-从-jqLite-访问-AngularJS-特性"><span class="nav-text">6. 从 jqLite 访问 AngularJS 特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-使用-jQuery-替代-jqLite"><span class="nav-text">7. 使用 jQuery 替代 jqLite</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-对文档对象模型-DOM-导航"><span class="nav-text">1. 对文档对象模型(DOM)导航</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-修改元素"><span class="nav-text">2. 修改元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-创建和移除元素"><span class="nav-text">3. 创建和移除元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-处理事件"><span class="nav-text">4. 处理事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-其他-jqLite-方法"><span class="nav-text">5. 其他 jqLite 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-从-jqLite-访问-AngularJS-特性"><span class="nav-text">6. 从 jqLite 访问 AngularJS 特性</span></a></li></ol></div>
             
 
           </div>
