@@ -876,8 +876,13 @@ currency
       
         
           
-          1. 对文档对象模型导航2. 修改元素3. 创建和移除元素4. 处理事件5. 其他 jqLite 方法6. 从 jqLite 访问 AngularJS 特性
-          
+          jqLite 是 AngularJS 实现的一个剪裁版的 jQuery,  可以与 AngularJS 一起工作创建, 操作, 管理 HTML 元素. jqLite 的每一个方法的实现, 都对应一个 jQuery 的同名方法. jQuery API.
+1. 对文档对象模型(DOM)导航AngularJS 用于表示 HTML 元素的对象( jqLite对象 ), 实际上可以表示零个, 一个或多个 HTML 元素. 因此, 有些 jqLite 方法会将 jqLite 对象当做一个集合处理.
+
+
+
+名
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/#more" rel="contents">
