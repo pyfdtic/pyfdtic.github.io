@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-requests/</loc>
+    
+    <lastmod>2018-05-17T23:55:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.pyfdtic.com/2018/03/16/AngularJS%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0--%E6%8C%87%E4%BB%A4%E7%AF%87%E4%B9%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4/</loc>
+    
+    <lastmod>2018-05-17T01:57:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.pyfdtic.com/2018/03/16/AngularJS%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0--jqLite%E7%AF%87/</loc>
     
     <lastmod>2018-04-30T07:31:22.000Z</lastmod>
@@ -12,13 +26,6 @@
     <loc>http://www.pyfdtic.com/2018/03/16/AngularJS%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0--%E6%9C%8D%E5%8A%A1%E7%AF%87/</loc>
     
     <lastmod>2018-04-30T07:30:10.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.pyfdtic.com/2018/03/16/AngularJS%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0--%E6%8C%87%E4%BB%A4%E7%AF%87%E4%B9%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4/</loc>
-    
-    <lastmod>2018-04-30T01:43:14.000Z</lastmod>
     
   </url>
   
@@ -52,13 +59,6 @@
   
   <url>
     <loc>http://www.pyfdtic.com/2018/03/16/python-itchat-weixin-api/</loc>
-    
-    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/flaskExt--flask-mail/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -100,14 +100,14 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/14/Hexo-nexT-%E5%8D%9A%E5%AE%A2%E5%BB%BA%E8%AE%BE%E6%8C%87%E5%8D%97/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/14/markdown-%E8%AF%AD%E6%B3%95%E6%80%BB%E7%BB%93/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/14/markdown-%E8%AF%AD%E6%B3%95%E6%80%BB%E7%BB%93/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/14/Hexo-nexT-%E5%8D%9A%E5%AE%A2%E5%BB%BA%E8%AE%BE%E6%8C%87%E5%8D%97/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -122,6 +122,13 @@
   
   <url>
     <loc>http://www.pyfdtic.com/2018/03/14/Ansible-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.pyfdtic.com/2018/03/20/python-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -170,7 +177,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/20/python-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/14/python-%E4%B8%93%E9%A2%98/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -192,13 +199,6 @@
   
   <url>
     <loc>http://www.pyfdtic.com/2018/03/15/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E9%80%9F%E6%9F%A5%E8%A1%A8/</loc>
-    
-    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.pyfdtic.com/2018/03/15/redis-%E6%B1%87%E6%80%BB/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -331,21 +331,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/15/%E5%88%A9%E7%94%A8redis%E7%94%9F%E6%88%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</loc>
-    
-    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.pyfdtic.com/2018/03/16/AngularJS%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0--%E8%BF%87%E6%BB%A4%E5%99%A8%E7%AF%87/</loc>
-    
-    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.pyfdtic.com/2018/03/14/python-%E4%B8%93%E9%A2%98/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/15/redis-%E6%B1%87%E6%80%BB/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -353,6 +339,13 @@
   
   <url>
     <loc>http://www.pyfdtic.com/2018/03/16/AngularJS%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0--%E6%8C%87%E4%BB%A4%E7%AF%87%E4%B9%8B%E5%86%85%E7%BD%AE%E6%8C%87%E4%BB%A4/</loc>
+    
+    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.pyfdtic.com/2018/03/16/AngularJS%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0--%E8%BF%87%E6%BB%A4%E5%99%A8%E7%AF%87/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -387,7 +380,14 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/15/Buffer-Cache-%E5%8C%BA%E5%88%AB/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/flaskExt--flask-mail/</loc>
+    
+    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.pyfdtic.com/2018/03/15/%E5%88%A9%E7%94%A8redis%E7%94%9F%E6%88%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -429,7 +429,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/16/docker-kubernets/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/15/Buffer-Cache-%E5%8C%BA%E5%88%AB/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -450,7 +450,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/16/python-celery-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/16/docker-kubernets/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -471,14 +471,14 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/16/docker-%E5%86%85%E9%83%A8%E7%BB%84%E4%BB%B6%E7%BB%93%E6%9E%84-docker-daemon-container-runC/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/16/python-celery-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/16/Linux-%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B-%E4%B8%8E%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/16/docker-%E5%86%85%E9%83%A8%E7%BB%84%E4%BB%B6%E7%BB%93%E6%9E%84-docker-daemon-container-runC/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -507,6 +507,13 @@
   
   <url>
     <loc>http://www.pyfdtic.com/2018/03/16/%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C%E8%A7%84%E8%8C%83/</loc>
+    
+    <lastmod>2018-04-20T00:25:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.pyfdtic.com/2018/03/16/Linux-%E8%BF%9B%E7%A8%8B-%E7%BA%BF%E7%A8%8B-%E4%B8%8E%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/</loc>
     
     <lastmod>2018-04-20T00:25:12.000Z</lastmod>
     
@@ -562,14 +569,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-threading/</loc>
-    
-    <lastmod>2018-04-20T00:25:11.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-os/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-glob/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
@@ -611,7 +611,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-glob/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-os/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
@@ -625,7 +625,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-re/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-threading/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
@@ -639,7 +639,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-pickle/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-re/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
@@ -660,7 +660,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-subprocess/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-pickle/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
@@ -688,14 +688,14 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-multiprocessing/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-subprocess/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-requests/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-multiprocessing/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
@@ -723,13 +723,6 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-time/</loc>
-    
-    <lastmod>2018-04-20T00:25:11.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-configparser/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
@@ -737,7 +730,14 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-logging/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-time/</loc>
+    
+    <lastmod>2018-04-20T00:25:11.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-unittest/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     
@@ -751,7 +751,7 @@
   </url>
   
   <url>
-    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-unittest/</loc>
+    <loc>http://www.pyfdtic.com/2018/03/19/PyStdLib-logging/</loc>
     
     <lastmod>2018-04-20T00:25:11.000Z</lastmod>
     

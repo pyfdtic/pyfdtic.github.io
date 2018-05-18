@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="一. 自定义指令(15-17 章)Module.directive(name, factory)  指令是专门用于在应用程序内或程序之间复用的, 应当避免产生硬链接的依赖关系, 包括引用被特定控制器所创建的数据. 0. AngularJS 对 属性 名称的解析 大写开头的会被当做一个单词.   listProperty == list-property  以 data- 为前缀的, Angular">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-30T01:43:14.000Z">
+<meta property="og:updated_time" content="2018-05-17T01:57:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AngularJS高级程序设计读书笔记--指令篇之自定义指令">
 <meta name="twitter:description" content="一. 自定义指令(15-17 章)Module.directive(name, factory)  指令是专门用于在应用程序内或程序之间复用的, 应当避免产生硬链接的依赖关系, 包括引用被特定控制器所创建的数据. 0. AngularJS 对 属性 名称的解析 大写开头的会被当做一个单词.   listProperty == list-property  以 data- 为前缀的, Angular">
@@ -477,7 +477,96 @@
     }
 });
 </code></pre><p><strong>不能够依赖于工厂函数或工人函数在某个特定时刻被调用</strong><br>当希望注册一个构件时, 调用 Module 的方法;<br>当建立构件时 AngularJS 将调用工厂函数;<br>然后当需要使用该构件时就会调用工人函数.<br>这三个事件并一定会按照顺序立即调用.</p>
-
+<h2 id="三-定义复杂指令"><a href="#三-定义复杂指令" class="headerlink" title="三. 定义复杂指令"></a>三. 定义复杂指令</h2><p>使用一个返回链接函数的工厂函数来创建自定义指令, 是最简单的一种办法, 这也意味着许多可由<strong>指令自定义选项</strong>使用的是默认值, 要自定义这些选项, 工厂函数必须返回一个定义对象, 这是一个 javascritp 对象, 可用下表中的一些或全部属性.</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>compile</td>
+<td>指定一个<strong>编译函数</strong></td>
+</tr>
+<tr>
+<td>controller</td>
+<td>为指令创建一个<strong>控制器函数</strong></td>
+</tr>
+<tr>
+<td>link</td>
+<td>指定一个<strong>链接函数</strong></td>
+</tr>
+<tr>
+<td>replace</td>
+<td>指定模板内容是否替换指令所应用到的元素.</td>
+</tr>
+<tr>
+<td>require</td>
+<td>声明对某个控制器的依赖.</td>
+</tr>
+<tr>
+<td>restrict</td>
+<td>指定指令如何被使用</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>为指令创建一个新的作用域或者一个隔离的作用域.</td>
+</tr>
+<tr>
+<td>template</td>
+<td>指定一个将被插入到 HTML 文档的模板</td>
+</tr>
+<tr>
+<td>templateUrl</td>
+<td>指定一个将被插入到 HTML 文档的外部模板</td>
+</tr>
+<tr>
+<td>transclude</td>
+<td>指定指令是否被用于包含任意内容</td>
+</tr>
+</tbody>
+</table>
+<p>当只返回一个链接函数时, 所创建的指令只能被当做一个<strong>属性</strong>来使用.</p>
+<p>编译函数与连接函数: 严格来说, 应当使用由 compile 定义属性指令的编译函数, 只用来修改 DOM; 并且只使用连接函数来执行比如创建监听器和设置事件处理器等任务. 编译/连接分离有助于改善特别复杂或者处理大量数据的指令的性能.</p>
+<h3 id="1-restrict-指定指令如何被使用"><a href="#1-restrict-指定指令如何被使用" class="headerlink" title="1. restrict : 指定指令如何被使用"></a>1. restrict : 指定指令如何被使用</h3><table>
+<thead>
+<tr>
+<th>字母</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>允许指令被用作一个<strong>元素</strong></td>
+</tr>
+<tr>
+<td>A</td>
+<td>允许指令被用作一个<strong>属性</strong></td>
+</tr>
+<tr>
+<td>C</td>
+<td>允许指令被用作一个<strong>类</strong></td>
+</tr>
+<tr>
+<td>M</td>
+<td>允许指令被用作一个<strong>注释</strong></td>
+</tr>
+</tbody>
+</table>
+<p>在实际使用中, restrict 定义属性最常见值是 A,E 或者 AE, 但是也可以四个一起使用, 如 EACM. 即, 只要有可能就应该将指令当做元素或属性来使用, 应为这种方式更容易让人看懂指令应用到何处.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    angular.module(&quot;exampleApp&quot;, [])</span><br><span class="line">        .directive(&quot;unorderedList&quot;, function () &#123;</span><br><span class="line">            return &#123;</span><br><span class="line">                link: function (scope, element, attrs) &#123;</span><br><span class="line">                    var data = scope[attrs[&quot;unorderedList&quot;] || attrs[&quot;listSource&quot;]];</span><br><span class="line">                    var propertyExpression = attrs[&quot;listProperty&quot;] || &quot;price | currency&quot;;</span><br><span class="line">                    if (angular.isArray(data)) &#123;</span><br><span class="line">                        var listElem = angular.element(&quot;&lt;ul&gt;&quot;);</span><br><span class="line">                        if (element[0].nodeName == &quot;#comment&quot;) &#123;</span><br><span class="line">                            element.parent().append(listElem);</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            element.append(listElem);</span><br><span class="line">                        &#125;</span><br><span class="line">                        for (var i = 0; i &lt; data.length; i++) &#123;</span><br><span class="line">                            var itemElement = angular.element(&quot;&lt;li&gt;&quot;)</span><br><span class="line">                                .text(scope.$eval(propertyExpression, data[i]));</span><br><span class="line">                            listElem.append(itemElement);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                restrict: &quot;EACM&quot;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;).controller(&quot;defaultCtrl&quot;, function ($scope) &#123;</span><br><span class="line">            $scope.products = [</span><br><span class="line">                &#123; name: &quot;Apples&quot;, category: &quot;Fruit&quot;, price: 1.20, expiry: 10 &#125;,</span><br><span class="line">                &#123; name: &quot;Bananas&quot;, category: &quot;Fruit&quot;, price: 2.42, expiry: 7 &#125;,</span><br><span class="line">                &#123; name: &quot;Pears&quot;, category: &quot;Fruit&quot;, price: 2.02, expiry: 6 &#125;</span><br><span class="line">            ];</span><br><span class="line">        &#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-将指令当做一个元素来使用"><a href="#1-1-将指令当做一个元素来使用" class="headerlink" title="1.1 将指令当做一个元素来使用"></a>1.1 将指令当做一个元素来使用</h4><p>AngularJS 的习惯是将那些通过定义属性 template 和 templateUrl 管理模板的指令当做元素来使用.</p>
+<p>将指令当做一个 unordered-list 元素来使用, 并在元素上使用属性对其进行配置.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;panel-body&quot;&gt;</span><br><span class="line">    &lt;unordered-list list-source=&quot;products&quot; list-property=&quot;price | currency&quot; /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">// 需要对指令的链接函数做一个修改.</span><br><span class="line">var data = scope[attrs[&quot;unorderedList&quot;] || attrs[&quot;listSource&quot;]];</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-将指令当做一个属性来使用"><a href="#1-2-将指令当做一个属性来使用" class="headerlink" title="1.2 将指令当做一个属性来使用"></a>1.2 将指令当做一个属性来使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;panel-body&quot;&gt;</span><br><span class="line">    &lt;div unordered-list=&quot;products&quot; list-property=&quot;price | currency&quot;&gt;&lt;/div&gt;        </span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="1-3-将指令当做一个类的属性值来使用"><a href="#1-3-将指令当做一个类的属性值来使用" class="headerlink" title="1.3 将指令当做一个类的属性值来使用"></a>1.3 将指令当做一个类的属性值来使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;panel-body&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;unordered-list: products&quot; list-property=&quot;price | currency&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-将指令当做一个注释来使用"><a href="#1-4-将指令当做一个注释来使用" class="headerlink" title="1.4 将指令当做一个注释来使用"></a>1.4 将指令当做一个注释来使用</h4><p>容易使得其他开发者不容易看懂代码, 还可能引起某些构建工具的问题(因为有些工具为了缩减文件体积而去除注释). </p>
+<p>注释必须以单词 <code>directive</code> 开始, 跟随一个冒号, 指令名以及可选的配置参数.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;panel-body&quot;&gt;</span><br><span class="line">    &lt;!-- directive: unordered-list products  --&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 需要修改链接函数的操作方式已支持注释方式.</span><br><span class="line">if (element[0].nodeName == &quot;#comment&quot;) &#123;</span><br><span class="line">    element.parent().append(listElem);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    element.append(listElem);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-template-templateUrl-指定指令模板"><a href="#2-template-templateUrl-指定指令模板" class="headerlink" title="2. template, templateUrl: 指定指令模板"></a>2. template, templateUrl: 指定指令模板</h3><h4 id="2-1-使用函数作为末班"><a href="#2-1-使用函数作为末班" class="headerlink" title="2.1 使用函数作为末班"></a>2.1 使用函数作为末班</h4><h4 id="2-2-使用外部模板"><a href="#2-2-使用外部模板" class="headerlink" title="2.2 使用外部模板"></a>2.2 使用外部模板</h4><h4 id="2-3-使用函数选择一个外部模板"><a href="#2-3-使用函数选择一个外部模板" class="headerlink" title="2.3 使用函数选择一个外部模板"></a>2.3 使用函数选择一个外部模板</h4><h4 id="2-4-替换元素"><a href="#2-4-替换元素" class="headerlink" title="2.4 替换元素"></a>2.4 替换元素</h4><h3 id="3-scope-管理指令作用域"><a href="#3-scope-管理指令作用域" class="headerlink" title="3. scope: 管理指令作用域."></a>3. scope: 管理指令作用域.</h3>
       
     </div>
     
@@ -509,8 +598,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--服务篇/" rel="next" title="AngularJS高级程序设计读书笔记--服务篇">
-                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--服务篇
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--控制器篇/" rel="next" title="AngularJS高级程序设计读书笔记--控制器篇">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--控制器篇
               </a>
             
           </div>
@@ -519,8 +608,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--控制器篇/" rel="prev" title="AngularJS高级程序设计读书笔记--控制器篇">
-                AngularJS高级程序设计读书笔记--控制器篇 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/16/AngularJS高级程序设计读书笔记--模块篇/" rel="prev" title="AngularJS高级程序设计读书笔记--模块篇">
+                AngularJS高级程序设计读书笔记--模块篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -663,7 +752,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-自定义指令-15-17-章"><span class="nav-text">一. 自定义指令(15-17 章)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-AngularJS-对-属性-名称的解析"><span class="nav-text">0. AngularJS 对 属性 名称的解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-链接函数-提供了将指令与-HTML-文档和作用域数据相连接的方法"><span class="nav-text">1. 链接函数: 提供了将指令与 HTML 文档和作用域数据相连接的方法.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-编译函数-可以与指令相关联的函数"><span class="nav-text">2. 编译函数: 可以与指令相关联的函数.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建自定义指令的方法"><span class="nav-text">1. 创建自定义指令的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-自定义指令的作用点"><span class="nav-text">2. 自定义指令的作用点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-工厂函数与工人函数"><span class="nav-text">二. 工厂函数与工人函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-自定义指令-15-17-章"><span class="nav-text">一. 自定义指令(15-17 章)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-AngularJS-对-属性-名称的解析"><span class="nav-text">0. AngularJS 对 属性 名称的解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-链接函数-提供了将指令与-HTML-文档和作用域数据相连接的方法"><span class="nav-text">1. 链接函数: 提供了将指令与 HTML 文档和作用域数据相连接的方法.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-编译函数-可以与指令相关联的函数"><span class="nav-text">2. 编译函数: 可以与指令相关联的函数.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建自定义指令的方法"><span class="nav-text">1. 创建自定义指令的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-自定义指令的作用点"><span class="nav-text">2. 自定义指令的作用点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-工厂函数与工人函数"><span class="nav-text">二. 工厂函数与工人函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-定义复杂指令"><span class="nav-text">三. 定义复杂指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-restrict-指定指令如何被使用"><span class="nav-text">1. restrict : 指定指令如何被使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-将指令当做一个元素来使用"><span class="nav-text">1.1 将指令当做一个元素来使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-将指令当做一个属性来使用"><span class="nav-text">1.2 将指令当做一个属性来使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-将指令当做一个类的属性值来使用"><span class="nav-text">1.3 将指令当做一个类的属性值来使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-将指令当做一个注释来使用"><span class="nav-text">1.4 将指令当做一个注释来使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-template-templateUrl-指定指令模板"><span class="nav-text">2. template, templateUrl: 指定指令模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-使用函数作为末班"><span class="nav-text">2.1 使用函数作为末班</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-使用外部模板"><span class="nav-text">2.2 使用外部模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-使用函数选择一个外部模板"><span class="nav-text">2.3 使用函数选择一个外部模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-替换元素"><span class="nav-text">2.4 替换元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-scope-管理指令作用域"><span class="nav-text">3. scope: 管理指令作用域.</span></a></li></ol></li></ol></div>
             
 
           </div>
