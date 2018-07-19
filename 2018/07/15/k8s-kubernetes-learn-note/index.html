@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="容器,kubernetes," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="examplemaster  : 172.16.0.105 node_01 : 172.16.0.106node_02 : 172.16.0.107 specification : 规格. Topic 编排 高可用 滚动更新 网络插件 服务发现 监控 数据管理 日志管理  kubernetes 架构kubernetes 由 master 和 node 组成, 节点上运行着若干 kubernetes">
+<meta name="keywords" content="容器,kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubernetes 学习笔记">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/07/15/k8s-kubernetes-learn-note/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="examplemaster  : 172.16.0.105 node_01 : 172.16.0.106node_02 : 172.16.0.107 specification : 规格. Topic 编排 高可用 滚动更新 网络插件 服务发现 监控 数据管理 日志管理  kubernetes 架构kubernetes 由 master 和 node 组成, 节点上运行着若干 kubernetes">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-19T00:03:07.637Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kubernetes 学习笔记">
+<meta name="twitter:description" content="examplemaster  : 172.16.0.105 node_01 : 172.16.0.106node_02 : 172.16.0.107 specification : 规格. Topic 编排 高可用 滚动更新 网络插件 服务发现 监控 数据管理 日志管理  kubernetes 架构kubernetes 由 master 和 node 组成, 节点上运行着若干 kubernetes">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/07/15/k8s-kubernetes-learn-note/"/>
+
+
+
+
+
+  <title>kubernetes 学习笔记 | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/07/15/k8s-kubernetes-learn-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">kubernetes 学习笔记</h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T09:20:27+08:00">
+                2018-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="example"><a href="#example" class="headerlink" title="example"></a>example</h1><p>master  : 172.16.0.105</p>
+<p>node_01 : 172.16.0.106<br>node_02 : 172.16.0.107</p>
+<p>specification : 规格.</p>
+<h1 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h1><ul>
+<li>编排</li>
+<li>高可用</li>
+<li>滚动更新</li>
+<li>网络插件</li>
+<li>服务发现</li>
+<li>监控</li>
+<li>数据管理</li>
+<li>日志管理</li>
+</ul>
+<h2 id="kubernetes-架构"><a href="#kubernetes-架构" class="headerlink" title="kubernetes 架构"></a>kubernetes 架构</h2><p>kubernetes 由 master 和 node 组成, 节点上运行着若干 kubernetes 服务.</p>
+<p>Kubernetes 的系统组件都被放到 kube-system 命名空间中, 如 kube-dns 组件, 是在执行 kubeadm init 作为附加组件安装的,为 Cluster 提供 DNS 服务. </p>
+<p>kubelet 是唯一没有以容器形式运行的 kubernetes 组件, 通过 systemd 服务运行.</p>
+<h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><p>master 是 kubernetes 的大脑, 运行的服务有 kube-apiserver, kub-scheduler, kube-controller-manager, etcd, Pod 网络(如 flabbel).</p>
+<ul>
+<li><p>kube-apiserver</p>
+<p>  API Server 提供 HTTP/HTTPS RESTful API, 即 Kubernetes API. API Server 是 Kubernetes Cluster 的前端接口, 各种客户端工 以及 kubernetes 其他组件可以通过他管理 cluster 的各种资源.</p>
+</li>
+<li><p>kube-scheduler</p>
+<p>  scheduler 决定 将 Pod 放到那个 Node 上运行. scheduler 在调度时, 会充分考虑 Cluster 的拓扑结构, 当前各节点的负载, 以及应用对高可用, 性能, 数据亲和性的需求.</p>
+</li>
+<li><p>kube-controller-manager</p>
+<p>  Controller Manager 负责管理 Cluster 各种资源, 保证资源处于预期状态. Controller Manager 由多种 controlelr 组成, 不同的 controller 管理不同的资源, 如</p>
+<ul>
+<li>replication controller : 管理 Deployment, StatefulSet, DaemonSet 的生命周期</li>
+<li>endpoints controller</li>
+<li>namespace controller : 管理 Namespace 资源</li>
+<li>serviceaccounts controller</li>
+</ul>
+</li>
+<li><p>etcd </p>
+<p>  负责保存 Kubernetes Cluster 的配置信息和各种资源的状态信息, 当数据放生变化时, etcd 会快速的通知 Kubernetes 相关组件.</p>
+</li>
+<li><p>Pod 网络</p>
+<p>  Pod 之间相互通信, 必须部署 Pod 网络, 如 flannel, calile 等.</p>
+</li>
+</ul>
+<h3 id="Node-节点"><a href="#Node-节点" class="headerlink" title="Node 节点"></a>Node 节点</h3><p>Node 是 Pod 运行的地方, Kubernetes 支持 Docker, rkt 等容器 Runtime.</p>
+<ul>
+<li><p>kubelet</p>
+<p>  kubelet 是 Node 的 aget, 当 Scheduler 确定在某个 Node 上运行 Pod 后, 会将 Pod 的具体配置信息(Volume, image等) 发送给该节点的 kubelet, kubelet 会根据这些信息创建和运行 Pod, 并向 master 报告运行状态.</p>
+</li>
+<li><p>kube-proxy</p>
+<p>  service 在逻辑上代表了后端的多个 pod, 外界通过 service 访问 pod. service 接收到的请求 通过 kube-proxy 状态到 pod.</p>
+</li>
+<li><p>Pod 网络</p>
+<p>  Pod 之间相互通信.</p>
+</li>
+</ul>
+<h2 id="kubeadm-安装"><a href="#kubeadm-安装" class="headerlink" title="kubeadm 安装"></a>kubeadm 安装</h2><h3 id="1-在-master-操作"><a href="#1-在-master-操作" class="headerlink" title="1. 在 master 操作"></a>1. 在 master 操作</h3><p>$ kubeadm init –apiserver-advertise-address 172.16.0.105 –pod-network-cidr=10.244.0.0/16<br>    –apiserver-advertise-address 指明 master 使用 那个 interface 与其他节点 通信<br>    –pod-network-cidr : 制动 pod 网络的范围. k8s 支持多种网络方案, 且不同网络方案对 –pod-network-cidr 有自己的要求, 此处使用 flannel 方案, 必须设置为 CIDR.</p>
+<p>返回信息:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">I0715 18:33:03.371488   20968 feature_gate.go:230] feature gates: &amp;&#123;map[]&#125;</span><br><span class="line">[init] using Kubernetes version: v1.11.0</span><br><span class="line">[preflight] running pre-flight checks</span><br><span class="line">    [WARNING Service-Docker]: docker service is not enabled, please run &apos;systemctl enable docker.service&apos;</span><br><span class="line">I0715 18:33:03.391128   20968 kernel_validator.go:81] Validating kernel version</span><br><span class="line">I0715 18:33:03.391182   20968 kernel_validator.go:96] Validating kernel config</span><br><span class="line">    [WARNING SystemVerification]: docker version is greater than the most recently validated version. Docker version: 18.03.1-ce. Max validated version: 17.03</span><br><span class="line">    [WARNING Hostname]: hostname &quot;izj6c4v865pdzr9a5004a2z&quot; could not be reached</span><br><span class="line">    [WARNING Hostname]: hostname &quot;izj6c4v865pdzr9a5004a2z&quot; lookup izj6c4v865pdzr9a5004a2z on 100.100.2.138:53: no such host</span><br><span class="line">    [WARNING Service-Kubelet]: kubelet service is not enabled, please run &apos;systemctl enable kubelet.service&apos;</span><br><span class="line">[preflight/images] Pulling images required for setting up a Kubernetes cluster</span><br><span class="line">[preflight/images] This might take a minute or two, depending on the speed of your internet connection</span><br><span class="line">[preflight/images] You can also perform this action in beforehand using &apos;kubeadm config images pull&apos;</span><br><span class="line">[kubelet] Writing kubelet environment file with flags to file &quot;/var/lib/kubelet/kubeadm-flags.env&quot;</span><br><span class="line">[kubelet] Writing kubelet configuration to file &quot;/var/lib/kubelet/config.yaml&quot;</span><br><span class="line">[preflight] Activating the kubelet service</span><br><span class="line">[certificates] Generated ca certificate and key.</span><br><span class="line">[certificates] Generated apiserver certificate and key.</span><br><span class="line">[certificates] apiserver serving cert is signed for DNS names [izj6c4v865pdzr9a5004a2z kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 172.16.0.105]</span><br><span class="line">[certificates] Generated apiserver-kubelet-client certificate and key.</span><br><span class="line">[certificates] Generated sa key and public key.</span><br><span class="line">[certificates] Generated front-proxy-ca certificate and key.</span><br><span class="line">[certificates] Generated front-proxy-client certificate and key.</span><br><span class="line">[certificates] Generated etcd/ca certificate and key.</span><br><span class="line">[certificates] Generated etcd/server certificate and key.</span><br><span class="line">[certificates] etcd/server serving cert is signed for DNS names [izj6c4v865pdzr9a5004a2z localhost] and IPs [127.0.0.1 ::1]</span><br><span class="line">[certificates] Generated etcd/peer certificate and key.</span><br><span class="line">[certificates] etcd/peer serving cert is signed for DNS names [izj6c4v865pdzr9a5004a2z localhost] and IPs [172.16.0.105 127.0.0.1 ::1]</span><br><span class="line">[certificates] Generated etcd/healthcheck-client certificate and key.</span><br><span class="line">[certificates] Generated apiserver-etcd-client certificate and key.</span><br><span class="line">[certificates] valid certificates and keys now exist in &quot;/etc/kubernetes/pki&quot;</span><br><span class="line">[kubeconfig] Wrote KubeConfig file to disk: &quot;/etc/kubernetes/admin.conf&quot;</span><br><span class="line">[kubeconfig] Wrote KubeConfig file to disk: &quot;/etc/kubernetes/kubelet.conf&quot;</span><br><span class="line">[kubeconfig] Wrote KubeConfig file to disk: &quot;/etc/kubernetes/controller-manager.conf&quot;</span><br><span class="line">[kubeconfig] Wrote KubeConfig file to disk: &quot;/etc/kubernetes/scheduler.conf&quot;</span><br><span class="line">[controlplane] wrote Static Pod manifest for component kube-apiserver to &quot;/etc/kubernetes/manifests/kube-apiserver.yaml&quot;</span><br><span class="line">[controlplane] wrote Static Pod manifest for component kube-controller-manager to &quot;/etc/kubernetes/manifests/kube-controller-manager.yaml&quot;</span><br><span class="line">[controlplane] wrote Static Pod manifest for component kube-scheduler to &quot;/etc/kubernetes/manifests/kube-scheduler.yaml&quot;</span><br><span class="line">[etcd] Wrote Static Pod manifest for a local etcd instance to &quot;/etc/kubernetes/manifests/etcd.yaml&quot;</span><br><span class="line">[init] waiting for the kubelet to boot up the control plane as Static Pods from directory &quot;/etc/kubernetes/manifests&quot;</span><br><span class="line">[init] this might take a minute or longer if the control plane images have to be pulled</span><br><span class="line">[apiclient] All control plane components are healthy after 41.001733 seconds</span><br><span class="line">[uploadconfig] storing the configuration used in ConfigMap &quot;kubeadm-config&quot; in the &quot;kube-system&quot; Namespace</span><br><span class="line">[kubelet] Creating a ConfigMap &quot;kubelet-config-1.11&quot; in namespace kube-system with the configuration for the kubelets in the cluster</span><br><span class="line">[markmaster] Marking the node izj6c4v865pdzr9a5004a2z as master by adding the label &quot;node-role.kubernetes.io/master=&apos;&apos;&quot;</span><br><span class="line">[markmaster] Marking the node izj6c4v865pdzr9a5004a2z as master by adding the taints [node-role.kubernetes.io/master:NoSchedule]</span><br><span class="line">[patchnode] Uploading the CRI Socket information &quot;/var/run/dockershim.sock&quot; to the Node API object &quot;izj6c4v865pdzr9a5004a2z&quot; as an annotation</span><br><span class="line">[bootstraptoken] using token: 41efly.f8cnstm6ao7iz422</span><br><span class="line">[bootstraptoken] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials</span><br><span class="line">[bootstraptoken] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token</span><br><span class="line">[bootstraptoken] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster</span><br><span class="line">[bootstraptoken] creating the &quot;cluster-info&quot; ConfigMap in the &quot;kube-public&quot; namespace</span><br><span class="line">[addons] Applied essential addon: CoreDNS</span><br><span class="line">[addons] Applied essential addon: kube-proxy</span><br><span class="line"></span><br><span class="line">Your Kubernetes master has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">You can now join any number of machines by running the following on each node</span><br><span class="line">as root:</span><br><span class="line"></span><br><span class="line">  kubeadm join 172.16.0.105:6443 --token 41efly.f8cnstm6ao7iz422 --discovery-token-ca-cert-hash sha256:eb68f28368883e8c3789da0927d6a70f4ef06526f5a350c5276373dd4bb91cc6</span><br></pre></td></tr></table></figure></p>
+<p>以上 cmd 主要做一下几件事:</p>
+<ul>
+<li>kubeadm 执行初始化前的检查,</li>
+<li>生成 token 和 证书</li>
+<li>生成 KubeConfig 文件, kubelet 需要用该文件与 Master 通信</li>
+<li>安装 Master 组件, 会从 Google 的 Registry 下载组件的 docker 镜像, 该步骤会花费一些时间, 取决于网络质量.</li>
+<li>安装附件组件 kube-proxy 和 kube-dns</li>
+<li>Kubernetes master 初始化成功</li>
+<li>提示如何配置 kubectl</li>
+<li>提示如何安装 Pod 网络.</li>
+<li>提示如何注册其他节点到 Cluster .</li>
+</ul>
+<p>配置 kubectl </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">## bob 是运行 kubectl 的普通用户.</span><br><span class="line"># mkdir /home/bob/.kube</span><br><span class="line"># cp -i /etc/kubernetes/admin.conf /home/bob/.kube/config</span><br><span class="line"># chown bob.bob /home/bob/.kube/config</span><br><span class="line"></span><br><span class="line">## 添加自动补全功能, 使用 bob 用户</span><br><span class="line">$ echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>安装 pod 网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">## 使用 bob 用户</span><br><span class="line">$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line">    clusterrole.rbac.authorization.k8s.io/flannel created</span><br><span class="line">    clusterrolebinding.rbac.authorization.k8s.io/flannel created</span><br><span class="line">    serviceaccount/flannel created</span><br><span class="line">    configmap/kube-flannel-cfg created</span><br><span class="line">    daemonset.extensions/kube-flannel-ds-amd64 created</span><br><span class="line">    daemonset.extensions/kube-flannel-ds-arm64 created</span><br><span class="line">    daemonset.extensions/kube-flannel-ds-arm created</span><br><span class="line">    daemonset.extensions/kube-flannel-ds-ppc64le created</span><br><span class="line">    daemonset.extensions/kube-flannel-ds-s390x created</span><br></pre></td></tr></table></figure>
+<h3 id="2-node-节点注册到-集群"><a href="#2-node-节点注册到-集群" class="headerlink" title="2. node 节点注册到 集群"></a>2. node 节点注册到 集群</h3><p>下面的命令由 在 master 上执行 <code>kubeadm</code> 是生成.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubeadm join 172.16.0.105:6443 --token 41efly.f8cnstm6ao7iz422 --discovery-token-ca-cert-hash sha256:eb68f28368883e8c3789da0927d6a70f4ef06526f5a350c5276373dd4bb91cc6</span><br></pre></td></tr></table></figure></p>
+<p>如果没有记录下 token, 可以使用如下命令查看:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubeadm token list</span><br></pre></td></tr></table></figure></p>
+<p>在 master 查看 node 是否注册到 master:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get nodes</span><br><span class="line">    NAME                      STATUS    ROLES     AGE       VERSION</span><br><span class="line">    izj6c4v865pdzr9a5004a2z   Ready     master    29m       v1.11.0</span><br><span class="line">    izj6c9a51n762uyn3wfi5qz   Ready     &lt;none&gt;    1m        v1.11.0</span><br><span class="line">    izj6cdt5e7ronl6vi6qwkrz   Ready     &lt;none&gt;    1m        v1.11.0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">一个节点的 ROLE 只是一个 label, 其格式为 `node-role.kubernetes.io/&lt;role&gt;`, 可以手动添加:</span><br><span class="line"></span><br><span class="line">$ kubectl label nodes</span><br></pre></td></tr></table></figure></p>
+<p>如果 节点处于 NotReady 状态, 则可能是因为, 每个节点需要启动若干组件, 这些组件都在 Pod 中运行, 而这些镜像需要从 Google 下载, 如果尚处于下载中, 则可能处于 NotReady 状态.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">## 查看 Pod 状态</span><br><span class="line">$ kubelet get pod --all-namespaces</span><br><span class="line"></span><br><span class="line">$ kubectl get pod --namespace=default -o wide   ## 指定 namespace, 并拓展输出信息.</span><br><span class="line"></span><br><span class="line">## 查看 Pod 的具体状态</span><br><span class="line">$ kubectl describe pod POD_NAME --namespace=kube-system</span><br></pre></td></tr></table></figure>
+<h3 id="3-kubernetes-master-节点-pod-调度"><a href="#3-kubernetes-master-节点-pod-调度" class="headerlink" title="3. kubernetes master 节点 pod 调度"></a>3. kubernetes master 节点 pod 调度</h3><p>出于安全考虑, 默认配置下, Kubernetes 不会讲 Pod 调度到 master, 如果希望将 k8s-master 也当做 Node 使用, 可执行如下命令:<br><code>$ kubectl taint node k8s-master node-role.kubernetes.io/master-</code></p>
+<p>取消 k8s-master 调度 pod:<br><code>$ kubectl taint node izj6c4v865pdzr9a5004a2z node-role.kubernetes.io/master=&quot;&quot;:NoSchedule</code></p>
+<p><strong>取消调度, 并不会使 在k8s-master 可调度期间运行在 k8s-master 上的 pod 停止. </strong><br>停止运行在 master 节点上的 pod 有两种方式: </p>
+<ul>
+<li><p>强制杀掉在 master 上运行的 pod 重新调度. </p>
+<p>  <code>$ kubectl delete pod nginx-deployment-cfg-5799655d4d-xrqhz</code></p>
+</li>
+<li><p>在 deployment 缩容时, 取消 taint 的 master 节点上的 pod 优先被停止.</p>
+</li>
+</ul>
+<h2 id="kubernetes-运行应用"><a href="#kubernetes-运行应用" class="headerlink" title="kubernetes 运行应用."></a>kubernetes 运行应用.</h2><p>kubernetes 中对象的命名方式是: <strong>子对象名字 = 父对象名字 + 随机字符串</strong>.</p>
+<p>kubernetes 支持两种创建资源的方式, </p>
+<ol>
+<li><p>使用 kubectl 命令直接创建, 在命令行中通过参数执行资源的属性.</p>
+<p> 简单, 直观, 快捷, 适合临时测试或者实验.</p>
+</li>
+<li><p>通过配置文件和 <code>kubectl apply</code> 创建, 配置文件采用 YAML 格式.</p>
+<p> 配置文件描述了最终的状态, 并可以提供创建资源的模板, 可以重复使用.<br> 可以做版本控制和管理, 适合正式的, 跨环境的, 规模化部署.</p>
+<p> <code>kubectl apply</code> 不仅能够创建资源, 也能够对资源进行更新, 非常方便. 同时, Kubernetes 还提供了类似的其他命令, 如 <code>kubectl create</code>, <code>kubectl replace</code>, <code>kubectl edit</code>, <code>kubectl patch</code>.</p>
+</li>
+</ol>
+<h3 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## 运行一个 deployment</span><br><span class="line">$ kuberctl run nginx-deployment --image=nginx --replicas=2</span><br><span class="line"></span><br><span class="line">## 查看运行结果</span><br><span class="line">$ kubectl get deployment nginx-deployment</span><br></pre></td></tr></table></figure>
+<p>查看 deployment 详细信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl describe deployment nginx-deployment</span><br><span class="line">    OldReplicaSets:  &lt;none&gt;</span><br><span class="line">    NewReplicaSet:   nginx-deployment-75d95848db (2/2 replicas created)</span><br><span class="line">    Events:</span><br><span class="line">      Type    Reason             Age   From                   Message</span><br><span class="line">      ----    ------             ----  ----                   -------</span><br><span class="line">      Normal  ScalingReplicaSet  3m    deployment-controller  Scaled up replica set nginx-deployment-75d95848db to 2</span><br></pre></td></tr></table></figure></p>
+<p>如上的 deployment 信息, 可以看到创建了一个 ReplicaSet <code>nginx-deployment-75d95848db</code> , Events 是 Deployment 的日志, 记录了 ReplicaSet 的启动过程. 即 Deployment 是通过 ReplicaSet 来管理 Pod 的. 可以执行 <code>kubectl describe replicaset nginx-deployment-75d95848db</code> 得到印证.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl describe replicaset nginx-deployment-75d95848db</span><br><span class="line">Name:           nginx-deployment-75d95848db</span><br><span class="line">... ...</span><br><span class="line">Controlled By:  Deployment/nginx-deployment</span><br><span class="line">... ...</span><br><span class="line">Events:</span><br><span class="line">  Type    Reason            Age   From                   Message</span><br><span class="line">  ----    ------            ----  ----                   -------</span><br><span class="line">  Normal  SuccessfulCreate  7m    replicaset-controller  Created pod: nginx-deployment-75d95848db-tdfcs</span><br><span class="line">  Normal  SuccessfulCreate  7m    replicaset-controller  Created pod: nginx-deployment-75d95848db-58f9t</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">NAME                                READY     STATUS    RESTARTS   AGE</span><br><span class="line">nginx-deployment-75d95848db-58f9t   1/1       Running   0          11m</span><br><span class="line">nginx-deployment-75d95848db-tdfcs   1/1       Running   0          11m</span><br><span class="line"></span><br><span class="line">$ kubectl describe pod nginx-deployment-75d95848db-58f9t</span><br><span class="line">Name:           nginx-deployment-75d95848db-58f9t</span><br><span class="line">Namespace:      default</span><br><span class="line">Node:           izj6c9a51n762uyn3wfi5qz/172.16.0.106</span><br><span class="line">... ...</span><br><span class="line">Controlled By:  ReplicaSet/nginx-deployment-75d95848db</span><br><span class="line">... ... </span><br><span class="line">Events:</span><br><span class="line">  Type    Reason     Age   From                              Message</span><br><span class="line">  ----    ------     ----  ----                              -------</span><br><span class="line">  Normal  Scheduled  12m   default-scheduler                 Successfully assigned default/nginx-deployment-75d95848db-58f9t to izj6c9a51n762uyn3wfi5qz</span><br><span class="line">  Normal  Pulling    12m   kubelet, izj6c9a51n762uyn3wfi5qz  pulling image &quot;nginx&quot;</span><br><span class="line">  Normal  Pulled     12m   kubelet, izj6c9a51n762uyn3wfi5qz  Successfully pulled image &quot;nginx&quot;</span><br><span class="line">  Normal  Created    12m   kubelet, izj6c9a51n762uyn3wfi5qz  Created container</span><br><span class="line">  Normal  Started    12m   kubelet, izj6c9a51n762uyn3wfi5qz  Started container</span><br></pre></td></tr></table></figure>
+<p>deployment , replicaset, pod 关系如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deployment                                 nginx-deployment</span><br><span class="line">    |                                              |</span><br><span class="line">replicaset  ==&gt;                       nginx-deployment-75d95848db</span><br><span class="line">   / \                                       /               \</span><br><span class="line">pod  pod         nginx-deployment-75d95848db-58f9t     nginx-deployment-75d95848db-tdfcs</span><br></pre></td></tr></table></figure>
+<h4 id="Deployment-配置文件"><a href="#Deployment-配置文件" class="headerlink" title="Deployment 配置文件"></a>Deployment 配置文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx-deployment-cfg</span><br><span class="line">spec:</span><br><span class="line">  replicas: 2</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: web_server</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx</span><br><span class="line"></span><br><span class="line">-- 配置选项说明:</span><br><span class="line"></span><br><span class="line">apiVersion : 当前配置格式版本</span><br><span class="line">kind : 要创建的资源类型, 此处为 Deployment</span><br><span class="line">metadata : 该类型资源的元数据, name 为 必选项.</span><br><span class="line">spec : 该 Deployment 的规格说明.</span><br><span class="line">replicas : 指明副本数量, 默认为 1</span><br><span class="line">template : 定义 Pod 的模板, 这个配置文件的重要部分.</span><br><span class="line">metadata : 定义 Pod 的元数据, 至少需要定义一个 label. label 的 key 和 value 可以任意指定.</span><br><span class="line">spec : 描述 Pod 的规格, 此部分定义 Pod 中每一个容器的属性, name 和 image 是 必选项.</span><br></pre></td></tr></table></figure>
+<p>使用配置文件创建 deployment</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f deployment/nginx-deployment.yml</span><br><span class="line">    deployment.extensions/nginx-deployment-cfg created</span><br><span class="line"></span><br><span class="line">$ kubectl get deployments</span><br><span class="line">    NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">    nginx-deployment-cfg   2         2         2            2           17s</span><br><span class="line"></span><br><span class="line">$ kubectl get replicaset</span><br><span class="line">    NAME                              DESIRED   CURRENT   READY     AGE</span><br><span class="line">    nginx-deployment-cfg-5799655d4d   2         2         2         51s</span><br><span class="line"></span><br><span class="line">$ kubectl get pod -o wide</span><br><span class="line">    NAME                                    READY     STATUS    RESTARTS   AGE       IP           NODE</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-krxnl   1/1       Running   0          59s       10.244.2.4   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-x95hb   1/1       Running   0          59s       10.244.1.4   izj6c9a51n762uyn3wfi5qz</span><br></pre></td></tr></table></figure>
+<h4 id="删除-deployment"><a href="#删除-deployment" class="headerlink" title="删除 deployment"></a>删除 deployment</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl delete deployment nginx-deployment-cfg</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line"></span><br><span class="line">$ kubectl delete -f deployment/nginx-deployment.yml</span><br></pre></td></tr></table></figure>
+<h4 id="扩缩容"><a href="#扩缩容" class="headerlink" title="扩缩容"></a>扩缩容</h4><p>编辑 deployment 的配置文件, 修改 <code>replicas</code> 配置项, 就可以实现.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get deployments</span><br><span class="line">    NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">    nginx-deployment   2         2         2            2           41m</span><br><span class="line"></span><br><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                                    READY     STATUS    RESTARTS   AGE       IP           NODE</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-9qwvx   1/1       Running   0          1m        10.244.2.5   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-lw7g6   1/1       Running   0          1m        10.244.1.5   izj6c9a51n762uyn3wfi5qz</span><br><span class="line"></span><br><span class="line">$ vim deployment/nginx-deployment.yml</span><br><span class="line">    spec:</span><br><span class="line">      replicas: 5</span><br><span class="line"></span><br><span class="line">$ kubectl apply -f deployment/nginx-deployment.yml</span><br><span class="line"></span><br><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                                    READY     STATUS              RESTARTS   AGE       IP           NODE</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-2xc42   0/1       ContainerCreating   0          8s        &lt;none&gt;       izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-5jr7d   1/1       Running             0          8s        10.244.1.7   izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-92rp6   1/1       Running             0          8s        10.244.2.8   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-9qwvx   1/1       Running             0          2m        10.244.2.5   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-lw7g6   1/1       Running             0          2m        10.244.1.5   izj6c9a51n762uyn3wfi5qz</span><br></pre></td></tr></table></figure>
+<h4 id="Failover"><a href="#Failover" class="headerlink" title="Failover"></a>Failover</h4><p>当集群中的 node 应某种原因故障时, kubernetes 会自动检测到 node 节点不可用, 并将该节点上的 pod 标记为 <code>Unknown</code> 状态, 同时, 在集群中的其他节点上创建 (与故障 node 节点上 pod)数量相同的 pod, 维持配置的副本数量.</p>
+<p>当 故障节点<strong>恢复</strong>后, 故障节点回自动注册回 kubernetes 集群. 同时, kubernetes 会将 状态为 UNknown 的 pod 删除掉, 但是, 已经在运行的 Pod <strong>不会</strong>重现调度回 故障节点.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get nodes</span><br><span class="line">    NAME                      STATUS     ROLES     AGE       VERSION</span><br><span class="line">    izj6c4v865pdzr9a5004a2z   Ready      master    4h        v1.11.0</span><br><span class="line">    izj6c9a51n762uyn3wfi5qz   Ready      &lt;none&gt;    3h        v1.11.0</span><br><span class="line">    izj6cdt5e7ronl6vi6qwkrz   NotReady   &lt;none&gt;    3h        v1.11.0</span><br><span class="line"></span><br><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                                    READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-5jr7d   1/1       Running   0          27m       10.244.1.7    izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-6gfnz   1/1       Running   0          14s       10.244.1.10   izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-92rp6   1/1       Unknown   0          27m       10.244.2.8    izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-9qwvx   1/1       Unknown   0          30m       10.244.2.5    izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-kdk88   1/1       Running   0          14s       10.244.1.9    izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-lw7g6   1/1       Running   0          30m       10.244.1.5    izj6c9a51n762uyn3wfi5qz</span><br><span class="line"></span><br><span class="line">-- 节点恢复后, </span><br><span class="line">$ kubectl get nodes</span><br><span class="line">    NAME                      STATUS    ROLES     AGE       VERSION</span><br><span class="line">    izj6c4v865pdzr9a5004a2z   Ready     master    4h        v1.11.0</span><br><span class="line">    izj6c9a51n762uyn3wfi5qz   Ready     &lt;none&gt;    3h        v1.11.0</span><br><span class="line">    izj6cdt5e7ronl6vi6qwkrz   Ready     &lt;none&gt;    3h        v1.11.0</span><br><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                                    READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-5jr7d   1/1       Running   0          31m       10.244.1.7    izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-6gfnz   1/1       Running   0          4m        10.244.1.10   izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-kdk88   1/1       Running   0          4m        10.244.1.9    izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-lw7g6   1/1       Running   0          34m       10.244.1.5    izj6c9a51n762uyn3wfi5qz</span><br></pre></td></tr></table></figure>
+<h4 id="使用-label-控制-pod-的位置"><a href="#使用-label-控制-pod-的位置" class="headerlink" title="使用 label 控制 pod 的位置"></a>使用 label 控制 pod 的位置</h4><p>默认情况下, Scheduleler 会将 Pod 调度到所有可用的 Node, 但在有些情况下, 可能希望将 Pod 部署到指定的 Node, 如将有大量磁盘 IO 的 Pod 部署到配置了 SSD 的 Node.</p>
+<p>Kubernetes 通过 label 来实现这个功能. label 是 键值对, 各种资源都可以设置 label, 灵活的添加各种自定义属性. Kubernetes 也会 维护有自己预定义的 label. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-- 标记某个节点是配置了 SSD 的节点</span><br><span class="line"></span><br><span class="line">$ kubectl label node izj6cdt5e7ronl6vi6qwkrz disktype=ssd</span><br><span class="line">    node/izj6cdt5e7ronl6vi6qwkrz labeled</span><br><span class="line"></span><br><span class="line">$ kubectl get nodes --show-labels</span><br><span class="line">    NAME                      STATUS    ROLES     AGE       VERSION   LABELS</span><br><span class="line">    izj6c4v865pdzr9a5004a2z   Ready     master    4h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=izj6c4v865pdzr9a5004a2z,node-role.kubernetes.io/master=</span><br><span class="line">    izj6c9a51n762uyn3wfi5qz   Ready     &lt;none&gt;    3h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=izj6c9a51n762uyn3wfi5qz,shouldrun=here</span><br><span class="line">    izj6cdt5e7ronl6vi6qwkrz   Ready     &lt;none&gt;    3h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,disktype=ssd,kubernetes.io/hostname=izj6cdt5e7ronl6vi6qwkrz</span><br></pre></td></tr></table></figure>
+<p>指定将 Pod 部署到 具有某个 label 的 node 上: 通过在 Pod 模板的 spec 里通过 nodeSelector 指定 pod 部署到具有 label disktype=ssd 的 node 上.</p>
+<p>如果直接修改了 deployment 的配置文件, 则 apply 配置文件之后, 会立即生效, 之前在其他节点上运行的 pod 会被杀掉, 并调度到指定 label 的节点上.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                                    READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-5jr7d   1/1       Running   0          42m       10.244.1.7    izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-6gfnz   1/1       Running   0          15m       10.244.1.10   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-kdk88   1/1       Running   0          15m       10.244.1.9    izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    nginx-deployment-cfg-5799655d4d-lw7g6   1/1       Running   0          45m       10.244.1.5    izj6c9a51n762uyn3wfi5qz</span><br><span class="line"></span><br><span class="line">$ vim nginx-label-deployment.yml</span><br><span class="line">    apiVersion: extensions/v1beta1</span><br><span class="line">    kind: Deployment</span><br><span class="line">    metadata:</span><br><span class="line">      name: nginx-deployment-cfg</span><br><span class="line">    spec:</span><br><span class="line">      replicas: 4</span><br><span class="line">      template:</span><br><span class="line">        metadata:</span><br><span class="line">          labels:</span><br><span class="line">            app: web_server</span><br><span class="line">        spec:</span><br><span class="line">          containers:</span><br><span class="line">          - name: nginx</span><br><span class="line">            image: nginx</span><br><span class="line">          nodeSelector:</span><br><span class="line">            disktype: ssd</span><br><span class="line"></span><br><span class="line">$ kubectl apply -f nginx-label-deployment.yml</span><br><span class="line">    deployment.extensions/nginx-deployment-cfg configured</span><br><span class="line"></span><br><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                                   READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-627h8   1/1       Running   0          25s       10.244.2.13   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-7xkhj   1/1       Running   0          21s       10.244.2.14   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-826xh   1/1       Running   0          30s       10.244.2.12   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-z8nhm   1/1       Running   0          30s       10.244.2.11   izj6cdt5e7ronl6vi6qwkrz</span><br></pre></td></tr></table></figure>
+<p>删除 node 上的 label, <code>-</code> 即删除. 删除 label 之后, pod 并不会重新部署, 依然在 原节点运行, 除非在 deployment 的配置文件中删除掉 nodeSelector 配置重新部署, kubernetes 才会删除之前的 pod, 重新调度.<br><strong>如果 deployment 配置中的 nodeSelector 配置被删除, 并且 deployment 被重新部署, 则原有 deployment 的所有 pod 都会被杀掉, 并重新调度和运行新 pod</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl label node izj6cdt5e7ronl6vi6qwkrz disktype-</span><br><span class="line"></span><br><span class="line">-- 示例</span><br><span class="line">$ kubectl get nodes --show-labels</span><br><span class="line">    NAME                      STATUS    ROLES     AGE       VERSION   LABELS</span><br><span class="line">    izj6c4v865pdzr9a5004a2z   Ready     master    4h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=izj6c4v865pdzr9a5004a2z,node-role.kubernetes.io/master=</span><br><span class="line">    izj6c9a51n762uyn3wfi5qz   Ready     &lt;none&gt;    4h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=izj6c9a51n762uyn3wfi5qz,shouldrun=here</span><br><span class="line">    izj6cdt5e7ronl6vi6qwkrz   Ready     &lt;none&gt;    4h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,disktype=ssd,kubernetes.io/hostname=izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line"></span><br><span class="line">$ kubectl label node izj6cdt5e7ronl6vi6qwkrz disktype-</span><br><span class="line">    node/izj6cdt5e7ronl6vi6qwkrz labeled</span><br><span class="line"></span><br><span class="line">$ kubectl get nodes --show-labels</span><br><span class="line">    NAME                      STATUS    ROLES     AGE       VERSION   LABELS</span><br><span class="line">    izj6c4v865pdzr9a5004a2z   Ready     master    4h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=izj6c4v865pdzr9a5004a2z,node-role.kubernetes.io/master=</span><br><span class="line">    izj6c9a51n762uyn3wfi5qz   Ready     &lt;none&gt;    4h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=izj6c9a51n762uyn3wfi5qz,shouldrun=here</span><br><span class="line">    izj6cdt5e7ronl6vi6qwkrz   Ready     &lt;none&gt;    4h        v1.11.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- 单纯删除 pod 并不会使得 pod 被调度到其他节点上, 应为 deployment 的配置没变.</span><br><span class="line">$ kubectl delete pod nginx-deployment-cfg-f9795f88b-627h8</span><br><span class="line">    pod &quot;nginx-deployment-cfg-f9795f88b-627h8&quot; deleted</span><br><span class="line"></span><br><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                                   READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-7xkhj   1/1       Running   0          12m       10.244.2.14   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-826xh   1/1       Running   0          12m       10.244.2.12   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-8zg2l   0/1       Pending   0          1m        &lt;none&gt;        &lt;none&gt;</span><br><span class="line">    nginx-deployment-cfg-f9795f88b-z8nhm   1/1       Running   0          12m       10.244.2.11   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line"></span><br><span class="line">$ vim nginx-label-deployment.yml</span><br><span class="line">    -- 删除 nodeSelector 配置</span><br><span class="line"></span><br><span class="line">$ kubectl apply -f nginx-label-deployment.yml       -- 重新配置 deployment.</span><br></pre></td></tr></table></figure>
+<h3 id="DaemonSet"><a href="#DaemonSet" class="headerlink" title="DaemonSet"></a>DaemonSet</h3><p>DaemonSet 在每个 node 上<strong>最多</strong>只能运行一个副本. 其典型应用场景有:</p>
+<ul>
+<li>在集群的每个节点上运行<strong>存储</strong> DaemonSet, 如 glusterd 或 ceph.</li>
+<li>在每个节点上运行<strong>日志收集</strong> DaemonSet, 如 flunentd 或者 logstash.</li>
+<li>在每个节点上运行<strong>监控</strong> DaemonSet, 如 Prometheus 或者 collectd.</li>
+</ul>
+<p>实际上, kubernetes 自己就在用 DaemonSet 运行系统组件, kube-flannel-ds 和 kube-proxy 分别在每个节点上运行 flannel 和 kube-proxy 组件.<br>应为 flannel 和 kube-proxy 属于系统组件, 需要制定 <code>--namespace=kube-system</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get daemonsets --namespace=kube-system</span><br><span class="line">    NAME                      DESIRED   CURRENT   READY     UP-TO-DATE   AVAILABLE   NODE SELECTOR                     AGE</span><br><span class="line">    kube-flannel-ds-amd64     3         3         3         3            3           beta.kubernetes.io/arch=amd64     4h</span><br><span class="line">    kube-flannel-ds-arm       0         0         0         0            0           beta.kubernetes.io/arch=arm       4h</span><br><span class="line">    kube-flannel-ds-arm64     0         0         0         0            0           beta.kubernetes.io/arch=arm64     4h</span><br><span class="line">    kube-flannel-ds-ppc64le   0         0         0         0            0           beta.kubernetes.io/arch=ppc64le   4h</span><br><span class="line">    kube-flannel-ds-s390x     0         0         0         0            0           beta.kubernetes.io/arch=s390x     4h</span><br><span class="line">    kube-proxy                3         3         3         3            3           beta.kubernetes.io/arch=amd64     4h</span><br><span class="line"></span><br><span class="line">$ kubectl get pods --namespace=kube-system -o wide</span><br><span class="line">    NAME                                              READY     STATUS    RESTARTS   AGE       IP             NODE</span><br><span class="line">    coredns-78fcdf6894-ctcks                          1/1       Running   0          4h        10.244.0.3     izj6c4v865pdzr9a5004a2z</span><br><span class="line">    coredns-78fcdf6894-dnzrz                          1/1       Running   0          4h        10.244.0.2     izj6c4v865pdzr9a5004a2z</span><br><span class="line">    etcd-izj6c4v865pdzr9a5004a2z                      1/1       Running   0          4h        172.16.0.105   izj6c4v865pdzr9a5004a2z</span><br><span class="line">    kube-apiserver-izj6c4v865pdzr9a5004a2z            1/1       Running   0          4h        172.16.0.105   izj6c4v865pdzr9a5004a2z</span><br><span class="line">    kube-controller-manager-izj6c4v865pdzr9a5004a2z   1/1       Running   0          4h        172.16.0.105   izj6c4v865pdzr9a5004a2z</span><br><span class="line">    kube-flannel-ds-amd64-8wf4n                       1/1       Running   0          4h        172.16.0.105   izj6c4v865pdzr9a5004a2z</span><br><span class="line">    kube-flannel-ds-amd64-kzx6v                       1/1       Running   1          4h        172.16.0.106   izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    kube-flannel-ds-amd64-szsr2                       1/1       Running   1          4h        172.16.0.107   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    kube-proxy-d2hsl                                  1/1       Running   0          4h        172.16.0.106   izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    kube-proxy-q4jjm                                  1/1       Running   0          4h        172.16.0.105   izj6c4v865pdzr9a5004a2z</span><br><span class="line">    kube-proxy-z96c4                                  1/1       Running   1          4h        172.16.0.107   izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    kube-scheduler-izj6c4v865pdzr9a5004a2z            1/1       Running   0          4h        172.16.0.105   izj6c4v865pdzr9a5004a2z</span><br></pre></td></tr></table></figure>
+<p>flannel 配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line"></span><br><span class="line">$ curl https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line">    apiVersion: extensions/v1beta1</span><br><span class="line">    kind: DaemonSet</span><br><span class="line">    metadata:</span><br><span class="line">      name: kube-flannel-ds-arm64</span><br><span class="line">      namespace: kube-system</span><br><span class="line">      labels:</span><br><span class="line">        tier: node</span><br><span class="line">        app: flannel</span><br><span class="line">    spec:</span><br><span class="line">      template:</span><br><span class="line">        metadata:</span><br><span class="line">          labels:</span><br><span class="line">            tier: node</span><br><span class="line">            app: flannel</span><br><span class="line">        spec:</span><br><span class="line">          hostNetwork: true</span><br><span class="line">          nodeSelector:</span><br><span class="line">            beta.kubernetes.io/arch: arm64</span><br><span class="line">          tolerations:</span><br><span class="line">          - key: node-role.kubernetes.io/master</span><br><span class="line">            operator: Exists</span><br><span class="line">            effect: NoSchedule</span><br><span class="line">          serviceAccountName: flannel</span><br><span class="line">          initContainers:</span><br><span class="line">          - name: install-cni</span><br><span class="line">            image: quay.io/coreos/flannel:v0.10.0-arm64</span><br><span class="line">            command:</span><br><span class="line">            - cp</span><br><span class="line">            args:</span><br><span class="line">            - -f</span><br><span class="line">            - /etc/kube-flannel/cni-conf.json</span><br><span class="line">            - /etc/cni/net.d/10-flannel.conflist</span><br><span class="line">            volumeMounts:</span><br><span class="line">            - name: cni</span><br><span class="line">              mountPath: /etc/cni/net.d</span><br><span class="line">            - name: flannel-cfg</span><br><span class="line">              mountPath: /etc/kube-flannel/</span><br><span class="line">          containers:</span><br><span class="line">          - name: kube-flannel</span><br><span class="line">            image: quay.io/coreos/flannel:v0.10.0-arm64</span><br><span class="line">            command:</span><br><span class="line">            - /opt/bin/flanneld</span><br><span class="line">            args:</span><br><span class="line">            - --ip-masq</span><br><span class="line">            - --kube-subnet-mgr</span><br><span class="line">            resources:</span><br><span class="line">              requests:</span><br><span class="line">                cpu: &quot;100m&quot;</span><br><span class="line">                memory: &quot;50Mi&quot;</span><br><span class="line">              limits:</span><br><span class="line">                cpu: &quot;100m&quot;</span><br><span class="line">                memory: &quot;50Mi&quot;</span><br><span class="line">            securityContext:</span><br><span class="line">              privileged: true</span><br><span class="line">            env:</span><br><span class="line">            - name: POD_NAME</span><br><span class="line">              valueFrom:</span><br><span class="line">                fieldRef:</span><br><span class="line">                  fieldPath: metadata.name</span><br><span class="line">            - name: POD_NAMESPACE</span><br><span class="line">              valueFrom:</span><br><span class="line">                fieldRef:</span><br><span class="line">                  fieldPath: metadata.namespace</span><br><span class="line">            volumeMounts:</span><br><span class="line">            - name: run</span><br><span class="line">              mountPath: /run</span><br><span class="line">            - name: flannel-cfg</span><br><span class="line">              mountPath: /etc/kube-flannel/</span><br><span class="line">          volumes:</span><br><span class="line">            - name: run</span><br><span class="line">              hostPath:</span><br><span class="line">                path: /run</span><br><span class="line">            - name: cni</span><br><span class="line">              hostPath:</span><br><span class="line">                path: /etc/cni/net.d</span><br><span class="line">            - name: flannel-cfg</span><br><span class="line">              configMap:</span><br><span class="line">                name: kube-flannel-cfg</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- 配置参数: DaemonSet 配置文件的语法结构与 Deployment 几乎完全一致, 只是将 kind 设置为 DaemonSet.</span><br><span class="line"></span><br><span class="line">hostName : 指定 Pod 直接用的是 Node 网络, 相当于 docker run --network=host. 考虑到 flannel 需要为 集群提供网络链接, 这个需求是合理的.</span><br><span class="line">containers : 定义了运行 flannel 服务的两个容器.</span><br></pre></td></tr></table></figure>
+<p>kube-proxy 配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">-- 可以通过 kubectl edit 查看 kube-proxy 配置.</span><br><span class="line"></span><br><span class="line">$ kubectl edit daemonset kube-proxy --namespace=kube-system</span><br><span class="line"></span><br><span class="line">    apiVersion: extensions/v1beta1</span><br><span class="line">    kind: DaemonSet</span><br><span class="line">    metadata:</span><br><span class="line">      creationTimestamp: 2018-07-15T10:34:18Z</span><br><span class="line">      generation: 1</span><br><span class="line">      labels:</span><br><span class="line">        k8s-app: kube-proxy</span><br><span class="line">      name: kube-proxy</span><br><span class="line">      namespace: kube-system</span><br><span class="line">      resourceVersion: &quot;21828&quot;</span><br><span class="line">      selfLink: /apis/extensions/v1beta1/namespaces/kube-system/daemonsets/kube-proxy</span><br><span class="line">      uid: a1198958-881a-11e8-8f99-00163e02febc</span><br><span class="line">    spec:</span><br><span class="line">      revisionHistoryLimit: 10</span><br><span class="line">      selector:</span><br><span class="line">        matchLabels:</span><br><span class="line">          k8s-app: kube-proxy</span><br><span class="line">      template:</span><br><span class="line">        metadata:</span><br><span class="line">          creationTimestamp: null</span><br><span class="line">          labels:</span><br><span class="line">            k8s-app: kube-proxy</span><br><span class="line">        spec:</span><br><span class="line">          containers:</span><br><span class="line">          - command:</span><br><span class="line">            - /usr/local/bin/kube-proxy</span><br><span class="line">            - --config=/var/lib/kube-proxy/config.conf</span><br><span class="line">            image: k8s.gcr.io/kube-proxy-amd64:v1.11.0</span><br><span class="line">            imagePullPolicy: IfNotPresent</span><br><span class="line">            name: kube-proxy</span><br><span class="line"></span><br><span class="line">    ... ...</span><br><span class="line">    status:</span><br><span class="line">      currentNumberScheduled: 3</span><br><span class="line">      desiredNumberScheduled: 3</span><br><span class="line">      numberAvailable: 3</span><br><span class="line">      numberMisscheduled: 0</span><br><span class="line">      numberReady: 3</span><br><span class="line">      observedGeneration: 1</span><br><span class="line">      updatedNumberScheduled: 3</span><br><span class="line"></span><br><span class="line">-- 配置参数: </span><br><span class="line">kind : DaemonSet 指定类型</span><br><span class="line">containers : 定义 kube-proxy 容器</span><br><span class="line">status : 为当前 DaemonSet 的运行时状态, 为 kubectl edit 独有, 其实 kubernetes 集群中的每个当前运行的资源, 都可以通过 kubectl edit 查看其配置和运行状态.</span><br></pre></td></tr></table></figure>
+<h4 id="Prometheus-Node-Exporter-DaemonSet"><a href="#Prometheus-Node-Exporter-DaemonSet" class="headerlink" title="Prometheus Node Exporter DaemonSet"></a>Prometheus Node Exporter DaemonSet</h4><p>Prometheus 是流行的系统监控方案, Node Exporter 是 Prometheus 的 agent, 以 DaemonSet 的形式运行在每个被监控的节点上.</p>
+<p>如果直接在 docker 中运行 Node Exporter 容器, 命令为:<br><code>$ docker run -d -v &quot;/proc:/host/proc&quot; -v &quot;/sys:/host/sys&quot; -v &quot;/:/rootfs&quot; --net=host prom/node-exporter --path.procfs /host/proc --path.sysfs /host/sys --colector.filesystem.ignored-mount-points &quot;^/(sys|proc|dev|host|etc)($|/)&quot;</code></p>
+<p>当使用 DaemonSet 时, 其配置文件 node-exporter.yml 为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">$ vim node-exporter.yml</span><br><span class="line"></span><br><span class="line">    apiVersion: extensions/v1beta1</span><br><span class="line">    kind: DaemonSet</span><br><span class="line">    metadata:</span><br><span class="line">      name: node-exporter-daemonset</span><br><span class="line">    spec:</span><br><span class="line">      template:</span><br><span class="line">        metadata:</span><br><span class="line">          labels:</span><br><span class="line">            app: prometheus</span><br><span class="line">        spec:</span><br><span class="line">          hostNetwork: true</span><br><span class="line">          containers:</span><br><span class="line">          - name: node-exporter</span><br><span class="line">            image: prom/node-exporter</span><br><span class="line">            imagePullPolicy: IfNotPresent</span><br><span class="line">            command:</span><br><span class="line">            - /bin/node_exporter</span><br><span class="line">            - --path.procfs</span><br><span class="line">            - /host/proc</span><br><span class="line">            - --path.sysfs</span><br><span class="line">            - /host/sys</span><br><span class="line">            - --collector.filesystem.ignored-mount-points </span><br><span class="line">            - ^/(sys|proc|dev|host|etc)($|/)</span><br><span class="line">            volumeMounts:</span><br><span class="line">            - name: proc</span><br><span class="line">              mountPath: /host/proc</span><br><span class="line">            - name: sys</span><br><span class="line">              mountPath: /host/sys</span><br><span class="line">            - name: root</span><br><span class="line">              mountPath: /rootfs</span><br><span class="line">          volumes:</span><br><span class="line">          - name: proc</span><br><span class="line">            hostPath:</span><br><span class="line">              path: /proc</span><br><span class="line">          - name: sys</span><br><span class="line">            hostPath:</span><br><span class="line">              path: /sys</span><br><span class="line">          - name: root</span><br><span class="line">            hostPath:</span><br><span class="line">              path: /</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- 参数配置说明:</span><br><span class="line"></span><br><span class="line">hostNetwork: true  直接使用 Host 网络</span><br><span class="line">command 设置容器启动命令</span><br><span class="line">volumeMounts 通过 Volume 将 Host 路径 /proc, /sys 和 / 映射到容器中.</span><br></pre></td></tr></table></figure></p>
+<p>运行 DaemonSet</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f node-exporter.yml</span><br><span class="line">    daemonset.extensions/node-exporter-daemonset created</span><br><span class="line"></span><br><span class="line">$ kubectl get pod -o wide</span><br><span class="line">    NAME                                    READY     STATUS              RESTARTS   AGE       IP             NODE</span><br><span class="line">    node-exporter-daemonset-74dzs           0/1       RunContainerError   0          17s       172.16.0.106   izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    node-exporter-daemonset-t2ds9           0/1       RunContainerError   0          17s       172.16.0.107   izj6cdt5e7ronl6vi6qwkrz</span><br></pre></td></tr></table></figure>
+<h3 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h3><p>容器按照持续运行时间, 可以分为两类:</p>
+<ul>
+<li>服务类容器 : 需要持续提供服务, 如 Deployment, ReplicaSet, DaemonSet 都用于管理 服务类容器.</li>
+<li>工作类容器 : 一次性任务, 如 批处理, 完成后容器退出, 使用 Job.</li>
+</ul>
+<h4 id="job-配置"><a href="#job-配置" class="headerlink" title="job 配置"></a>job 配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: batch/v1</span><br><span class="line">kind: Job</span><br><span class="line">metadata:</span><br><span class="line">  name: myjob</span><br><span class="line">spce:</span><br><span class="line">  template:</span><br><span class="line">    metadata: </span><br><span class="line">      nema: myjob</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: hello</span><br><span class="line">        image: busybox</span><br><span class="line">        command: [&quot;echo&quot;, &quot;hello k8s job&quot;]</span><br><span class="line">      restartPolicy: Never</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- 配置参数说明:</span><br><span class="line">betch/v1 当前 Job 的 apiVersion</span><br><span class="line">kind: Job 指明当前资源的类型为 Job</span><br><span class="line">restartPolicy 指定什么情况下需要重启容器. 对于 Job 只能设置为 Never 或 OnFailure. 对于其他 controller(如 Deployment) 可以设置为 Always.</span><br></pre></td></tr></table></figure>
+<p>启动 job<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f job.yml</span><br><span class="line">    job.batch/mynewjob created</span><br><span class="line"></span><br><span class="line">$ kubectl get jobs</span><br><span class="line">    NAME       DESIRED   SUCCESSFUL   AGE</span><br><span class="line">    myjob      1         1            2h</span><br><span class="line">    mynewjob   1         0            26s</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">    NAME                                    READY     STATUS      RESTARTS   AGE</span><br><span class="line">    myjob-dh5hm                             0/1       Completed   0          2h</span><br><span class="line">    mynewjob-72c6v                          1/1       Running     0          16s</span><br></pre></td></tr></table></figure></p>
+<p>删除 job<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl delete job myjob</span><br><span class="line">    job.batch &quot;myjob&quot; deleted</span><br></pre></td></tr></table></figure></p>
+<h4 id="job-并行运行"><a href="#job-并行运行" class="headerlink" title="job 并行运行"></a>job 并行运行</h4><p>同时运行多个 pod , 提供 job 的执行效率. </p>
+<ul>
+<li><code>parallelism: NUM</code> 表示 pod 的并行的数量, 默认为 1.</li>
+<li><code>completions: NUM</code> 表示 设置 job 成功完成 pod 的总数, 默认为 1.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">$ vim job/hello.yml</span><br><span class="line"></span><br><span class="line">$ cat job/hello.yml</span><br><span class="line"></span><br><span class="line">    apiVersion: batch/v1</span><br><span class="line">    kind: Job</span><br><span class="line">    metadata:</span><br><span class="line">      name: mynewjob</span><br><span class="line">    spec:</span><br><span class="line">      completions: 6</span><br><span class="line">      parallelism: 2</span><br><span class="line">      template:</span><br><span class="line">        metadata:</span><br><span class="line">          name: myjob</span><br><span class="line">        spec:</span><br><span class="line">          containers:</span><br><span class="line">          - name: hello</span><br><span class="line">            image: busybox</span><br><span class="line">            command: [&quot;sleep&quot;, &quot;10&quot;]</span><br><span class="line">          restartPolicy: OnFailure</span><br><span class="line"></span><br><span class="line">$ kubectl apply -f job/hello.yml</span><br><span class="line">    job.batch/mynewjob created</span><br><span class="line"></span><br><span class="line">$ kubectl get jobs</span><br><span class="line">    NAME       DESIRED   SUCCESSFUL   AGE</span><br><span class="line">    mynewjob   6         4            37s</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">    NAME                                    READY     STATUS      RESTARTS   AGE</span><br><span class="line">    mynewjob-bz9rn                          0/1       Completed   0          26s</span><br><span class="line">    mynewjob-bzt65                          1/1       Running     0          11s</span><br><span class="line">    mynewjob-c72qc                          1/1       Running     0          11s</span><br><span class="line">    mynewjob-lgbrn                          0/1       Completed   0          26s</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">    NAME                                    READY     STATUS      RESTARTS   AGE</span><br><span class="line">    mynewjob-9kqqs                          0/1       Completed   0          1m</span><br><span class="line">    mynewjob-bz9rn                          0/1       Completed   0          2m</span><br><span class="line">    mynewjob-bzt65                          0/1       Completed   0          1m</span><br><span class="line">    mynewjob-c72qc                          0/1       Completed   0          1m</span><br><span class="line">    mynewjob-lfp4p                          0/1       Completed   0          1m</span><br><span class="line">    mynewjob-lgbrn                          0/1       Completed   0          2m</span><br></pre></td></tr></table></figure>
+<h4 id="job-状态"><a href="#job-状态" class="headerlink" title="job 状态"></a>job 状态</h4><ul>
+<li><p>成功</p>
+<p>  当 DESIRED 和 SUCCESSFUL 都为 1, 表示按预期启动了一个 Pod, 并且已经成功执行.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get jobs</span><br><span class="line">    NAME       DESIRED   SUCCESSFUL   AGE</span><br><span class="line">    myjob      1         1            2h</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>失败</p>
+<p>  当 SUCCESSFUL 的 pod 数量为 0 时, 可以看到很多 pod 状态均不正常. 可以通过 kubectl describte pod 查看 pod 的启动日志.</p>
+<p>  之所以会出现多个 pod 的情况, 是因为 依据 <code>restartPolicy: Never</code> , 失败的容器不会被重启, 但是 Job 的 DESIRED 是 1, 且目前的 SUCCESSFUL 为 0, 不能满足需求, 所以 Job controller 会一致创建新的 Pod, 终止该行为只能删除 job.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get job</span><br><span class="line">    NAME       DESIRED   SUCCESSFUL   AGE</span><br><span class="line">    mynewjob   1         0            2m</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">    NAME                                    READY     STATUS               RESTARTS   AGE</span><br><span class="line">    mynewjob-5d6rt                          0/1       ContainerCannotRun   0          1m</span><br><span class="line">    mynewjob-6mfln                          0/1       ContainerCannotRun   0          2m</span><br><span class="line">    mynewjob-6wdnb                          0/1       ContainerCannotRun   0          2m</span><br><span class="line">    mynewjob-jrgtz                          0/1       ContainerCannotRun   0          2m</span><br><span class="line">    mynewjob-rj7qv                          0/1       ContainerCannotRun   0          2m</span><br><span class="line"></span><br><span class="line">$ kubectl describe pod mynewjob-5d6rt</span><br><span class="line">    ... ...</span><br><span class="line">    Events:</span><br><span class="line">      Type     Reason     Age   From                              Message</span><br><span class="line">      ----     ------     ----  ----                              -------</span><br><span class="line">      Normal   Scheduled  2m    default-scheduler                 Successfully assigned default/mynewjob-5d6rt to izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">      Normal   Pulling    2m    kubelet, izj6cdt5e7ronl6vi6qwkrz  pulling image &quot;busybox&quot;</span><br><span class="line">      Normal   Pulled     2m    kubelet, izj6cdt5e7ronl6vi6qwkrz  Successfully pulled image &quot;busybox&quot;</span><br><span class="line">      Normal   Created    2m    kubelet, izj6cdt5e7ronl6vi6qwkrz  Created container</span><br><span class="line">      Warning  Failed     2m    kubelet, izj6cdt5e7ronl6vi6qwkrz  Error: failed to start container &quot;hello&quot;: Error response from daemon: OCI runtime create failed: container_linux.go:348: starting container process caused &quot;exec: \&quot;no such sleep\&quot;: executable file not found in $PATH&quot;: unknown</span><br></pre></td></tr></table></figure>
+<p>  也可以修改 job 配置文件中的 <code>restartPolicy: OnFailure</code>, 此时, 当 job 失败时, 不是创建新的 pod 的, 而是在原来的基础上重新启动, 即 <code>RESTARTS</code> 增加.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f job/hello.yml</span><br><span class="line">    job.batch/mynewjob created</span><br><span class="line"></span><br><span class="line">$ kubectl get jobs -o wide</span><br><span class="line">    NAME       DESIRED   SUCCESSFUL   AGE       CONTAINERS   IMAGES    SELECTOR</span><br><span class="line">    mynewjob   1         0            8s        hello        busybox   controller-uid=70f9a7f0-88be-11e8-8f99-00163e02febc</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">    NAME                                    READY     STATUS             RESTARTS   AGE</span><br><span class="line">    mynewjob-bsmw4                          0/1       CrashLoopBackOff   3          1m</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="CronJob"><a href="#CronJob" class="headerlink" title="CronJob"></a>CronJob</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: batch/v2alpha1</span><br><span class="line">kind: CronJob</span><br><span class="line">metadata:</span><br><span class="line">  name: hello</span><br><span class="line">spec:</span><br><span class="line">  schedule: &quot;*/1 * * * *&quot;</span><br><span class="line">  jobTemplate:</span><br><span class="line">    spec:</span><br><span class="line">      template:</span><br><span class="line">        spec:</span><br><span class="line">          containers:</span><br><span class="line">          - name: hello</span><br><span class="line">            image: busybox</span><br><span class="line">            command: [&quot;echo&quot;, &quot;hello k8s jobs!&quot;]</span><br><span class="line">          restartPolicy: OnFailure</span><br></pre></td></tr></table></figure>
+<p>启动 cronjob 与查看详情</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f job/hello_cronjob.yml</span><br><span class="line">    cronjob.batch/hello created</span><br><span class="line"></span><br><span class="line">$ kubectl get cronjob</span><br><span class="line">    NAME      SCHEDULE      SUSPEND   ACTIVE    LAST SCHEDULE   AGE</span><br><span class="line">    hello     */1 * * * *   False     0         &lt;none&gt;          9s</span><br><span class="line"></span><br><span class="line">$ kubectl get pods</span><br><span class="line">    NAME                                    READY     STATUS      RESTARTS   AGE</span><br><span class="line">    hello-1531722900-2qsfj                  0/1       Completed   0          2m</span><br><span class="line">    hello-1531722960-dc2q7                  0/1       Completed   0          1m</span><br><span class="line">    hello-1531723020-r8c97                  0/1       Completed   0          12s</span><br><span class="line"></span><br><span class="line">--- 查看运行日志</span><br><span class="line">$ kubectl logs hello-1531723020-r8c97</span><br><span class="line">    hello k8s jobs!</span><br></pre></td></tr></table></figure>
+<p>CronJob 是基于 Job 实现的, 如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get cronjob</span><br><span class="line">    NAME      SCHEDULE      SUSPEND   ACTIVE    LAST SCHEDULE   AGE</span><br><span class="line">    hello     */1 * * * *   False     1         7s              25m</span><br><span class="line"></span><br><span class="line">$ kubectl get jobs</span><br><span class="line">    NAME               DESIRED   SUCCESSFUL   AGE</span><br><span class="line">    hello-1531724700   1         1            2m</span><br><span class="line">    hello-1531724760   1         1            1m</span><br><span class="line">    hello-1531724820   1         1            55s</span><br></pre></td></tr></table></figure>
+<h4 id="debug"><a href="#debug" class="headerlink" title="debug:"></a>debug:</h4><p>运行 <code>kubectl apply -f job/hello_cronjob.yml</code> 时, 出现如下报错:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f job/hello_cronjob.yml</span><br><span class="line">    error: unable to recognize &quot;job/hello_cronjob.yml&quot;: no matches for kind &quot;CronJob&quot; in version &quot;batch/v2alpha1&quot;</span><br></pre></td></tr></table></figure>
+<p>其原因是, Kubernetes 默认没有 enable CronJob 功能, 需要在 kube-apiserver 中加入这个功能, 方法如下:</p>
+<p>修改 kube-apiserver 的配置文件, kube-apiserver 本身也是一个 pod, 在启动参数上, 加上 <code>--runtime-config=batch/v2alpha1=true</code> 配置, 再次创建 CronJob 即可.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/kubernetes/manifests/kube-apiserver.yaml</span><br><span class="line"></span><br><span class="line">    apiVersion: v1</span><br><span class="line">    kind: Pod</span><br><span class="line">    metadata:</span><br><span class="line">      annotations:</span><br><span class="line">        scheduler.alpha.kubernetes.io/critical-pod: &quot;&quot;</span><br><span class="line">      creationTimestamp: null</span><br><span class="line">      labels:</span><br><span class="line">        component: kube-apiserver</span><br><span class="line">        tier: control-plane</span><br><span class="line">      name: kube-apiserver</span><br><span class="line">      namespace: kube-system</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - command:</span><br><span class="line">        - kube-apiserver</span><br><span class="line">        - --runtime-config=batch/v2alpha1=true      --&gt; 添加 该行.</span><br><span class="line"></span><br><span class="line">-- 重启 kube-apiserver 服务</span><br><span class="line">$ systemctl restart kubelet </span><br><span class="line"></span><br><span class="line">-- 确认 kube-apiserver 已经支持 batch/v2alpha1</span><br><span class="line">$ kubectl api-versions | grep batch</span><br><span class="line">    batch/v1</span><br><span class="line">    batch/v1beta1</span><br><span class="line">    batch/v2alpha1</span><br><span class="line"></span><br><span class="line">-- 重新运行 CronJob</span><br><span class="line">$ kubectl apply -f job/hello_cronjob.yml</span><br><span class="line">    cronjob.batch/hello created</span><br><span class="line"></span><br><span class="line">$ kubectl get cronjob</span><br><span class="line">    NAME      SCHEDULE      SUSPEND   ACTIVE    LAST SCHEDULE   AGE</span><br><span class="line">    hello     */1 * * * *   False     0         &lt;none&gt;          9s</span><br><span class="line"></span><br><span class="line">$ kubectl get cronjob</span><br><span class="line">    NAME      SCHEDULE      SUSPEND   ACTIVE    LAST SCHEDULE   AGE</span><br><span class="line">    hello     */1 * * * *   False     0         36s             4m</span><br></pre></td></tr></table></figure>
+<h3 id="ReplicaSet"><a href="#ReplicaSet" class="headerlink" title="ReplicaSet"></a>ReplicaSet</h3><h3 id="StatefulSet"><a href="#StatefulSet" class="headerlink" title="StatefulSet"></a>StatefulSet</h3><h2 id="通过-Service-访问-Pod"><a href="#通过-Service-访问-Pod" class="headerlink" title="通过 Service 访问 Pod"></a>通过 Service 访问 Pod</h2><p>我们不应当期望 Kubernetes Pod 是健壮的, 而要假设 Pod 中的容器很可能应为各种原因发生故障而死掉. Deployment 等 Controller 通过动态创建和销毁 Pod 来保证应用整体的健壮性. 换句话说, <strong>Pod 是脆弱的, 但 应用是健壮的</strong>.</p>
+<p>Kubernetes Service 从逻辑上代表了一组 Pod, 具体是哪些 Pod 则由 label 来选择. Service 由自己的 IP, 而且这个 IP 是不变的. 客户端只需要访问 Service 的 IP, Kubernetes 则负责建立和维护 Service 与 Pod 的映射关系. 无论后端 Pod 如何变化, 对客户端不会有任何影响, 因为 service 没有变.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">-- deployment</span><br><span class="line"></span><br><span class="line">    apiVersion: apps/v1beta1</span><br><span class="line">    kind: Deployment</span><br><span class="line">    metadata:</span><br><span class="line">      name: httpd</span><br><span class="line">    spec:</span><br><span class="line">      replicas: 3</span><br><span class="line">      template:</span><br><span class="line">        metadata:</span><br><span class="line">          labels:</span><br><span class="line">            run: httpd-label</span><br><span class="line">        spec:</span><br><span class="line">          containers:</span><br><span class="line">          - name: httpd</span><br><span class="line">            image: httpd</span><br><span class="line">            ports:</span><br><span class="line">            - containerPort: 80</span><br><span class="line"></span><br><span class="line">-- service</span><br><span class="line"></span><br><span class="line">    apiVersion: v1</span><br><span class="line">    kind: Service</span><br><span class="line">    metadata:</span><br><span class="line">      name: httpd-srv</span><br><span class="line">    spec:</span><br><span class="line">      selector:</span><br><span class="line">        run: httpd</span><br><span class="line">      ports:</span><br><span class="line">      - protocol: TCP</span><br><span class="line">        port: 8080</span><br><span class="line">        targetPort: 80</span><br><span class="line"></span><br><span class="line">-- 配置参数说明:</span><br><span class="line"></span><br><span class="line">apiVersion: v1  Service 的 apiVersion</span><br><span class="line">kind: Service 资源类型</span><br><span class="line">selector 指明挑选那些 label 为 `run: httpd` 的 Pod 作为 Service 的后端.</span><br><span class="line">将 Service 的 8080 端口映射到 Pod 的 80 端口, 使用 TCP 协议.</span><br></pre></td></tr></table></figure>
+<p>启动 service</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f service.yml</span><br><span class="line">    service/httpd-srv created</span><br><span class="line"></span><br><span class="line">$ kubectl get service</span><br><span class="line">    NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE</span><br><span class="line">    httpd-srv    ClusterIP   10.107.68.152   &lt;none&gt;        8080/TCP   7s</span><br><span class="line">    kubernetes   ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP    20h</span><br><span class="line"></span><br><span class="line">$ kubectl get pods -o wide</span><br><span class="line">    NAME                            READY     STATUS    RESTARTS   AGE       IP             NODE</span><br><span class="line">    httpd-569ff4d8c4-6jcp2          1/1       Running   0          17m       10.244.2.60    izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line">    httpd-569ff4d8c4-8qblv          1/1       Running   0          17m       10.244.1.50    izj6c9a51n762uyn3wfi5qz</span><br><span class="line">    httpd-569ff4d8c4-mfk52          1/1       Running   0          18m       10.244.2.59    izj6cdt5e7ronl6vi6qwkrz</span><br><span class="line"></span><br><span class="line">$ kubectl describe service httpd</span><br><span class="line">    Name:              httpd-srv</span><br><span class="line">    Namespace:         default</span><br><span class="line">    Labels:            &lt;none&gt;</span><br><span class="line">    Annotations:       kubectl.kubernetes.io/last-applied-configuration=&#123;&quot;apiVersion&quot;:&quot;v1&quot;,&quot;kind&quot;:&quot;Service&quot;,&quot;metadata&quot;:&#123;&quot;annotations&quot;:&#123;&#125;,&quot;name&quot;:&quot;httpd-srv&quot;,&quot;namespace&quot;:&quot;default&quot;&#125;,&quot;spec&quot;:&#123;&quot;ports&quot;:[&#123;&quot;port&quot;:8080,&quot;protocol&quot;:&quot;TC...</span><br><span class="line">    Selector:          run=httpd-label</span><br><span class="line">    Type:              ClusterIP</span><br><span class="line">    IP:                10.107.68.152</span><br><span class="line">    Port:              &lt;unset&gt;  8080/TCP</span><br><span class="line">    TargetPort:        80/TCP</span><br><span class="line">    Endpoints:         10.244.1.50:80,10.244.2.59:80,10.244.2.60:80         --&gt; 此处为 3 个 pod 的地址.</span><br><span class="line">    Session Affinity:  None</span><br><span class="line">    Events:            &lt;none&gt;</span><br><span class="line"></span><br><span class="line">$ curl 10.107.68.152:8080</span><br><span class="line">    &lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>Endpoints <code>Endpoints: 10.244.1.50:80,10.244.2.59:80,10.244.2.60:80</code> 指明了 service 与 pod 的对应关系, Pod 的 IP 是在 容器 中配置的, Service 的 Cluster IP 以及 Cluster IP 映射到 Pod IP 都是通过 <strong>iptables</strong>.</p>
+<h4 id="Cluster-IP-底层实现"><a href="#Cluster-IP-底层实现" class="headerlink" title="Cluster IP 底层实现"></a>Cluster IP 底层实现</h4><p>Cluster IP 是一个 虚拟的 IP, 是由 Kubernetes 节点上的 iptables 规则管理的. 可以通过 iptables-save 打印出 当前</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ iptables-save | grep 10.107.68.152</span><br><span class="line">    -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.107.68.152/32 -p tcp -m comment --comment &quot;default/httpd-srv: cluster IP&quot; -m tcp --dport 8080 -j KUBE-MARK-MASQ</span><br><span class="line">    -A KUBE-SERVICES -d 10.107.68.152/32 -p tcp -m comment --comment &quot;default/httpd-srv: cluster IP&quot; -m tcp --dport 8080 -j KUBE-SVC-NUOBVGD4YU5WFXTP</span><br><span class="line"></span><br><span class="line">-- 以上两条规则的含义是:</span><br><span class="line">如果 cluster 内的 pod (源地址来自 10.244.0.0/16) 要访问 httpd-srv, 则允许;</span><br><span class="line">其他源地址访问 httpd-srv, 跳转到规则 KUBE-SVC-NUOBVGD4YU5WFXTP.</span><br></pre></td></tr></table></figure>
+<p>KUBE-SVC-NUOBVGD4YU5WFXTP 规则如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ iptables-save | grep KUBE-SVC-NUOBVGD4YU5WFXTP</span><br><span class="line">    -A KUBE-SVC-NUOBVGD4YU5WFXTP -m comment --comment &quot;default/httpd-srv:&quot; -m statistic --mode random --probability 0.33332999982 -j KUBE-SEP-TFCNH7ADCCFCQCVZ</span><br><span class="line">    -A KUBE-SVC-NUOBVGD4YU5WFXTP -m comment --comment &quot;default/httpd-srv:&quot; -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-UUSZIG4YUC7TJE2H</span><br><span class="line">    -A KUBE-SVC-NUOBVGD4YU5WFXTP -m comment --comment &quot;default/httpd-srv:&quot; -j KUBE-SEP-XPIJMUYGFWX5JR3B</span><br><span class="line"></span><br><span class="line">-- 以上规则的含义是:</span><br><span class="line">1/3 的概率 跳转到 规则 KUBE-SEP-TFCNH7ADCCFCQCVZ</span><br><span class="line">1/3 的概率(剩下 2/3 的一般) 跳转到规则 KUBE-SEP-UUSZIG4YUC7TJE2H</span><br><span class="line">1/3 的概率跳转到规则 KUBE-SEP-XPIJMUYGFWX5JR3B</span><br></pre></td></tr></table></figure>
+<p>KUBE-SEP-TFCNH7ADCCFCQCVZ, KUBE-SEP-UUSZIG4YUC7TJE2H, KUBE-SEP-XPIJMUYGFWX5JR3B 规则如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ iptables-save | grep KUBE-SEP-TFCNH7ADCCFCQCVZ</span><br><span class="line">-A KUBE-SEP-TFCNH7ADCCFCQCVZ -s 10.244.1.50/32 -m comment --comment &quot;default/httpd-srv:&quot; -j KUBE-MARK-MASQ</span><br><span class="line">-A KUBE-SEP-TFCNH7ADCCFCQCVZ -p tcp -m comment --comment &quot;default/httpd-srv:&quot; -m tcp -j DNAT --to-destination 10.244.1.50:80</span><br><span class="line"></span><br><span class="line">$ iptables-save | grep KUBE-SEP-UUSZIG4YUC7TJE2H</span><br><span class="line">-A KUBE-SEP-UUSZIG4YUC7TJE2H -s 10.244.2.59/32 -m comment --comment &quot;default/httpd-srv:&quot; -j KUBE-MARK-MASQ</span><br><span class="line">-A KUBE-SEP-UUSZIG4YUC7TJE2H -p tcp -m comment --comment &quot;default/httpd-srv:&quot; -m tcp -j DNAT --to-destination 10.244.2.59:80</span><br><span class="line"></span><br><span class="line">$ iptables-save | grep KUBE-SEP-XPIJMUYGFWX5JR3B</span><br><span class="line">-A KUBE-SEP-XPIJMUYGFWX5JR3B -s 10.244.2.60/32 -m comment --comment &quot;default/httpd-srv:&quot; -j KUBE-MARK-MASQ</span><br><span class="line">-A KUBE-SEP-XPIJMUYGFWX5JR3B -p tcp -m comment --comment &quot;default/httpd-srv:&quot; -m tcp -j DNAT --to-destination 10.244.2.60:80</span><br><span class="line"></span><br><span class="line">-- 以上规则含义是:</span><br><span class="line">将请求分别转发到后端的三个 Pod.</span><br></pre></td></tr></table></figure>
+<p>综上, iptables 将访问 service 的流量转发到后端 pod, 而且使用类似 轮训 的负载均衡策略. 需要补充的是, cluster 的每个节点上都配置了相同的 iptables 规则, 这样就确保了整个 Cluster 都能通过 service 的 Cluster IP 访问 service .</p>
+<h3 id="DNS-访问-Service"><a href="#DNS-访问-Service" class="headerlink" title="DNS 访问 Service"></a>DNS 访问 Service</h3><p>在 Cluster 中, 除了可以通过 Cluster IP 访问 Service, 还可以通过 DNS 来访问, 使用 kubeadm 部署时, 会默认安装 kube-dns 组件.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get deployment --namespace=kube-system</span><br></pre></td></tr></table></figure></p>
+<p>kubeadm 部署时, 会默认安装 kube-dns 组件, kube-dns 是一个 DNS 服务器. 每当有新的 servic 被创建, kube-dns 会添加该 Service 的 DNS 记录. Cluster 中的 Pod 可以通过 <strong>&lt;SERVICE)NAME&gt;.&lt;NAMESPACE_NAME&gt;</strong>访问 Service.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl run busybox --rm -ti --image=busybox sh</span><br><span class="line"></span><br><span class="line">/ # wget httpd-srv.default:8080</span><br><span class="line">    Connecting to httpd-srv.default:8080 (10.107.68.152:8080)</span><br><span class="line">    index.html           100% |*************************************|    45   0:00:00 ETA</span><br><span class="line"></span><br><span class="line">/ # cat index.html</span><br><span class="line">    &lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">/ # nslookup httpd-srv</span><br><span class="line">    Server:    10.96.0.10</span><br><span class="line">    Address 1: 10.96.0.10 kube-dns.kube-system.svc.cluster.local</span><br><span class="line"></span><br><span class="line">    Name:      httpd-srv</span><br><span class="line">    Address 1: 10.107.68.152 httpd-srv.default.svc.cluster.local</span><br></pre></td></tr></table></figure>
+<p>DNS 服务器是 <code>kube-dns.kube-system.svc.cluster.local</code>, 这实际上就是 kube-dns 组件, 它本身是部署在 kube-system namespace 中的一个 service. <code>httpd-srv.default.svc.cluster.local</code> 是 httpd-srv 的完整域名, 如果要访问其他 namespace 中的 Service , 就必须带上 namespace 了.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 查看 namespace</span><br><span class="line">$ kubectl get namespace</span><br></pre></td></tr></table></figure>
+<p>在一个文件中指定, Deployment 和 service, 使用 <code>---</code> 分割.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1beta1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: httpd2</span><br><span class="line">  namespace: kube-public</span><br><span class="line">spec:</span><br><span class="line">  replicas: 2</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        run: httpd2</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: httpd2</span><br><span class="line">        image: httpd</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: httpd2-srv</span><br><span class="line">  namespace: kube-public</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    run: httpd2</span><br><span class="line">  ports:</span><br><span class="line">  - protocol: TCP</span><br><span class="line">    port: 8080</span><br><span class="line">    targetPort: 80</span><br></pre></td></tr></table></figure>
+<h3 id="外网访问-Service"><a href="#外网访问-Service" class="headerlink" title="外网访问 Service"></a>外网访问 Service</h3><p>为了将 service 暴露给 Cluster 外部, Kubernetes 提供了多种类型的 Service, 默认是 ClusterIP.</p>
+<ul>
+<li><p>ClusterIP</p>
+<p>  Service 通过 Cluster 内部的 IP 对外提供服务, 只有 Cluster 内的节点和 Pod 可以访问, 这是默认的 Service 类型.</p>
+</li>
+<li><p>NodePort</p>
+<p>  Service 通过 Cluster 节点的 静态端口对外提供服务. Cluster 外部可以通过 <strong><nodeip>:<nodeport></nodeport></nodeip></strong> 访问 Service.</p>
+<p>  使用 NodePort 方式, 需要在 service 的配置文件中指定 <code>type: NodePort</code>, 其中, PORT(S) 是  Service 在节点上监听的端口, Kubernetes 会从 3000 ~ 32767 中分配一个可用的端口, 每个节点都会监听此端口, 并将请求转发给 Service.<br>  如下:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ cat node-port-service.yml</span><br><span class="line">    apiVersion: v1</span><br><span class="line">    kind: Service</span><br><span class="line">    metadata:</span><br><span class="line">      name: httpd-svc</span><br><span class="line">    spec:</span><br><span class="line">      type: NodePort</span><br><span class="line">      selector:</span><br><span class="line">        run: httpd-label</span><br><span class="line">      ports:</span><br><span class="line">      - protocol: TCP</span><br><span class="line">        port: 8080</span><br><span class="line">        targetPort: 80</span><br><span class="line"></span><br><span class="line">$ kubectl apply -f node-port-service.yml</span><br><span class="line"></span><br><span class="line">$ kubectl get service</span><br><span class="line">    NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE</span><br><span class="line">    httpd-svc    NodePort    10.96.163.102   &lt;none&gt;        8080:30182/TCP   4h</span><br><span class="line"></span><br><span class="line">-- 在 三个节点 , 都可以访问 httpd-svc</span><br><span class="line">$ curl 172.16.0.105:30182</span><br><span class="line">    &lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">$ curl 172.16.0.106:30182</span><br><span class="line">    &lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">$ curl 172.16.0.107:30182</span><br><span class="line">    &lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>  Kubernetes 同样使用 iptables 将 <strong><nodeip>:<nodeport></nodeport></nodeip></strong> 映射到 pod. Kubernetes 在每个节点都增加了下面两条 iptables 规则:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-A KUBE-NODEPORTS -p tcp -m comment --comment &quot;default/httpd-svc:&quot; -m tcp --dport 30182 -j KUBE-MARK-MASQ</span><br><span class="line">-A KUBE-NODEPORTS -p tcp -m comment --comment &quot;default/httpd-svc:&quot; -m tcp --dport 30182 -j KUBE-SVC-RL3JAE4GN7VOGDGP</span><br></pre></td></tr></table></figure>
+<p>  KUBE-SVC-RL3JAE4GN7VOGDGP 相关规则如下, 其作用就是 负载均衡到每一个 Pod.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-A KUBE-SVC-RL3JAE4GN7VOGDGP -m comment --comment &quot;default/httpd-svc:&quot; -m statistic --mode random --probability 0.33332999982 -j KUBE-SEP-HBIHS6NV3RF2B77B</span><br><span class="line">-A KUBE-SVC-RL3JAE4GN7VOGDGP -m comment --comment &quot;default/httpd-svc:&quot; -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-HANJX3KI6JYOOOTA</span><br><span class="line">-A KUBE-SVC-RL3JAE4GN7VOGDGP -m comment --comment &quot;default/httpd-svc:&quot; -j KUBE-SEP-NKMRAHPRFQ6XNLLG</span><br></pre></td></tr></table></figure>
+<p>  NodePort 默认<strong>随机</strong>选择, 但是可以通过 <code>nodePort</code> 指定某个特定端口. 最终, Node 和 ClusterIP 在各自端口上接收到的请求都会通过 iptables 转发到 Pod 的 targetPort. 如:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ports:</span><br><span class="line">- protocol: TCP</span><br><span class="line">  nodePort: 31111   --&gt; Node 节点上监听的端口,</span><br><span class="line">  port: 8080        --&gt; ClusterIP 上监听的端口</span><br><span class="line">  targetPort: 80    --&gt; Pod 上监听的端口.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>LoadBalancer</p>
+<p>  Service 使用 cloud provider 特有的 load balancer 对外提供服务, cloud provider 负责将 load balancer 的流量导向 Service. 目前支持的 cloud provider 有 GCP, AWS, Azur 等.</p>
+</li>
+</ul>
+<h2 id="Rolling-Update"><a href="#Rolling-Update" class="headerlink" title="Rolling Update"></a>Rolling Update</h2><h2 id="Health-Check"><a href="#Health-Check" class="headerlink" title="Health Check"></a>Health Check</h2><h2 id="数据管理-数据持久化"><a href="#数据管理-数据持久化" class="headerlink" title="数据管理, 数据持久化"></a>数据管理, 数据持久化</h2><h2 id="Secret-amp-amp-ConfigMap"><a href="#Secret-amp-amp-ConfigMap" class="headerlink" title="Secret &amp;&amp; ConfigMap"></a>Secret &amp;&amp; ConfigMap</h2><h2 id="Helm-–-Kubernetes-包管理工具"><a href="#Helm-–-Kubernetes-包管理工具" class="headerlink" title="Helm – Kubernetes 包管理工具"></a>Helm – Kubernetes 包管理工具</h2><h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h2 id="Dashboard"><a href="#Dashboard" class="headerlink" title="Dashboard"></a>Dashboard</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml</span><br><span class="line">    secret/kubernetes-dashboard-certs created</span><br><span class="line">    serviceaccount/kubernetes-dashboard created</span><br><span class="line">    role.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created</span><br><span class="line">    rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created</span><br><span class="line">    deployment.apps/kubernetes-dashboard created</span><br><span class="line">    service/kubernetes-dashboard created</span><br></pre></td></tr></table></figure>
+<h2 id="Kubernetes-集群监控"><a href="#Kubernetes-集群监控" class="headerlink" title="Kubernetes 集群监控"></a>Kubernetes 集群监控</h2><h2 id="Kubernetes-日志管理"><a href="#Kubernetes-日志管理" class="headerlink" title="Kubernetes 日志管理"></a>Kubernetes 日志管理</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/容器/" rel="tag"># 容器</a>
+          
+            <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/12/AngularJS高级程序设计读书笔记--查漏补缺篇/" rel="next" title="AngularJS高级程序设计读书笔记--查漏补缺篇">
+                <i class="fa fa-chevron-left"></i> AngularJS高级程序设计读书笔记--查漏补缺篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">109</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#example"><span class="nav-text">example</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Topic"><span class="nav-text">Topic</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#kubernetes-架构"><span class="nav-text">kubernetes 架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#master"><span class="nav-text">master</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-节点"><span class="nav-text">Node 节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubeadm-安装"><span class="nav-text">kubeadm 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-在-master-操作"><span class="nav-text">1. 在 master 操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-node-节点注册到-集群"><span class="nav-text">2. node 节点注册到 集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-kubernetes-master-节点-pod-调度"><span class="nav-text">3. kubernetes master 节点 pod 调度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubernetes-运行应用"><span class="nav-text">kubernetes 运行应用.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Deployment"><span class="nav-text">Deployment</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Deployment-配置文件"><span class="nav-text">Deployment 配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-deployment"><span class="nav-text">删除 deployment</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩缩容"><span class="nav-text">扩缩容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Failover"><span class="nav-text">Failover</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-label-控制-pod-的位置"><span class="nav-text">使用 label 控制 pod 的位置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DaemonSet"><span class="nav-text">DaemonSet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Prometheus-Node-Exporter-DaemonSet"><span class="nav-text">Prometheus Node Exporter DaemonSet</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Job"><span class="nav-text">Job</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#job-配置"><span class="nav-text">job 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#job-并行运行"><span class="nav-text">job 并行运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#job-状态"><span class="nav-text">job 状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CronJob"><span class="nav-text">CronJob</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#debug"><span class="nav-text">debug:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReplicaSet"><span class="nav-text">ReplicaSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StatefulSet"><span class="nav-text">StatefulSet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过-Service-访问-Pod"><span class="nav-text">通过 Service 访问 Pod</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cluster-IP-底层实现"><span class="nav-text">Cluster IP 底层实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS-访问-Service"><span class="nav-text">DNS 访问 Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外网访问-Service"><span class="nav-text">外网访问 Service</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rolling-Update"><span class="nav-text">Rolling Update</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Health-Check"><span class="nav-text">Health Check</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据管理-数据持久化"><span class="nav-text">数据管理, 数据持久化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Secret-amp-amp-ConfigMap"><span class="nav-text">Secret &amp;&amp; ConfigMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Helm-–-Kubernetes-包管理工具"><span class="nav-text">Helm – Kubernetes 包管理工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络"><span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dashboard"><span class="nav-text">Dashboard</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes-集群监控"><span class="nav-text">Kubernetes 集群监控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes-日志管理"><span class="nav-text">Kubernetes 日志管理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

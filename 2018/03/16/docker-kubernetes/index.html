@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="kubernets,容器编排," />
+  <meta name="keywords" content="kubernetes,容器编排," />
 
 
 
@@ -80,10 +80,10 @@
 
 
 <meta name="description" content="版本: 基于 Kubernetes v1.6 及以上. 主要功能:  基于容器的应用部署, 维护和滚动升级 负载均衡和服务发现 跨机器和跨地区的集群调度 自动伸缩 无状态服务 和 有状态服务 广泛的 Volume 支持 插件机制保证扩展性.  1. 简介1.1 核心组件: etcd : 保存整个集群的状态; apiserver : 提供资源的操作的唯一入口, 并提供认证,授权,访问控制, API">
-<meta name="keywords" content="kubernets,容器编排">
+<meta name="keywords" content="kubernetes,容器编排">
 <meta property="og:type" content="article">
-<meta property="og:title" content="kubernets 学习笔记">
-<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/docker-kubernets/index.html">
+<meta property="og:title" content="kubernetes 学习笔记">
+<meta property="og:url" content="http://www.pyfdtic.com/2018/03/16/docker-kubernetes/index.html">
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="版本: 基于 Kubernetes v1.6 及以上. 主要功能:  基于容器的应用部署, 维护和滚动升级 负载均衡和服务发现 跨机器和跨地区的集群调度 自动伸缩 无状态服务 和 有状态服务 广泛的 Volume 支持 插件机制保证扩展性.  1. 简介1.1 核心组件: etcd : 保存整个集群的状态; apiserver : 提供资源的操作的唯一入口, 并提供认证,授权,访问控制, API">
 <meta property="og:locale" content="zh-Hans">
@@ -100,9 +100,9 @@
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/kube-proxy.png">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/kube-dns.png">
 <meta property="og:image" content="http://oluv2yxz6.bkt.clouddn.com/federation-api-4x.png">
-<meta property="og:updated_time" content="2018-04-20T00:25:12.000Z">
+<meta property="og:updated_time" content="2018-07-15T16:45:43.673Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="kubernets 学习笔记">
+<meta name="twitter:title" content="kubernetes 学习笔记">
 <meta name="twitter:description" content="版本: 基于 Kubernetes v1.6 及以上. 主要功能:  基于容器的应用部署, 维护和滚动升级 负载均衡和服务发现 跨机器和跨地区的集群调度 自动伸缩 无状态服务 和 有状态服务 广泛的 Volume 支持 插件机制保证扩展性.  1. 简介1.1 核心组件: etcd : 保存整个集群的状态; apiserver : 提供资源的操作的唯一入口, 并提供认证,授权,访问控制, API">
 <meta name="twitter:image" content="http://www.pyfdtic.com/imgs/k8s/k8s-architecture.png">
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/docker-kubernets/"/>
+  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/16/docker-kubernetes/"/>
 
 
 
 
 
-  <title>kubernets 学习笔记 | Pyfdtic's Blog</title>
+  <title>kubernetes 学习笔记 | Pyfdtic's Blog</title>
   
 
 
@@ -330,7 +330,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/docker-kubernets/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/docker-kubernetes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -347,7 +347,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">kubernets 学习笔记</h2>
+          <h2 class="post-title" itemprop="name headline">kubernetes 学习笔记</h2>
         
 
         <div class="post-meta">
@@ -2336,8 +2336,8 @@ spec:
 <li>每个 Pod 在创建后都会自动设置 <code>spec.serviceAccount</code> 为 default, 除非指定了其他 ServiceAccount.</li>
 <li>验证 Pod 引用的 ServiceAccount 已经存在, 否则拒绝创建.</li>
 <li>如果 Pod 没有指定 ImagePullSecrets , 则把 ServiceAccount 的 ImagePullSecrets 加到 Pod 中.</li>
-<li><p>每个 container 启动后, 都会挂载 ServiceAccount 的 <code>token</code> 和 <code>ca.crt</code> 到 <code>/var/run/secrets/kubernets.io/serviceaccount/</code></p>
-<pre><code>$ kubectl exec nginx-3137573019-md1u2 ls /var/run/secrets/kubernets.io/serviceaccount/
+<li><p>每个 container 启动后, 都会挂载 ServiceAccount 的 <code>token</code> 和 <code>ca.crt</code> 到 <code>/var/run/secrets/kubernetes.io/serviceaccount/</code></p>
+<pre><code>$ kubectl exec nginx-3137573019-md1u2 ls /var/run/secrets/kubernetes.io/serviceaccount/
 </code></pre></li>
 </ul>
 </li>
@@ -4318,7 +4318,7 @@ $ kubefed init fellowship \
     --apiserver-enable-token-auth=true \ # 开启token认证
     --apiserver-arg-overrides=&quot;--anonymous-auth=false,--v=4&quot; # federation API server自定义参数
 $ kubectl config use-context fellowship
-</code></pre><h4 id="hyperkube"><a href="#hyperkube" class="headerlink" title="hyperkube"></a>hyperkube</h4><h4 id="kubeadm"><a href="#kubeadm" class="headerlink" title="kubeadm"></a>kubeadm</h4><h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://jimmysong.io/kubernetes-handbook/" target="_blank" rel="noopener">kubernets handbook</a></p>
+</code></pre><h4 id="hyperkube"><a href="#hyperkube" class="headerlink" title="hyperkube"></a>hyperkube</h4><h4 id="kubeadm"><a href="#kubeadm" class="headerlink" title="kubeadm"></a>kubeadm</h4><h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://jimmysong.io/kubernetes-handbook/" target="_blank" rel="noopener">kubernetes handbook</a></p>
 
       
     </div>
@@ -4336,7 +4336,7 @@ $ kubectl config use-context fellowship
       
         <div class="post-tags">
           
-            <a href="/tags/kubernets/" rel="tag"># kubernets</a>
+            <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
           
             <a href="/tags/容器编排/" rel="tag"># 容器编排</a>
           
@@ -4440,7 +4440,7 @@ $ kubectl config use-context fellowship
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">108</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -4451,7 +4451,7 @@ $ kubectl config use-context fellowship
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -4462,7 +4462,7 @@ $ kubectl config use-context fellowship
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

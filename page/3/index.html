@@ -312,7 +312,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-subprocess/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-multiprocessing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -331,7 +331,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-subprocess/" itemprop="url">PyStdLib--subprocess</a></h2>
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-multiprocessing/" itemprop="url">PyStdLib--multiprocessing</a></h2>
         
 
         <div class="post-meta">
@@ -344,7 +344,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:31:56+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:35:16+08:00">
                 2018-03-19
               </time>
             
@@ -406,22 +406,19 @@
       
         
           
-          subprocess主要功能室执行外部的命令和程序  
+          multiprocessing 与 threading.Thread 类似 
+multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.multiprocessing.Process.start()
+multiprocessing.Process.run()
+multiprocessing.Process.join() 
 
-一个进程可 fork 一个子进程, 并让这个子进程 exec 另外一个程序. 在 python 中, 可以通过标准库中的 subprocess 包来 fork 一个子进程, 并运行一个外部的程序.
+Process.PID 保存有 PID, 如果进程还没有 start() , 则 PID 为 None.
+注意
 
-subprocess
-
-创建子进程的函数, 这些函数分别用不同的方式创建进程.
-  使用 subprocess 包中的函数创建子进程时, 要注意 :  
-
-在创建子进程之后, 父进程是否暂停, 并等待子进程运行,  
-函数返回什么  
-当 r
+在 UNIX
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-subprocess/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/PyStdLib-multiprocessing/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -622,7 +619,7 @@ shutil.copytree(src, dst, symlinks=False, ignore=None)shutil.copytree(&apos;/tmp
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-pickle/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-subprocess/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -641,7 +638,7 @@ shutil.copytree(src, dst, symlinks=False, ignore=None)shutil.copytree(&apos;/tmp
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-pickle/" itemprop="url">PyStdLib--pickle</a></h2>
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-subprocess/" itemprop="url">PyStdLib--subprocess</a></h2>
         
 
         <div class="post-meta">
@@ -654,7 +651,7 @@ shutil.copytree(src, dst, symlinks=False, ignore=None)shutil.copytree(&apos;/tmp
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:28:48+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:31:56+08:00">
                 2018-03-19
               </time>
             
@@ -716,14 +713,22 @@ shutil.copytree(src, dst, symlinks=False, ignore=None)shutil.copytree(&apos;/tmp
       
         
           
-          pickle &amp; cPicklepickle 和 cPickle 除了导入名称不一样之外, 使用方法, 均一样.pickle 导入   import picklecPickle 导入 import cPickle as pickle
-cPickle 比 pickle 快很多
-pickle.dumps(OBJ) –&gt; 序列化对象import cPickle as pickle
-b = {&quot;name&quot;:&quot;tom&quot;, &quot;age&quot;
+          subprocess主要功能室执行外部的命令和程序  
+
+一个进程可 fork 一个子进程, 并让这个子进程 exec 另外一个程序. 在 python 中, 可以通过标准库中的 subprocess 包来 fork 一个子进程, 并运行一个外部的程序.
+
+subprocess
+
+创建子进程的函数, 这些函数分别用不同的方式创建进程.
+  使用 subprocess 包中的函数创建子进程时, 要注意 :  
+
+在创建子进程之后, 父进程是否暂停, 并等待子进程运行,  
+函数返回什么  
+当 r
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-pickle/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/PyStdLib-subprocess/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -927,6 +932,158 @@ re.match()m = re.match(pattern, string)   # 从
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-pickle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-pickle/" itemprop="url">PyStdLib--pickle</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:28:48+08:00">
+                2018-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          pickle &amp; cPicklepickle 和 cPickle 除了导入名称不一样之外, 使用方法, 均一样.pickle 导入   import picklecPickle 导入 import cPickle as pickle
+cPickle 比 pickle 快很多
+pickle.dumps(OBJ) –&gt; 序列化对象import cPickle as pickle
+b = {&quot;name&quot;:&quot;tom&quot;, &quot;age&quot;
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/19/PyStdLib-pickle/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-threading/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1080,6 +1237,157 @@ threading.Lock
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-signal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-signal/" itemprop="url">PyStdLib--signal</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:28:47+08:00">
+                2018-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          signal 的核心是, 设置信号处理函数.
+预定义信号signal.SIG_DFL   signal.SIGBUS    signal.SIGFPE    signal.SIGIO     signal.SIGPOLL   signal.SIGRTMAX  signal.SIGSYS    signal.SIGTTIN   signal.SIGUSR2   signal.SIGXFSZ   
+signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP    
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/19/PyStdLib-signal/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-os/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1183,157 +1491,6 @@ os.rmdir(pa
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/03/19/PyStdLib-os/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-signal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Pyfdtic">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pyfdtic's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-signal/" itemprop="url">PyStdLib--signal</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:28:47+08:00">
-                2018-03-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          signal 的核心是, 设置信号处理函数.
-预定义信号signal.SIG_DFL   signal.SIGBUS    signal.SIGFPE    signal.SIGIO     signal.SIGPOLL   signal.SIGRTMAX  signal.SIGSYS    signal.SIGTTIN   signal.SIGUSR2   signal.SIGXFSZ   
-signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP    
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-signal/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1680,160 +1837,6 @@ $ mysqldump -uUSER -pPASSWD my_database my_table.sql &gt; my_table.sql
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/Linux-特殊用户权限-suid-sgid-sticky/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Pyfdtic">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pyfdtic's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/19/Linux-特殊用户权限-suid-sgid-sticky/" itemprop="url">Linux 特殊用户权限 suid sgid sticky</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T17:44:17+08:00">
-                2018-03-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机原理与操作系统/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机原理与操作系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          每个进程会维护有如下6个ID:
-真实身份 : real UID, readl GID --&gt; 登录 shell 使用的身份
-
-有效身份 : effective UID, effective GID --&gt; 当进程真正去操作文件是所检查的身份,
-
-存储身份 : saved UID, saved GID --&gt; 当将一个程序文件执行为进程的时候, 该程序文件本身的属主和属组可以被存储为存储身份, 在随后进程运行的过程中, 进程就可以选择将 真实身份或存储身份 复制到有效身份, 以拥
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/Linux-特殊用户权限-suid-sgid-sticky/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1884,7 +1887,7 @@ $ mysqldump -uUSER -pPASSWD my_database my_table.sql &gt; my_table.sql
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">108</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1895,7 +1898,7 @@ $ mysqldump -uUSER -pPASSWD my_database my_table.sql &gt; my_table.sql
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1906,7 +1909,7 @@ $ mysqldump -uUSER -pPASSWD my_database my_table.sql &gt; my_table.sql
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
