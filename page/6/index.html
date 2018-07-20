@@ -461,7 +461,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -480,7 +480,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/" itemprop="url">AngularJS高级程序设计读书笔记--指令篇之内置指令</a></h2>
+                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/" itemprop="url">AngularJS高级程序设计读书笔记--过滤器篇</a></h2>
         
 
         <div class="post-meta">
@@ -555,15 +555,24 @@
       
         
           
-          AngularJS 内置超过 50 个内置指令, 包括 数据绑定,表单验证,模板生成,时间处理 和 HTML 操作.
-指令暴露了 AngularJS 的核心功能, 如 事件处理,表单验证,模板等.
-一. 数据绑定指令数据绑定: 使用模型中的值, 并将其插入到 HTML 文档中.所有的数据绑定指令, 都可以当做一个属性或者类使用.
+          一. 过滤器基础过滤器用于在视图中格式化展现给用户的数据. 一旦定义过滤器之后, 就可在整个模块中全面应用, 也就意味着可以用来保证跨多个控制器和视图之间的数据展示的一致性.
+过滤器将数据在被指令处理并显示到视图中之前进行转换, 而不必修改作用域中原有的数据, 这样能够允许同一份数据在应用中的不同部分以不同的形式得以展现.
+过滤器可以执行任意类型的转换, 但是大多数情况下, 用于格式化或者对数据以某种方式排序.
+二. 内置过滤器1. 过滤单个数据的值
 
-属性 : &lt;span ng-bind=&quot;todos.length&quot;&gt;&lt;/span&gt; 属性可能会导致其他开发工具的各种问题,
+
+名称
+描述
+
+
+
+
+currency
+该
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/#more" rel="contents">
+            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

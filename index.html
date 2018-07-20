@@ -1757,7 +1757,7 @@ Bleanch : 使用 Python 实现的 HTML 清理器.
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-moment/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-mail/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -1776,7 +1776,7 @@ Bleanch : 使用 Python 实现的 HTML 清理器.
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/flaskExt--flask-moment/" itemprop="url">Flask 扩展之--flask-moment</a></h2>
+                <a class="post-title-link" href="/2018/03/19/flaskExt--flask-mail/" itemprop="url">Flask 扩展之--flask-mail</a></h2>
         
 
         <div class="post-meta">
@@ -1851,20 +1851,36 @@ Bleanch : 使用 Python 实现的 HTML 清理器.
       
         
           
-          一. 安装$ pip install flask-moment
-二. 初始化from flask_moment import Moment
+          Flask-Mail 封装了 python 标准库 smtplib 包, 以便于更好的与 Flask 集成.
+一. 安装$ pip install flask-mail
+二. 配置 及 初始化Flask-Mail SMTP 服务器配置列表
 
-moment = Moment(app)
-三. 解决依赖moment.js示例代码 : 在基模板的 scripts 块中引入该库.
-{% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-    {% endblock %}
-jquery.jsFlask-Moment依
+
+
+配置
+默认值
+说明
+
+
+
+
+MAIL_SERVER
+localhost
+电子邮件服务器的主机名或 IP 地址
+
+
+MAIL_PORT
+25
+电子邮件服务器的端口
+
+
+MAIL_USE_TLS
+False
+启用传输层安全（Transport Layer S
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/flaskExt--flask-moment/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/flaskExt--flask-mail/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
