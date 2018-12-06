@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1. curl 命令行帮助1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798">
+<meta name="description" content="一. curl 命令行帮助1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798">
 <meta name="keywords" content="curl">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HTTP 客户端工具 -- curl">
 <meta property="og:url" content="http://www.pyfdtic.com/2018/04/27/tools-curl/index.html">
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
-<meta property="og:description" content="1. curl 命令行帮助1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798">
+<meta property="og:description" content="一. curl 命令行帮助1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-06T14:06:18.971Z">
+<meta property="og:updated_time" content="2018-12-06T14:09:50.033Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP 客户端工具 -- curl">
-<meta name="twitter:description" content="1. curl 命令行帮助1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798">
+<meta name="twitter:description" content="一. curl 命令行帮助1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798">
 
 
 
@@ -411,133 +411,92 @@
       
 
       
-        <h2 id="1-curl-命令行帮助"><a href="#1-curl-命令行帮助" class="headerlink" title="1. curl 命令行帮助"></a>1. curl 命令行帮助</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">-a/--append 上传文件时, 附加到目标文件  </span><br><span class="line"> -A/--user-agent &lt;string&gt;  设置用户代理发送给服务器  </span><br><span class="line"> - anyauth   可以使用“任何”身份验证方法  </span><br><span class="line"> -b/--cookie &lt;name=string/file&gt; cookie字符串或文件读取位置  </span><br><span class="line"> - basic 使用HTTP基本验证  </span><br><span class="line"> -B/--use-ascii 使用ASCII /文本传输  </span><br><span class="line"> -c/--cookie-jar &lt;file&gt; 操作结束后把cookie写入到这个文件中  </span><br><span class="line"> -C/--continue-at &lt;offset&gt;  断点续转  </span><br><span class="line"> -d/--data &lt;data&gt;   HTTP POST方式传送数据  </span><br><span class="line"> --data-ascii &lt;data&gt;  以ascii的方式post数据  </span><br><span class="line"> --data-binary &lt;data&gt; 以二进制的方式post数据  </span><br><span class="line"> --negotiate     使用HTTP身份验证  </span><br><span class="line"> --digest        使用数字身份验证  </span><br><span class="line"> --disable-eprt  禁止使用EPRT或LPRT  </span><br><span class="line"> --disable-epsv  禁止使用EPSV  </span><br><span class="line"> -D/--dump-header &lt;file&gt; 把header信息写入到该文件中  </span><br><span class="line"> --egd-file &lt;file&gt; 为随机数据(SSL)设置EGD socket路径  </span><br><span class="line"> --tcp-nodelay   使用TCP_NODELAY选项  </span><br><span class="line"> -e/--referer 来源网址  </span><br><span class="line"> -E/--cert &lt;cert[:passwd]&gt; 客户端证书文件和密码 (SSL)  </span><br><span class="line"> --cert-type &lt;type&gt; 证书文件类型 (DER/PEM/ENG) (SSL)  </span><br><span class="line"> --key &lt;key&gt;     私钥文件名 (SSL)  </span><br><span class="line"> --key-type &lt;type&gt; 私钥文件类型 (DER/PEM/ENG) (SSL)  </span><br><span class="line"> --pass  &lt;pass&gt;  私钥密码 (SSL)  </span><br><span class="line"> --engine &lt;eng&gt;  加密引擎使用 (SSL). &quot;--engine list&quot; for list  </span><br><span class="line"> --cacert &lt;file&gt; CA证书 (SSL)  </span><br><span class="line"> --capath &lt;directory&gt; CA目录 (made using c_rehash) to verify peer against (SSL)  </span><br><span class="line"> --ciphers &lt;list&gt;  SSL密码  </span><br><span class="line"> --compressed    要求返回是压缩的形势 (using deflate or gzip)  </span><br><span class="line"> --connect-timeout &lt;seconds&gt; 设置最大请求时间  </span><br><span class="line"> --create-dirs   建立本地目录的目录层次结构  </span><br><span class="line"> --crlf          上传是把LF转变成CRLF  </span><br><span class="line"> -f/--fail          连接失败时不显示http错误  </span><br><span class="line"> --ftp-create-dirs 如果远程目录不存在, 创建远程目录  </span><br><span class="line"> --ftp-method [multicwd/nocwd/singlecwd] 控制CWD的使用  </span><br><span class="line"> --ftp-pasv      使用 PASV/EPSV 代替端口  </span><br><span class="line"> --ftp-skip-pasv-ip 使用PASV的时候,忽略该IP地址  </span><br><span class="line"> --ftp-ssl       尝试用 SSL/TLS 来进行ftp数据传输  </span><br><span class="line"> --ftp-ssl-reqd  要求用 SSL/TLS 来进行ftp数据传输  </span><br><span class="line"> -F/--form &lt;name=content&gt; 模拟http表单提交数据  </span><br><span class="line"> -form-string &lt;name=string&gt; 模拟http表单提交数据  </span><br><span class="line"> -g/--globoff 禁用网址序列和范围使用&#123;&#125;和[]  </span><br><span class="line"> -G/--get 以get的方式来发送数据  </span><br><span class="line"> -h/--help 帮助  </span><br><span class="line"> -H/--header &lt;line&gt;自定义头信息传递给服务器  </span><br><span class="line"> --ignore-content-length  忽略的HTTP头信息的长度  </span><br><span class="line"> -i/--include 输出时包括protocol头信息  </span><br><span class="line"> -I/--head  只显示文档信息  </span><br><span class="line"> 从文件中读取-j/--junk-session-cookies忽略会话Cookie  </span><br><span class="line"> - 界面&lt;interface&gt;指定网络接口/地址使用  </span><br><span class="line"> - krb4 &lt;级别&gt;启用与指定的安全级别krb4  </span><br><span class="line"> -j/--junk-session-cookies 读取文件进忽略session cookie  </span><br><span class="line"> --interface &lt;interface&gt; 使用指定网络接口/地址  </span><br><span class="line"> --krb4 &lt;level&gt;  使用指定安全级别的krb4  </span><br><span class="line"> -k/--insecure 允许不使用证书到SSL站点  </span><br><span class="line"> -K/--config  指定的配置文件读取  </span><br><span class="line"> -l/--list-only 列出ftp目录下的文件名称  </span><br><span class="line"> --limit-rate &lt;rate&gt; 设置传输速度  </span><br><span class="line"> --local-port&lt;NUM&gt; 强制使用本地端口号  </span><br><span class="line"> -m/--max-time &lt;seconds&gt; 设置最大传输时间  </span><br><span class="line"> --max-redirs &lt;num&gt; 设置最大读取的目录数  </span><br><span class="line"> --max-filesize &lt;bytes&gt; 设置最大下载的文件总量  </span><br><span class="line"> -M/--manual  显示全手动  </span><br><span class="line"> -n/--netrc 从netrc文件中读取用户名和密码  </span><br><span class="line"> --netrc-optional 使用 .netrc 或者 URL来覆盖-n  </span><br><span class="line"> --ntlm          使用 HTTP NTLM 身份验证  </span><br><span class="line"> -N/--no-buffer 禁用缓冲输出  </span><br><span class="line"> -o/--output 把输出写到该文件中  </span><br><span class="line"> -O/--remote-name 把输出写到该文件中, 保留远程文件的文件名  </span><br><span class="line"> -p/--proxytunnel   使用HTTP代理  </span><br><span class="line"> --proxy-anyauth 选择任一代理身份验证方法  </span><br><span class="line"> --proxy-basic   在代理上使用基本身份验证  </span><br><span class="line"> --proxy-digest  在代理上使用数字身份验证  </span><br><span class="line"> --proxy-ntlm    在代理上使用ntlm身份验证  </span><br><span class="line"> -P/--ftp-port &lt;address&gt; 使用端口地址, 而不是使用PASV  </span><br><span class="line"> -Q/--quote &lt;cmd&gt;文件传输前, 发送命令到服务器  </span><br><span class="line"> -r/--range &lt;range&gt;检索来自HTTP/1.1或FTP服务器字节范围  </span><br><span class="line"> --range-file 读取(SSL)的随机文件  </span><br><span class="line"> -R/--remote-time   在本地生成文件时, 保留远程文件时间  </span><br><span class="line"> --retry &lt;num&gt;   传输出现问题时, 重试的次数  </span><br><span class="line"> --retry-delay &lt;seconds&gt;  传输出现问题时, 设置重试间隔时间  </span><br><span class="line"> --retry-max-time &lt;seconds&gt; 传输出现问题时, 设置最大重试时间  </span><br><span class="line"> -s/--silent静音模式. 不输出任何东西  </span><br><span class="line"> -S/--show-error   显示错误  </span><br><span class="line"> --socks4 &lt;host[:port]&gt; 用socks4代理给定主机和端口  </span><br><span class="line"> --socks5 &lt;host[:port]&gt; 用socks5代理给定主机和端口  </span><br><span class="line"> --stderr &lt;file&gt;  </span><br><span class="line"> -t/--telnet-option &lt;OPT=val&gt; Telnet选项设置  </span><br><span class="line"> --trace &lt;file&gt;  对指定文件进行debug  </span><br><span class="line"> --trace-ascii &lt;file&gt; Like --跟踪但没有hex输出  </span><br><span class="line"> --trace-time    跟踪/详细输出时, 添加时间戳  </span><br><span class="line"> -T/--upload-file &lt;file&gt; 上传文件  </span><br><span class="line"> --url &lt;URL&gt;     Spet URL to work with  </span><br><span class="line"> -u/--user &lt;user[:password]&gt;设置服务器的用户和密码  </span><br><span class="line"> -U/--proxy-user &lt;user[:password]&gt;设置代理用户名和密码  </span><br><span class="line"> -v/--verbose  </span><br><span class="line"> -V/--version 显示版本信息  </span><br><span class="line"> -w/--write-out [format]什么输出完成后  </span><br><span class="line"> -x/--proxy &lt;host[:port]&gt;在给定的端口上使用HTTP代理  </span><br><span class="line"> -X/--request &lt;command&gt;指定什么命令  </span><br><span class="line"> -y/--speed-time 放弃限速所要的时间. 默认为30  </span><br><span class="line"> -Y/--speed-limit 停止传输速度的限制, 速度时间&apos;秒  </span><br><span class="line"> -z/--time-cond  传送时间设置  </span><br><span class="line"> -0/--http1.0  使用HTTP 1.0  </span><br><span class="line"> -1/--tlsv1  使用TLSv1(SSL)  </span><br><span class="line"> -2/--sslv2 使用SSLv2的(SSL)  </span><br><span class="line"> -3/--sslv3         使用的SSLv3(SSL)  </span><br><span class="line"> --3p-quote      like -Q for the source URL for 3rd party transfer  </span><br><span class="line"> --3p-url        使用url, 进行第三方传送  </span><br><span class="line"> --3p-user       使用用户名和密码, 进行第三方传送  </span><br><span class="line"> -4/--ipv4   使用IP4  </span><br><span class="line"> -6/--ipv6   使用IP6  </span><br><span class="line"> -#/--progress-bar 用进度条显示当前的传送状态</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 2. curl 示例用法</span><br><span class="line"></span><br><span class="line">1. 抓取页面内容到一个文件中</span><br></pre></td></tr></table></figure>
-<pre><code>$  curl -o home.html  http://blog.51yip.com
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. -O 大写, url需要具体到某个文件, 用于抓取页面内容,支持正则表达式</span><br></pre></td></tr></table></figure>
+        <h2 id="一-curl-命令行帮助"><a href="#一-curl-命令行帮助" class="headerlink" title="一. curl 命令行帮助"></a>一. curl 命令行帮助</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">-a/--append 上传文件时, 附加到目标文件  </span><br><span class="line"> -A/--user-agent &lt;string&gt;  设置用户代理发送给服务器  </span><br><span class="line"> - anyauth   可以使用“任何”身份验证方法  </span><br><span class="line"> -b/--cookie &lt;name=string/file&gt; cookie字符串或文件读取位置  </span><br><span class="line"> - basic 使用HTTP基本验证  </span><br><span class="line"> -B/--use-ascii 使用ASCII /文本传输  </span><br><span class="line"> -c/--cookie-jar &lt;file&gt; 操作结束后把cookie写入到这个文件中  </span><br><span class="line"> -C/--continue-at &lt;offset&gt;  断点续转  </span><br><span class="line"> -d/--data &lt;data&gt;   HTTP POST方式传送数据  </span><br><span class="line"> --data-ascii &lt;data&gt;  以ascii的方式post数据  </span><br><span class="line"> --data-binary &lt;data&gt; 以二进制的方式post数据  </span><br><span class="line"> --negotiate     使用HTTP身份验证  </span><br><span class="line"> --digest        使用数字身份验证  </span><br><span class="line"> --disable-eprt  禁止使用EPRT或LPRT  </span><br><span class="line"> --disable-epsv  禁止使用EPSV  </span><br><span class="line"> -D/--dump-header &lt;file&gt; 把header信息写入到该文件中  </span><br><span class="line"> --egd-file &lt;file&gt; 为随机数据(SSL)设置EGD socket路径  </span><br><span class="line"> --tcp-nodelay   使用TCP_NODELAY选项  </span><br><span class="line"> -e/--referer 来源网址  </span><br><span class="line"> -E/--cert &lt;cert[:passwd]&gt; 客户端证书文件和密码 (SSL)  </span><br><span class="line"> --cert-type &lt;type&gt; 证书文件类型 (DER/PEM/ENG) (SSL)  </span><br><span class="line"> --key &lt;key&gt;     私钥文件名 (SSL)  </span><br><span class="line"> --key-type &lt;type&gt; 私钥文件类型 (DER/PEM/ENG) (SSL)  </span><br><span class="line"> --pass  &lt;pass&gt;  私钥密码 (SSL)  </span><br><span class="line"> --engine &lt;eng&gt;  加密引擎使用 (SSL). &quot;--engine list&quot; for list  </span><br><span class="line"> --cacert &lt;file&gt; CA证书 (SSL)  </span><br><span class="line"> --capath &lt;directory&gt; CA目录 (made using c_rehash) to verify peer against (SSL)  </span><br><span class="line"> --ciphers &lt;list&gt;  SSL密码  </span><br><span class="line"> --compressed    要求返回是压缩的形势 (using deflate or gzip)  </span><br><span class="line"> --connect-timeout &lt;seconds&gt; 设置最大请求时间  </span><br><span class="line"> --create-dirs   建立本地目录的目录层次结构  </span><br><span class="line"> --crlf          上传是把LF转变成CRLF  </span><br><span class="line"> -f/--fail          连接失败时不显示http错误  </span><br><span class="line"> --ftp-create-dirs 如果远程目录不存在, 创建远程目录  </span><br><span class="line"> --ftp-method [multicwd/nocwd/singlecwd] 控制CWD的使用  </span><br><span class="line"> --ftp-pasv      使用 PASV/EPSV 代替端口  </span><br><span class="line"> --ftp-skip-pasv-ip 使用PASV的时候,忽略该IP地址  </span><br><span class="line"> --ftp-ssl       尝试用 SSL/TLS 来进行ftp数据传输  </span><br><span class="line"> --ftp-ssl-reqd  要求用 SSL/TLS 来进行ftp数据传输  </span><br><span class="line"> -F/--form &lt;name=content&gt; 模拟http表单提交数据  </span><br><span class="line"> -form-string &lt;name=string&gt; 模拟http表单提交数据  </span><br><span class="line"> -g/--globoff 禁用网址序列和范围使用&#123;&#125;和[]  </span><br><span class="line"> -G/--get 以get的方式来发送数据  </span><br><span class="line"> -h/--help 帮助  </span><br><span class="line"> -H/--header &lt;line&gt;自定义头信息传递给服务器  </span><br><span class="line"> --ignore-content-length  忽略的HTTP头信息的长度  </span><br><span class="line"> -i/--include 输出时包括protocol头信息  </span><br><span class="line"> -I/--head  只显示文档信息  </span><br><span class="line"> 从文件中读取-j/--junk-session-cookies忽略会话Cookie  </span><br><span class="line"> - 界面&lt;interface&gt;指定网络接口/地址使用  </span><br><span class="line"> - krb4 &lt;级别&gt;启用与指定的安全级别krb4  </span><br><span class="line"> -j/--junk-session-cookies 读取文件进忽略session cookie  </span><br><span class="line"> --interface &lt;interface&gt; 使用指定网络接口/地址  </span><br><span class="line"> --krb4 &lt;level&gt;  使用指定安全级别的krb4  </span><br><span class="line"> -k/--insecure 允许不使用证书到SSL站点  </span><br><span class="line"> -K/--config  指定的配置文件读取  </span><br><span class="line"> -l/--list-only 列出ftp目录下的文件名称  </span><br><span class="line"> --limit-rate &lt;rate&gt; 设置传输速度  </span><br><span class="line"> --local-port&lt;NUM&gt; 强制使用本地端口号  </span><br><span class="line"> -m/--max-time &lt;seconds&gt; 设置最大传输时间  </span><br><span class="line"> --max-redirs &lt;num&gt; 设置最大读取的目录数  </span><br><span class="line"> --max-filesize &lt;bytes&gt; 设置最大下载的文件总量  </span><br><span class="line"> -M/--manual  显示全手动  </span><br><span class="line"> -n/--netrc 从netrc文件中读取用户名和密码  </span><br><span class="line"> --netrc-optional 使用 .netrc 或者 URL来覆盖-n  </span><br><span class="line"> --ntlm          使用 HTTP NTLM 身份验证  </span><br><span class="line"> -N/--no-buffer 禁用缓冲输出  </span><br><span class="line"> -o/--output 把输出写到该文件中  </span><br><span class="line"> -O/--remote-name 把输出写到该文件中, 保留远程文件的文件名  </span><br><span class="line"> -p/--proxytunnel   使用HTTP代理  </span><br><span class="line"> --proxy-anyauth 选择任一代理身份验证方法  </span><br><span class="line"> --proxy-basic   在代理上使用基本身份验证  </span><br><span class="line"> --proxy-digest  在代理上使用数字身份验证  </span><br><span class="line"> --proxy-ntlm    在代理上使用ntlm身份验证  </span><br><span class="line"> -P/--ftp-port &lt;address&gt; 使用端口地址, 而不是使用PASV  </span><br><span class="line"> -Q/--quote &lt;cmd&gt;文件传输前, 发送命令到服务器  </span><br><span class="line"> -r/--range &lt;range&gt;检索来自HTTP/1.1或FTP服务器字节范围  </span><br><span class="line"> --range-file 读取(SSL)的随机文件  </span><br><span class="line"> -R/--remote-time   在本地生成文件时, 保留远程文件时间  </span><br><span class="line"> --retry &lt;num&gt;   传输出现问题时, 重试的次数  </span><br><span class="line"> --retry-delay &lt;seconds&gt;  传输出现问题时, 设置重试间隔时间  </span><br><span class="line"> --retry-max-time &lt;seconds&gt; 传输出现问题时, 设置最大重试时间  </span><br><span class="line"> -s/--silent静音模式. 不输出任何东西  </span><br><span class="line"> -S/--show-error   显示错误  </span><br><span class="line"> --socks4 &lt;host[:port]&gt; 用socks4代理给定主机和端口  </span><br><span class="line"> --socks5 &lt;host[:port]&gt; 用socks5代理给定主机和端口  </span><br><span class="line"> --stderr &lt;file&gt;  </span><br><span class="line"> -t/--telnet-option &lt;OPT=val&gt; Telnet选项设置  </span><br><span class="line"> --trace &lt;file&gt;  对指定文件进行debug  </span><br><span class="line"> --trace-ascii &lt;file&gt; Like --跟踪但没有hex输出  </span><br><span class="line"> --trace-time    跟踪/详细输出时, 添加时间戳  </span><br><span class="line"> -T/--upload-file &lt;file&gt; 上传文件  </span><br><span class="line"> --url &lt;URL&gt;     Spet URL to work with  </span><br><span class="line"> -u/--user &lt;user[:password]&gt;设置服务器的用户和密码  </span><br><span class="line"> -U/--proxy-user &lt;user[:password]&gt;设置代理用户名和密码  </span><br><span class="line"> -v/--verbose  </span><br><span class="line"> -V/--version 显示版本信息  </span><br><span class="line"> -w/--write-out [format]什么输出完成后  </span><br><span class="line"> -x/--proxy &lt;host[:port]&gt;在给定的端口上使用HTTP代理  </span><br><span class="line"> -X/--request &lt;command&gt;指定什么命令  </span><br><span class="line"> -y/--speed-time 放弃限速所要的时间. 默认为30  </span><br><span class="line"> -Y/--speed-limit 停止传输速度的限制, 速度时间&apos;秒  </span><br><span class="line"> -z/--time-cond  传送时间设置  </span><br><span class="line"> -0/--http1.0  使用HTTP 1.0  </span><br><span class="line"> -1/--tlsv1  使用TLSv1(SSL)  </span><br><span class="line"> -2/--sslv2 使用SSLv2的(SSL)  </span><br><span class="line"> -3/--sslv3         使用的SSLv3(SSL)  </span><br><span class="line"> --3p-quote      like -Q for the source URL for 3rd party transfer  </span><br><span class="line"> --3p-url        使用url, 进行第三方传送  </span><br><span class="line"> --3p-user       使用用户名和密码, 进行第三方传送  </span><br><span class="line"> -4/--ipv4   使用IP4  </span><br><span class="line"> -6/--ipv6   使用IP6  </span><br><span class="line"> -#/--progress-bar 用进度条显示当前的传送状态</span><br></pre></td></tr></table></figure>
+<h2 id="二-curl-示例用法"><a href="#二-curl-示例用法" class="headerlink" title="二. curl 示例用法"></a>二. curl 示例用法</h2><ol>
+<li><p>抓取页面内容到一个文件中</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  curl -o home.html  http://blog.51yip.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-O 大写, url需要具体到某个文件, 用于抓取页面内容,支持正则表达式</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl -O http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg</span><br><span class="line">$ curl -O http://blog.51yip.com/wp-content/uploads/2010/[0-9][0-9]/aaaaa.jpg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>模拟表单信息,模拟登录, 保存cookie信息</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -c ./cookie_c.txt -F log=aaaa -F pwd=****** http://blog.51yip.com/wp-login.php</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>模拟表单信息,模拟登录,保存头信息</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$  curl -D ./cookie_D.txt -F log=aaaa -F pwd=****** http://blog.51yip.com/wp-login.php </span><br><span class="line"></span><br><span class="line">** -c 产生的cookie和 -C 产生的cookie是不一样的</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>断点续传, -C (大写)</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  curl -C -O http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>传送数据,最好使用登录页面测试,因为你传值过去后,curl回抓数据,你可以看到你传值有没有成功.</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -d log=aaaa  http://blog.51yip.com/wp-login.php</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示抓取错误,</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -f http://blog.51yip.com/asdf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>伪造IP来源,有的网站会判断,请求来源地址</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -e http://localhost http://blog.51yip.com/wp-login.php</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用代理访问http</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -x 24.10.28.84:32779 -o home.html http://blog.51yip.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较大的东西,分段下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -r 0-100 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg </span><br><span class="line">$ curl -r 100-200 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg </span><br><span class="line">$ curl -r 200-300 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg </span><br><span class="line">$ curl -r 300-400 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg </span><br><span class="line">$ cat img.part* &gt; img.jpg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不会显示下载进度信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -s -o aaa.jpg  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示下载进度条</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过ftp下载文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -u 用户名:密码 -O http://blog.51yip.com/demo/curtain/bbstudy_files/style.css</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line"></span><br><span class="line">$ curl -O ftp://用户名:密码@ip:port/demo/curtain/bbstudy_files/style.css</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过ftp上传</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -T test.sql ftp://用户名:密码@ip:port/demo/curtain/bbstudy_files/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动跟踪重定向</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl  -L -e  &apos;; auto&apos;  -o output.html http://cmsadmin.zyberwttest.cn/Login.aspx http://www.sina.cn/login</span><br><span class="line"></span><br><span class="line">    -e &apos;;auto&apos; 告诉它在跟踪重定向响应时传送Referer头信息. 这样做更加接近于真实的网页浏览器的行为.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动跳转:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L www.sina.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示请求头</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl -i www.sina.com      # 显示请求头和网页文件代码</span><br><span class="line">$ curl -I www.sina.com      # 只显示请求头.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示通信过程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v www.sina.com</span><br><span class="line"></span><br><span class="line"># 显示更详细信息</span><br><span class="line">$ curl --trace output.txt www.sina.com</span><br><span class="line">$ curl --trace-ascii output.txt www.sina.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发送表单信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># GET</span><br><span class="line">$ curl example.com/form.cgi?data=xxx</span><br><span class="line"></span><br><span class="line"># POST</span><br><span class="line">$ curl -X POST --data &quot;data=xxx&quot; example.com/form.cgi</span><br><span class="line"></span><br><span class="line"># POST : 编码数据</span><br><span class="line">$ curl -X POST --data-urlencode &quot;data=April 1&quot; example.com/form.cgi</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>文件上传</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">假如 表单如下所示:</span><br><span class="line"></span><br><span class="line">    &lt;form method=&quot;POST&quot; enctype=&apos;multipart/form-data&apos; action=&quot;upload.cgi&quot;&gt;</span><br><span class="line">        &lt;input type=file name=upload&gt;</span><br><span class="line">        &lt;input type=submit name=press value=&quot;OK&quot;&gt;</span><br><span class="line">　　 &lt;/form&gt;</span><br><span class="line"></span><br><span class="line">上传文件:</span><br><span class="line"></span><br><span class="line">    $ curl --form update=@localfilename --form press=OK example.com/upload.form</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加 Referer 字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --referer http://www.example.com http://www.example.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>User Agent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --user-agent &apos;[User Agent]&apos; [URL]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cookie</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 文本 cookie</span><br><span class="line">$ curl --cookie &quot;name=xxx&quot; www.example.com</span><br><span class="line"></span><br><span class="line"># 文件 cookie</span><br><span class="line">$ curl -c cookies http://example.com    # 保存 服务器 返回的 cookie 到 文件.</span><br><span class="line">$ curl -b cookies http://example.com    # 使用 cookies 文件作为 cookie 信息 进行后续的操作.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>增加 HTTP 头信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --header &quot;Content-Type:application/json&quot; http://example.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>HTTP 认证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --user name:password example.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检测网站连通性能: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ curl -o /dev/null -s -w %&#123;time_namelookup&#125;&apos;\n&apos;%&#123;time_connect&#125;&apos;\n&apos;%&#123;time_starttransfer&#125;&apos;\n&apos;%&#123;size_request&#125;&apos;\n&apos;%&#123;time_total&#125;&apos;\n&apos;  http://www.aaa.com</span><br><span class="line">    time_namelookup 域名解析时间</span><br><span class="line">    time_connect 连接时间</span><br><span class="line">    time_starttransfer 开始传输时间</span><br><span class="line">    size_request 请求文件大小</span><br><span class="line">    time_total 总时间</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>curl 指定 DNS 解析地址</p>
+<p>这种方式在调试接口时, 十分有用, 而无需修改本地 hosts.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 访问 baidu.com/info.php 时, 指向服务器 10.12.20.21</span><br><span class="line">$ curl -H &apos;Host:baidu.com&apos; http://10.12.20.21/info.php</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
-$ curl -O http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
-$ curl -O http://blog.51yip.com/wp-content/uploads/2010/[0-9][0-9]/aaaaa.jpg 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 模拟表单信息,模拟登录, 保存cookie信息</span><br></pre></td></tr></table></figure>
-
-$ curl -c ./cookie_c.txt -F log=aaaa -F pwd=****** http://blog.51yip.com/wp-login.php
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 模拟表单信息,模拟登录,保存头信息</span><br></pre></td></tr></table></figure>
-
-$  curl -D ./cookie_D.txt -F log=aaaa -F pwd=****** http://blog.51yip.com/wp-login.php 
-
-** -c 产生的cookie和 -C 产生的cookie是不一样的
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6. 断点续传, -C (大写)</span><br></pre></td></tr></table></figure>
-
-$  curl -C -O http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">7. 传送数据,最好使用登录页面测试,因为你传值过去后,curl回抓数据,你可以看到你传值有没有成功.</span><br></pre></td></tr></table></figure>
-
-$ curl -d log=aaaa  http://blog.51yip.com/wp-login.php  
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">8. 显示抓取错误,</span><br></pre></td></tr></table></figure>
-
-$ curl -f http://blog.51yip.com/asdf 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">9. 伪造IP来源,有的网站会判断,请求来源地址</span><br></pre></td></tr></table></figure>
-
-$ curl -e http://localhost http://blog.51yip.com/wp-login.php 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10. 使用代理访问http</span><br></pre></td></tr></table></figure>
-
-$ curl -x 24.10.28.84:32779 -o home.html http://blog.51yip.com  
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">11. 比较大的东西,分段下载</span><br></pre></td></tr></table></figure>
-
-$ curl -r 0-100 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg 
-$ curl -r 100-200 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg 
-$ curl -r 200-300 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg 
-$ curl -r 300-400 -o img.part1 http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg 
-$ cat img.part* &gt; img.jpg
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">12. 不会显示下载进度信息</span><br></pre></td></tr></table></figure>
-
-$ curl -s -o aaa.jpg  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">13. 显示下载进度条</span><br></pre></td></tr></table></figure>
-
-$ curl -# -O  http://blog.51yip.com/wp-content/uploads/2010/09/compare_varnish.jpg
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">14. 通过ftp下载文件</span><br></pre></td></tr></table></figure>
-
-$ curl -u 用户名:密码 -O http://blog.51yip.com/demo/curtain/bbstudy_files/style.css
-
-或
-
-$ curl -O ftp://用户名:密码@ip:port/demo/curtain/bbstudy_files/style.css 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">15. 通过ftp上传</span><br></pre></td></tr></table></figure>
-
-$ curl -T test.sql ftp://用户名:密码@ip:port/demo/curtain/bbstudy_files/ 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">16. 自动跟踪重定向</span><br></pre></td></tr></table></figure>
-
-$ curl  -L -e  &apos;; auto&apos;  -o output.html http://cmsadmin.zyberwttest.cn/Login.aspx http://www.sina.cn/login
-
-    -e &apos;;auto&apos; 告诉它在跟踪重定向响应时传送Referer头信息. 这样做更加接近于真实的网页浏览器的行为. 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">17. 自动跳转:</span><br></pre></td></tr></table></figure>
-
-$ curl -L www.sina.com
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">18. 显示请求头</span><br></pre></td></tr></table></figure>
-
-$ curl -i www.sina.com      # 显示请求头和网页文件代码
-$ curl -I www.sina.com      # 只显示请求头.
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">19. 显示通信过程</span><br></pre></td></tr></table></figure>
-
-$ curl -v www.sina.com
-
-# 显示更详细信息
-$ curl --trace output.txt www.sina.com
-$ curl --trace-ascii output.txt www.sina.com
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">20. 发送表单信息</span><br></pre></td></tr></table></figure>
-
-# GET
-$ curl example.com/form.cgi?data=xxx
-
-# POST
-$ curl -X POST --data &quot;data=xxx&quot; example.com/form.cgi
-
-# POST : 编码数据
-$ curl -X POST --data-urlencode &quot;data=April 1&quot; example.com/form.cgi
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">21. 文件上传</span><br></pre></td></tr></table></figure>
-
-假如 表单如下所示:
-
-    &lt;form method=&quot;POST&quot; enctype=&apos;multipart/form-data&apos; action=&quot;upload.cgi&quot;&gt;
-        &lt;input type=file name=upload&gt;
-        &lt;input type=submit name=press value=&quot;OK&quot;&gt;
-　　 &lt;/form&gt;
-
-上传文件:
-
-    $ curl --form update=@localfilename --form press=OK example.com/upload.form
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">22. 添加 Referer 字段</span><br></pre></td></tr></table></figure>
-
-$ curl --referer http://www.example.com http://www.example.com
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">23. User Agent</span><br></pre></td></tr></table></figure>
-
-$ curl --user-agent &apos;[User Agent]&apos; [URL]
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">24. cookie</span><br></pre></td></tr></table></figure>
-
-# 文本 cookie
-$ curl --cookie &quot;name=xxx&quot; www.example.com
-
-# 文件 cookie
-$ curl -c cookies http://example.com    # 保存 服务器 返回的 cookie 到 文件.
-$ curl -b cookies http://example.com    # 使用 cookies 文件作为 cookie 信息 进行后续的操作.
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">25. 增加 HTTP 头信息</span><br></pre></td></tr></table></figure>
-
-$ curl --header &quot;Content-Type:application/json&quot; http://example.com
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">26. HTTP 认证</span><br></pre></td></tr></table></figure>
-
-$ curl --user name:password example.com
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">27. 检测网站连通性能:</span><br></pre></td></tr></table></figure>
-
-$ curl -o /dev/null -s -w %{time_namelookup}&apos;\n&apos;%{time_connect}&apos;\n&apos;%{time_starttransfer}&apos;\n&apos;%{size_request}&apos;\n&apos;%{time_total}&apos;\n&apos;  http://www.aaa.com
-    time_namelookup 域名解析时间
-    time_connect 连接时间
-    time_starttransfer 开始传输时间
-    size_request 请求文件大小
-    time_total 总时间
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">28. curl 指定 DNS 解析地址</span><br><span class="line">    </span><br><span class="line">    这种方式在调试接口时, 十分有用, 而无需修改本地 hosts.</span><br></pre></td></tr></table></figure>
-
-# 访问 baidu.com/info.php 时, 指向服务器 10.12.20.21
-$ curl -H &apos;Host:baidu.com&apos; http://10.12.20.21/info.php
-```
-</code></pre>
       
     </div>
     
@@ -721,7 +680,7 @@ $ curl -H &apos;Host:baidu.com&apos; http://10.12.20.21/info.php
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-curl-命令行帮助"><span class="nav-text">1. curl 命令行帮助</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-curl-命令行帮助"><span class="nav-text">一. curl 命令行帮助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-curl-示例用法"><span class="nav-text">二. curl 示例用法</span></a></li></ol></div>
             
 
           </div>
