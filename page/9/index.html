@@ -312,6 +312,159 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/linux-Buffer-Cache-区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/15/linux-Buffer-Cache-区别/" itemprop="url">Buffer Cache 区别</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T18:29:45+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机原理与操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机原理与操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          buffer 是磁盘缓存, 缓存的是连续的blockcache 文件缓存, 缓存的是组成文件的非连续的block, 
+示例:某个磁盘中的 block 编号 1 - 10,
+buffer 缓存: 依据磁盘的局部性原理, 其缓存的是 从 编号5-10 的block;
+cache 缓存: 某个文件存放该磁盘上, 并且占据所有编号为奇数的block.
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/15/linux-Buffer-Cache-区别/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/利用redis生成分布式锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -459,7 +612,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/redis-汇总/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/backend-redis-汇总/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -478,7 +631,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/15/redis-汇总/" itemprop="url">redis 汇总</a></h2>
+                <a class="post-title-link" href="/2018/03/15/backend-redis-汇总/" itemprop="url">redis 汇总</a></h2>
         
 
         <div class="post-meta">
@@ -574,7 +727,7 @@ $ yum groupinstall &quot;Develop
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/redis-汇总/#more" rel="contents">
+            <a class="btn" href="/2018/03/15/backend-redis-汇总/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -667,6 +820,28 @@ $ yum groupinstall &quot;Develop
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构与算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -903,7 +1078,7 @@ $ yum groupinstall &quot;Develop
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/OS-Linux-fpm-打包/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/tools-OS-Linux-fpm-打包/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -922,7 +1097,7 @@ $ yum groupinstall &quot;Develop
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/15/OS-Linux-fpm-打包/" itemprop="url">fpm 制作 rpm 包</a></h2>
+                <a class="post-title-link" href="/2018/03/15/tools-OS-Linux-fpm-打包/" itemprop="url">fpm 制作 rpm 包</a></h2>
         
 
         <div class="post-meta">
@@ -999,7 +1174,7 @@ $ yum groupinstall &quot;Develop
           <p>使用 fpm 打包 rpm 包.<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/OS-Linux-fpm-打包/#more" rel="contents">
+            <a class="btn" href="/2018/03/15/tools-OS-Linux-fpm-打包/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1492,7 +1667,7 @@ $ yum groupinstall &quot;Develop
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/Scrapy-命令行工具/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/crawler-Scrapy-命令行工具/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -1511,7 +1686,7 @@ $ yum groupinstall &quot;Develop
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/15/Scrapy-命令行工具/" itemprop="url">Scrapy-命令行工具</a></h2>
+                <a class="post-title-link" href="/2018/03/15/crawler-Scrapy-命令行工具/" itemprop="url">Scrapy-命令行工具</a></h2>
         
 
         <div class="post-meta">
@@ -1588,220 +1763,7 @@ $ yum groupinstall &quot;Develop
           <p>Scrapy 命令行工具使用汇总.<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/Scrapy-命令行工具/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/Scrapy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Pyfdtic">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pyfdtic's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/15/Scrapy/" itemprop="url">Scrapy</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T16:45:24+08:00">
-                2018-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-一. Scrapy 架构组件
-
-
-P13 组件
-描述
-类型
-
-
-
-
-ENGINE
-引擎,
-
-
-
-SCHEDULER
-调度器,
-
-
-
-DOWNLOADER
-下载器,
-
-
-
-SPIDER
-爬虫,
-
-
-
-MIDDLEWARE
-中间件,
-
-
-
-ITEM PIPELINE
-数据管道,
-
-
-
-框架中的数据流
-
-
-
-P14 对象
-描述
-
-
-
-
-REQUEST
-Scrapy 中的 HTTP 请求对象
-
-
-RESPONSE
-Scrapy 中的 HTTP 响应对象
-
-
-ITEM
-从页面中爬去的一项数据
-
-
-
-Re
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/15/Scrapy/#more" rel="contents">
+            <a class="btn" href="/2018/03/15/crawler-Scrapy-命令行工具/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1843,7 +1805,7 @@ Re
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1889,7 +1851,7 @@ Re
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1900,7 +1862,7 @@ Re
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1911,7 +1873,7 @@ Re
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">89</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
