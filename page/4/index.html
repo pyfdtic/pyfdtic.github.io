@@ -312,7 +312,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-glob/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-signal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -331,7 +331,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-glob/" itemprop="url">PyStdLib--glob</a></h2>
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-signal/" itemprop="url">PyStdLib--signal</a></h2>
         
 
         <div class="post-meta">
@@ -406,18 +406,163 @@
       
         
           
-          globglob.glob()import glob
-l = glob.glob(&quot;/root/*&quot;)    # 返回列表
-print l     # 输出如下
-[&apos;/root/databases&apos;,
- &apos;/root/install.log&apos;,
- &apos;/root/anaconda-ks.cfg&apos;,
- &apos;/root/install&apos;,
- &apos;/root/install.log.syslog&a
+          signal 的核心是, 设置信号处理函数.
+预定义信号signal.SIG_DFL   signal.SIGBUS    signal.SIGFPE    signal.SIGIO     signal.SIGPOLL   signal.SIGRTMAX  signal.SIGSYS    signal.SIGTTIN   signal.SIGUSR2   signal.SIGXFSZ   
+signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP    
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-glob/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/PyStdLib-signal/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-threading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-threading/" itemprop="url">PyStdLib--threading</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:28:47+08:00">
+                2018-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          threading : 提高对网络端口的读写效率.123threading.Thread.start()   执行线程操作threading.Thread.run()     执行线程操作threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似.
+下面对象用于处理多线程同步, 对象一旦被建立,可以被多个线程共享, 并根据情况阻塞某些进程.123456789101112131415161
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/19/PyStdLib-threading/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1714,162 +1859,6 @@ city=(Nanjing Beijing M
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/csvn-安装记录/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Pyfdtic">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pyfdtic's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/19/csvn-安装记录/" itemprop="url">csvn 安装记录</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T16:12:04+08:00">
-                2018-03-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Tools/" itemprop="url" rel="index">
-                    <span itemprop="name">Tools</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          1. 安装步骤如下# 确保 java 已安装
-$ java -version
-$ echo $JAVA_HOME
-
-# 解压二进制包
-$ tar xf CollabNetSubversionEdge-5.2.0_linux-x86_64.tar.gz -C /usr/local
-
-# Install the application so that it will start antomatically when the server restarts. This command generall
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/csvn-安装记录/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1920,7 +1909,7 @@ $ tar xf CollabNetSubversionEdge-5.2.0_linux-x86_64.tar.gz -C /usr/local
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="multiprocessing 与 threading.Thread 类似  multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.multiprocessing.Process.start() multiprocessing.Process.run() multiprocessing.Process.join()   Process.PID 保">
+<meta name="description" content="multiprocessing 与 threading.Thread 类似  multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.12345multiprocessing.Process.start()multiprocessing.Process.run()multiprocessing.Process.join() Process.PID">
 <meta name="keywords" content="python 标准库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PyStdLib--multiprocessing">
 <meta property="og:url" content="http://www.pyfdtic.com/2018/03/19/PyStdLib-multiprocessing/index.html">
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
-<meta property="og:description" content="multiprocessing 与 threading.Thread 类似  multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.multiprocessing.Process.start() multiprocessing.Process.run() multiprocessing.Process.join()   Process.PID 保">
+<meta property="og:description" content="multiprocessing 与 threading.Thread 类似  multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.12345multiprocessing.Process.start()multiprocessing.Process.run()multiprocessing.Process.join() Process.PID">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-20T00:25:11.000Z">
+<meta property="og:updated_time" content="2018-12-17T15:10:19.148Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PyStdLib--multiprocessing">
-<meta name="twitter:description" content="multiprocessing 与 threading.Thread 类似  multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.multiprocessing.Process.start() multiprocessing.Process.run() multiprocessing.Process.join()   Process.PID 保">
+<meta name="twitter:description" content="multiprocessing 与 threading.Thread 类似  multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.12345multiprocessing.Process.start()multiprocessing.Process.run()multiprocessing.Process.join() Process.PID">
 
 
 
@@ -412,12 +412,8 @@
 
       
         <p><strong>multiprocessing 与 threading.Thread 类似</strong> </p>
-<h2 id="multiprocessing-Process-创建进程-该进程可以运行用-python-编写的函数"><a href="#multiprocessing-Process-创建进程-该进程可以运行用-python-编写的函数" class="headerlink" title="multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数."></a>multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.</h2><pre><code>multiprocessing.Process.start()
-multiprocessing.Process.run()
-multiprocessing.Process.join() 
-
-Process.PID 保存有 PID, 如果进程还没有 start() , 则 PID 为 None.
-</code></pre><p><strong>注意</strong></p>
+<h2 id="multiprocessing-Process-创建进程-该进程可以运行用-python-编写的函数"><a href="#multiprocessing-Process-创建进程-该进程可以运行用-python-编写的函数" class="headerlink" title="multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数."></a>multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">multiprocessing.Process.start()</span><br><span class="line">multiprocessing.Process.run()</span><br><span class="line">multiprocessing.Process.join() </span><br><span class="line"></span><br><span class="line">Process.PID 保存有 PID, 如果进程还没有 start() , 则 PID 为 None.</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong></p>
 <ul>
 <li><p>在 UNIX 平台上, 当某一个进程终止之后, 该进程需要被其父进程调用 wait , 否则进程就成为 僵尸进程. 所以, 需要对每个 Process 对象调用 join() 方法(等同于 wait), 对于多线程来说, 由于只有一个进程, 所以不存在次必要性.</p>
 </li>
@@ -426,228 +422,17 @@ Process.PID 保存有 PID, 如果进程还没有 start() , 则 PID 为 None.
 <li><p>多进程应该避免共享资源. 在多线程中, 我们可以比较容易的共享资源, 比如使用全局变量或传递参数. 在多进程情况下, 由于每个进程有自己独立的内存空间, 以上方法并不合适. 此时我们可以通过共享内存和 Manager 的方法来共享资源. 但这样做提高了程序的复杂度, 并因为同步的需要而降低了程序的效率.</p>
 </li>
 </ul>
-<p>######示例代码</p>
-<pre><code>#!/usr/local/bin/env python
-#
-
-import os
-import threading
-import multiprocessing
-
-def worker(sign,lock):
-    lock.acquire()
-    print(sign,os.getpid())
-    lock.release()
-
-print(&quot;main:&quot;,os.getpid())
-
-# multi-thread
-record=[]
-
-lock = threading.Lock()
-for i in range(5):
-    thread = threading.Thread(target=worker,args=(&apos;thread&apos;,lock))
-    thread.start()
-    record.append(thread)
-
-for thread in record:
-    thread.join()
-
-# multi-process
-record = []
-lock = multiprocessing.Lock()
-
-for i in range(5):
-    process = multiprocessing.Process(target=worker,args=(&apos;process&apos;,lock))
-    process.start()
-    record.append(process)
-
-for process in record:
-    process.join()
-
-输出 : 所有 Thread 的 PID 都与主程序相同, 而每个 Process都有一个不同的 PID.
-
-    (&apos;main:&apos;, 105748)
-    (&apos;thread&apos;, 105748)
-    (&apos;thread&apos;, 105748)
-    (&apos;thread&apos;, 105748)
-    (&apos;thread&apos;, 105748)
-    (&apos;thread&apos;, 105748)
-    (&apos;process&apos;, 105754)
-    (&apos;process&apos;, 105756)
-    (&apos;process&apos;, 105758)
-    (&apos;process&apos;, 105755)
-    (&apos;process&apos;, 105757)    
-</code></pre><p>##multiprocessing.Lock</p>
-<p>##multiprocessing.Event</p>
-<p>##multiprocessing.Semaphore</p>
-<p>##multiprocessing.Condition </p>
-<p>##multiprocessing.Pipe()<br>    multiprocessing.Pipe()  # 默认创建双向管道, 该对象返回一个包含两个元素的表, 每个元素代表 Pipe 的一端(Connection对象). 可以在一端调用 send() 方法, 另一端调用 recv() 方法, 实现通信.<br>    multiprocessing.Pipe(duplex=False)    # 创建单向管道<br>    multiprocessing.Pipe().send()<br>    multiprocessing.Pipe().recv()</p>
-<p>######示例代码:</p>
-<pre><code>#!/usr/local/bin/env python
-#
-
-import multiprocessing as mul
-
-def proc1(pipe):
-    pipe.send(&apos;hello&apos;)
-    print(&apos;proc1 rec:&apos;,pipe.recv())
-
-def proc2(pipe):
-    print(&apos;proc2 rec:&apos;,pipe.recv())
-    pipe.send(&apos;hello, too&apos;)
-
-# Build a pipe
-pipe = mul.Pipe()
-
-# Pass an end of the pipe to process 1
-p1   = mul.Process(target=proc1, args=(pipe[0],))
-# Pass the other end of the pipe to process 2
-p2   = mul.Process(target=proc2, args=(pipe[1],))
-p1.start()
-p2.start()
-p1.join()
-p2.join()    
-
-输出:
-    (&apos;proc2 rec:&apos;, &apos;hello&apos;)
-    (&apos;proc1 rec:&apos;, &apos;hello ,too!&apos;)
-</code></pre><p>##multiprocessing.Queue 是先进先出的结构. Queue 允许多个进程放入, 多个进程从队列取出对象. </p>
-<pre><code>mutiprocessing.Queue(maxsize)   创建队列, maxsize 表示队列中可以存放对象的最大数量.
-
-mutiprocessing.Queue(maxsize).put()
-mutiprocessing.Queue(maxsize).get()
-</code></pre><p>######示例代码</p>
-<pre><code>#!/usr/local/bin/env python
-#
-
-
-import os
-import multiprocessing
-import time
-
-# input worker
-def inputQ(queue):
-    info = str(os.getpid()) + &apos;(put):&apos; + str(time.time())
-    queue.put(info)
-
-# output worker
-def outputQ(queue,lock):
-    info = queue.get()
-    lock.acquire()
-    print (str(os.getpid()) + &apos;(get):&apos; + info)
-    lock.release()
-
-# Main
-record1 = []   # store input processes
-record2 = []   # store output processes
-lock  = multiprocessing.Lock()    # To prevent messy print
-queue = multiprocessing.Queue(3)
-
-# input processes
-for i in range(10):
-    process = multiprocessing.Process(target=inputQ,args=(queue,))
-    process.start()
-    record1.append(process)
-
-# output processes
-for i in range(10):
-    process = multiprocessing.Process(target=outputQ,args=(queue,lock))
-    process.start()
-    record2.append(process)
-
-for p in record1:
-    p.join()
-
-queue.close()  # No more object will come, close the queue
-
-for p in record2:
-    p.join()
-
-输出:
-    105880(get):105865(put):1488439837.07
-    105883(get):105866(put):1488439837.07
-    105879(get):105867(put):1488439837.08
-    105884(get):105870(put):1488439837.08
-    105877(get):105873(put):1488439837.08
-    105885(get):105871(put):1488439837.08
-    105886(get):105874(put):1488439837.09
-    105878(get):105872(put):1488439837.08
-    105881(get):105868(put):1488439837.08
-    105887(get):105876(put):1488439837.09
-</code></pre><p>##multiprocessing.Pool(num)   # num 表示创建的进程数.</p>
-<pre><code>multiprocessing.Pool(num)       # 创建进程池, 
-multiprocessing.Pool(num).map()     # 与 map() 函数类似.
-multiprocessing.Pool(num).apply_async(func,args)   # 从进程池中取出一个进程执行 func, args 为 func 的参数. 他将返回一个 AsyncResult 的对象, 可以对该对象调用 get() 方法, 获取结果.
-multiprocessing.Pool(num).apply_async(func,args).get()
-multiprocessing.Pool(num).close()   # 进程池不再创建新的进程
-multiprocessing.Pool(num).join()    # wait 进程池的全部进程, 必须对 Pool 先调用 close() 方法, 才能 join.
-</code></pre><p>######示例代码:</p>
-<pre><code>import multiprocessing as mul
-
-def f(x):
-    return x**2
-
-pool = mul.Pool(5)
-rel  = pool.map(f,[1,2,3,4,5,6,7,8,9,10])
-print(rel)
-
-输出:
-    [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
-</code></pre><p>##共享内存</p>
-<pre><code>multiprocessing.Value(key,value)    # 双精度数数字
-multiprocessing.Array(key,value_list)   # 数组
-</code></pre><h6 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h6><pre><code>import multiprocessing
-
-def f(n, a):
-    n.value   = 3.14
-    a[0]      = 5
-
-num   = multiprocessing.Value(&apos;d&apos;, 0.0)
-arr   = multiprocessing.Array(&apos;i&apos;, range(10))
-
-p = multiprocessing.Process(target=f, args=(num, arr))
-p.start()
-p.join()
-
-print num.value
-print arr[:]
-
-输出:
-    3.14
-    [5, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-</code></pre><h2 id="Manager"><a href="#Manager" class="headerlink" title="Manager"></a>Manager</h2><pre><code>s = multiprocessing.Manager()
-
-s.address          s.dict             s.list             s.register        s.Value            
-s.Array            s.Event            s.Lock             s.RLock                               
-s.BoundedSemaphore s.get_server       s.Namespace        s.Semaphore                           
-s.Condition        s.join             s.Pool             s.shutdown                            
-s.connect          s.JoinableQueue    s.Queue            s.start
-</code></pre><h6 id="代码示例-1"><a href="#代码示例-1" class="headerlink" title="代码示例"></a>代码示例</h6><pre><code>import multiprocessing
-
-def f(x, arr, l):
-    x.value = 3.14
-    arr[0] = 5
-    l.append(&apos;Hello&apos;)
-
-server = multiprocessing.Manager()
-x    = server.Value(&apos;d&apos;, 0.0)
-arr  = server.Array(&apos;i&apos;, range(10))
-l    = server.list()
-
-proc = multiprocessing.Process(target=f, args=(x, arr, l))
-proc.start()
-proc.join()
-
-print(x.value)
-print(arr)
-print(l)
-
-输出结果:
-    3.14
-    array(&apos;i&apos;, [5, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-    [&apos;Hello&apos;]
-</code></pre>
+<h3 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/local/bin/env python</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">import threading</span><br><span class="line">import multiprocessing</span><br><span class="line"></span><br><span class="line">def worker(sign,lock):</span><br><span class="line">    lock.acquire()</span><br><span class="line">    print(sign,os.getpid())</span><br><span class="line">    lock.release()</span><br><span class="line"></span><br><span class="line">print(&quot;main:&quot;,os.getpid())</span><br><span class="line"></span><br><span class="line"># multi-thread</span><br><span class="line">record=[]</span><br><span class="line"></span><br><span class="line">lock = threading.Lock()</span><br><span class="line">for i in range(5):</span><br><span class="line">    thread = threading.Thread(target=worker,args=(&apos;thread&apos;,lock))</span><br><span class="line">    thread.start()</span><br><span class="line">    record.append(thread)</span><br><span class="line"></span><br><span class="line">for thread in record:</span><br><span class="line">    thread.join()</span><br><span class="line"></span><br><span class="line"># multi-process</span><br><span class="line">record = []</span><br><span class="line">lock = multiprocessing.Lock()</span><br><span class="line"></span><br><span class="line">for i in range(5):</span><br><span class="line">    process = multiprocessing.Process(target=worker,args=(&apos;process&apos;,lock))</span><br><span class="line">    process.start()</span><br><span class="line">    record.append(process)</span><br><span class="line"></span><br><span class="line">for process in record:</span><br><span class="line">    process.join()</span><br><span class="line"></span><br><span class="line">输出 : 所有 Thread 的 PID 都与主程序相同, 而每个 Process都有一个不同的 PID.</span><br><span class="line"></span><br><span class="line">    (&apos;main:&apos;, 105748)</span><br><span class="line">    (&apos;thread&apos;, 105748)</span><br><span class="line">    (&apos;thread&apos;, 105748)</span><br><span class="line">    (&apos;thread&apos;, 105748)</span><br><span class="line">    (&apos;thread&apos;, 105748)</span><br><span class="line">    (&apos;thread&apos;, 105748)</span><br><span class="line">    (&apos;process&apos;, 105754)</span><br><span class="line">    (&apos;process&apos;, 105756)</span><br><span class="line">    (&apos;process&apos;, 105758)</span><br><span class="line">    (&apos;process&apos;, 105755)</span><br><span class="line">    (&apos;process&apos;, 105757)</span><br></pre></td></tr></table></figure>
+<h2 id="multiprocessing-Lock"><a href="#multiprocessing-Lock" class="headerlink" title="multiprocessing.Lock"></a>multiprocessing.Lock</h2><h2 id="multiprocessing-Event"><a href="#multiprocessing-Event" class="headerlink" title="multiprocessing.Event"></a>multiprocessing.Event</h2><h2 id="multiprocessing-Semaphore"><a href="#multiprocessing-Semaphore" class="headerlink" title="multiprocessing.Semaphore"></a>multiprocessing.Semaphore</h2><h2 id="multiprocessing-Condition"><a href="#multiprocessing-Condition" class="headerlink" title="multiprocessing.Condition"></a>multiprocessing.Condition</h2><h2 id="multiprocessing-Pipe"><a href="#multiprocessing-Pipe" class="headerlink" title="multiprocessing.Pipe()"></a>multiprocessing.Pipe()</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">multiprocessing.Pipe()  # 默认创建双向管道, 该对象返回一个包含两个元素的表, 每个元素代表 Pipe 的一端(Connection对象). 可以在一端调用 send() 方法, 另一端调用 recv() 方法, 实现通信.</span><br><span class="line">multiprocessing.Pipe(duplex=False)    # 创建单向管道</span><br><span class="line">multiprocessing.Pipe().send()</span><br><span class="line">multiprocessing.Pipe().recv()</span><br></pre></td></tr></table></figure>
+<h3 id="示例代码-1"><a href="#示例代码-1" class="headerlink" title="示例代码:"></a>示例代码:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/local/bin/env python</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line">import multiprocessing as mul</span><br><span class="line"></span><br><span class="line">def proc1(pipe):</span><br><span class="line">    pipe.send(&apos;hello&apos;)</span><br><span class="line">    print(&apos;proc1 rec:&apos;,pipe.recv())</span><br><span class="line"></span><br><span class="line">def proc2(pipe):</span><br><span class="line">    print(&apos;proc2 rec:&apos;,pipe.recv())</span><br><span class="line">    pipe.send(&apos;hello, too&apos;)</span><br><span class="line"></span><br><span class="line"># Build a pipe</span><br><span class="line">pipe = mul.Pipe()</span><br><span class="line"></span><br><span class="line"># Pass an end of the pipe to process 1</span><br><span class="line">p1   = mul.Process(target=proc1, args=(pipe[0],))</span><br><span class="line"># Pass the other end of the pipe to process 2</span><br><span class="line">p2   = mul.Process(target=proc2, args=(pipe[1],))</span><br><span class="line">p1.start()</span><br><span class="line">p2.start()</span><br><span class="line">p1.join()</span><br><span class="line">p2.join()    </span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">    (&apos;proc2 rec:&apos;, &apos;hello&apos;)</span><br><span class="line">    (&apos;proc1 rec:&apos;, &apos;hello ,too!&apos;)</span><br></pre></td></tr></table></figure>
+<h2 id="multiprocessing-Queue-是先进先出的结构-Queue-允许多个进程放入-多个进程从队列取出对象"><a href="#multiprocessing-Queue-是先进先出的结构-Queue-允许多个进程放入-多个进程从队列取出对象" class="headerlink" title="multiprocessing.Queue 是先进先出的结构. Queue 允许多个进程放入, 多个进程从队列取出对象."></a>multiprocessing.Queue 是先进先出的结构. Queue 允许多个进程放入, 多个进程从队列取出对象.</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mutiprocessing.Queue(maxsize)   创建队列, maxsize 表示队列中可以存放对象的最大数量.</span><br><span class="line"></span><br><span class="line">mutiprocessing.Queue(maxsize).put()</span><br><span class="line">mutiprocessing.Queue(maxsize).get()</span><br></pre></td></tr></table></figure>
+<h3 id="示例代码-2"><a href="#示例代码-2" class="headerlink" title="示例代码"></a>示例代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/local/bin/env python</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">import multiprocessing</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line"># input worker</span><br><span class="line">def inputQ(queue):</span><br><span class="line">    info = str(os.getpid()) + &apos;(put):&apos; + str(time.time())</span><br><span class="line">    queue.put(info)</span><br><span class="line"></span><br><span class="line"># output worker</span><br><span class="line">def outputQ(queue,lock):</span><br><span class="line">    info = queue.get()</span><br><span class="line">    lock.acquire()</span><br><span class="line">    print (str(os.getpid()) + &apos;(get):&apos; + info)</span><br><span class="line">    lock.release()</span><br><span class="line"></span><br><span class="line"># Main</span><br><span class="line">record1 = []   # store input processes</span><br><span class="line">record2 = []   # store output processes</span><br><span class="line">lock  = multiprocessing.Lock()    # To prevent messy print</span><br><span class="line">queue = multiprocessing.Queue(3)</span><br><span class="line"></span><br><span class="line"># input processes</span><br><span class="line">for i in range(10):</span><br><span class="line">    process = multiprocessing.Process(target=inputQ,args=(queue,))</span><br><span class="line">    process.start()</span><br><span class="line">    record1.append(process)</span><br><span class="line"></span><br><span class="line"># output processes</span><br><span class="line">for i in range(10):</span><br><span class="line">    process = multiprocessing.Process(target=outputQ,args=(queue,lock))</span><br><span class="line">    process.start()</span><br><span class="line">    record2.append(process)</span><br><span class="line"></span><br><span class="line">for p in record1:</span><br><span class="line">    p.join()</span><br><span class="line"></span><br><span class="line">queue.close()  # No more object will come, close the queue</span><br><span class="line"></span><br><span class="line">for p in record2:</span><br><span class="line">    p.join()</span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">    105880(get):105865(put):1488439837.07</span><br><span class="line">    105883(get):105866(put):1488439837.07</span><br><span class="line">    105879(get):105867(put):1488439837.08</span><br><span class="line">    105884(get):105870(put):1488439837.08</span><br><span class="line">    105877(get):105873(put):1488439837.08</span><br><span class="line">    105885(get):105871(put):1488439837.08</span><br><span class="line">    105886(get):105874(put):1488439837.09</span><br><span class="line">    105878(get):105872(put):1488439837.08</span><br><span class="line">    105881(get):105868(put):1488439837.08</span><br><span class="line">    105887(get):105876(put):1488439837.09</span><br></pre></td></tr></table></figure>
+<h2 id="multiprocessing-Pool-num-num-表示创建的进程数"><a href="#multiprocessing-Pool-num-num-表示创建的进程数" class="headerlink" title="multiprocessing.Pool(num)   # num 表示创建的进程数."></a>multiprocessing.Pool(num)   # num 表示创建的进程数.</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">multiprocessing.Pool(num)       # 创建进程池, </span><br><span class="line">multiprocessing.Pool(num).map()     # 与 map() 函数类似.</span><br><span class="line">multiprocessing.Pool(num).apply_async(func,args)   # 从进程池中取出一个进程执行 func, args 为 func 的参数. 他将返回一个 AsyncResult 的对象, 可以对该对象调用 get() 方法, 获取结果.</span><br><span class="line">multiprocessing.Pool(num).apply_async(func,args).get()</span><br><span class="line">multiprocessing.Pool(num).close()   # 进程池不再创建新的进程</span><br><span class="line">multiprocessing.Pool(num).join()    # wait 进程池的全部进程, 必须对 Pool 先调用 close() 方法, 才能 join.</span><br></pre></td></tr></table></figure>
+<h3 id="示例代码-3"><a href="#示例代码-3" class="headerlink" title="示例代码:"></a>示例代码:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import multiprocessing as mul</span><br><span class="line"></span><br><span class="line">def f(x):</span><br><span class="line">    return x**2</span><br><span class="line"></span><br><span class="line">pool = mul.Pool(5)</span><br><span class="line">rel  = pool.map(f,[1,2,3,4,5,6,7,8,9,10])</span><br><span class="line">print(rel)</span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">    [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]</span><br></pre></td></tr></table></figure>
+<h2 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">multiprocessing.Value(key,value)    # 双精度数数字</span><br><span class="line">multiprocessing.Array(key,value_list)   # 数组</span><br></pre></td></tr></table></figure>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import multiprocessing</span><br><span class="line"></span><br><span class="line">def f(n, a):</span><br><span class="line">    n.value   = 3.14</span><br><span class="line">    a[0]      = 5</span><br><span class="line"></span><br><span class="line">num   = multiprocessing.Value(&apos;d&apos;, 0.0)</span><br><span class="line">arr   = multiprocessing.Array(&apos;i&apos;, range(10))</span><br><span class="line"></span><br><span class="line">p = multiprocessing.Process(target=f, args=(num, arr))</span><br><span class="line">p.start()</span><br><span class="line">p.join()</span><br><span class="line"></span><br><span class="line">print num.value</span><br><span class="line">print arr[:]</span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">    3.14</span><br><span class="line">    [5, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br></pre></td></tr></table></figure>
+<h2 id="Manager"><a href="#Manager" class="headerlink" title="Manager"></a>Manager</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s = multiprocessing.Manager()</span><br><span class="line"></span><br><span class="line">s.address          s.dict             s.list             s.register        s.Value            </span><br><span class="line">s.Array            s.Event            s.Lock             s.RLock                               </span><br><span class="line">s.BoundedSemaphore s.get_server       s.Namespace        s.Semaphore                           </span><br><span class="line">s.Condition        s.join             s.Pool             s.shutdown                            </span><br><span class="line">s.connect          s.JoinableQueue    s.Queue            s.start</span><br></pre></td></tr></table></figure>
+<h3 id="代码示例-1"><a href="#代码示例-1" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import multiprocessing</span><br><span class="line"></span><br><span class="line">def f(x, arr, l):</span><br><span class="line">    x.value = 3.14</span><br><span class="line">    arr[0] = 5</span><br><span class="line">    l.append(&apos;Hello&apos;)</span><br><span class="line"></span><br><span class="line">server = multiprocessing.Manager()</span><br><span class="line">x    = server.Value(&apos;d&apos;, 0.0)</span><br><span class="line">arr  = server.Array(&apos;i&apos;, range(10))</span><br><span class="line">l    = server.list()</span><br><span class="line"></span><br><span class="line">proc = multiprocessing.Process(target=f, args=(x, arr, l))</span><br><span class="line">proc.start()</span><br><span class="line">proc.join()</span><br><span class="line"></span><br><span class="line">print(x.value)</span><br><span class="line">print(arr)</span><br><span class="line">print(l)</span><br><span class="line"></span><br><span class="line">输出结果:</span><br><span class="line">    3.14</span><br><span class="line">    array(&apos;i&apos;, [5, 1, 2, 3, 4, 5, 6, 7, 8, 9])</span><br><span class="line">    [&apos;Hello&apos;]</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -677,8 +462,8 @@ print(l)
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/19/PyStdLib-shutil/" rel="next" title="PyStdLib--shutil">
-                <i class="fa fa-chevron-left"></i> PyStdLib--shutil
+              <a href="/2018/03/19/PyStdLib-subprocess/" rel="next" title="PyStdLib--subprocess">
+                <i class="fa fa-chevron-left"></i> PyStdLib--subprocess
               </a>
             
           </div>
@@ -766,7 +551,7 @@ print(l)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -831,7 +616,7 @@ print(l)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Process-创建进程-该进程可以运行用-python-编写的函数"><span class="nav-text">multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码示例"><span class="nav-text">代码示例</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Manager"><span class="nav-text">Manager</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#代码示例-1"><span class="nav-text">代码示例</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Process-创建进程-该进程可以运行用-python-编写的函数"><span class="nav-text">multiprocessing.Process  创建进程, 该进程可以运行用 python 编写的函数.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例代码"><span class="nav-text">示例代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Lock"><span class="nav-text">multiprocessing.Lock</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Event"><span class="nav-text">multiprocessing.Event</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Semaphore"><span class="nav-text">multiprocessing.Semaphore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Condition"><span class="nav-text">multiprocessing.Condition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Pipe"><span class="nav-text">multiprocessing.Pipe()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例代码-1"><span class="nav-text">示例代码:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Queue-是先进先出的结构-Queue-允许多个进程放入-多个进程从队列取出对象"><span class="nav-text">multiprocessing.Queue 是先进先出的结构. Queue 允许多个进程放入, 多个进程从队列取出对象.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例代码-2"><span class="nav-text">示例代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing-Pool-num-num-表示创建的进程数"><span class="nav-text">multiprocessing.Pool(num)   # num 表示创建的进程数.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例代码-3"><span class="nav-text">示例代码:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享内存"><span class="nav-text">共享内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码示例"><span class="nav-text">代码示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Manager"><span class="nav-text">Manager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码示例-1"><span class="nav-text">代码示例</span></a></li></ol></li></ol></div>
             
 
           </div>

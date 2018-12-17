@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="threading : 提高对网络端口的读写效率.threading.Thread.start()   执行线程操作 threading.Thread.run()     执行线程操作 threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似. 下面对象用于处理多线程同步, 对象一旦被建">
+<meta name="description" content="threading : 提高对网络端口的读写效率.123threading.Thread.start()   执行线程操作threading.Thread.run()     执行线程操作threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似. 下面对象用于处理多线程同步, 对象一旦被">
 <meta name="keywords" content="python 标准库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PyStdLib--threading">
 <meta property="og:url" content="http://www.pyfdtic.com/2018/03/19/PyStdLib-threading/index.html">
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
-<meta property="og:description" content="threading : 提高对网络端口的读写效率.threading.Thread.start()   执行线程操作 threading.Thread.run()     执行线程操作 threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似. 下面对象用于处理多线程同步, 对象一旦被建">
+<meta property="og:description" content="threading : 提高对网络端口的读写效率.123threading.Thread.start()   执行线程操作threading.Thread.run()     执行线程操作threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似. 下面对象用于处理多线程同步, 对象一旦被">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-20T00:25:11.000Z">
+<meta property="og:updated_time" content="2018-12-17T15:10:19.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PyStdLib--threading">
-<meta name="twitter:description" content="threading : 提高对网络端口的读写效率.threading.Thread.start()   执行线程操作 threading.Thread.run()     执行线程操作 threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似. 下面对象用于处理多线程同步, 对象一旦被建">
+<meta name="twitter:description" content="threading : 提高对网络端口的读写效率.123threading.Thread.start()   执行线程操作threading.Thread.run()     执行线程操作threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似. 下面对象用于处理多线程同步, 对象一旦被">
 
 
 
@@ -411,61 +411,10 @@
       
 
       
-        <h1 id="threading-提高对网络端口的读写效率"><a href="#threading-提高对网络端口的读写效率" class="headerlink" title="threading : 提高对网络端口的读写效率."></a>threading : 提高对网络端口的读写效率.</h1><pre><code>threading.Thread.start()   执行线程操作
-threading.Thread.run()     执行线程操作
-threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似.
-</code></pre><p>下面对象用于处理多线程同步, 对象一旦被建立,可以被多个线程共享, 并根据情况阻塞某些进程.</p>
-<pre><code>threading.Lock              互斥锁, mutex,
-    threading.Lock.acquire() 
-    threading.Lock.release()
-
-threading.Condition         condition variable, 建立该对象时, 包含一个 Lock 对象, 因为 condition variable 总是和 mutex 一起使用. 可以对 condition 对象调用acquire() 和 release() 方法, 以控制潜在的Lock 对象.
-    threading.Condition.acquire()       
-    threading.Condition.release()       
-    threading.Condition.wait()          相当于 cond_wait()
-    threading.Condition.notify_all()    相当于 cond_broadcase()
-    threading.Condition.notify()        与 notify_all() 功能类似, 但置唤醒一个等待的线程, 而不是全部.
-
-threading.Semaphore         计数锁,(Semaphore)传统上是一种进程间同步工具. 创建对象的时候,可以传递一个整数作为计数上限(sema= threading.Semaphore(5)). 与 Lock 类似, 也有 Lock 的两个方法.
-    threading.Semaphore.acquire()
-    threading.Semaphore.release()
-
-threading.Event             与 threading.Condition 类似, 相当于没有潜在 Lock 保护的 condition variable. 对象有 True 和 False 两个状态 . 可以多个线程使用 wait() 等待, 直到某个线程调用该对象的 set() 方法, 将对象设置为 True. 线程可以调用对象的 clear() 方法来重置对象为 False 状态.
-    threading.Event.wait()      等待
-    threading.Event.set()       将对象设置为 True 状态.
-    threading.Event.clear()     将对象重置为 False 状态.
-</code></pre><h4 id="线程-threading-Thread-start-过程式编程示例"><a href="#线程-threading-Thread-start-过程式编程示例" class="headerlink" title="线程 threading.Thread.start() + 过程式编程示例"></a>线程 threading.Thread.start() + 过程式编程示例</h4><pre><code>#!/usr/local/bin/env python
-#
-
-import threading 
-import time
-import os
-
-def doChore():
-    time.sleep(1)
-
-def booth(tid):
-    global i
-    global lock
-    while True:
-        lock.acquire()
-        if i != 0:
-            i = i - 1
-            print(tid,&apos;: now left :&apos;,i)
-            doChore()
-        else:
-            print(&quot;Thread_id&quot;,tid,&quot; no more tickets.&quot;)
-            os._exit(0)
-        lock.release()
-        doChore()
-
-i = 100
-lock = threading.Lock()
-
-for k in range(10):
-    new_thread = threading.Thread(target=booth,args=(k,))
-    new_thread.start()
-</code></pre><h4 id="线程-threading-Thread-run-面向对象-示例"><a href="#线程-threading-Thread-run-面向对象-示例" class="headerlink" title="线程 threading.Thread.run() + 面向对象 示例"></a>线程 threading.Thread.run() + 面向对象 示例</h4><pre><code>#!/usr/local/bin/env python
+        <h3 id="threading-提高对网络端口的读写效率"><a href="#threading-提高对网络端口的读写效率" class="headerlink" title="threading : 提高对网络端口的读写效率."></a>threading : 提高对网络端口的读写效率.</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">threading.Thread.start()   执行线程操作</span><br><span class="line">threading.Thread.run()     执行线程操作</span><br><span class="line">threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似.</span><br></pre></td></tr></table></figure>
+<p>下面对象用于处理多线程同步, 对象一旦被建立,可以被多个线程共享, 并根据情况阻塞某些进程.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">threading.Lock              互斥锁, mutex,</span><br><span class="line">    threading.Lock.acquire() </span><br><span class="line">    threading.Lock.release()</span><br><span class="line"></span><br><span class="line">threading.Condition         condition variable, 建立该对象时, 包含一个 Lock 对象, 因为 condition variable 总是和 mutex 一起使用. 可以对 condition 对象调用acquire() 和 release() 方法, 以控制潜在的Lock 对象.</span><br><span class="line">    threading.Condition.acquire()       </span><br><span class="line">    threading.Condition.release()       </span><br><span class="line">    threading.Condition.wait()          相当于 cond_wait()</span><br><span class="line">    threading.Condition.notify_all()    相当于 cond_broadcase()</span><br><span class="line">    threading.Condition.notify()        与 notify_all() 功能类似, 但置唤醒一个等待的线程, 而不是全部.</span><br><span class="line"></span><br><span class="line">threading.Semaphore         计数锁,(Semaphore)传统上是一种进程间同步工具. 创建对象的时候,可以传递一个整数作为计数上限(sema= threading.Semaphore(5)). 与 Lock 类似, 也有 Lock 的两个方法.</span><br><span class="line">    threading.Semaphore.acquire()</span><br><span class="line">    threading.Semaphore.release()</span><br><span class="line"></span><br><span class="line">threading.Event             与 threading.Condition 类似, 相当于没有潜在 Lock 保护的 condition variable. 对象有 True 和 False 两个状态 . 可以多个线程使用 wait() 等待, 直到某个线程调用该对象的 set() 方法, 将对象设置为 True. 线程可以调用对象的 clear() 方法来重置对象为 False 状态.</span><br><span class="line">    threading.Event.wait()      等待</span><br><span class="line">    threading.Event.set()       将对象设置为 True 状态.</span><br><span class="line">    threading.Event.clear()     将对象重置为 False 状态.</span><br></pre></td></tr></table></figure></p>
+<h4 id="线程-threading-Thread-start-过程式编程示例"><a href="#线程-threading-Thread-start-过程式编程示例" class="headerlink" title="线程 threading.Thread.start() + 过程式编程示例"></a>线程 threading.Thread.start() + 过程式编程示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">    #!/usr/local/bin/env python</span><br><span class="line">    #</span><br><span class="line"></span><br><span class="line">    import threading </span><br><span class="line">    import time</span><br><span class="line">    import os</span><br><span class="line"></span><br><span class="line">    def doChore():</span><br><span class="line">        time.sleep(1)</span><br><span class="line"></span><br><span class="line">    def booth(tid):</span><br><span class="line">        global i</span><br><span class="line">        global lock</span><br><span class="line">        while True:</span><br><span class="line">            lock.acquire()</span><br><span class="line">            if i != 0:</span><br><span class="line">                i = i - 1</span><br><span class="line">                print(tid,&apos;: now left :&apos;,i)</span><br><span class="line">                doChore()</span><br><span class="line">            else:</span><br><span class="line">                print(&quot;Thread_id&quot;,tid,&quot; no more tickets.&quot;)</span><br><span class="line">                os._exit(0)</span><br><span class="line">            lock.release()</span><br><span class="line">            doChore()</span><br><span class="line"></span><br><span class="line">    i = 100</span><br><span class="line">    lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">    for k in range(10):</span><br><span class="line">        new_thread = threading.Thread(target=booth,args=(k,))</span><br><span class="line">        new_thread.start()</span><br><span class="line">```    </span><br><span class="line">#### 线程 threading.Thread.run() + 面向对象 示例</span><br></pre></td></tr></table></figure>
+<pre><code>#!/usr/local/bin/env python
 #
 
 import threading
@@ -498,7 +447,8 @@ monitor = {&apos;tick&apos;:100, &apos;lock&apos;:threading.Lock()}
 for k in range(10):
     new_thread = BoothThread(k,monitor)
     new_thread.start()
-</code></pre>
+</code></pre><p><code>`</code></p>
+
       
     </div>
     
@@ -528,8 +478,8 @@ for k in range(10):
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/19/PyStdLib-signal/" rel="next" title="PyStdLib--signal">
-                <i class="fa fa-chevron-left"></i> PyStdLib--signal
+              <a href="/2018/03/19/mysql-mysqldump-备份数据/" rel="next" title="使用 mysqldump 备份数据">
+                <i class="fa fa-chevron-left"></i> 使用 mysqldump 备份数据
               </a>
             
           </div>
@@ -538,8 +488,8 @@ for k in range(10):
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/19/PyStdLib-pickle/" rel="prev" title="PyStdLib--pickle">
-                PyStdLib--pickle <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/19/PyStdLib-os/" rel="prev" title="PyStdLib--os">
+                PyStdLib--os <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -617,7 +567,7 @@ for k in range(10):
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -682,7 +632,7 @@ for k in range(10):
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#threading-提高对网络端口的读写效率"><span class="nav-text">threading : 提高对网络端口的读写效率.</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程-threading-Thread-start-过程式编程示例"><span class="nav-text">线程 threading.Thread.start() + 过程式编程示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程-threading-Thread-run-面向对象-示例"><span class="nav-text">线程 threading.Thread.run() + 面向对象 示例</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#threading-提高对网络端口的读写效率"><span class="nav-text">threading : 提高对网络端口的读写效率.</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程-threading-Thread-start-过程式编程示例"><span class="nav-text">线程 threading.Thread.start() + 过程式编程示例</span></a></li></ol></li></ol></div>
             
 
           </div>
