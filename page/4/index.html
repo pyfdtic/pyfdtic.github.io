@@ -312,7 +312,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-signal/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-glob/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -331,7 +331,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-signal/" itemprop="url">PyStdLib--signal</a></h2>
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-glob/" itemprop="url">PyStdLib--glob</a></h2>
         
 
         <div class="post-meta">
@@ -406,13 +406,18 @@
       
         
           
-          signal 的核心是, 设置信号处理函数.
-预定义信号signal.SIG_DFL   signal.SIGBUS    signal.SIGFPE    signal.SIGIO     signal.SIGPOLL   signal.SIGRTMAX  signal.SIGSYS    signal.SIGTTIN   signal.SIGUSR2   signal.SIGXFSZ   
-signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP    
+          globglob.glob()import glob
+l = glob.glob(&quot;/root/*&quot;)    # 返回列表
+print l     # 输出如下
+[&apos;/root/databases&apos;,
+ &apos;/root/install.log&apos;,
+ &apos;/root/anaconda-ks.cfg&apos;,
+ &apos;/root/install&apos;,
+ &apos;/root/install.log.syslog&a
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-signal/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/PyStdLib-glob/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -463,7 +468,7 @@ signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-threading/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-os/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -482,7 +487,7 @@ signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-threading/" itemprop="url">PyStdLib--threading</a></h2>
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-os/" itemprop="url">PyStdLib--os</a></h2>
         
 
         <div class="post-meta">
@@ -557,12 +562,15 @@ signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP
       
         
           
-          threading : 提高对网络端口的读写效率.123threading.Thread.start()   执行线程操作threading.Thread.run()     执行线程操作threading.Thread.join()     调用该方法的线程将等待, 直到该 Thread 对象完成, 再回复运行. 这与进程间调用 wait() 函数类似.
-下面对象用于处理多线程同步, 对象一旦被建立,可以被多个线程共享, 并根据情况阻塞某些进程.123456789101112131415161
+          osos.getcwd()os.getcwd()     # 获取当前工作目录
+os.listdir(path)os.listdir(&apos;/tmp&apos;)      # 列出指定目录下的文件和目录
+os.mkdir(path [, mode=0777])os.mkdir(&apos;/tmp/newtest&apos;)    #  创建新目录
+os.mkdir(&apos;/tmp/ntest/test/test&apos;)    # 无法递归创建.  
+os.rmdir(pa
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-threading/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/PyStdLib-os/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
