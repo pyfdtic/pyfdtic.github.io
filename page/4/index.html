@@ -468,7 +468,7 @@ print l     # 输出如下
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-signal/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-os/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -487,7 +487,7 @@ print l     # 输出如下
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-signal/" itemprop="url">PyStdLib--signal</a></h2>
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-os/" itemprop="url">PyStdLib--os</a></h2>
         
 
         <div class="post-meta">
@@ -562,13 +562,15 @@ print l     # 输出如下
       
         
           
-          signal 的核心是, 设置信号处理函数.
-预定义信号signal.SIG_DFL   signal.SIGBUS    signal.SIGFPE    signal.SIGIO     signal.SIGPOLL   signal.SIGRTMAX  signal.SIGSYS    signal.SIGTTIN   signal.SIGUSR2   signal.SIGXFSZ   
-signal.SIG_IGN   signal.SIGCHLD   signal.SIGHUP    
+          osos.getcwd()os.getcwd()     # 获取当前工作目录
+os.listdir(path)os.listdir(&apos;/tmp&apos;)      # 列出指定目录下的文件和目录
+os.mkdir(path [, mode=0777])os.mkdir(&apos;/tmp/newtest&apos;)    #  创建新目录
+os.mkdir(&apos;/tmp/ntest/test/test&apos;)    # 无法递归创建.  
+os.rmdir(pa
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-signal/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/PyStdLib-os/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

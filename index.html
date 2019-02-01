@@ -1742,7 +1742,7 @@ next
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-pagedown/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-login/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -1761,7 +1761,7 @@ next
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/flaskExt--flask-pagedown/" itemprop="url">Flask 扩展之--flask-pagedown</a></h2>
+                <a class="post-title-link" href="/2018/03/19/flaskExt--flask-login/" itemprop="url">Flask 扩展之--flask-login</a></h2>
         
 
         <div class="post-meta">
@@ -1836,17 +1836,12 @@ next
       
         
           
-          支持 Markdown 语法, 并添加 富文本文章的预览功能.
-使用到的包列表:
-
-PageDown : 使用 JavaScript 实现的客户端 Markdown 到 HTML 的转换程序.
-Flask-PageDown : 为 Flask 包装的 PageDown, 把 PageDown 集成到 Flask-WTF 表单中.
-Markdown : 使用 Python 实现的服务端 Markdown 到 HTML 的转换程序.
-Bleanch : 使用 Python 实现的 HTML 清理器.
+          一. 使用 Werkzeug 实现密码散列.generate_password_hash(password, method=pbkdf2:sha1, salt_length=8)将原始密码作为输入, 以字符串形式输出密码散列值, 输出的值可保存在用户数据库中. method 和 salt_length 的默认值就能满足大多数需求.
+check_password_hash(hash, password)这个函数的参数是从数据库中取回的密码散列值和用户输入的密码. 返回值为 True, 表明密码正确
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/flaskExt--flask-pagedown/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/flaskExt--flask-login/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

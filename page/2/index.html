@@ -312,7 +312,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-login/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/flaskExt--flask-pagedown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -331,7 +331,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/flaskExt--flask-login/" itemprop="url">Flask 扩展之--flask-login</a></h2>
+                <a class="post-title-link" href="/2018/03/19/flaskExt--flask-pagedown/" itemprop="url">Flask 扩展之--flask-pagedown</a></h2>
         
 
         <div class="post-meta">
@@ -406,12 +406,17 @@
       
         
           
-          一. 使用 Werkzeug 实现密码散列.generate_password_hash(password, method=pbkdf2:sha1, salt_length=8)将原始密码作为输入, 以字符串形式输出密码散列值, 输出的值可保存在用户数据库中. method 和 salt_length 的默认值就能满足大多数需求.
-check_password_hash(hash, password)这个函数的参数是从数据库中取回的密码散列值和用户输入的密码. 返回值为 True, 表明密码正确
+          支持 Markdown 语法, 并添加 富文本文章的预览功能.
+使用到的包列表:
+
+PageDown : 使用 JavaScript 实现的客户端 Markdown 到 HTML 的转换程序.
+Flask-PageDown : 为 Flask 包装的 PageDown, 把 PageDown 集成到 Flask-WTF 表单中.
+Markdown : 使用 Python 实现的服务端 Markdown 到 HTML 的转换程序.
+Bleanch : 使用 Python 实现的 HTML 清理器.
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/flaskExt--flask-login/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/flaskExt--flask-pagedown/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1580,7 +1585,7 @@ class BaseTestCase(unittest.TestCase):
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-requests/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/19/PyStdLib-configparser/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -1599,7 +1604,7 @@ class BaseTestCase(unittest.TestCase):
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/19/PyStdLib-requests/" itemprop="url">PyStdLib--requests</a></h2>
+                <a class="post-title-link" href="/2018/03/19/PyStdLib-configparser/" itemprop="url">PyStdLib--configparser</a></h2>
         
 
         <div class="post-meta">
@@ -1674,15 +1679,24 @@ class BaseTestCase(unittest.TestCase):
       
         
           
-          一. 安装$ pip install requests
-requests 并不是python 标准库, 但为了汇总方便, 将其放置于此.
-二. 用法requests.get()  : GET 请求payload = {&apos;key1&apos;: &apos;value1&apos;, &apos;key2&apos;: &apos;value2&apos;}
+          configparser 用于处理 ini 格式的配置文件, 其本质上是利用 open 来操作文件. 
+示例文件 :[zhangsan]
+name = zhangsan
+age = 12
+job = worker
 
-ret = requests.get(&apos;http://www.example.com&apos;, params=pa
+[lisi]
+name = lisi
+age = 32
+job = manager
+文件中不需要引号, 所有内容都是字符串. 并且在程序中返回的也是 字符串. 使用时, 需要根据需要进行类型转换.
+用法:import configparser
+
+conf = configparser
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/19/PyStdLib-requests/#more" rel="contents">
+            <a class="btn" href="/2018/03/19/PyStdLib-configparser/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

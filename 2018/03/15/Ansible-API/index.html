@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="ansible api 开发篇">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-01T15:42:33.155Z">
+<meta property="og:updated_time" content="2019-02-01T15:44:59.289Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible-API">
 <meta name="twitter:description" content="ansible api 开发篇">
@@ -447,19 +447,21 @@
 </li>
 <li><p><code>env/ssh_key</code> ssh 私钥文件, 用于 ssh 链接其他主机. 当前只支持一个ssh key文件.</p>
 </li>
+<li><p><code>env/settings</code> Ansible Runner 本身的配置文件.</p>
+<ul>
+<li><code>idle_timeout</code>: 默认 600s, 如果超过 <code>idle_timeout</code> 任然没有输出, 则报错.</li>
+<li><code>job_timeout</code>: 默认 3600s, 单个任务的最长运行时间, 超时后, 任务被终止.</li>
+<li><code>pexpect_timeout</code>: 默认 10s, 等待输入的空闲时间.</li>
+<li><code>pexpect_use_poll</code>: 使用的进程 fork 方式. <code>True</code> 为 <code>poll()</code> 方式, <code>False</code>为 <code>select()</code>方式, <code>select()</code> 方式有最大 1024 个文件描述符的限制.</li>
+<li><code>suppress_ansible_output</code>: 默认 <code>False</code>, 是否允许 Ansible 将其输出打印到 屏幕.</li>
+<li><code>fact_cache</code>: 默认 ‘fact_cache’, Ansible fact 缓存保存目录, 只有 <code>fact_cache_type: jsonfile</code> 时, 有效; 否则, 该参数会被自动忽略.</li>
+<li><code>fact_cache_type</code>: 默认 ‘jsonfile’, Ansible fact 缓存的保存文件格式.</li>
 </ul>
 </li>
 </ul>
-<pre><code>- `env/settings` Ansible Runner 本身的配置文件.
-
-    - `idle_timeout`: 默认 600s, 如果超过 `idle_timeout` 任然没有输出, 则报错.
-    - `job_timeout`: 默认 3600s, 单个任务的最长运行时间, 超时后, 任务被终止.
-    - `pexpect_timeout`: 默认 10s, 等待输入的空闲时间.
-    - `pexpect_use_poll`: 使用的进程 fork 方式. `True` 为 `poll()` 方式, `False`为 `select()`方式, `select()` 方式有最大 1024 个文件描述符的限制.
-    - `suppress_ansible_output`: 默认 `False`, 是否允许 Ansible 将其输出打印到 屏幕.
-    - `fact_cache`: 默认 &apos;fact_cache&apos;, Ansible fact 缓存保存目录, 只有 `fact_cache_type: jsonfile` 时, 有效; 否则, 该参数会被自动忽略.
-    - `fact_cache_type`: 默认 &apos;jsonfile&apos;, Ansible fact 缓存的保存文件格式.
-</code></pre><ul>
+</li>
+</ul>
+<ul>
 <li><p><code>inventory</code> 目录 </p>
 <p>  与 Ansible 原生的 inventory 目录相同, 可以包含单个文件/脚本或者包含多个文件/脚本的目录. 该目录中的文件会被自动调用.</p>
 <p>  该目录中提供的 hosts 优先级<strong>低于</strong>命令行参数或者环境变量.</p>
