@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="Hexo 搭建 Github 博客开始使用安装 git$ yum install git -y 安装 NodeJS12345678910111213$ git clone https://github.com/creationix/nvm.git$ source nvm/nvm.sh$ nvm install stable# nvm 使用国内源$ alias cnpm=&quot;npm --registr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-03T09:50:58.377Z">
+<meta property="og:updated_time" content="2019-03-05T13:47:42.525Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo+nexT 博客建设指南">
 <meta name="twitter:description" content="Hexo 搭建 Github 博客开始使用安装 git$ yum install git -y 安装 NodeJS12345678910111213$ git clone https://github.com/creationix/nvm.git$ source nvm/nvm.sh$ nvm install stable# nvm 使用国内源$ alias cnpm=&quot;npm --registr">
@@ -617,73 +617,9 @@ since: 2011
 # =============================================================================
 # End NexT Theme configuration
 # =============================================================================
-</code></pre><p><strong>主题配置文件</strong></p>
-<pre><code>menu:
-  home: /
-  categories: /categories
-  archives: /archives
-  tags: /tags
-  #about: /about
-
-# Place your favicon.ico to /source directory.
-favicon: /favicon.ico
-
-# Set default keywords (Use a comma to separate)
-keywords: &quot;Hexo,next&quot;
-
-# Set rss to false to disable feed link.
-# Leave rss as empty to use site&apos;s feed link.
-# Set rss to specific value if you have burned your feed already.
-rss:
-
-# Icon fonts
-# Place your font into next/source/fonts, specify directory-name and font-name here
-# Avialable: default | linecons | fifty-shades | feather
-#icon_font: default
-#icon_font: fifty-shades
-#icon_font: feather
-icon_font: linecons
-
-# Code Highlight theme
-# Available value: normal | night | night eighties | night blue | night bright
-# https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
-
-
-# MathJax Support
-mathjax:
-
-
-# Schemes
-scheme: Mist
-
-
-# Automatically scroll page to section which is under &lt;!-- more --&gt; mark.
-scroll_to_more: true
-
-
-
-# Automatically add list number to toc.
-toc_list_number: true
-
-
-## DO NOT EDIT THE FOLLOWING SETTINGS
-## UNLESS YOU KNOW WHAT YOU ARE DOING
-
-# Use velocity to animate everything.
-use_motion: true
-
-# Fancybox
-fancybox: true
-
-# Static files
-vendors: vendors
-css: css
-images: images
-
-# Theme version
-version: 0.4.2
-</code></pre><h4 id="删除文章"><a href="#删除文章" class="headerlink" title="删除文章"></a>删除文章</h4><pre><code>$ hexo clean
+</code></pre><p><strong>主题配置文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: /</span><br><span class="line">  categories: /categories</span><br><span class="line">  archives: /archives</span><br><span class="line">  tags: /tags</span><br><span class="line">  #about: /about</span><br><span class="line"></span><br><span class="line"># Place your favicon.ico to /source directory.</span><br><span class="line">favicon: /favicon.ico</span><br><span class="line"></span><br><span class="line"># Set default keywords (Use a comma to separate)</span><br><span class="line">keywords: &quot;Hexo,next&quot;</span><br><span class="line"></span><br><span class="line"># Set rss to false to disable feed link.</span><br><span class="line"># Leave rss as empty to use site&apos;s feed link.</span><br><span class="line"># Set rss to specific value if you have burned your feed already.</span><br><span class="line">rss:</span><br><span class="line"></span><br><span class="line"># Icon fonts</span><br><span class="line"># Place your font into next/source/fonts, specify directory-name and font-name here</span><br><span class="line"># Avialable: default | linecons | fifty-shades | feather</span><br><span class="line">#icon_font: default</span><br><span class="line">#icon_font: fifty-shades</span><br><span class="line">#icon_font: feather</span><br><span class="line">icon_font: linecons</span><br><span class="line"></span><br><span class="line"># Code Highlight theme</span><br><span class="line"># Available value: normal | night | night eighties | night blue | night bright</span><br><span class="line"># https://github.com/chriskempson/tomorrow-theme</span><br><span class="line">highlight_theme: normal</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># MathJax Support</span><br><span class="line">mathjax:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Schemes</span><br><span class="line">scheme: Mist</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Automatically scroll page to section which is under &lt;!-- more --&gt; mark.</span><br><span class="line">scroll_to_more: true</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Automatically add list number to toc.</span><br><span class="line">toc_list_number: true</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## DO NOT EDIT THE FOLLOWING SETTINGS</span><br><span class="line">## UNLESS YOU KNOW WHAT YOU ARE DOING</span><br><span class="line"></span><br><span class="line"># Use velocity to animate everything.</span><br><span class="line">use_motion: true</span><br><span class="line"></span><br><span class="line"># Fancybox</span><br><span class="line">fancybox: true</span><br><span class="line"></span><br><span class="line"># Static files</span><br><span class="line">vendors: vendors</span><br><span class="line">css: css</span><br><span class="line">images: images</span><br><span class="line"></span><br><span class="line"># Theme version</span><br><span class="line">version: 0.4.2</span><br></pre></td></tr></table></figure></p>
+<p>代码折叠<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://xiaotiandi.github.io/publicBlog/2018-09-19-1985df3b.html </span><br><span class="line">https://blog.rmiao.top/hexo-fold-block/</span><br><span class="line">https://jerryhanjj.github.io/2018/04/05/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%8F%8A%E4%BC%98%E5%8C%96%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%B7%BB%E5%8A%A0%E4%BB%A3%E7%A0%81%E6%8A%98%E5%8F%A0%E5%8A%9F%E8%83%BD/</span><br></pre></td></tr></table></figure></p>
+<h4 id="删除文章"><a href="#删除文章" class="headerlink" title="删除文章"></a>删除文章</h4><pre><code>$ hexo clean
 $ hexo g -d
 </code></pre><h3 id="配置-config-yml"><a href="#配置-config-yml" class="headerlink" title="配置 _config.yml"></a>配置 <code>_config.yml</code></h3><h3 id="godaddy-域名解析至-github-io"><a href="#godaddy-域名解析至-github-io" class="headerlink" title="godaddy 域名解析至 github.io"></a>godaddy 域名解析至 github.io</h3><p>假设域名为 example.com, 希望将 <a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a> 解析到 exampl.github.io</p>
 <ol>
@@ -1464,7 +1400,7 @@ $ hexo deploy
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">113</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1486,7 +1422,7 @@ $ hexo deploy
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

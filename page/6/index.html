@@ -312,6 +312,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/git-点滴/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/16/git-点滴/" itemprop="url">git-点滴</a></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:17:26+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tools/" itemprop="url" rel="index">
+                    <span itemprop="name">Tools</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          git commitgit commit 命令执行后, git 主要执行了三个操作:
+
+为每一个文件生成一个快照
+ 每一个文件其实是真的数据, 所以 git 会把整个文件内容转成二进制, 然后经过压缩直接存储在键值对数据库中, 对应的键值就是文件中的内容, 再加上一些头信息的 40 位校验 和 sha-1 . 
+ 文件快照的类型为 blob 类型(binary large object) , 即大型二进制对象类型.
+
+为每一个文件夹生成一个快照
+ 文件夹并不是直接的文字数据, 其主要记录的是文件
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/16/git-点滴/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/docker-daemon-参数最佳实践/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -622,7 +778,7 @@ docker daemon –icc=false
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -641,7 +797,7 @@ docker daemon –icc=false
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/" itemprop="url">AngularJS高级程序设计读书笔记--指令篇之内置指令</a></h2>
+                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/" itemprop="url">AngularJS高级程序设计读书笔记--过滤器篇</a></h2>
         
 
         <div class="post-meta">
@@ -716,15 +872,24 @@ docker daemon –icc=false
       
         
           
-          AngularJS 内置超过 50 个内置指令, 包括 数据绑定,表单验证,模板生成,时间处理 和 HTML 操作.
-指令暴露了 AngularJS 的核心功能, 如 事件处理,表单验证,模板等.
-一. 数据绑定指令数据绑定: 使用模型中的值, 并将其插入到 HTML 文档中.所有的数据绑定指令, 都可以当做一个属性或者类使用.
+          一. 过滤器基础过滤器用于在视图中格式化展现给用户的数据. 一旦定义过滤器之后, 就可在整个模块中全面应用, 也就意味着可以用来保证跨多个控制器和视图之间的数据展示的一致性.
+过滤器将数据在被指令处理并显示到视图中之前进行转换, 而不必修改作用域中原有的数据, 这样能够允许同一份数据在应用中的不同部分以不同的形式得以展现.
+过滤器可以执行任意类型的转换, 但是大多数情况下, 用于格式化或者对数据以某种方式排序.
+二. 内置过滤器1. 过滤单个数据的值
 
-属性 : &lt;span ng-bind=&quot;todos.length&quot;&gt;&lt;/span&gt; 属性可能会导致其他开发工具的各种问题,
+
+名称
+描述
+
+
+
+
+currency
+该
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/#more" rel="contents">
+            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -924,7 +1089,7 @@ docker daemon –icc=false
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -943,7 +1108,7 @@ docker daemon –icc=false
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/" itemprop="url">AngularJS高级程序设计读书笔记--过滤器篇</a></h2>
+                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/" itemprop="url">AngularJS高级程序设计读书笔记--指令篇之内置指令</a></h2>
         
 
         <div class="post-meta">
@@ -1018,24 +1183,15 @@ docker daemon –icc=false
       
         
           
-          一. 过滤器基础过滤器用于在视图中格式化展现给用户的数据. 一旦定义过滤器之后, 就可在整个模块中全面应用, 也就意味着可以用来保证跨多个控制器和视图之间的数据展示的一致性.
-过滤器将数据在被指令处理并显示到视图中之前进行转换, 而不必修改作用域中原有的数据, 这样能够允许同一份数据在应用中的不同部分以不同的形式得以展现.
-过滤器可以执行任意类型的转换, 但是大多数情况下, 用于格式化或者对数据以某种方式排序.
-二. 内置过滤器1. 过滤单个数据的值
+          AngularJS 内置超过 50 个内置指令, 包括 数据绑定,表单验证,模板生成,时间处理 和 HTML 操作.
+指令暴露了 AngularJS 的核心功能, 如 事件处理,表单验证,模板等.
+一. 数据绑定指令数据绑定: 使用模型中的值, 并将其插入到 HTML 文档中.所有的数据绑定指令, 都可以当做一个属性或者类使用.
 
-
-名称
-描述
-
-
-
-
-currency
-该
+属性 : &lt;span ng-bind=&quot;todos.length&quot;&gt;&lt;/span&gt; 属性可能会导致其他开发工具的各种问题,
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--过滤器篇/#more" rel="contents">
+            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--指令篇之内置指令/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1394,160 +1550,6 @@ currency
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Pyfdtic">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Pyfdtic's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/" itemprop="url">AngularJS高级程序设计读书笔记--jqLite</a></h2>
-        
-
-        <div class="post-meta">
-	  
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:07:35+08:00">
-                2018-03-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          jqLite 是 AngularJS 实现的一个剪裁版的 jQuery,  可以与 AngularJS 一起工作创建, 操作, 管理 HTML 元素. jqLite 的每一个方法的实现, 都对应一个 jQuery 的同名方法. jQuery API.
-1. 对文档对象模型(DOM)导航AngularJS 用于表示 HTML 元素的对象( jqLite对象 ), 实际上可以表示零个, 一个或多个 HTML 元素. 因此, 有些 jqLite 方法会将 jqLite 对象当做一个集合处理.
-
-
-
-名
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--服务篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1699,7 +1701,7 @@ currency
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/python-itchat-weixin-api/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -1718,7 +1720,7 @@ currency
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/16/python-itchat-weixin-api/" itemprop="url">python 微信接口 -- itchat 文档</a></h2>
+                <a class="post-title-link" href="/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/" itemprop="url">AngularJS高级程序设计读书笔记--jqLite</a></h2>
         
 
         <div class="post-meta">
@@ -1731,7 +1733,7 @@ currency
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:05:25+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:07:35+08:00">
                 2018-03-16
               </time>
             
@@ -1754,8 +1756,8 @@ currency
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
                   </a>
                 </span>
 
@@ -1793,18 +1795,16 @@ currency
       
         
           
-          itchat一. 安装$ pip install itchat
-特殊的字典使用方式通过打印 itchat 的用户以及注册消息的参数, 可以发现这些值都是字典.
-但实际上 itchat 精心构造了相应的消息,用户,群聊,公众号等.
-其所有的键值都可以通过这一方式访问:
-@itchat.msg_register(TEXT)
-def _(msg):
-    # equals to print(msg[&apos;FromUserName&apos;])
-    print(msg.fromUserNa
+          jqLite 是 AngularJS 实现的一个剪裁版的 jQuery,  可以与 AngularJS 一起工作创建, 操作, 管理 HTML 元素. jqLite 的每一个方法的实现, 都对应一个 jQuery 的同名方法. jQuery API.
+1. 对文档对象模型(DOM)导航AngularJS 用于表示 HTML 元素的对象( jqLite对象 ), 实际上可以表示零个, 一个或多个 HTML 元素. 因此, 有些 jqLite 方法会将 jqLite 对象当做一个集合处理.
+
+
+
+名
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/03/16/python-itchat-weixin-api/#more" rel="contents">
+            <a class="btn" href="/2018/03/16/AngularJS高级程序设计读书笔记--jqLite篇/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1892,7 +1892,7 @@ def _(msg):
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">113</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1914,7 +1914,7 @@ def _(msg):
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
