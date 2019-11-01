@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="thanos,prometheus," />
 
 
 
@@ -79,12 +79,13 @@
 
 
 
-<meta name="description" content="title: Thanos 学习笔记date: 2019-03-14 17:38:24categories:  Monitortags: thanos prometheus    参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.">
+<meta name="description" content="参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage. 1.0 配置 Thanos 重载 Prometheus 配置 1.1 使用外部存储: 1.1.1 Thanos 目前支持外部存储类型   1.2 存储接口 1.3 Promet">
+<meta name="keywords" content="thanos,prometheus">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pyfdtic&#39;s Blog">
-<meta property="og:url" content="http://www.pyfdtic.com/2019/11/02/thanos/index.html">
+<meta property="og:title" content="Thanos 学习笔记">
+<meta property="og:url" content="http://www.pyfdtic.com/2019/03/14/thanos/index.html">
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
-<meta property="og:description" content="title: Thanos 学习笔记date: 2019-03-14 17:38:24categories:  Monitortags: thanos prometheus    参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.">
+<meta property="og:description" content="参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage. 1.0 配置 Thanos 重载 Prometheus 配置 1.1 使用外部存储: 1.1.1 Thanos 目前支持外部存储类型   1.2 存储接口 1.3 Promet">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://wx3.sinaimg.cn/large/77fd5d57gy1g4fl0a15n5j20qo0k0dhb.jpg">
 <meta property="og:image" content="http://wx4.sinaimg.cn/large/77fd5d57gy1g4fkrnrp85j21hm0lu43v.jpg">
@@ -92,10 +93,10 @@
 <meta property="og:image" content="https://wx3.sinaimg.cn/large/77fd5d57gy1g4ft3lr41zj20i9066mxb.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/77fd5d57gy1g4ftoypv4nj20i20ah0t4.jpg">
 <meta property="og:image" content="https://wx3.sinaimg.cn/large/77fd5d57gy1g4fts3jpsaj20fs095jrn.jpg">
-<meta property="og:updated_time" content="2019-11-01T16:38:32.528Z">
+<meta property="og:updated_time" content="2019-11-01T16:42:23.795Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Pyfdtic&#39;s Blog">
-<meta name="twitter:description" content="title: Thanos 学习笔记date: 2019-03-14 17:38:24categories:  Monitortags: thanos prometheus    参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.">
+<meta name="twitter:title" content="Thanos 学习笔记">
+<meta name="twitter:description" content="参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage. 1.0 配置 Thanos 重载 Prometheus 配置 1.1 使用外部存储: 1.1.1 Thanos 目前支持外部存储类型   1.2 存储接口 1.3 Promet">
 <meta name="twitter:image" content="http://wx3.sinaimg.cn/large/77fd5d57gy1g4fl0a15n5j20qo0k0dhb.jpg">
 
 
@@ -126,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://www.pyfdtic.com/2019/11/02/thanos/"/>
+  <link rel="canonical" href="http://www.pyfdtic.com/2019/03/14/thanos/"/>
 
 
 
 
 
-  <title> | Pyfdtic's Blog</title>
+  <title>Thanos 学习笔记 | Pyfdtic's Blog</title>
   
 
 
@@ -322,7 +323,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2019/11/02/thanos/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2019/03/14/thanos/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -339,7 +340,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline"></h2>
+          <h2 class="post-title" itemprop="name headline">Thanos 学习笔记</h2>
         
 
         <div class="post-meta">
@@ -352,8 +353,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-02T00:38:32+08:00">
-                2019-11-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-14T17:38:24+08:00">
+                2019-03-14
               </time>
             
 
@@ -362,6 +363,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Monitor/" itemprop="url" rel="index">
+                    <span itemprop="name">Monitor</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -395,14 +418,7 @@
       
 
       
-        <hr>
-<p>title: Thanos 学习笔记<br>date: 2019-03-14 17:38:24<br>categories:</p>
-<ul>
-<li>Monitor<br>tags:</li>
-<li>thanos</li>
-<li>prometheus</li>
-</ul>
-<!-- MarkdownTOC -->
+        <!-- MarkdownTOC -->
 <ul>
 <li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3">参考文档</a></li>
 <li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
@@ -1058,6 +1074,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/thanos/" rel="tag"># thanos</a>
+          
+            <a href="/tags/prometheus/" rel="tag"># prometheus</a>
+          
+        </div>
+      
 
       
       
@@ -1163,7 +1187,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1174,7 +1198,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

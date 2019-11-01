@@ -955,7 +955,7 @@ Django 请求处理流程
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2019/11/02/thanos/">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2019/03/14/thanos/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -974,7 +974,7 @@ Django 请求处理流程
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/02/thanos/" itemprop="url">未命名</a></h2>
+                <a class="post-title-link" href="/2019/03/14/thanos/" itemprop="url">Thanos 学习笔记</a></h2>
         
 
         <div class="post-meta">
@@ -987,8 +987,8 @@ Django 请求处理流程
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-02T00:38:32+08:00">
-                2019-11-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-14T17:38:24+08:00">
+                2019-03-14
               </time>
             
 
@@ -997,6 +997,28 @@ Django 请求处理流程
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Monitor/" itemprop="url" rel="index">
+                    <span itemprop="name">Monitor</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1028,13 +1050,6 @@ Django 请求处理流程
         
           
           
-title: Thanos 学习笔记date: 2019-03-14 17:38:24categories:
-
-Monitortags:
-thanos
-prometheus
-
-
 
 参考文档
 概述
@@ -1042,11 +1057,18 @@ prometheus
 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.
 1.0 配置 Thanos 重载 Prometheus 配置
 1.1 使用外部存储:
-1.1.1 
+1.1.1 Thanos 目前支持外部存储类型
+
+
+1.2 存储接口
+1.3 Prometheus 扩展标签 及 全局唯一标志
+
+
+2. Store Gateway: exposes the
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/11/02/thanos/#more" rel="contents">
+            <a class="btn" href="/2019/03/14/thanos/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1932,7 +1954,7 @@ Python 3.5
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1943,7 +1965,7 @@ Python 3.5
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
