@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="title: Thanos 学习笔记date: 2019-03-14 17:38:24categories:  Monitortags: thanos prometheus    参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pyfdtic&#39;s Blog">
+<meta property="og:url" content="http://www.pyfdtic.com/2019/11/02/thanos/index.html">
+<meta property="og:site_name" content="Pyfdtic&#39;s Blog">
+<meta property="og:description" content="title: Thanos 学习笔记date: 2019-03-14 17:38:24categories:  Monitortags: thanos prometheus    参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://wx3.sinaimg.cn/large/77fd5d57gy1g4fl0a15n5j20qo0k0dhb.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/77fd5d57gy1g4fkrnrp85j21hm0lu43v.jpg">
+<meta property="og:image" content="https://wx4.sinaimg.cn/large/77fd5d57gy1g4fs14axmej21gg0l1dq5.jpg">
+<meta property="og:image" content="https://wx3.sinaimg.cn/large/77fd5d57gy1g4ft3lr41zj20i9066mxb.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/77fd5d57gy1g4ftoypv4nj20i20ah0t4.jpg">
+<meta property="og:image" content="https://wx3.sinaimg.cn/large/77fd5d57gy1g4fts3jpsaj20fs095jrn.jpg">
+<meta property="og:updated_time" content="2019-11-01T16:38:32.528Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pyfdtic&#39;s Blog">
+<meta name="twitter:description" content="title: Thanos 学习笔记date: 2019-03-14 17:38:24categories:  Monitortags: thanos prometheus    参考文档 概述 组件 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/large/77fd5d57gy1g4fl0a15n5j20qo0k0dhb.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.pyfdtic.com/2019/11/02/thanos/"/>
+
+
+
+
+
+  <title> | Pyfdtic's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-115793075-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Pyfdtic's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">但行好事, 莫问前程.</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2019/11/02/thanos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Pyfdtic">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Pyfdtic's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline"></h2>
+        
+
+        <div class="post-meta">
+	  
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-02T00:38:32+08:00">
+                2019-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>title: Thanos 学习笔记<br>date: 2019-03-14 17:38:24<br>categories:</p>
+<ul>
+<li>Monitor<br>tags:</li>
+<li>thanos</li>
+<li>prometheus</li>
+</ul>
+<!-- MarkdownTOC -->
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3">参考文档</a></li>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6">组件</a><ul>
+<li><a href="#1-sidecar-connects-to-prometheus-and-reads-its-data-for-query-andor-upload-it-to-cloud-storage">1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.</a><ul>
+<li><a href="#10-%E9%85%8D%E7%BD%AE-thanos-%E9%87%8D%E8%BD%BD-prometheus-%E9%85%8D%E7%BD%AE">1.0 配置 Thanos 重载 Prometheus 配置</a></li>
+<li><a href="#11-%E4%BD%BF%E7%94%A8%E5%A4%96%E9%83%A8%E5%AD%98%E5%82%A8">1.1 使用外部存储:</a><ul>
+<li><a href="#111-thanos-%E7%9B%AE%E5%89%8D%E6%94%AF%E6%8C%81%E5%A4%96%E9%83%A8%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B">1.1.1 Thanos 目前支持外部存储类型</a></li>
+</ul>
+</li>
+<li><a href="#12-%E5%AD%98%E5%82%A8%E6%8E%A5%E5%8F%A3">1.2 存储接口</a></li>
+<li><a href="#13-prometheus-%E6%89%A9%E5%B1%95%E6%A0%87%E7%AD%BE-%E5%8F%8A-%E5%85%A8%E5%B1%80%E5%94%AF%E4%B8%80%E6%A0%87%E5%BF%97">1.3 Prometheus 扩展标签 及 全局唯一标志</a></li>
+</ul>
+</li>
+<li><a href="#2-store-gateway-exposes-the-content-of-a-cloud-storage-bucket">2. Store Gateway: exposes the content of a cloud storage bucket.</a></li>
+<li><a href="#3-compactor-compact-and-downsample-data-stored-in-remote-storage">3. Compactor: compact and downsample data stored in remote storage</a></li>
+<li><a href="#4-receiver-receives-data-from-prometheuss-remote-write-wal-exposes-it-andor-upload-it-to-cloud-storage">4. Receiver: receives data from Prometheus’s remote-write WAL, exposes it and/or upload it to cloud storage.</a></li>
+<li><a href="#5-ruler-evaluates-recording-and-alerting-rules-against-data-in-thanos-for-exposition-andor-uploads">5. Ruler: evaluates recording and alerting rules against data in Thanos for exposition and/or uploads.</a><ul>
+<li><a href="#51-%E9%A3%8E%E9%99%A9">5.1 风险</a></li>
+<li><a href="#52-partial-response">5.2 Partial Response</a></li>
+<li><a href="#53-%E5%BF%85%E4%B8%8D%E5%8F%AF%E5%B0%91%E7%9A%84-ruler-alert-rule">5.3 必不可少的 Ruler alert rule</a></li>
+<li><a href="#54-%E6%89%A9%E5%B1%95-label">5.4 扩展 label</a></li>
+<li><a href="#55-ruler-ui">5.5 Ruler UI</a></li>
+<li><a href="#56-ruler-ha">5.6 Ruler HA</a></li>
+</ul>
+</li>
+<li><a href="#6-query-gateway-implements-prometheus%E2%80%99s-v1-api-to-aggregate-data-from-the-underlying-components">6. Query Gateway: implements Prometheus’s v1 API to aggregate data from the underlying components</a><ul>
+<li><a href="#61-%E6%95%B0%E6%8D%AE%E5%8E%BB%E9%87%8D">6.1 数据去重</a></li>
+<li><a href="#62-%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1">6.2 组件间通信</a></li>
+<li><a href="#63-%E9%85%8D%E7%BD%AE-query-%E4%B8%8E-sidecarstore-%E9%80%9A%E4%BF%A1%E7%9A%84%E6%96%B9%E5%BC%8F-%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0">6.3 配置 query 与 sidecar/store 通信的方式, 自动发现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%83%A8%E7%BD%B2">部署</a><ul>
+<li><a href="#1-prometheus">1. prometheus</a><ul>
+<li><a href="#prometheusservice">prometheus.service</a></li>
+<li><a href="#alertmanagerservice">alertmanager.service</a></li>
+<li><a href="#prom-node-exporterservice">prom-node-exporter.service</a></li>
+<li><a href="#prometheus-doc">prometheus Doc</a></li>
+</ul>
+</li>
+<li><a href="#2-thanos">2. thanos</a><ul>
+<li><a href="#thanos-queryservice">thanos-query.service</a></li>
+<li><a href="#thanos-sidecarservice">thanos-sidecar.service</a></li>
+<li><a href="#thanos-storeservice">thanos-store.service</a></li>
+<li><a href="#thanos-rulerservice">thanos-ruler.service</a></li>
+<li><a href="#thanos-compactorservice">thanos-compactor.service</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8">对象存储</a><ul>
+<li><a href="#s3">S3</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0">服务发现</a><ul>
+<li><a href="#thanos-%E4%B8%AD%E9%9C%80%E8%A6%81%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84%E4%BD%8D%E7%BD%AE">Thanos 中需要服务发现的位置</a></li>
+<li><a href="#thanos-%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F">Thanos 配置方式</a><ul>
+<li><a href="#1-flag">1. flag</a></li>
+<li><a href="#2-%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0">2. 基于文件的服务发现</a><ul>
+<li><a href="#21-query">2.1 Query</a></li>
+<li><a href="#22-rule">2.2 Rule</a></li>
+</ul>
+</li>
+<li><a href="#3-%E5%9F%BA%E4%BA%8E-dns-%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0">3. 基于 DNS 的服务发现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#prometheus">Prometheus</a><ul>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F">数据存储格式</a></li>
+<li><a href="#store">store</a></li>
+<li><a href="#query-layer">Query Layer</a></li>
+<li><a href="#compactor">Compactor</a></li>
+<li><a href="#scaling">Scaling</a></li>
+</ul>
+</li>
+<li><a href="#%E5%85%B6%E4%BB%96%E7%BB%84%E4%BB%B6">其他组件</a><ul>
+<li><a href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7">命令行工具</a><ul>
+<li><a href="#1-bucket">1. bucket</a></li>
+<li><a href="#2-check">2. check</a></li>
+</ul>
+</li>
+<li><a href="#compact">compact</a></li>
+<li><a href="#query">query</a><ul>
+<li><a href="#1-partial-response-behaviour">1. partial response behaviour</a><ul>
+<li><a href="#12-partial-response-strategy">1.2 Partial Response Strategy</a></li>
+</ul>
+</li>
+<li><a href="#2-deduplication-enable">2. Deduplication Enable</a></li>
+<li><a href="#3-auto-downsampling">3. Auto downsampling</a></li>
+<li><a href="#4-custom-reponse-fields-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%93%8D%E5%BA%94%E5%AD%97%E6%AE%B5">4. custom reponse fields 自定义响应字段</a></li>
+<li><a href="#5-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89-path-%E6%9A%B4%E9%9C%B2-thanos-ui">5. 使用自定义 Path 暴露 Thanos UI</a></li>
+</ul>
+</li>
+<li><a href="#rule">rule</a></li>
+<li><a href="#sidecar">sidecar</a></li>
+<li><a href="#store-1">store</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95">压力测试</a></li>
+<li><a href="#other">Other</a></li>
+<li><a href="#statsd-exporter">statsd-exporter</a><ul>
+<li><a href="#%E5%8D%8F%E8%AE%AE">协议</a></li>
+<li><a href="#statsd-%E6%8C%87%E6%A0%87%E7%B1%BB%E5%9E%8B">statsd 指标类型</a><ul>
+<li><a href="#counter-%E8%AE%A1%E6%95%B0%E5%99%A8">counter 计数器</a></li>
+<li><a href="#timer-%E8%AE%A1%E6%97%B6%E5%99%A8">timer 计时器</a></li>
+<li><a href="#gauge-%E6%A0%87%E9%87%8F">gauge 标量</a></li>
+<li><a href="#set">set</a></li>
+</ul>
+</li>
+<li><a href="#statsite">statsite</a></li>
+<li><a href="#install">install</a></li>
+<li><a href="#python-statd-client">Python StatD Client</a><ul>
+<li><a href="#timers">Timers</a></li>
+<li><a href="#cunters">Cunters</a></li>
+<li><a href="#gauge">Gauge</a></li>
+<li><a href="#raw">Raw</a></li>
+<li><a href="#average">Average</a></li>
+<li><a href="#connection-settings">Connection settings</a></li>
+<li><a href="#advanced-usage">Advanced Usage</a></li>
+<li><a href="#udpcopy">udpcopy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#consul">consul</a><ul>
+<li><a href="#consul-cli">consul-cli</a></li>
+<li><a href="#register--deregister">Register &amp;&amp; Deregister</a></li>
+</ul>
+</li>
+<li><a href="#promql">PromQL</a></li>
+<li><a href="#alertmanager">alertmanager</a><ul>
+<li><a href="#%E9%85%8D%E7%BD%AE">配置</a><ul>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%AE%B5">配置段</a></li>
+</ul>
+</li>
+<li><a href="#%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7">核心特性</a><ul>
+<li><a href="#1-groupinbg">1. Groupinbg</a></li>
+<li><a href="#2-inhibition%E6%8A%91%E5%88%B6">2. Inhibition(抑制)</a></li>
+<li><a href="#3-silences%E9%9D%99%E9%BB%98">3. Silences(静默)</a></li>
+<li><a href="#4-client-behavior">4. client behavior</a></li>
+<li><a href="#5-ha">5. HA</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://dockone.io/article/6019</span><br><span class="line">https://thanos.io/getting-started.md/</span><br></pre></td></tr></table></figure>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><img src="http://wx3.sinaimg.cn/large/77fd5d57gy1g4fl0a15n5j20qo0k0dhb.jpg" alt="Thanos 组件架构图"></p>
+<p><a href="https://github.com/improbable-eng/thanos/blob/7b72b18dea9747cf48fc41c2360ea221a29de6d0/examples/grafana/monitoring.md" target="_blank" rel="noopener">Thanos Grafana Dashboard: 需要 kubernetes</a></p>
+<p>Thanos 可以实现 global query view, Prometheus 的 HA 以及 持久存储能力. Prometheus 的 metric data model 及 2.0 存储格式(spec, slides) 是 Thanos 组件的基础.</p>
+<p>Thanos 部署方式支持云原生的部署, 也支持传统的部署方式.</p>
+<p>Prometheus <a href="https://github.com/prometheus/tsdb/tree/master/docs/format" target="_blank" rel="noopener">metric data model</a> 和 <a href="https://www.slideshare.net/FabianReinartz/storing-16-bytes-at-scale-81282712" target="_blank" rel="noopener">2.0 storage format</a> 是 Thanos 组件的基础.</p>
+<p>Thanos 组件职责分工明确, 方便解耦, 同时, 支持只部署部分组件实现快速实验. 其组件大致可以分为以下三类:</p>
+<ol>
+<li>Metric Sources: 生产或者收集 metric data.<ul>
+<li>sidecar: 在 Prometheus’s 的 HTTP 和 remote-read APIs 基础上, 实现了一个 gRPC 服务.</li>
+<li>rule nodes: 基于 Prometheus 的存储引擎实现了 gRPC 服务.</li>
+</ul>
+</li>
+<li>Stores</li>
+<li>Queriers</li>
+</ol>
+<p>必要条件:</p>
+<ol>
+<li><p>Prometheus v2.2.1 + 版本</p>
+<p>可以在 Thanos 的 <code>Makefile</code> 的 <code>PROM_VERSION</code> 变量中查找 Thanos 测试的基准版本.</p>
+</li>
+<li><p>go 1.10+</p>
+</li>
+<li>对象存储(可选)</li>
+</ol>
+<p>组件下载地址:<br><a href="https://github.com/improbable-eng/thanos/releases" target="_blank" rel="noopener">github release</a></p>
+<h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><h3 id="1-Sidecar-connects-to-Prometheus-and-reads-its-data-for-query-and-or-upload-it-to-cloud-storage"><a href="#1-Sidecar-connects-to-Prometheus-and-reads-its-data-for-query-and-or-upload-it-to-cloud-storage" class="headerlink" title="1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage."></a>1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.</h3><p>Sidecar 实现在 Prometheus’ remote-read API 的基础上实现了 Thanos’s StoreAPI .</p>
+<p>sidecar 与 Prometheus 位于同一个 server 上或者同一个 Pod 中.</p>
+<p>功能: 链接本地 Prometheus, 为查询读取数据/上传数据到 云存储.</p>
+<ol>
+<li>备份 Prometheus 数据到远端云存储</li>
+<li>给其他组件通过 gRPC API 访问本地 Prometheus 提供准入.</li>
+<li>Sidecat 使用 Prometheus 的 <code>reload</code> 机制, 需要确保 Prometheus 开启了 <code>--web.enable-lifecycle</code> 配置.</li>
+</ol>
+<h4 id="1-0-配置-Thanos-重载-Prometheus-配置"><a href="#1-0-配置-Thanos-重载-Prometheus-配置" class="headerlink" title="1.0 配置 Thanos 重载 Prometheus 配置"></a>1.0 配置 Thanos 重载 Prometheus 配置</h4><p>Thanos 可以监控 Prometheus 的 rules 和 配置, 更新和查询环境变量, 并把变量指定给 Prometheus 并使 Prometheus 重载这些变量.</p>
+<ol>
+<li><p>需要 Prometheus 配置</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--web.enable-lifecycle</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置 thanos sidecar</p>
+<p> <code>--reloader.rule-dir=DIR_NAME</code> 配置 Sidecar 监视某个 Rule 文件夹下的文件的变化.<br> <code>--reloader.config-file=CONFIG_FILE</code> 配置 Sidecar 监视 <code>CONFIG_FILE</code> 计算环境变量, 并把发现的环境变量用于生成 <code>--reloader.config-envsubst-file=OUT_CONFIG_FIL</code> 配置的配置文件.</p>
+</li>
+</ol>
+<h4 id="1-1-使用外部存储"><a href="#1-1-使用外部存储" class="headerlink" title="1.1 使用外部存储:"></a>1.1 使用外部存储:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 配置 sidecar 读取 prometheus 收集的数据, 并写入到远程的 对象存储中.</span><br><span class="line">$ thanos sidecar \</span><br><span class="line">    --tsdb.path            /var/prometheus \          # TSDB data directory of Prometheus</span><br><span class="line">    --prometheus.url       &quot;http://localhost:9090&quot; \  # Be sure that the sidecar can use this url!</span><br><span class="line">    --objstore.config-file bucket_config.yaml \       # Storage configuration for uploading data</span><br></pre></td></tr></table></figure>
+<p>以上配置对正在运行的 Prometheus 影响很小, 但最好确保数据是备份的. </p>
+<p>如果<strong>不希望备份</strong>任何数据, <code>--objstore.config-file</code> 可以忽略.</p>
+<h5 id="1-1-1-Thanos-目前支持外部存储类型"><a href="#1-1-1-Thanos-目前支持外部存储类型" class="headerlink" title="1.1.1 Thanos 目前支持外部存储类型"></a>1.1.1 Thanos 目前支持外部存储类型</h5><table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Maturity</th>
+<th>Auto-tested on CI</th>
+<th>Maintainers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Cloud Storage</td>
+<td>Stable (production usage)</td>
+<td>yes</td>
+<td>@bwplotka</td>
+</tr>
+<tr>
+<td>AWS S3</td>
+<td>Stable (production usage)</td>
+<td>yes</td>
+<td>@bwplotka</td>
+</tr>
+<tr>
+<td>Azure Storage Account</td>
+<td>Stable (production usage)</td>
+<td>yes</td>
+<td>@vglafirov</td>
+</tr>
+<tr>
+<td>OpenStack Swift</td>
+<td>Beta (working PoCs, testing usage)</td>
+<td>no</td>
+<td>@sudhi-vm</td>
+</tr>
+<tr>
+<td>Tencent COS</td>
+<td>Beta (testing usage)</td>
+<td>no</td>
+<td>@jojohappy</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1-2-存储接口"><a href="#1-2-存储接口" class="headerlink" title="1.2 存储接口"></a>1.2 存储接口</h4><p><code>Sidecar</code> 实现并暴露了一个 gRPC 的 存储 API, 可以基于此 API 查询 prometheus 中存储的 metric 数据.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">thanos sidecar \</span><br><span class="line">    --tsdb.path                 /var/prometheus \</span><br><span class="line">    --objstore.config-file      bucket_config.yaml \       # Bucket config file to send data to</span><br><span class="line">    --prometheus.url            http://localhost:9090 \    # Location of the Prometheus HTTP server</span><br><span class="line">    --http-address              0.0.0.0:19191 \            # HTTP endpoint for collecting metrics on the Sidecar</span><br><span class="line">    --grpc-address              0.0.0.0:19090              # GRPC endpoint for StoreAPI</span><br></pre></td></tr></table></figure>
+<h4 id="1-3-Prometheus-扩展标签-及-全局唯一标志"><a href="#1-3-Prometheus-扩展标签-及-全局唯一标志" class="headerlink" title="1.3 Prometheus 扩展标签 及 全局唯一标志"></a>1.3 Prometheus 扩展标签 及 全局唯一标志</h4><p>Prometheus 允许配置一个给定实例的 <code>external labels</code>, 用于全局的定义该实例的角色标志. 由于 Thanos 的目标就是 跨 Prometheus 节点实现监控数据的聚合, 给 prometheus 实例提供一个全局唯一的标识十分重要.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">global:</span><br><span class="line">  external_labels:</span><br><span class="line">    region: eu-west</span><br><span class="line">    monitor: infrastructure</span><br><span class="line">    replica: A</span><br></pre></td></tr></table></figure>
+<h3 id="2-Store-Gateway-exposes-the-content-of-a-cloud-storage-bucket"><a href="#2-Store-Gateway-exposes-the-content-of-a-cloud-storage-bucket" class="headerlink" title="2. Store Gateway: exposes the content of a cloud storage bucket."></a>2. Store Gateway: exposes the content of a cloud storage bucket.</h3><p>提供 云存储的 访问权限控制.</p>
+<p>暴露 云存储接口, 查询所有历史数据. StoreGateway 实现了与 Sidecar 相同的 gRPC 数据 API, 只是, 其后端使用存储在云存储中的数据.</p>
+<p>StoreGateway 暴露 StoreAPI, 并且需要被 QueryGateway 发现.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">thanos store \</span><br><span class="line">    --data-dir             /var/thanos/store \   # Disk space for local caches</span><br><span class="line">    --objstore.config-file bucket_config.yaml \  # Bucket to fetch data from</span><br><span class="line">    --http-address         0.0.0.0:19191 \       # HTTP endpoint for collecting metrics on the Store Gateway</span><br><span class="line">    --grpc-address         0.0.0.0:19090         # GRPC endpoint for StoreAPI</span><br></pre></td></tr></table></figure>
+<p>StoreGateway 需要占用一部分本地存储空间, 几个 Gb 即可, 主要用来缓存对象存储中监控数据的元信息, 以提高 <strong>启动时间</strong>. 这些数据很有用, 但是, 并不一定要持久化. 基本上, 大概一个 block 配置 1MB 大小的本地空间即可.</p>
+<p>StoreGateway 每次在启动时, 会从 对象存储中拉取对象存储中历史数据的元信息, 并保存在本地, 在没有缓存所有历史数据元信息之前, 不会向外提供服务.</p>
+<p><code>objstore.config-file</code> aws s3 example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">type: S3</span><br><span class="line">config:</span><br><span class="line">  bucket: &quot;&quot;</span><br><span class="line">  endpoint: &quot;&quot;</span><br><span class="line">  region: &quot;&quot;</span><br><span class="line">  access_key: &quot;&quot;</span><br><span class="line">  secret_key: &quot;&quot;</span><br><span class="line">  insecure: false</span><br><span class="line">  signature_version2: false</span><br><span class="line">  encrypt_sse: false</span><br><span class="line">  put_user_metadata: &#123;&#125;</span><br><span class="line">  http_config:</span><br><span class="line">    idle_conn_timeout: 0s</span><br><span class="line">    response_header_timeout: 0s</span><br><span class="line">    insecure_skip_verify: false</span><br><span class="line">  trace:</span><br><span class="line">    enable: false</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-Compactor-compact-and-downsample-data-stored-in-remote-storage"><a href="#3-Compactor-compact-and-downsample-data-stored-in-remote-storage" class="headerlink" title="3. Compactor: compact and downsample data stored in remote storage"></a>3. Compactor: compact and downsample data stored in remote storage</h3><p>压缩远程存储中数据的数据/降低远程存储中数据的精度 </p>
+<p>Prometheus 会在本地定期的压缩历史数据, 以提高查询效率. Compactor 实现了类似的功能.</p>
+<p>Compactor 组件定期扫描 云存储, 并 在需要时处理数据压缩. 以此同时, 也用来创建 <strong>低精度的历史数据</strong>, 来提高查询效率.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">thanos compact \</span><br><span class="line">    --data-dir             /var/thanos/compact \  # Temporary workspace for data processing</span><br><span class="line">    --objstore.config-file bucket_config.yaml \   # Bucket where to apply the compacting</span><br><span class="line">    --http-address         0.0.0.0:19191          # HTTP endpoint for collecting metrics on the Compactor</span><br></pre></td></tr></table></figure>
+<p>Compactor 可以作为<strong>定期任务</strong>执行, 也可以作为 Daemon 程序运行, 无论哪种方式, 都需要提供 <code>100-300 GB</code>的本地存储空间 作为临时处理数据之用.</p>
+<p><strong>注意</strong>: </p>
+<ol>
+<li>Compactor 必须作为 <strong>单例</strong> 运行;</li>
+<li>Compactor 运行时, 必须<strong>禁止手动修改</strong> 云存储中的数据.</li>
+</ol>
+<h3 id="4-Receiver-receives-data-from-Prometheus’s-remote-write-WAL-exposes-it-and-or-upload-it-to-cloud-storage"><a href="#4-Receiver-receives-data-from-Prometheus’s-remote-write-WAL-exposes-it-and-or-upload-it-to-cloud-storage" class="headerlink" title="4. Receiver: receives data from Prometheus’s remote-write WAL, exposes it and/or upload it to cloud storage."></a>4. Receiver: receives data from Prometheus’s remote-write WAL, exposes it and/or upload it to cloud storage.</h3><p>通过 Prometheus 的 remote-write WAL 接受数据 并 向外暴露数据 或者 上传数据到云存储.</p>
+<h3 id="5-Ruler-evaluates-recording-and-alerting-rules-against-data-in-Thanos-for-exposition-and-or-uploads"><a href="#5-Ruler-evaluates-recording-and-alerting-rules-against-data-in-Thanos-for-exposition-and-or-uploads" class="headerlink" title="5. Ruler: evaluates recording and alerting rules against data in Thanos for exposition and/or uploads."></a>5. Ruler: evaluates recording and alerting rules against data in Thanos for exposition and/or uploads.</h3><p>基于 Thanos Query 提供的数据, 评估记录和报警规则.</p>
+<p>In case of Prometheus with Thanos sidecar does not have enough retention, or if you want to have alerts or recording rules that requires global view, Thanos has just the component for that: the Ruler, which does rule and alert evaluation on top of a given Thanos Querier.</p>
+<p>The rule component evaluates(评估) Prometheus recording and alerting rules against(紧靠, 依赖) chosen query API via repeated <code>--query</code> (or FileSD via <code>--query.sd</code>). If more than one query is passed, round robin balancing is performed.</p>
+<p>Rule results are written back to disk in the Prometheus 2.0 storage format. Rule nodes at the same time participate(参与) in the system as source store nodes, which means that they expose StoreAPI and upload their generated TSDB blocks to an object store.</p>
+<p>The data of each Rule node can be labeled to satisfy(使满足) the clusters labeling scheme. High-availability pairs can be run in parallel(并行的) and should be distinguished(区别, 区分) by the designated(指定的) replica label, just like regular Prometheus servers.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ thanos rule \</span><br><span class="line">    --data-dir             <span class="string">"/path/to/data"</span> \</span><br><span class="line">    --<span class="built_in">eval</span>-interval        <span class="string">"30s"</span> \</span><br><span class="line">    --rule-file            <span class="string">"/path/to/rules/*.rules.yaml"</span> \</span><br><span class="line">    --alert.query-url      <span class="string">"http://0.0.0.0:9090"</span> \ <span class="comment"># This tells what query URL to link to in UI.</span></span><br><span class="line">    --alertmanagers.url    <span class="string">"alert.thanos.io"</span> \</span><br><span class="line">    --query                <span class="string">"query.example.org"</span> \</span><br><span class="line">    --query                <span class="string">"query2.example.org"</span> \</span><br><span class="line">    --objstore.config-file <span class="string">"bucket.yml"</span> \</span><br><span class="line">    --label                <span class="string">'monitor_cluster="cluster1"'</span></span><br><span class="line">    --label                <span class="string">'replica="A"</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-1-风险"><a href="#5-1-风险" class="headerlink" title="5.1 风险"></a>5.1 风险</h4><p>Ruler 有一些概念上的权衡, 可能不适用于所有的大多数的场景. 主要的权衡是, Ruler 依赖于 Query 的可用性. 这个缺点对 Prometheus 并不存在, 因为, Prometheus 主要用本地的数据来做 alert / record 估算.</p>
+<p>对于 Ruler 来说, 其读取数据的路径是分布式的, Ruler 查询 QueryAPI, 而 QueryAPI 的数据来源于远端的 StoreAPI. 这意味着 查询失败 的情况, 大概率会发生. 因此, 明确的报警策略和查询失败时的报警策略, 就显得尤为重要.</p>
+<h4 id="5-2-Partial-Response"><a href="#5-2-Partial-Response" class="headerlink" title="5.2 Partial Response"></a>5.2 Partial Response</h4><p>Rule 允许给特定 rule group, 指定 额外的字段来控制 <code>PartialResponseStrategy</code>, 推荐将 <code>partial_response_strategy</code> 配置为 <code>abort</code>, 这也是默认值.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">groups:</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"warn strategy"</span></span><br><span class="line"><span class="attr">  partial_response_strategy:</span> <span class="string">"warn"</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - alert:</span> <span class="string">"some"</span></span><br><span class="line"><span class="attr">    expr:</span> <span class="string">"up"</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"abort strategy"</span></span><br><span class="line"><span class="attr">  partial_response_strategy:</span> <span class="string">"abort"</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - alert:</span> <span class="string">"some"</span></span><br><span class="line"><span class="attr">    expr:</span> <span class="string">"up"</span></span><br><span class="line"><span class="attr">- name:</span> <span class="string">"by default strategy is abort"</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - alert:</span> <span class="string">"some"</span></span><br><span class="line"><span class="attr">    expr:</span> <span class="string">"up"</span></span><br></pre></td></tr></table></figure>
+<p>Essentially(本质上), for alerting, having partial response can result in symptoms(征兆, 症状) being missed by Rule’s alert.</p>
+<h4 id="5-3-必不可少的-Ruler-alert-rule"><a href="#5-3-必不可少的-Ruler-alert-rule" class="headerlink" title="5.3 必不可少的 Ruler alert rule"></a>5.3 必不可少的 Ruler alert rule</h4><p>通过从其他 Scraper(Prometheus + sidecar) 监控 Ruler 和 alert , 确保 Thanos 报警功能的正常, 是极其重要的. 以下几个 metrics 推荐做响应的监控和报警, 这些报警对于普通的 Prometheus 集群也相当重要, 但是在分布式的环境中尤为重要:</p>
+<ul>
+<li><p><code>thanos_alert_sender_alerts_dropped_total</code>: 如果 &gt; 0, 表示 Ruler alert 有一部分并没有触发报警信息, 这可能预示着 可连接性/兼容性方面存在问题, 或者 配置错误.</p>
+</li>
+<li><p><code>prometheus_rule_evaluation_failures_total</code>. 如果 &gt; 0, rule 计算失败. 这可能是由于 rule 本身的漏洞, 或者潜在的忽略报警. <code>strategy</code> label will tell you if failures comes from rules that tolerate <a href="rule.md#partial-response">partial response</a> or not.</p>
+</li>
+<li><p><code>prometheus_rule_group_last_duration_seconds &lt; prometheus_rule_group_interval_seconds</code>: 如果差距较大, 则表示 rule 每次的计算时间大于当前的定时 rule 计算时间. 有可能是 Query 端计算过慢所致, 也有可能是 StoreAPI 太慢, 或者 表达式太过复杂.</p>
+</li>
+<li><p><code>thanos_rule_evaluation_with_warnings_total</code>: 如果 Ruler 和 Alert 设置 <code>partial response strategy</code> 为 <code>warn</code>, 该 metrics 用于表示有多少次 表达式计算返回 warning. 可以反应出, 有多少 partial response, 和当前 metrics 的值可能是不精确的.</p>
+</li>
+</ul>
+<h4 id="5-4-扩展-label"><a href="#5-4-扩展-label" class="headerlink" title="5.4 扩展 label"></a>5.4 扩展 label</h4><p>强制要求 Ruler 实例添加 扩展标签 来表示数据来源 (e.g. <code>label=&#39;replica=&quot;A&quot;&#39;</code> or for <code>cluster</code>). 否则, 多实例运行的 Ruler 将无法启动, 因为 压缩数据是会存在冲突.</p>
+<p>推荐 给 Ruler 实例 以 <strong>不同于</strong> 其数据来源的实例(如 Store, Sidecar, Prometheus 等)的 扩展标签, 因为, 扩展标签将会替换 数据原有的 标签.</p>
+<p>For example:</p>
+<ul>
+<li>Ruler is in cluster <code>mon1</code> and we have Prometheus in cluster <code>eu1</code></li>
+<li>By default we could try having consistent(一致的) labels so we have <code>cluster=eu1</code> for Prometheus and <code>cluster=mon1</code> for Ruler.</li>
+<li>We configure <code>ScraperIsDown</code> alert that monitors service from <code>work1</code> cluster.</li>
+<li>When triggered this alert results in <code>ScraperIsDown{cluster=mon1}</code> since external labels always <em>replace</em> source labels.</li>
+</ul>
+<h4 id="5-5-Ruler-UI"><a href="#5-5-Ruler-UI" class="headerlink" title="5.5 Ruler UI"></a>5.5 Ruler UI</h4><p>Ruler 可以通过 HTTP 暴露出一个 UI 界面, 显示当前的 rule 和 alert, 类似 Prometheus 的 Alerts page.</p>
+<h4 id="5-6-Ruler-HA"><a href="#5-6-Ruler-HA" class="headerlink" title="5.6 Ruler HA"></a>5.6 Ruler HA</h4><p>Ruler 使用外部的资源, 通过网络来获取资源计算, 在性能上会有损耗. 如果需要, 可以使用多个 ruler 分担不同的查询/告警计算任务.</p>
+<p>多个 Ruler 之间可以使用 replica lable 实现去重.</p>
+<p>在 Ruler HA 配置中, 需要确保每个 Ruler 实例有如下配置:</p>
+<ul>
+<li>区别其他 Ruler HA 的 group 标签 和 replica 标签, e.g:<br><code>cluster=&quot;eu1&quot;, replica=&quot;A&quot;</code> and <code>cluster=eu1, replica=&quot;B&quot;</code> by using <code>--label</code> flag.</li>
+<li>配置<code>--alert-label-drop=&quot;replica&quot;</code>, 以实现在将 trigger 发送给 Alertmanager 时的去重.</li>
+</ul>
+<p>其他计划添加的 relabelling 可以参考如下链接: <code>https://github.com/improbable-eng/thanos/issues/660</code></p>
+<h3 id="6-Query-Gateway-implements-Prometheus’s-v1-API-to-aggregate-data-from-the-underlying-components"><a href="#6-Query-Gateway-implements-Prometheus’s-v1-API-to-aggregate-data-from-the-underlying-components" class="headerlink" title="6. Query Gateway: implements Prometheus’s v1 API to aggregate data from the underlying components"></a>6. Query Gateway: implements Prometheus’s v1 API to aggregate data from the underlying components</h3><p>实现了 Prometheus’ v1 API 来从其他组件聚合数据, 使用 Thanos 全局查询层 来基于全部的 Prometheus 实例 使用 PromQL 查询监控数据.</p>
+<p>Query Gateway 是<strong>无状态</strong>的, 可以<strong>水平扩展</strong>, 可以部署任意多个副本.</p>
+<p>Query Gateway 一旦与 Sidecar 建立连接, 他会依据给定的 PromQL 查询语句自动探测需要连接的 Prometheus 实例.</p>
+<p>Query Gateway 同样实现了 Prometheus 官方的 HTTP 接口, 因此, 可以被外部的第三方工具集成, 如 Grafana. 同时, 该 HTTP API 为 Prometheus UI 提供 实时的查询和 云存储的状态.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">thanos query \</span><br><span class="line">    --http-address 0.0.0.0:19192 \                                # HTTP Endpoint for Query UI</span><br><span class="line">    --store        1.2.3.4:19090 \                                # Static gRPC Store API Address for the query node to query</span><br><span class="line">    --store        1.2.3.5:19090 \                                # Also repeatable</span><br><span class="line">    --store        dnssrv+_grpc._tcp.thanos-store.monitoring.svc  # Supports DNS A &amp; SRV records</span><br></pre></td></tr></table></figure>
+<h4 id="6-1-数据去重"><a href="#6-1-数据去重" class="headerlink" title="6.1 数据去重"></a>6.1 数据去重</h4><p>Query Gateway 可以实现将 Prometheus HA 集群中的数据, 实现去重的功能, 该功能需要 每个 Prometheus 实例配置 <code>global.external_labels</code> 参数, 来唯一的区别每个 Prometheus 实例.</p>
+<p>一个常用的做法是配置 <code>replica</code> 参数, 例如下面的配置. 在 Kubernetes 集群中, 使用 stateful deployment 部署时, <code>replica</code> 标签可以为 Pod 的名称.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">global:</span><br><span class="line">  external_labels:</span><br><span class="line">    region: eu-west</span><br><span class="line">    monitor: infrastructure</span><br><span class="line">    replica: A</span><br></pre></td></tr></table></figure>
+<p>在重启 Prometheus 实例之后, 在 Query Gateway 中, 我们可以指定 <code>replica</code> 标签作为去重的标志:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">thanos query \</span><br><span class="line">    --http-address        0.0.0.0:19192 \</span><br><span class="line">    --store               1.2.3.4:19090 \</span><br><span class="line">    --store               1.2.3.5:19090 \</span><br><span class="line">    --query.replica-label replica  # Replica label for de-duplication</span><br></pre></td></tr></table></figure>
+<h4 id="6-2-组件间通信"><a href="#6-2-组件间通信" class="headerlink" title="6.2 组件间通信"></a>6.2 组件间通信</h4><p>Query Gateway 需要能够连上 StoreApi 的 gRPC API. Query Gateway 会定时调用这些接口, 来收集最新的元数据(这些元信息包含每个节点的<strong>时间窗口信息</strong>和 <code>external label</code> 信息), 同时, 检查 StoreApi 的健康状态.</p>
+<p>Query Gateway 链接 StoreApi 的配置有多中配置方式:</p>
+<ol>
+<li>一个静态 StoreAPI 的列表(可重复)</li>
+<li>动态发现机制:<ul>
+<li><code>dns+</code> 基于 DNS A 记录获取 StoreAPI 地址列表</li>
+<li><code>dbssrv+</code> 基于 SRV 获取 StoreAPI 地址列表</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">thanos query \</span><br><span class="line">    --http-address 0.0.0.0:19192 \              # Endpoint for Query UI</span><br><span class="line">    --grpc-address 0.0.0.0:19092 \              # gRPC endpoint for Store API</span><br><span class="line">    --store        1.2.3.4:19090 \              # Static gRPC Store API Address for the query node to query</span><br><span class="line">    --store        1.2.3.5:19090 \              # Also repeatable</span><br><span class="line">    --store        dns+rest.thanos.peers:19092  # Use DNS lookup for getting all registered IPs as separate StoreAPIs</span><br></pre></td></tr></table></figure>
+<h4 id="6-3-配置-query-与-sidecar-store-通信的方式-自动发现"><a href="#6-3-配置-query-与-sidecar-store-通信的方式-自动发现" class="headerlink" title="6.3 配置 query 与 sidecar/store 通信的方式, 自动发现"></a>6.3 配置 query 与 sidecar/store 通信的方式, 自动发现</h4><p><code>--store STORE</code> 配置项是可重复的. 有一下配置方法:</p>
+<ol>
+<li><p>静态配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--store        1.2.3.4:19090 \              # Static gRPC Store API Address for the query node to query</span><br><span class="line">--store        1.2.3.5:19090 \              # Also repeatable</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>服务发现</p>
+<ul>
+<li><p><code>dns+</code> or <code>dnssrv+</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--store        dns+rest.thanos.peers:19092  # Use DNS lookup for getting all registered IPs as separate StoreAPIs</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>基于文件的自动发现</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--store.sd-files=/etc/thanos/file_sd/query_sidecar_*.yaml \</span><br><span class="line">--store.sd-files=/etc/thanos/file_sd/query_store_*.yaml \</span><br><span class="line">--store.sd-interval=5m</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p><img src="//wx4.sinaimg.cn/large/77fd5d57gy1g4fkrnrp85j21hm0lu43v.jpg" alt="Thanos 部署示例"></p>
+<h3 id="1-prometheus"><a href="#1-prometheus" class="headerlink" title="1. prometheus"></a>1. prometheus</h3><h4 id="prometheus-service"><a href="#prometheus-service" class="headerlink" title="prometheus.service"></a>prometheus.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">prometheus \</span><br><span class="line">  --storage.tsdb.max-block-duration=2h \</span><br><span class="line">  --storage.tsdb.min-block-duration=2h \</span><br><span class="line">  --web.enable-lifecycle</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"># prometheus.service</span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line">Description=Prometheus</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">Environment=&quot;GOMAXPROCS=2&quot;</span><br><span class="line">User=prometheus</span><br><span class="line">Group=prometheus</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">ExecStart=/usr/local/bin/prometheus \</span><br><span class="line">  --config.file=/etc/prometheus/prometheus.yml \</span><br><span class="line">  --storage.tsdb.path=/data/prometheus \</span><br><span class="line">  --storage.tsdb.retention=3d \</span><br><span class="line">  --storage.tsdb.min-block-duration=2h \</span><br><span class="line">  --storage.tsdb.max-block-duration=2h \</span><br><span class="line">  --web.console.libraries=/etc/prometheus/console_libraries \</span><br><span class="line">  --web.console.templates=/etc/prometheus/consoles \</span><br><span class="line">  --web.enable-lifecycle \</span><br><span class="line">  --web.listen-address=0.0.0.0:9090</span><br><span class="line"></span><br><span class="line">PrivateTmp=true</span><br><span class="line">PrivateDevices=true</span><br><span class="line">ProtectHome=true</span><br><span class="line">NoNewPrivileges=true</span><br><span class="line">LimitNOFILE=infinity</span><br><span class="line">ReadWritePaths=/data/prometheus</span><br><span class="line">ProtectSystem=strict</span><br><span class="line">ProtectControlGroups=true</span><br><span class="line">ProtectKernelModules=true</span><br><span class="line">ProtectKernelTunables=true</span><br><span class="line"></span><br><span class="line">SyslogIdentifier=prometheus</span><br><span class="line">Restart=always</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="alertmanager-service"><a href="#alertmanager-service" class="headerlink" title="alertmanager.service"></a>alertmanager.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Prometheus Alertmanager</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">Environment=&quot;GOMAXPROCS=2&quot;</span><br><span class="line">User=prometheus</span><br><span class="line">Group=prometheus</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">ExecStart=/usr/local/bin/alertmanager \</span><br><span class="line">  --config.file=/etc/prometheus/alertmanager.yml</span><br><span class="line"></span><br><span class="line">PrivateTmp=true</span><br><span class="line">PrivateDevices=true</span><br><span class="line">ProtectHome=true</span><br><span class="line">NoNewPrivileges=true</span><br><span class="line">LimitNOFILE=infinity</span><br><span class="line">ProtectSystem=strict</span><br><span class="line">ProtectControlGroups=true</span><br><span class="line">ProtectKernelModules=true</span><br><span class="line">ProtectKernelTunables=true</span><br><span class="line"></span><br><span class="line">SyslogIdentifier=prometheus-alertmanager</span><br><span class="line">Restart=always</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="prom-node-exporter-service"><a href="#prom-node-exporter-service" class="headerlink" title="prom-node-exporter.service"></a>prom-node-exporter.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Prometheus node exporter</span><br><span class="line">After=local-fs.target network-online.target network.target</span><br><span class="line">Wants=local-fs.target network-online.target network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/local/bin/node_exporter</span><br><span class="line">Type=simple</span><br><span class="line">Restart=always</span><br><span class="line"></span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="prometheus-Doc"><a href="#prometheus-Doc" class="headerlink" title="prometheus Doc"></a>prometheus Doc</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://www.yangcs.net/prometheus/3-prometheus/basics.html</span><br><span class="line">https://yunlzheng.gitbook.io/prometheus-book/</span><br></pre></td></tr></table></figure>
+<h3 id="2-thanos"><a href="#2-thanos" class="headerlink" title="2. thanos"></a>2. thanos</h3><h4 id="thanos-query-service"><a href="#thanos-query-service" class="headerlink" title="thanos-query.service"></a>thanos-query.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Thanos Query</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">ExecStart=/usr/local/bin/thanos query \</span><br><span class="line">    --http-address 0.0.0.0:19192 \</span><br><span class="line">    --grpc-address 0.0.0.0:19092 \</span><br><span class="line">    --query.replica-label replica \</span><br><span class="line">    --store.sd-files=/etc/thanos/file_sd/query_sidecar_*.yaml \</span><br><span class="line">    --store.sd-files=/etc/thanos/file_sd/query_store_*.yaml \</span><br><span class="line">    --store.sd-interval=5m</span><br><span class="line"></span><br><span class="line">PrivateTmp=true</span><br><span class="line">PrivateDevices=true</span><br><span class="line">ProtectHome=true</span><br><span class="line">NoNewPrivileges=true</span><br><span class="line">ProtectSystem=strict</span><br><span class="line">ProtectControlGroups=true</span><br><span class="line">ProtectKernelModules=true</span><br><span class="line">ProtectKernelTunables=true</span><br><span class="line"></span><br><span class="line">SyslogIdentifier=thanos-query</span><br><span class="line">Restart=always</span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="thanos-sidecar-service"><a href="#thanos-sidecar-service" class="headerlink" title="thanos-sidecar.service"></a>thanos-sidecar.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Thanos Sidecar</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">ExecStart=/usr/local/bin/thanos sidecar \</span><br><span class="line">  --tsdb.path /data/prometheus \</span><br><span class="line">  --objstore.config-file /etc/thanos/s3-thanos-leyan.yaml \</span><br><span class="line">  --prometheus.url http://localhost:9090  \</span><br><span class="line">  --http-address 0.0.0.0:19191 \</span><br><span class="line">  --grpc-address 0.0.0.0:19090</span><br><span class="line"></span><br><span class="line">PrivateTmp=true</span><br><span class="line">PrivateDevices=true</span><br><span class="line">ProtectHome=true</span><br><span class="line">NoNewPrivileges=true</span><br><span class="line">ProtectSystem=strict</span><br><span class="line">ProtectControlGroups=true</span><br><span class="line">ProtectKernelModules=true</span><br><span class="line">ProtectKernelTunables=true</span><br><span class="line"></span><br><span class="line">SyslogIdentifier=thanos-sidecar</span><br><span class="line">Restart=always</span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="thanos-store-service"><a href="#thanos-store-service" class="headerlink" title="thanos-store.service"></a>thanos-store.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Thanos Store</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">ExecStart=/usr/local/bin/thanos store \</span><br><span class="line">    --data-dir /data/thanos/store \</span><br><span class="line">    --objstore.config-file /etc/thanos/s3-thanos-leyan.yaml \</span><br><span class="line">    --http-address 0.0.0.0:29191 \</span><br><span class="line">    --grpc-address 0.0.0.0:29090</span><br><span class="line"></span><br><span class="line">PrivateTmp=true</span><br><span class="line">PrivateDevices=true</span><br><span class="line">ProtectHome=true</span><br><span class="line">NoNewPrivileges=true</span><br><span class="line"></span><br><span class="line">SyslogIdentifier=thanos-store</span><br><span class="line">Restart=always</span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h4 id="thanos-ruler-service"><a href="#thanos-ruler-service" class="headerlink" title="thanos-ruler.service"></a>thanos-ruler.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Thanos Ruler</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">ExecStart=/usr/local/bin/thanos rule \</span><br><span class="line">    --data-dir=&quot;/data/thanos/rules&quot; \</span><br><span class="line">    --eval-interval=30s \</span><br><span class="line">    --rule-file=&quot;/etc/thanos/rules/*.rules.yaml&quot; \</span><br><span class="line">    --alert.query-url=&quot;10.23.21.237&quot; \</span><br><span class="line">    --alertmanagers.url=&quot;10.23.21.237&quot; \</span><br><span class="line">    --query.sd-files=&quot;/etc/thanos/file_sd/rule_query_dev.yaml&quot; \</span><br><span class="line">    --objstore.config-file=/etc/thanos/s3-thanos-leyan.yaml \</span><br><span class="line">    --label=env=&quot;dev&quot; \</span><br><span class="line">    --label=replica=&quot;dev-thanos-002-ruler&quot; \</span><br><span class="line">    --alert.label-drop=&apos;replica&apos;</span><br><span class="line"></span><br><span class="line">PrivateTmp=true</span><br><span class="line">PrivateDevices=true</span><br><span class="line">ProtectHome=true</span><br><span class="line">NoNewPrivileges=true</span><br><span class="line"></span><br><span class="line">SyslogIdentifier=thanos-ruler</span><br><span class="line">Restart=always</span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>cmd<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/local/bin/thanos rule --log.level=debug --data-dir=/data/thanos/rules --eval-interval=30s --rule-file=/etc/thanos/rules/*.rules.yaml --alert.query-url=http://10.23.21.237:19192 --alertmanagers.url=http://10.23.79.238:9093 --query.sd-files=/etc/thanos/file_sd/rule_query_dev.yaml --objstore.config-file=/etc/thanos/s3-thanos-leyan.yaml --label=&apos;env=&quot;dev&quot;&apos; --label=&apos;replica=&quot;dev-thanos-002-ruler&quot;&apos; --alert.label-drop=replica</span><br></pre></td></tr></table></figure></p>
+<h4 id="thanos-compactor-service"><a href="#thanos-compactor-service" class="headerlink" title="thanos-compactor.service"></a>thanos-compactor.service</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Thanos Compactor</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">ExecStart=/usr/local/bin/thanos compact \</span><br><span class="line">    --data-dir /data/thanos/compact \</span><br><span class="line">    --http-address         0.0.0.0:39191 \</span><br><span class="line">    --objstore.config-file=/etc/thanos/s3-thanos-leyan.yaml</span><br><span class="line"></span><br><span class="line">PrivateTmp=true</span><br><span class="line">PrivateDevices=true</span><br><span class="line">ProtectHome=true</span><br><span class="line">NoNewPrivileges=true</span><br><span class="line"></span><br><span class="line">SyslogIdentifier=thanos-compactor</span><br><span class="line">Restart=always</span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h2 id="对象存储"><a href="#对象存储" class="headerlink" title="对象存储"></a>对象存储</h2><p>Thanos 支持任何 可以实现 <a href="https://github.com/improbable-eng/thanos/tree/11d77980618b1df4753eb96006188ea535f3f8a7/pkg/objstore/objstore.go" target="_blank" rel="noopener">objstore.Bucket interface</a> 接口 的对象存储.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--objstore.config-file  # Yiyong peizhi wenjian </span><br><span class="line">--objstore.config # 直接传入配置参数.</span><br></pre></td></tr></table></figure>
+<h3 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h3><p>Thanos 使用 <a href="https://github.com/minio/minio-go" target="_blank" rel="noopener">minio client</a> 库来上传 Prometheus 的数据到 S3.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">type: S3</span><br><span class="line">config:</span><br><span class="line">  bucket: &quot;&quot;                        # 必选</span><br><span class="line">  endpoint: &quot;&quot;                      # 必选, 参考地址[aws s3 endpoint](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)</span><br><span class="line">  region: &quot;&quot;</span><br><span class="line">  access_key: &quot;&quot;                    # 必选</span><br><span class="line">  insecure: false                   # 使用 HTTP / HTTPS 传输</span><br><span class="line">  signature_version2: false         # 可选, 当前 AWS signature 使用 v4 版本, 所以 设为 false. 如果配置错误, 返回 `Access Denied error`.</span><br><span class="line">  encrypt_sse: false</span><br><span class="line">  secret_key: &quot;&quot;                    # 必选</span><br><span class="line">  put_user_metadata: &#123;&#125;</span><br><span class="line">  http_config:</span><br><span class="line">    idle_conn_timeout: 0s</span><br><span class="line">    response_header_timeout: 0s</span><br><span class="line">    insecure_skip_verify: false     # 是否 禁用 TLS 证书认证.</span><br><span class="line">  trace:</span><br><span class="line">    enable: false                   # 是否打开 minio 库的 debug 模式.</span><br></pre></td></tr></table></figure>
+<p>Thanos 默认使用一下顺序, 检索 AWS 认证信息:</p>
+<ol>
+<li><code>access_key</code> 和 <code>secret_key</code> 同时在 配置文件中配置.</li>
+<li><code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code> 环境变量</li>
+<li><code>~/.aws/credentials</code> 配置文件.</li>
+</ol>
+<h2 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h2><h3 id="Thanos-中需要服务发现的位置"><a href="#Thanos-中需要服务发现的位置" class="headerlink" title="Thanos 中需要服务发现的位置"></a>Thanos 中需要服务发现的位置</h3><ol>
+<li>Query 发现 StoreAPI</li>
+<li>Rule 发现 QueryAPI</li>
+<li>Rule 发现 Alertmanagers HA.</li>
+</ol>
+<h3 id="Thanos-配置方式"><a href="#Thanos-配置方式" class="headerlink" title="Thanos 配置方式"></a>Thanos 配置方式</h3><h4 id="1-flag"><a href="#1-flag" class="headerlink" title="1. flag"></a>1. flag</h4><ul>
+<li><p>Query</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--store=&lt;store&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Rule</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--query=&lt;query&gt;</span><br><span class="line"></span><br><span class="line"> --alertmanager.url=&lt;alertmanager&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-基于文件的服务发现"><a href="#2-基于文件的服务发现" class="headerlink" title="2. 基于文件的服务发现"></a>2. 基于文件的服务发现</h4><p>与 Prometheus 的基于文件的服务发现相同, 支持 JSON 和 YAML 格式. 默认, 重读配置文件的 interval 为 5min.</p>
+<ul>
+<li><p>JSON</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;targets&quot;: [&quot;localhost:9090&quot;, &quot;example.org:443&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>YAML</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- targets: [&apos;localhost:9090&apos;, &apos;example.org:443&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="2-1-Query"><a href="#2-1-Query" class="headerlink" title="2.1 Query"></a>2.1 Query</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--store.sd-files=&lt;path&gt;     # 文件路径, 支持 glob 模糊匹配</span><br><span class="line">--store.sd-interval=&lt;5m&gt;    # 重读间隔时间</span><br></pre></td></tr></table></figure>
+<h5 id="2-2-Rule"><a href="#2-2-Rule" class="headerlink" title="2.2 Rule"></a>2.2 Rule</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--query.sd-files=&lt;path&gt;     # 文件路径, 支持 glob 模糊匹配</span><br><span class="line">--query.sd-interval=&lt;5m&gt;    # 重读间隔时间</span><br></pre></td></tr></table></figure>
+<h4 id="3-基于-DNS-的服务发现"><a href="#3-基于-DNS-的服务发现" class="headerlink" title="3. 基于 DNS 的服务发现"></a>3. 基于 DNS 的服务发现</h4><p>Thanos 会定期请求一个 域名, 并发现其后面的 IP.</p>
+<ul>
+<li><p><code>dns+</code> 作为 A/AAAA 记录查询, 需要配置 端口.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--store=dns+stores.thanos.mycompany.org:9090</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>dnssrv+</code> 作为 SRV 查询, 无需配置 端口.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--store=dnssrv+_thanosstores._tcp.mycompany.org</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>默认的间隔时间</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--store.sd-dns-interval     # for store</span><br><span class="line">--query.sd-dns-interval     # for query</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Prometheus"><a href="#Prometheus" class="headerlink" title="Prometheus"></a>Prometheus</h2><p><img src="https://wx4.sinaimg.cn/large/77fd5d57gy1g4fs14axmej21gg0l1dq5.jpg" alt="promtheus 数据收集计量"></p>
+<p>原生数据 : 16 bytes/sample<br>    8 byte timestamp + 8 byte value = 1 sample<br>压缩后数据: 1.37 bytes/sample<br>    timestamp: 计算增量<br>    value: 与原值做 XOR 运算</p>
+<h3 id="数据存储格式"><a href="#数据存储格式" class="headerlink" title="数据存储格式"></a>数据存储格式</h3><p>Prometheus 原生格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># block 包含一个固定时间内的 metric 数据.</span><br><span class="line">01BX6V6TY06G5MFQ0GPH7EMXRH  # block, 类UUID, (like UUID but lexicographically sortable), 加密了其创建时间.</span><br><span class="line">├── chunks</span><br><span class="line">│   ├── 000001</span><br><span class="line">│   ├── 000002</span><br><span class="line">│   └── 000003</span><br><span class="line">├── index                   # 包含数据的 label 信息和 metrics 信息在 chunks 中的位置.</span><br><span class="line">└── meta.json               # block 的元信息, 如 stats, time range, compaction(压缩) level</span><br></pre></td></tr></table></figure>
+<p>Thanos 在上传数据时, 保持原有的数据格式不变, 但是可能会在 <code>meta.json</code> 加入 Thanos 特有的信息, 目前只包含 <code>external labels</code>.</p>
+<p><img src="https://wx3.sinaimg.cn/large/77fd5d57gy1g4ft3lr41zj20i9066mxb.jpg" alt="image"></p>
+<p>prometheus 中的 <code>meta.json</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;ulid&quot;: &quot;01DEAJHD3MW22SAVSPZNEWPRCA&quot;,</span><br><span class="line">    &quot;minTime&quot;: 1561564800000,</span><br><span class="line">    &quot;maxTime&quot;: 1561572000000,</span><br><span class="line">    &quot;stats&quot;: &#123;</span><br><span class="line">        &quot;numSamples&quot;: 1464324,</span><br><span class="line">        &quot;numSeries&quot;: 3062,</span><br><span class="line">        &quot;numChunks&quot;: 12212,</span><br><span class="line">        &quot;numBytes&quot;: 2162049</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;compaction&quot;: &#123;</span><br><span class="line">        &quot;level&quot;: 1,</span><br><span class="line">        &quot;sources&quot;: [</span><br><span class="line">            &quot;01DEAJHD3MW22SAVSPZNEWPRCA&quot;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;version&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>thanos 中的 <code>meta.json</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;version&quot;: 1,</span><br><span class="line">    &quot;ulid&quot;: &quot;01DEAJHD3MW22SAVSPZNEWPRCA&quot;,</span><br><span class="line">    &quot;minTime&quot;: 1561564800000,</span><br><span class="line">    &quot;maxTime&quot;: 1561572000000,</span><br><span class="line">    &quot;stats&quot;: &#123;</span><br><span class="line">        &quot;numSamples&quot;: 1464324,</span><br><span class="line">        &quot;numSeries&quot;: 3062,</span><br><span class="line">        &quot;numChunks&quot;: 12212,</span><br><span class="line">        &quot;numBytes&quot;: 2162049</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;compaction&quot;: &#123;</span><br><span class="line">        &quot;level&quot;: 1,</span><br><span class="line">        &quot;sources&quot;: [</span><br><span class="line">            &quot;01DEAJHD3MW22SAVSPZNEWPRCA&quot;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;thanos&quot;: &#123;</span><br><span class="line">        &quot;labels&quot;: &#123;</span><br><span class="line">            &quot;env&quot;: &quot;dev&quot;,</span><br><span class="line">            &quot;replica&quot;: &quot;dev-thanos-004&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;downsample&quot;: &#123;</span><br><span class="line">            &quot;resolution&quot;: 0</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;source&quot;: &quot;sidecar&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="store"><a href="#store" class="headerlink" title="store"></a>store</h3><p>stores 持续不断的同步在 bucket 中的 block 数据, 同时 翻译 对 metrics 数据的请求到对象存储. Stores 实现了多种策略来减少对 对象存储的 请求次数, 如 使用 block 的元数据来过滤相关的 blocks, 缓存最频繁的请求的结果.</p>
+<p>本质上, StoreApi 允许通过一系列的 label 和 时间序列来检索数据, 并从 blocks 中返回压缩过的 chunks samples. 他仅仅是一个数据过滤 的 API, <strong>不提供</strong>复杂的查询语法.</p>
+<p><img src="https://ws4.sinaimg.cn/large/77fd5d57gy1g4ftoypv4nj20i20ah0t4.jpg" alt="image"></p>
+<h3 id="Query-Layer"><a href="#Query-Layer" class="headerlink" title="Query Layer"></a>Query Layer</h3><p>QueryLayer 在 StoreAPI 的基础上, 实现了 PromQL , 并且是无状态和可以水平扩展的.</p>
+<p>Queriers participate in the cluster to be able to resiliently discover all data sources and store nodes. Rule nodes in return can discover query nodes to evaluate recording and alerting rules.</p>
+<p>Based on the metadata of store and source nodes, they attempt to minimize the request fanout to fetch data for a particular query.</p>
+<p><img src="https://wx3.sinaimg.cn/large/77fd5d57gy1g4fts3jpsaj20fs095jrn.jpg" alt="image"></p>
+<h3 id="Compactor"><a href="#Compactor" class="headerlink" title="Compactor"></a>Compactor</h3><p>单例, 指向一个对象存储, 并连续不断的把 小的 block 合并成大的 block, 这些操作有一下优势:</p>
+<ol>
+<li>减少对象存储的大小</li>
+<li>减轻 store 节点的负担</li>
+<li>减少每个查询需要从对象存储请求数据的次数.</li>
+</ol>
+<h3 id="Scaling"><a href="#Scaling" class="headerlink" title="Scaling"></a>Scaling</h3><p><strong>None of the Thanos components provides any means of sharding</strong>. </p>
+<p>只有 query node 是无状态, 可任意扩展的. 存储能力的扩展, 依赖于对象存储供应商.</p>
+<p>Store, rule, and compactor nodes are all expected to scale significantly within a single instance or high availability pair. Similar to Prometheus, functional sharding can be applied for rare cases in which this does not hold true.<br>For example, rule sets can be divided across multiple HA pairs of rule nodes. Store nodes likely are subject to functional sharding regardless by assigning dedicated buckets per region/datecenter.</p>
+<h2 id="其他组件"><a href="#其他组件" class="headerlink" title="其他组件"></a>其他组件</h2><h3 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h3><h4 id="1-bucket"><a href="#1-bucket" class="headerlink" title="1. bucket"></a>1. bucket</h4><p>用于 inspect 对象存储中的 bucket 信息. 主要用做命令行, 来帮助 troubleshooting.</p>
+<p>可以用过在 <code>/cmd/thanos/bucket.go</code> 中添加子命令来扩展 bucket 的功能.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">usage: thanos bucket [&lt;flags&gt;] &lt;command&gt; [&lt;args&gt; ...]</span><br><span class="line"></span><br><span class="line">Bucket utility commands</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help               Show context-sensitive help (also try --help-long and --help-man).</span><br><span class="line">      --version            Show application version.</span><br><span class="line">      --log.level=info     Log filtering level.</span><br><span class="line">      --log.format=logfmt  Log format to use.</span><br><span class="line">      --gcloudtrace.project=GCLOUDTRACE.PROJECT</span><br><span class="line">                           GCP project to send Google Cloud Trace tracings to. If empty, tracing will be disabled.</span><br><span class="line">      --gcloudtrace.sample-factor=1</span><br><span class="line">                           How often we send traces (1/&lt;sample-factor&gt;). If 0 no trace will be sent periodically, unless forced by</span><br><span class="line">                           baggage item. See `pkg/tracing/tracing.go` for details.</span><br><span class="line">      --objstore.config-file=&lt;bucket.config-yaml-path&gt;</span><br><span class="line">                           Path to YAML file that contains object store configuration.</span><br><span class="line">      --objstore.config=&lt;bucket.config-yaml&gt;</span><br><span class="line">                           Alternative to &apos;objstore.config-file&apos; flag. Object store configuration in YAML.</span><br><span class="line"></span><br><span class="line">Subcommands:</span><br><span class="line">  bucket verify [&lt;flags&gt;]</span><br><span class="line">    Verify all blocks in the bucket against specified issues</span><br><span class="line"></span><br><span class="line">  bucket ls [&lt;flags&gt;]</span><br><span class="line">    List all blocks in the bucket</span><br><span class="line"></span><br><span class="line">  bucket inspect [&lt;flags&gt;]</span><br><span class="line">    Inspect all blocks in the bucket in detailed, table-like way</span><br><span class="line"></span><br><span class="line">    |            ULID            |        FROM         |        UNTIL        | RANGE  | UNTIL-COMP | #SERIES | #SAMPLES  | #CHUNKS | COMP-LEVEL | COMP-FAILED |             LABELS             | RESOLUTION | SOURCE  |</span><br><span class="line">    |----------------------------|---------------------|---------------------|--------|------------|---------|-----------|---------|------------|-------------|--------------------------------|------------|---------|</span><br><span class="line">    | 01DE9Q2G3KEB66TY3WXX20BSKD | 26-06-2019 16:00:00 | 26-06-2019 18:00:00 | 2h0m0s | 38h0m0s    | 3,006   | 1,421,094 | 11,795  | 1          | false       | env=dev,replica=dev-thanos-004 | 0s         | sidecar |</span><br><span class="line">    | 01DE9Q2G6V1R4M7SAT133MP00H | 26-06-2019 16:00:00 | 26-06-2019 18:00:00 | 2h0m0s | 38h0m0s    | 2,983   | 1,410,705 | 10,457  | 1          | false       | env=dev,replica=dev-thanos-003 | 0s         | sidecar |</span><br><span class="line">    | 01DE9Q2HHYE6FYM169XQ3N8EY9 | 26-06-2019 16:00:00 | 26-06-2019 18:00:00 | 2h0m0s | 38h0m0s    | 3,052   | 1,425,546 | 10,618  | 1          | false       | env=dev,replica=dev-thanos-002 | 0s         | sidecar |</span><br><span class="line">    | 01DE9Q2HN7Z8TAEDA67J4TVBK8 | 26-06-2019 16:00:00 | 26-06-2019 18:00:00 | 2h0m0s | 38h0m0s    | 3,167   | 1,456,716 | 11,089  | 1          | false       | env=dev,replica=dev-thanos-001 | 0s         | sidecar |</span><br><span class="line">    | 01DE9XY7BMZ9044FZVF50VRM0A | 26-06-2019 18:00:00 | 26-06-2019 20:00:00 | 2h0m0s | 38h0m0s    | 3,098   | 1,433,477 | 9,222   | 1          | false       | env=dev,replica=dev-thanos-004 | 0s         | sidecar |</span><br></pre></td></tr></table></figure>
+<h4 id="2-check"><a href="#2-check" class="headerlink" title="2. check"></a>2. check</h4><p>用于检查 Prometheus rules 的可用性.</p>
+<p><code>thanos check rules</code> 用于 thanos rule node 节点上, 用于检查 Prometheus rule, 功能与 <code>promtool check rules</code> 等价, 只是 Thanos rule 有扩展的语法, 包含<code>partial_response_strategy</code>字段.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">usage: thanos check &lt;command&gt; [&lt;args&gt; ...]</span><br><span class="line"></span><br><span class="line">Linting tools for Thanos</span><br><span class="line"></span><br><span class="line">Flags:</span><br><span class="line">  -h, --help               Show context-sensitive help (also try --help-long and</span><br><span class="line">                           --help-man).</span><br><span class="line">      --version            Show application version.</span><br><span class="line">      --log.level=info     Log filtering level.</span><br><span class="line">      --log.format=logfmt  Log format to use.</span><br><span class="line">      --tracing.config-file=&lt;tracing.config-yaml-path&gt;</span><br><span class="line">                           Path to YAML file that contains tracing</span><br><span class="line">                           configuration.</span><br><span class="line">      --tracing.config=&lt;tracing.config-yaml&gt;</span><br><span class="line">                           Alternative to &apos;tracing.config-file&apos; flag. Tracing</span><br><span class="line">                           configuration in YAML.</span><br><span class="line"></span><br><span class="line">Subcommands:</span><br><span class="line">  check rules &lt;rule-files&gt;...</span><br><span class="line">    Check if the rule files are valid or not. 检查成功, 返回 0; 失败 返回 1.</span><br><span class="line"></span><br><span class="line">    $ ./thanos check rules cmd/thanos/testdata/rules-files/*.yaml</span><br></pre></td></tr></table></figure>
+<h3 id="compact"><a href="#compact" class="headerlink" title="compact"></a>compact</h3><h3 id="query"><a href="#query" class="headerlink" title="query"></a>query</h3><p>QueryAPI 是完全兼容 Prometheus 2.x 的, 但是, 为了实现 Thanos 额外的特性, QueryAPI 在 Prometheus 智商, 增加了如下特性:</p>
+<h4 id="1-partial-response-behaviour"><a href="#1-partial-response-behaviour" class="headerlink" title="1. partial response behaviour"></a>1. partial response behaviour</h4><p>通过 <code>--query.partial-response   Enable partial response for queries if no partial_response param is specified.</code> 参数来控制. 这个参数用来在 <strong>可用性</strong> 和 <strong>精准性</strong> 之间来保持平衡.</p>
+<p><code>partial response</code> 是一种可能无法返回或只返回部分查询结果的情况, 该情况可能是由于某一个或者多个 StoreAPI error 或者 超时, 但是其他 StoreAPI 正常返回. 当<code>partial response</code> 发生时, QueryAPI 返回人类可读的告警信息.</p>
+<p>以下参数用于控制 超时时间:</p>
+<ul>
+<li><code>--query.timeout</code>: </li>
+<li><code>--store.response-timeout</code>: </li>
+</ul>
+<p>如果更倾向于查询结果的 可用性而不是精确性, 可以设置较小的 超时时间,</p>
+<h5 id="1-2-Partial-Response-Strategy"><a href="#1-2-Partial-Response-Strategy" class="headerlink" title="1.2 Partial Response Strategy"></a>1.2 Partial Response Strategy</h5><table>
+<thead>
+<tr>
+<th>HTTP URL/FORM parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>partial_response</code></td>
+<td><code>Boolean</code></td>
+<td><code>query.partial-response</code> flag (default: True)</td>
+<td><code>1, t, T, TRUE, true, True</code> for “True”</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>如果设为 <code>True</code>(默认值), 那么, 被查询的 StoreApi 节点在不可用时, 不会导致查询失败, 而只返回 warning.</p>
+<h4 id="2-Deduplication-Enable"><a href="#2-Deduplication-Enable" class="headerlink" title="2. Deduplication Enable"></a>2. Deduplication Enable</h4><p><code>dedup</code> 参数用于控制 查询是否应该对结果使用 去重 标记.</p>
+<table>
+<thead>
+<tr>
+<th>HTTP URL/FORM parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dedup</code></td>
+<td><code>Boolean</code></td>
+<td>True, but effect depends on <code>query.replica</code> configuration flag.</td>
+<td><code>1, t, T, TRUE, true, True</code> for “True”</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-Auto-downsampling"><a href="#3-Auto-downsampling" class="headerlink" title="3. Auto downsampling"></a>3. Auto downsampling</h4><p>Max source resolution(决定, 决心) is max resolution in seconds we want to use for data we query for.<br>This means that for value:</p>
+<ul>
+<li><code>0</code> -&gt; we will use only raw data.</li>
+<li><code>5m</code> -&gt; we will use max 5m downsampling.</li>
+<li><code>1h</code> -&gt; we will use max 1h downsampling.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>HTTP URL/FORM parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max_source_resolution</code></td>
+<td><code>Float64/time.Duration/model.Duration</code></td>
+<td><code>step / 5</code> or <code>0</code> if <code>query.auto-downsampling</code> is false (default: False)</td>
+<td><code>5m</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-custom-reponse-fields-自定义响应字段"><a href="#4-custom-reponse-fields-自定义响应字段" class="headerlink" title="4. custom reponse fields 自定义响应字段"></a>4. custom reponse fields 自定义响应字段</h4><p>自定义的额外响应字段, 不会影响 Thanos 的兼容性, 但是, 无法保证 Grafana 或者其他第三方应用能实现兼容.</p>
+<p>当前 Thanos 的 UI 理解如下字段:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> queryData <span class="keyword">struct</span> &#123;</span><br><span class="line">    ResultType promql.ValueType <span class="string">`json:"resultType"`</span></span><br><span class="line">    Result     promql.Value     <span class="string">`json:"result"`</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Additional Thanos Response field.</span></span><br><span class="line">    Warnings   []error          <span class="string">`json:"warnings,omitempty"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>额外字段 <code>warnings</code> 用于包含任何非致命错误的错误信息. </p>
+<p><code>partial_response</code> 参数可以控制 StoreAPI 的不稳定状态是否是致命错误信息.</p>
+<h4 id="5-使用自定义-Path-暴露-Thanos-UI"><a href="#5-使用自定义-Path-暴露-Thanos-UI" class="headerlink" title="5. 使用自定义 Path 暴露 Thanos UI"></a>5. 使用自定义 Path 暴露 Thanos UI</h4><p>Thanos UI 自定义 Path 有如下两种方式:</p>
+<ol>
+<li><p>静态方式: 与 Prometheus 定义方式相同.</p>
+<ul>
+<li><code>web.route-prefix</code>: 定义通用前缀.</li>
+<li><code>web.external-prefix</code>: 定义 HTML代码 中的 URL 的前缀 和 HTTP 重定向响应. <code>prefixes the URLs in HTML code and the HTTP redirect responces.</code></li>
+</ul>
+</li>
+<li><p>通过 HTTP 首部动态定义, Prometheus 暂不支持.</p>
+<p> 用于 <code>thanos query</code> 被暴露在一个反向代理后面的时候, 例如 在一个 Kubernetes ingress 如 Traefix/nginx 后面.</p>
+<p> if <code>PathPrefixStrip: /some-path</code> options or <code>traefix.frontend.rule.type: PathPrefixStrip</code> Kubernetes Ingress Annotation is set, than <code>Traefik</code> writes the stripped prefix into X-Forwarded-Prefix header. Then, <code>thanos query --web.prefix-header=X-Forwarded-Prefix</code> will server correct HTTP redirects and links prefixed by the stripped path.</p>
+<p> <code>--web.prefix-header</code> 与 <code>--web.external-prefix</code> 参数<strong>互斥</strong>.</p>
+</li>
+</ol>
+<h3 id="rule"><a href="#rule" class="headerlink" title="rule"></a>rule</h3><p>Prometheus 支持两种格式的 rule:</p>
+<ul>
+<li><p>Recording rule: 将比较耗时的查询, 预先做计算, 并将结果存储为新的时间序列, 并在查询时, 直接返回预先计算的结果. Recording rule 在做 dashboard 展示时, 十分有用, 因为 dashboard 的总是一样的.</p>
+<p>  配置语法:</p>
+<p>  <code>&lt;groups&gt;</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groups:</span><br><span class="line">  [ - &lt;rule_group&gt; ]</span><br></pre></td></tr></table></figure>
+<p>  <code>&lt;rule_group&gt;</code></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># The name of the group. Must be unique within a file.</span><br><span class="line">name: &lt;string&gt;</span><br><span class="line"></span><br><span class="line"># How often rules in the group are evaluated.</span><br><span class="line">[ interval: &lt;duration&gt; | default = global.evaluation_interval ]</span><br><span class="line"></span><br><span class="line">rules:</span><br><span class="line">  [ - &lt;rule&gt; ... ]</span><br></pre></td></tr></table></figure>
+<p>  <code>&lt;rule&gt;</code> recording rule</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># The name of the time series to output to. Must be a valid metric name.</span><br><span class="line">record: &lt;string&gt;</span><br><span class="line"></span><br><span class="line"># The PromQL expression to evaluate. Every evaluation cycle this is</span><br><span class="line"># evaluated at the current time, and the result recorded as a new set of</span><br><span class="line"># time series with the metric name as given by &apos;record&apos;.</span><br><span class="line">expr: &lt;string&gt;</span><br><span class="line"></span><br><span class="line"># Labels to add or overwrite before storing the result.</span><br><span class="line">labels:</span><br><span class="line">  [ &lt;labelname&gt;: &lt;labelvalue&gt; ]</span><br></pre></td></tr></table></figure>
+<p>  <code>&lt;rule&gt;</code> alerting rule</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># The name of the alert. Must be a valid metric name.</span><br><span class="line">alert: &lt;string&gt;</span><br><span class="line"></span><br><span class="line"># The PromQL expression to evaluate. Every evaluation cycle this is</span><br><span class="line"># evaluated at the current time, and all resultant time series become</span><br><span class="line"># pending/firing alerts.</span><br><span class="line">expr: &lt;string&gt;</span><br><span class="line"></span><br><span class="line"># Alerts are considered firing once they have been returned for this long.</span><br><span class="line"># Alerts which have not yet fired for long enough are considered pending.</span><br><span class="line">[ for: &lt;duration&gt; | default = 0s ]</span><br><span class="line"></span><br><span class="line"># Labels to add or overwrite for each alert.</span><br><span class="line">labels:</span><br><span class="line">  [ &lt;labelname&gt;: &lt;tmpl_string&gt; ]</span><br><span class="line"></span><br><span class="line"># Annotations to add to each alert.</span><br><span class="line">annotations:</span><br><span class="line">  [ &lt;labelname&gt;: &lt;tmpl_string&gt; ]</span><br></pre></td></tr></table></figure>
+<p>  Example</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">groups:</span><br><span class="line">  - name: example</span><br><span class="line">    rules:</span><br><span class="line">    - record: job:http_inprogress_requests:sum</span><br><span class="line">      expr: sum(http_inprogress_requests) by (job)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Alerting rule: 配置方式与 Recording Rule 相同, 配置语法略有差异</p>
+<p>  Example</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">groups:</span><br><span class="line">- name: example</span><br><span class="line">  rules:</span><br><span class="line">  - alert: HighErrorRate</span><br><span class="line">    expr: job:request_latency_seconds:mean5m&#123;job=&quot;myjob&quot;&#125; &gt; 0.5</span><br><span class="line">    for: 10m    # 错误持续时间 直到报警.</span><br><span class="line">    labels:     # 支持模板, [语法](https://prometheus.io/docs/visualization/consoles/)</span><br><span class="line">      severity: page</span><br><span class="line">    annotations:    # 支持模板, [语法](https://prometheus.io/docs/visualization/consoles/)</span><br><span class="line">      summary: High request latency</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>Thanos Ruler </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/local/bin/thanos rule --log.level=debug --data-dir=/data/thanos/rules --eval-interval=30s --rule-file=/etc/thanos/rules/*.rules.yaml --alert.query-url=http://10.23.21.237:19192 --alertmanagers.url=http://10.23.106.152:9093 --query.sd-files=/etc/thanos/file_sd/rule_query_dev.yaml --objstore.config-file=/etc/thanos/s3-thanos-leyan.yaml --label=&apos;env=&quot;dev&quot;&apos; --label=&apos;replica=&quot;dev-thanos-002-ruler&quot;&apos; --alert.label-drop=replica</span><br></pre></td></tr></table></figure>
+<h3 id="sidecar"><a href="#sidecar" class="headerlink" title="sidecar"></a>sidecar</h3><h3 id="store-1"><a href="#store-1" class="headerlink" title="store"></a>store</h3><h2 id="压力测试"><a href="#压力测试" class="headerlink" title="压力测试"></a>压力测试</h2><p>参考:</p>
+<ul>
+<li><a href="https://github.com/improbable-eng/thanos/tree/master/benchmark" target="_blank" rel="noopener">thanos benchmark</a></li>
+</ul>
+<p>metrics: 205191<br>size: 338416    331M<br>web hold metrics: 25k, 30k 就卡了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># run in dev-thanos-003</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">prom_query</span></span>()&#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"prometheus : <span class="variable">$1</span>"</span></span><br><span class="line">    time prometheus-query -query <span class="variable">$1</span> -server <span class="variable">$PROM_SERVER</span> -start <span class="string">'12 hours ago'</span> -format csv | wc -l</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">thanos_query</span></span>()&#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"thanos : <span class="variable">$1</span>"</span></span><br><span class="line">    time prometheus-query -query <span class="variable">$1</span> -server <span class="variable">$THANOS_SERVER</span> -start <span class="string">'12 hours ago'</span> -format json &amp;&gt; /dev/null</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">query</span></span>()&#123;</span><br><span class="line">    prom_query <span class="variable">$1</span></span><br><span class="line">    thanos_query <span class="variable">$1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">query <span class="string">'&#123;__name__=~"avalanche_metric_mmmmm_100_1"&#125;'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">prometheus-query -server <span class="variable">$PROM_SERVER</span> -start <span class="string">'12 hours ago'</span> -format csv -query </span><br><span class="line"></span><br><span class="line">time prometheus-query -server <span class="variable">$THANOS_SERVER</span> -start <span class="string">'12 hours ago'</span> -format csv -query <span class="string">'sum(&#123;__name__=~"avalanche_.*"&#125;) by (instance)'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># rate(&#123;__name__=~"ts_.*"&#125;[1m])</span></span><br><span class="line"><span class="comment"># sum(&#123;__name__=~”ts_.*”&#125;) by (instance)</span></span><br><span class="line"><span class="comment"># Fetch 45 thousand metrics from a single timeseries 'ts_00'</span></span><br></pre></td></tr></table></figure>
+<p>test: 2u4g<br>    开始: 2019年07月08日17:35:47<br>    开始: 2019年07月08日17:53:41</p>
+<h2 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h2><p><a href="https://www.hi-linux.com/posts/36431.html" target="_blank" rel="noopener">https://www.hi-linux.com/posts/36431.html</a></p>
+<p>[server]<br>prometheus_server=123<br>thanos_server=123</p>
+<p>[config]<br>count: 1<br>output_file_name: result<br>time_start: as</p>
+<p>[promql]<br>promql=pql1,pql3,pql3</p>
+<p>prometheus_server = 10.23.149.6:9090<br>thanos_server = 10.23.21.237:19192</p>
+<p>Congratulations, Shadowsocks-go server install completed!<br>Your Server IP        :  139.180.129.27<br>Your Server Port      :  19458<br>Your Password         :  123.com<br>Your Encryption Method:  aes-256-cfb</p>
+<h2 id="statsd-exporter"><a href="#statsd-exporter" class="headerlink" title="statsd-exporter"></a>statsd-exporter</h2><p><a href="https://github.com/prometheus/statsd_exporter" target="_blank" rel="noopener">github</a></p>
+<p>发送数据可以使用 nc 来进行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;foo:1|c&quot; | nc -w 1 -u 127.0.0.1 8125</span><br></pre></td></tr></table></figure></p>
+<h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>statsd采用简单的行协议：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;bucket&gt;:&lt;value&gt;|&lt;type&gt;[|@sample_rate]</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>bucket<br> bucket是一个metric的标识，可以看成一个metric的变量。</p>
+</li>
+<li><p>value<br> metric的值，通常是数字。</p>
+</li>
+<li><p>type</p>
+<p> metric的类型，通常有timer、counter、gauge和set四种。</p>
+</li>
+<li><p>sample_rate</p>
+<p> 如果数据上报量过大，很容易溢满statsd。所以适当的降低采样，减少server负载。<br> 这个频率容易误解，需要解释一下。客户端减少数据上报的频率，然后在发送的数据中加入采样频率，如0.1。statsd server收到上报的数据之后，如cnt=10，得知此数据是采样的数据，然后flush的时候，按采样频率恢复数据来发送给backend，即flush的时候，数据为cnt=10/0.1=100，而不是容易误解的10*0.1=1。</p>
+</li>
+<li><p>UDP 和 TCP</p>
+<p> statsd可配置相应的server为UDP和TCP。默认为UDP。UDP和TCP各有优劣。但<br> UDP确实是不错的方式。</p>
+<p> UDP不需要建立连接，速度很快，不会影响应用程序的性能。<br> “fire-and-forget”机制，就算statsd server挂了，也不会造成应用程序crash。<br> 当然，UDP更适合于上报频率比较高的场景，就算丢几个包也无所谓，对于一些一天已上报的场景，任何一个丢包都影响很大。另外，对于网络环境比较差的场景，也更适合用TCP，会有相应的重发，确保数据可靠。</p>
+</li>
+</ol>
+<h3 id="statsd-指标类型"><a href="#statsd-指标类型" class="headerlink" title="statsd 指标类型"></a>statsd 指标类型</h3><h4 id="counter-计数器"><a href="#counter-计数器" class="headerlink" title="counter 计数器"></a>counter 计数器</h4><p>counter类型的指标，用来计数。在一个flush区间，把上报的值累加。值可以是正数或者负数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">user.logins:10|c        // user.logins + 10</span><br><span class="line">user.logins:-1|c        // user.logins - 1 </span><br><span class="line">user.logins:10|c|@0.1   // user.logins + 100</span><br><span class="line">                        // users.logins = 10-1+100=109</span><br></pre></td></tr></table></figure></p>
+<h4 id="timer-计时器"><a href="#timer-计时器" class="headerlink" title="timer 计时器"></a>timer 计时器</h4><p>timers用来记录一个操作的耗时，单位ms。statsd会记录平均值（mean）、最大值（upper）、最小值（lower）、累加值（sum）、平方和（sum_squares）、个数（count）以及部分百分值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpt:100|g</span><br></pre></td></tr></table></figure></p>
+<p>如下是在一个flush期间，发送了一个rpt的timer值100。以下是记录的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">count_80: 1,    </span><br><span class="line">mean_80: 100,</span><br><span class="line">upper_80: 100,</span><br><span class="line">sum_80: 100,    </span><br><span class="line">sum_squares_80: 10000, </span><br><span class="line">std: 0,     </span><br><span class="line">upper: 100,</span><br><span class="line">lower: 100,</span><br><span class="line">count: 1,</span><br><span class="line">count_ps: 0.1,</span><br><span class="line">sum: 100,</span><br><span class="line">sum_squares: 10000,</span><br><span class="line">mean: 100,</span><br><span class="line">median: 100</span><br></pre></td></tr></table></figure></p>
+<p>对于百分数相关的数据需要解释一下。以90为例。statsd会把一个flush期间上报的数据，去掉10%的峰值，即按大小取cnt*90%（四舍五入）个值来计算百分值。<br>举例说明，假如10s内上报以下10个值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1,3,5,7,13,9,11,2,4,8</span><br></pre></td></tr></table></figure></p>
+<p>则只取10*90%=9个值，则去掉13。百分值即按剩下的9个值来计算。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$KEY.mean_90   // (1+3+5+7+9+2+11+4+8)/9</span><br><span class="line">$KEY.upper_90  // 11</span><br><span class="line">$KEY.lower_90  // 1</span><br></pre></td></tr></table></figure></p>
+<h4 id="gauge-标量"><a href="#gauge-标量" class="headerlink" title="gauge 标量"></a>gauge 标量</h4><p>gauge是任意的一维标量值。gague值不会像其它类型会在flush的时候清零，而是保持原有值。statsd只会将flush区间内最后一个值发到后端。另外，如果数值前加符号，会与前一个值累加。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">age:10|g    // age 为 10</span><br><span class="line">age:+1|g    // age 为 10 + 1 = 11</span><br><span class="line">age:-1|g    // age为 11 - 1 = 10</span><br><span class="line">age:5|g     // age为5,替代前一个值</span><br></pre></td></tr></table></figure>
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><p>记录flush期间，不重复的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">request:1|s  // user 1</span><br><span class="line">request:2|s  // user1 user2</span><br><span class="line">request:1|s  // user1 user2</span><br></pre></td></tr></table></figure></p>
+<h3 id="statsite"><a href="#statsite" class="headerlink" title="statsite"></a>statsite</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[statsite]</span><br><span class="line">port=8125</span><br><span class="line">udp_port=8125</span><br><span class="line">log_level=INFO</span><br><span class="line">flush_interval=10</span><br><span class="line">timer_eps=0.01</span><br><span class="line">set_eps=0.02</span><br><span class="line">stream_cmd=python /usr/libexec/statsite/sinks/graphite.py 10.24.1.6 2004 &quot;&quot;</span><br><span class="line">daemonize=1</span><br><span class="line">pid_file=/var/run/statsite/statsite.pid</span><br><span class="line"></span><br><span class="line">use_type_prefix=0</span><br><span class="line">extended_counters=1</span><br><span class="line">extended_counters_include=rate,sum</span><br><span class="line">timers_include=mean,lower,rate,median</span><br><span class="line">quantiles=0.95,0.99</span><br><span class="line">global_prefix=</span><br></pre></td></tr></table></figure>
+<h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://github.com/prometheus/statsd_exporter/releases/download/v0.12.1/statsd_exporter-0.12.1.linux-amd64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># STATSD.READ-BUFFER 必须比 sysctl -a | grep net.core.rmem_max 小.</span></span><br><span class="line">$ ./statsd_exporter --web.listen-address=<span class="string">":9102"</span> \</span><br><span class="line">      --web.telemetry-path=<span class="string">"/metrics"</span> \</span><br><span class="line">      --statsd.listen-udp=<span class="string">":8125"</span> \</span><br><span class="line">      --statsd.listen-tcp=<span class="string">":8125"</span> \</span><br><span class="line">      --statsd.read-buffer=STATSD.READ-BUFFER   \</span><br><span class="line">      --statsd.cache-size=1000 \</span><br><span class="line">      --statsd.event-queue-size=10000 \</span><br><span class="line">      --statsd.event-flush-threshold=1000 \</span><br><span class="line">      --statsd.event-flush-interval=200ms \</span><br><span class="line">      --log.level=<span class="string">"info"</span></span><br><span class="line"></span><br><span class="line">      --statsd.mapping-config=STATSD.MAPPING-CONFIG</span><br><span class="line">                                Metric mapping configuration file name.</span><br></pre></td></tr></table></figure>
+<h3 id="Python-StatD-Client"><a href="#Python-StatD-Client" class="headerlink" title="Python StatD Client"></a>Python StatD Client</h3><p>参考: <a href="https://pythonhosted.org/python-statsd/" target="_blank" rel="noopener">https://pythonhosted.org/python-statsd/</a></p>
+<h4 id="Timers"><a href="#Timers" class="headerlink" title="Timers"></a>Timers</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statsd</span><br><span class="line">timer = statsd.Timer(<span class="string">'MyApplication'</span>)</span><br><span class="line">timer.start()</span><br><span class="line"></span><br><span class="line"><span class="comment"># do something here</span></span><br><span class="line">timer.stop(<span class="string">'SomeTimer'</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="Cunters"><a href="#Cunters" class="headerlink" title="Cunters"></a>Cunters</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statsd</span><br><span class="line">counter = statsd.Counter(<span class="string">'MyApplication'</span>)</span><br><span class="line"><span class="comment"># do something here</span></span><br><span class="line">counter += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="Gauge"><a href="#Gauge" class="headerlink" title="Gauge"></a>Gauge</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statsd</span><br><span class="line"></span><br><span class="line">gauge = statsd.Gauge(<span class="string">'MyApplication'</span>)</span><br><span class="line"><span class="comment"># do something here</span></span><br><span class="line">gauge.send(<span class="string">'SomeName'</span>, value)</span><br></pre></td></tr></table></figure>
+<h4 id="Raw"><a href="#Raw" class="headerlink" title="Raw"></a>Raw</h4><p>Raw 数据是预选计算好的加过, 需要直接传递给 carbon 的数据. Raw 格式数据需要一个时间戳(<code>date +%s</code>), 如果没有或者为 None, 则默认采用当前时间戳.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statsd</span><br><span class="line"></span><br><span class="line">raw = statsd.Raw(<span class="string">'MyApplication'</span>, connection)</span><br><span class="line"><span class="comment"># do something here</span></span><br><span class="line">raw.send(<span class="string">'SomeName'</span>, value, timestamp)</span><br></pre></td></tr></table></figure>
+<h4 id="Average"><a href="#Average" class="headerlink" title="Average"></a>Average</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statsd</span><br><span class="line"></span><br><span class="line">average = statsd.Average(<span class="string">'MyApplication'</span>, connection)</span><br><span class="line"><span class="comment"># do something here</span></span><br><span class="line">average.send(<span class="string">'SomeName'</span>, <span class="string">'somekey:%d'</span>.format(value))</span><br></pre></td></tr></table></figure>
+<h4 id="Connection-settings"><a href="#Connection-settings" class="headerlink" title="Connection settings"></a>Connection settings</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> statsd</span><br><span class="line">statsd.Connection.set_defaults(host=<span class="string">'localhost'</span>, port=<span class="number">8125</span>, sample_rate=<span class="number">1</span>, disabled=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<p>使用 <code>statsd.Connection.set_defaults()</code> 之后的所有 数据传递, 都将使用该方法定义的值 作为默认值, 除非明确定义不同的值.</p>
+<h4 id="Advanced-Usage"><a href="#Advanced-Usage" class="headerlink" title="Advanced Usage"></a>Advanced Usage</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statsd</span><br><span class="line"></span><br><span class="line"><span class="comment"># Open a connection to `server` on port `1234` with a `50%` sample rate</span></span><br><span class="line">statsd_connection = statsd.Connection(</span><br><span class="line"> host=<span class="string">'server'</span>,</span><br><span class="line"> port=<span class="number">1234</span>,</span><br><span class="line"> sample_rate=<span class="number">0.5</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a client for this application</span></span><br><span class="line">statsd_client = statsd.Client(__name__, statsd_connection)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span><span class="params">(object)</span>:</span></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">     <span class="comment"># Create a client specific for this class</span></span><br><span class="line">     self.statsd_client = statsd_client.get_client(</span><br><span class="line">         self.__class__.__name__)</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">do_something</span><span class="params">(self)</span>:</span></span><br><span class="line">     <span class="comment"># Create a `timer` client</span></span><br><span class="line">     timer = self.statsd_client.get_client(class_=statsd.Timer)</span><br><span class="line"></span><br><span class="line">     <span class="comment"># start the measurement</span></span><br><span class="line">     timer.start()</span><br><span class="line"></span><br><span class="line">     <span class="comment"># do something</span></span><br><span class="line">     timer.intermediate(<span class="string">'intermediate_value'</span>)</span><br><span class="line"></span><br><span class="line">     <span class="comment"># do something else</span></span><br><span class="line">     timer.stop(<span class="string">'total'</span>)</span><br></pre></td></tr></table></figure>
+<p>如果需要 关闭 service 或者 避免发送 UPD 消息, statsd 链接<code>Connection</code> 类, 可以设置 <code>disabled</code> 选项来关闭.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">statsd_connetcion = statsd.Connection(</span><br><span class="line">    host=<span class="string">'server'</span>,</span><br><span class="line">    port=<span class="number">1234</span>,</span><br><span class="line">    sample_rate=<span class="number">0.5</span>,</span><br><span class="line">    disabled=<span class="keyword">True</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<h4 id="udpcopy"><a href="#udpcopy" class="headerlink" title="udpcopy"></a>udpcopy</h4><p>设想: 为防止 statsd-exporter 不可用, 将 stats-site 与 statsd-exporter 并行运行一段时间, 因此, 需要将 stats-site 的流量做镜像到 statsd-exporter.</p>
+<p>实现: <a href="https://github.com/wangbin579/udpcopy" target="_blank" rel="noopener">udpcopy</a></p>
+<ol>
+<li><p>编译安装</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># download the source code from github:</span><br><span class="line">$ yum install autoconf automake libtool -y</span><br><span class="line">$ git clone http://github.com/wangbin579/udpcopy</span><br><span class="line">$ sh autogen.sh</span><br><span class="line">$ ./configure</span><br><span class="line">$ make</span><br><span class="line">$ make install</span><br><span class="line">$ /usr/local/bin/udpcopy --help</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># on the source host (root privilege is required): udpcopy -x local_port-remote_ip:remote_port </span><br><span class="line">$ /usr/local/bin/udpcopy -x 8125-127.0.0.1:8126</span><br><span class="line"></span><br><span class="line"># on the target host : iptables -I OUTPUT -p udp --sport port -j QUEUE # if not set</span><br><span class="line">$ iptables -I OUTPUT -p udp --sport 8125 -j QUEUE</span><br><span class="line"></span><br><span class="line"># 删除 规则</span><br><span class="line">$ iptables -L OUTPUT -n     # 查看新添加规则, 在第几条.</span><br><span class="line">$ iptables -D OUTPUT 1      # 删除 OUOUT 链上的第一条规则.</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="consul"><a href="#consul" class="headerlink" title="consul"></a>consul</h2><h3 id="consul-cli"><a href="#consul-cli" class="headerlink" title="consul-cli"></a>consul-cli</h3><p>consul 的命令行工具</p>
+<p>github: <a href="https://github.com/mantl/consul-cli" target="_blank" rel="noopener">https://github.com/mantl/consul-cli</a><br>gtthub-wiki: <a href="https://github.com/mantl/consul-cli/wiki" target="_blank" rel="noopener">https://github.com/mantl/consul-cli/wiki</a></p>
+<h3 id="Register-amp-amp-Deregister"><a href="#Register-amp-amp-Deregister" class="headerlink" title="Register &amp;&amp; Deregister"></a>Register &amp;&amp; Deregister</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ cat node-exporter-consul.json</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Node&quot;: &quot;&#123;&#123; host_name &#125;&#125;&quot;, </span><br><span class="line">        &quot;Address&quot;: &quot;&#123;&#123; host_ip &#125;&#125;&quot;, </span><br><span class="line">        &quot;Service&quot;: &#123;</span><br><span class="line">            &quot;ID&quot;: &quot;&#123;&#123; host_id &#125;&#125;&quot;, // ip + port</span><br><span class="line">            &quot;Service&quot;: &quot;node-exporter&quot;, </span><br><span class="line">            &quot;Address&quot;: &quot;&#123;&#123; host_name &#125;&#125;&quot;, </span><br><span class="line">            &quot;Port&quot;: &#123;&#123; port &#125;&#125; &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">$ curl -X PUT -d@/tmp/node-exporter-consul.json http://consul.leyantech.com:818/v1/catalog/register</span><br></pre></td></tr></table></figure>
+<p>Python<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#!/usr/local/bin/env python</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">CONSUL_HOST_PRD_ZB = <span class="string">"http://infra-consul.leyantech.com:818"</span></span><br><span class="line">CONSUL_HOST_STG_DEV = <span class="string">"http://consul.leyantech.com:818"</span></span><br><span class="line"></span><br><span class="line">URI_CONSUL_REGISTER = <span class="string">'/v1/catalog/register'</span></span><br><span class="line">URI_CONSUL_DEREGISTER = <span class="string">'/v1/catalog/deregister'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_consul_host</span><span class="params">()</span>:</span></span><br><span class="line">    hostname = get_hostname()</span><br><span class="line">    <span class="keyword">if</span> hostname[:<span class="number">6</span>].lower() == <span class="string">'prd-zb'</span>:</span><br><span class="line">        <span class="keyword">return</span> CONSUL_HOST_PRD_ZB</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> CONSUL_HOST_STG_DEV</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_hostname</span><span class="params">(full=False)</span>:</span></span><br><span class="line">    hostname = socket.gethostname()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> full:</span><br><span class="line">        <span class="keyword">return</span> hostname</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> hostname.split(<span class="string">'.'</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_host_ip</span><span class="params">(hostname)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> socket.gethostbyname(hostname)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(consul_server, data)</span>:</span></span><br><span class="line"></span><br><span class="line">    headers = &#123;<span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>&#125;</span><br><span class="line">    res = requests.put(consul_server + URI_CONSUL_REGISTER,</span><br><span class="line">                       json=data, headers=headers)</span><br><span class="line"></span><br><span class="line">    print(res.status_code, res.reason)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">deregister</span><span class="params">(consul_server, data)</span>:</span></span><br><span class="line">    headers = &#123;<span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>&#125;</span><br><span class="line">    res = requests.put(consul_server + URI_CONSUL_DEREGISTER,</span><br><span class="line">                       json=data, headers=headers)</span><br><span class="line"></span><br><span class="line">    print(res.status_code, res.reason)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_register_service_data</span><span class="params">(service_name, service_port, *tags)</span>:</span></span><br><span class="line">    hostname = get_hostname()</span><br><span class="line">    host_ip = get_host_ip(hostname)</span><br><span class="line"></span><br><span class="line">    post_service = dict(ID=<span class="string">"&#123;&#125;:&#123;&#125;"</span>.format(host_ip, service_port),</span><br><span class="line">                        Service=service_name,</span><br><span class="line">                        Address=host_ip,</span><br><span class="line">                        Port=service_port,</span><br><span class="line">                        Tags=tags)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dict(Node=hostname,</span><br><span class="line">                Address=host_ip,</span><br><span class="line">                Service=post_service)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_deregister_service_data</span><span class="params">(node, service)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> dict(Node=node, ServiceID=service)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_delete_node_date</span><span class="params">(node)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> dict(Node=node)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line"></span><br><span class="line">    service_name = sys.argv[<span class="number">1</span>]</span><br><span class="line">    service_port = int(sys.argv[<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">    consul_server = get_consul_host()</span><br><span class="line">    post_data = gen_register_service_data(service_name, service_port)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"Register: &#123;&#125; to &#123;&#125;"</span>.format(post_data, consul_server))</span><br><span class="line">    register(consul_server, post_data)</span><br></pre></td></tr></table></figure></p>
+<h2 id="PromQL"><a href="#PromQL" class="headerlink" title="PromQL"></a>PromQL</h2><h2 id="alertmanager"><a href="#alertmanager" class="headerlink" title="alertmanager"></a>alertmanager</h2><p>alert<br>    silencing(使安静)<br>    inhibition(抑制)<br>    aggregation(聚合)<br>        聚合<br>        分组<br>        路由<br>    notification<br>        email<br>        on-call-platform<br>        chat platforms</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./alertmanager --config.file=simple.yml</span><br></pre></td></tr></table></figure>
+<p>Alertmanager 支持运行时重载, 有一下两种方式:</p>
+<ol>
+<li>向主程序发送 <code>SIGHUP</code> 信号;</li>
+<li>向 <code>/-/reload</code> 接口发送 POST 请求.</li>
+</ol>
+<p>如果新的配置有错, 则 Alertmanager 不会应用这些配置, 并将这些配置记录到日志中.</p>
+<h4 id="配置段"><a href="#配置段" class="headerlink" title="配置段"></a>配置段</h4><ul>
+<li><code>&lt;duration&gt;</code>: 持续时间, 符合正则 <code>[0-9]+(ms|[smhdwy])</code> </li>
+<li><code>&lt;labelname&gt;</code>: 字符串, lable, <code>[a-zA-Z_][a-zA-Z0-9_]*</code></li>
+<li><code>&lt;labelvalue&gt;</code>: a string of unicode characters</li>
+<li><code>&lt;filepath&gt;</code>: a valid path in the current working directory</li>
+<li><code>&lt;boolean&gt;</code>: a boolean that can take the values true or false</li>
+<li><code>&lt;string&gt;</code>: a regular string</li>
+<li><code>&lt;secret&gt;</code>: a regular string that is a secret, such as a password</li>
+<li><code>&lt;tmpl_string&gt;</code>: a string which is template-expanded(展开) before usage</li>
+<li><code>&lt;tmpl_secret&gt;</code>: a string which is template-expanded before usage that is a secret</li>
+</ul>
+<h3 id="核心特性"><a href="#核心特性" class="headerlink" title="核心特性"></a>核心特性</h3><h4 id="1-Groupinbg"><a href="#1-Groupinbg" class="headerlink" title="1. Groupinbg"></a>1. Groupinbg</h4><p>Grouping of alerts, timing for the grouped notifications, and the receivers of those notifications are configured by a routing tree in the configuration file.</p>
+<h4 id="2-Inhibition-抑制"><a href="#2-Inhibition-抑制" class="headerlink" title="2. Inhibition(抑制)"></a>2. Inhibition(抑制)</h4><h4 id="3-Silences-静默"><a href="#3-Silences-静默" class="headerlink" title="3. Silences(静默)"></a>3. Silences(静默)</h4><p>禁止一个 alert 报出一定时间. 基于 匹配 来过滤. 通过 web 来配置.</p>
+<h4 id="4-client-behavior"><a href="#4-client-behavior" class="headerlink" title="4. client behavior"></a>4. client behavior</h4><h4 id="5-HA"><a href="#5-HA" class="headerlink" title="5. HA"></a>5. HA</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/16/vue-vuex学习笔记/" rel="next" title="Vuex 学习笔记-核心概念">
+                <i class="fa fa-chevron-left"></i> Vuex 学习笔记-核心概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Pyfdtic</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">115</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/pyfdtic" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-text">参考文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件"><span class="nav-text">组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Sidecar-connects-to-Prometheus-and-reads-its-data-for-query-and-or-upload-it-to-cloud-storage"><span class="nav-text">1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-0-配置-Thanos-重载-Prometheus-配置"><span class="nav-text">1.0 配置 Thanos 重载 Prometheus 配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-使用外部存储"><span class="nav-text">1.1 使用外部存储:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1-Thanos-目前支持外部存储类型"><span class="nav-text">1.1.1 Thanos 目前支持外部存储类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-存储接口"><span class="nav-text">1.2 存储接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-Prometheus-扩展标签-及-全局唯一标志"><span class="nav-text">1.3 Prometheus 扩展标签 及 全局唯一标志</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Store-Gateway-exposes-the-content-of-a-cloud-storage-bucket"><span class="nav-text">2. Store Gateway: exposes the content of a cloud storage bucket.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Compactor-compact-and-downsample-data-stored-in-remote-storage"><span class="nav-text">3. Compactor: compact and downsample data stored in remote storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Receiver-receives-data-from-Prometheus’s-remote-write-WAL-exposes-it-and-or-upload-it-to-cloud-storage"><span class="nav-text">4. Receiver: receives data from Prometheus’s remote-write WAL, exposes it and/or upload it to cloud storage.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Ruler-evaluates-recording-and-alerting-rules-against-data-in-Thanos-for-exposition-and-or-uploads"><span class="nav-text">5. Ruler: evaluates recording and alerting rules against data in Thanos for exposition and/or uploads.</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-风险"><span class="nav-text">5.1 风险</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-Partial-Response"><span class="nav-text">5.2 Partial Response</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-必不可少的-Ruler-alert-rule"><span class="nav-text">5.3 必不可少的 Ruler alert rule</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-扩展-label"><span class="nav-text">5.4 扩展 label</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-5-Ruler-UI"><span class="nav-text">5.5 Ruler UI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-6-Ruler-HA"><span class="nav-text">5.6 Ruler HA</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Query-Gateway-implements-Prometheus’s-v1-API-to-aggregate-data-from-the-underlying-components"><span class="nav-text">6. Query Gateway: implements Prometheus’s v1 API to aggregate data from the underlying components</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-数据去重"><span class="nav-text">6.1 数据去重</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-组件间通信"><span class="nav-text">6.2 组件间通信</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-配置-query-与-sidecar-store-通信的方式-自动发现"><span class="nav-text">6.3 配置 query 与 sidecar/store 通信的方式, 自动发现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署"><span class="nav-text">部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-prometheus"><span class="nav-text">1. prometheus</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#prometheus-service"><span class="nav-text">prometheus.service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#alertmanager-service"><span class="nav-text">alertmanager.service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prom-node-exporter-service"><span class="nav-text">prom-node-exporter.service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prometheus-Doc"><span class="nav-text">prometheus Doc</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-thanos"><span class="nav-text">2. thanos</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#thanos-query-service"><span class="nav-text">thanos-query.service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#thanos-sidecar-service"><span class="nav-text">thanos-sidecar.service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#thanos-store-service"><span class="nav-text">thanos-store.service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#thanos-ruler-service"><span class="nav-text">thanos-ruler.service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#thanos-compactor-service"><span class="nav-text">thanos-compactor.service</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象存储"><span class="nav-text">对象存储</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#S3"><span class="nav-text">S3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务发现"><span class="nav-text">服务发现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thanos-中需要服务发现的位置"><span class="nav-text">Thanos 中需要服务发现的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thanos-配置方式"><span class="nav-text">Thanos 配置方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-flag"><span class="nav-text">1. flag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-基于文件的服务发现"><span class="nav-text">2. 基于文件的服务发现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-Query"><span class="nav-text">2.1 Query</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-Rule"><span class="nav-text">2.2 Rule</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-基于-DNS-的服务发现"><span class="nav-text">3. 基于 DNS 的服务发现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prometheus"><span class="nav-text">Prometheus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据存储格式"><span class="nav-text">数据存储格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#store"><span class="nav-text">store</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Query-Layer"><span class="nav-text">Query Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Compactor"><span class="nav-text">Compactor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scaling"><span class="nav-text">Scaling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他组件"><span class="nav-text">其他组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行工具"><span class="nav-text">命令行工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-bucket"><span class="nav-text">1. bucket</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-check"><span class="nav-text">2. check</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#compact"><span class="nav-text">compact</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#query"><span class="nav-text">query</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-partial-response-behaviour"><span class="nav-text">1. partial response behaviour</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-Partial-Response-Strategy"><span class="nav-text">1.2 Partial Response Strategy</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Deduplication-Enable"><span class="nav-text">2. Deduplication Enable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Auto-downsampling"><span class="nav-text">3. Auto downsampling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-custom-reponse-fields-自定义响应字段"><span class="nav-text">4. custom reponse fields 自定义响应字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-使用自定义-Path-暴露-Thanos-UI"><span class="nav-text">5. 使用自定义 Path 暴露 Thanos UI</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rule"><span class="nav-text">rule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sidecar"><span class="nav-text">sidecar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#store-1"><span class="nav-text">store</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#压力测试"><span class="nav-text">压力测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other"><span class="nav-text">Other</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#statsd-exporter"><span class="nav-text">statsd-exporter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议"><span class="nav-text">协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#statsd-指标类型"><span class="nav-text">statsd 指标类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#counter-计数器"><span class="nav-text">counter 计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#timer-计时器"><span class="nav-text">timer 计时器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gauge-标量"><span class="nav-text">gauge 标量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set"><span class="nav-text">set</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#statsite"><span class="nav-text">statsite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-text">install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-StatD-Client"><span class="nav-text">Python StatD Client</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Timers"><span class="nav-text">Timers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cunters"><span class="nav-text">Cunters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gauge"><span class="nav-text">Gauge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Raw"><span class="nav-text">Raw</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Average"><span class="nav-text">Average</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Connection-settings"><span class="nav-text">Connection settings</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Advanced-Usage"><span class="nav-text">Advanced Usage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#udpcopy"><span class="nav-text">udpcopy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#consul"><span class="nav-text">consul</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#consul-cli"><span class="nav-text">consul-cli</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Register-amp-amp-Deregister"><span class="nav-text">Register &amp;&amp; Deregister</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PromQL"><span class="nav-text">PromQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alertmanager"><span class="nav-text">alertmanager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置段"><span class="nav-text">配置段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核心特性"><span class="nav-text">核心特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Groupinbg"><span class="nav-text">1. Groupinbg</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Inhibition-抑制"><span class="nav-text">2. Inhibition(抑制)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Silences-静默"><span class="nav-text">3. Silences(静默)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-client-behavior"><span class="nav-text">4. client behavior</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-HA"><span class="nav-text">5. HA</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Pyfdtic</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
