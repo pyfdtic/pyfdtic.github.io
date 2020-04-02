@@ -83,7 +83,7 @@
 <meta name="keywords" content="ansible">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ansible task&#x2F;role&#x2F;playbook">
-<meta property="og:url" content="http://www.pyfdtic.com/2018/03/15/Ansible-task-role-playbook/index.html">
+<meta property="og:url" content="http://pyfdtic.github.io/2018/03/15/Ansible-task-role-playbook/index.html">
 <meta property="og:site_name" content="Pyfdtic&#39;s Blog">
 <meta property="og:description" content="使用 Ansible task, role, playbook 定义任务, 实现自动化服务器管理.">
 <meta property="og:locale" content="zh-Hans">
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://www.pyfdtic.com/2018/03/15/Ansible-task-role-playbook/"/>
+  <link rel="canonical" href="http://pyfdtic.github.io/2018/03/15/Ansible-task-role-playbook/"/>
 
 
 
@@ -318,7 +318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.pyfdtic.com/2018/03/15/Ansible-task-role-playbook/">
+    <link itemprop="mainEntityOfPage" href="http://pyfdtic.github.io/2018/03/15/Ansible-task-role-playbook/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Pyfdtic">
@@ -415,7 +415,7 @@
       
         <p>使用 Ansible task, role, playbook 定义任务, 实现自动化服务器管理.</p>
 <a id="more"></a>
-<p><a href="https://pyfdtic.github.io/2018/03/14/Ansible-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">Ansible 学习总结</a></p>
+<p><a href="https://pyfdtic.github.io/2018/03/14/Ansible-%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">Ansible 学习总结</a></p>
 <h2 id="一-task"><a href="#一-task" class="headerlink" title="一. task"></a>一. task</h2><h3 id="1-name"><a href="#1-name" class="headerlink" title="1. name"></a>1. name</h3><p>可选配置, 用于提示task 的功能. 另, ansible-playbook –start-at-task &lt;task_name&gt; 可以调用 name, 从 task 的中间开始执行.</p>
 <h3 id="2-模块-功能"><a href="#2-模块-功能" class="headerlink" title="2. 模块(功能)"></a>2. 模块(功能)</h3><p>必选配置, 有模块的名称组成的 key 和 模块参数组成的 value.<br><strong>从 Ansible 前段所使用的 YAML 解析器角度看, 参数将被按照字符串处理, 而不是字典</strong></p>
 <pre><code>apt: name=nginx update_cache=yes
