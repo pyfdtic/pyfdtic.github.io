@@ -16,8 +16,8 @@
       name: 'Pyfdtic Documents',
       repo: 'https://github.com/pyfdtic/pyfdtic.github.io',
       loadSidebar: true,
-      subMaxLevel: 2,
-      maxLevel: 3,
+      subMaxLevel: 1,
+      maxLevel: 1,
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md'
       },
@@ -25,7 +25,11 @@
       themeable: {
         responsiveTables: true, // default
         readyTransition: true // default
-      }
+      },
+      'page-toc': {
+        tocMaxLevel: 3,
+        target: 'h1, h2, h3'
+      },
     }
   </script>
   <!-- Docsify v4 -->
@@ -46,5 +50,7 @@
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+  <!-- Page Toc --> -->
+  <script src="//unpkg.com/docsify-page-toc/dist/docsify-page-toc.js"></script>
 </body>
 </html>
