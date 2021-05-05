@@ -1,12 +1,12 @@
 # Pyfdtic Documents 
 
-* Kubernetes
+## Kubernetes
   * [k8s-kubernetes-learn-note](/documents/k8s/k8s-kubernetes-learn-note)
   * [k8s-kubernetes](/documents/k8s/k8s-kubernetes)
-* Prometheus
+## Prometheus
   * [Thanos 笔记](/documents/prometheus/thanos)
-* Python
-* Django
+## Python
+## Django
   * [django-学习总结](/documents/django/django-学习总结)
   * [django-模板原理及扩展](/documents/django/django-模板原理及扩展)
   * [零_入门篇](/documents/django/django之零--入门篇)
@@ -16,7 +16,7 @@
   * [四_Admin管理工具](/documents/django/django之四--Admin管理工具)
   * [五_表单](/documents/django/django之五--表单)
   * [六_部署篇](/documents/django/django之六--部署篇)
-* Flask
+## Flask
   * [flask-学习总结](/documents/flask/flask-学习总结)
   * [flask-源码解析](/documents/flask/flask-源码解析)
   * [flask-login](/documents/flask/flaskExt--flask-login)
@@ -28,7 +28,7 @@
   * [flask-sqlalchemy](/documents/flask/flaskExt--flask-sqlalchemy)
   * [flask-sse](/documents/flask/flaskExt--flask-sse)
   * [flask-whooshee](/documents/flask/flaskExt--flask-whooshee)
-* Ansible
+## Ansible
   * [Ansible-学习总结](/documents/ansible/Ansible-学习总结)  
   * [Task-Role-Playbook](/documents/ansible/Ansible-task-role-playbook)
   * [Inventory](/documents/ansible/Ansible-Inventory)
