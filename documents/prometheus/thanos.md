@@ -1,113 +1,4 @@
----
-title: Thanos 学习笔记 
-date: 2019-03-14 17:38:24
-categories:
-- Monitor 
-tags:
-- thanos
-- prometheus
----
-
-<!-- MarkdownTOC -->
-
-- [参考文档](#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3)
-- [概述](#%E6%A6%82%E8%BF%B0)
-- [组件](#%E7%BB%84%E4%BB%B6)
-    - [1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.](#1-sidecar-connects-to-prometheus-and-reads-its-data-for-query-andor-upload-it-to-cloud-storage)
-        - [1.0 配置 Thanos 重载 Prometheus 配置](#10-%E9%85%8D%E7%BD%AE-thanos-%E9%87%8D%E8%BD%BD-prometheus-%E9%85%8D%E7%BD%AE)
-        - [1.1 使用外部存储:](#11-%E4%BD%BF%E7%94%A8%E5%A4%96%E9%83%A8%E5%AD%98%E5%82%A8)
-            - [1.1.1 Thanos 目前支持外部存储类型](#111-thanos-%E7%9B%AE%E5%89%8D%E6%94%AF%E6%8C%81%E5%A4%96%E9%83%A8%E5%AD%98%E5%82%A8%E7%B1%BB%E5%9E%8B)
-        - [1.2 存储接口](#12-%E5%AD%98%E5%82%A8%E6%8E%A5%E5%8F%A3)
-        - [1.3 Prometheus 扩展标签 及 全局唯一标志](#13-prometheus-%E6%89%A9%E5%B1%95%E6%A0%87%E7%AD%BE-%E5%8F%8A-%E5%85%A8%E5%B1%80%E5%94%AF%E4%B8%80%E6%A0%87%E5%BF%97)
-    - [2. Store Gateway: exposes the content of a cloud storage bucket.](#2-store-gateway-exposes-the-content-of-a-cloud-storage-bucket)
-    - [3. Compactor: compact and downsample data stored in remote storage](#3-compactor-compact-and-downsample-data-stored-in-remote-storage)
-    - [4. Receiver: receives data from Prometheus's remote-write WAL, exposes it and/or upload it to cloud storage.](#4-receiver-receives-data-from-prometheuss-remote-write-wal-exposes-it-andor-upload-it-to-cloud-storage)
-    - [5. Ruler: evaluates recording and alerting rules against data in Thanos for exposition and/or uploads.](#5-ruler-evaluates-recording-and-alerting-rules-against-data-in-thanos-for-exposition-andor-uploads)
-        - [5.1 风险](#51-%E9%A3%8E%E9%99%A9)
-        - [5.2 Partial Response](#52-partial-response)
-        - [5.3 必不可少的 Ruler alert rule](#53-%E5%BF%85%E4%B8%8D%E5%8F%AF%E5%B0%91%E7%9A%84-ruler-alert-rule)
-        - [5.4 扩展 label](#54-%E6%89%A9%E5%B1%95-label)
-        - [5.5 Ruler UI](#55-ruler-ui)
-        - [5.6 Ruler HA](#56-ruler-ha)
-    - [6. Query Gateway: implements Prometheus’s v1 API to aggregate data from the underlying components](#6-query-gateway-implements-prometheus%E2%80%99s-v1-api-to-aggregate-data-from-the-underlying-components)
-        - [6.1 数据去重](#61-%E6%95%B0%E6%8D%AE%E5%8E%BB%E9%87%8D)
-        - [6.2 组件间通信](#62-%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1)
-        - [6.3 配置 query 与 sidecar/store 通信的方式, 自动发现](#63-%E9%85%8D%E7%BD%AE-query-%E4%B8%8E-sidecarstore-%E9%80%9A%E4%BF%A1%E7%9A%84%E6%96%B9%E5%BC%8F-%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0)
-- [部署](#%E9%83%A8%E7%BD%B2)
-    - [1. prometheus](#1-prometheus)
-        - [prometheus.service](#prometheusservice)
-        - [alertmanager.service](#alertmanagerservice)
-        - [prom-node-exporter.service](#prom-node-exporterservice)
-        - [prometheus Doc](#prometheus-doc)
-    - [2. thanos](#2-thanos)
-        - [thanos-query.service](#thanos-queryservice)
-        - [thanos-sidecar.service](#thanos-sidecarservice)
-        - [thanos-store.service](#thanos-storeservice)
-        - [thanos-ruler.service](#thanos-rulerservice)
-        - [thanos-compactor.service](#thanos-compactorservice)
-- [对象存储](#%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8)
-    - [S3](#s3)
-- [服务发现](#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0)
-    - [Thanos 中需要服务发现的位置](#thanos-%E4%B8%AD%E9%9C%80%E8%A6%81%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E7%9A%84%E4%BD%8D%E7%BD%AE)
-    - [Thanos 配置方式](#thanos-%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F)
-        - [1. flag](#1-flag)
-        - [2. 基于文件的服务发现](#2-%E5%9F%BA%E4%BA%8E%E6%96%87%E4%BB%B6%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0)
-            - [2.1 Query](#21-query)
-            - [2.2 Rule](#22-rule)
-        - [3. 基于 DNS 的服务发现](#3-%E5%9F%BA%E4%BA%8E-dns-%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0)
-- [Prometheus](#prometheus)
-    - [数据存储格式](#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F)
-    - [store](#store)
-    - [Query Layer](#query-layer)
-    - [Compactor](#compactor)
-    - [Scaling](#scaling)
-- [其他组件](#%E5%85%B6%E4%BB%96%E7%BB%84%E4%BB%B6)
-    - [命令行工具](#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7)
-        - [1. bucket](#1-bucket)
-        - [2. check](#2-check)
-    - [compact](#compact)
-    - [query](#query)
-        - [1. partial response behaviour](#1-partial-response-behaviour)
-            - [1.2 Partial Response Strategy](#12-partial-response-strategy)
-        - [2. Deduplication Enable](#2-deduplication-enable)
-        - [3. Auto downsampling](#3-auto-downsampling)
-        - [4. custom reponse fields 自定义响应字段](#4-custom-reponse-fields-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%93%8D%E5%BA%94%E5%AD%97%E6%AE%B5)
-        - [5. 使用自定义 Path 暴露 Thanos UI](#5-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89-path-%E6%9A%B4%E9%9C%B2-thanos-ui)
-    - [rule](#rule)
-    - [sidecar](#sidecar)
-    - [store](#store-1)
-- [压力测试](#%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95)
-- [Other](#other)
-- [statsd-exporter](#statsd-exporter)
-    - [协议](#%E5%8D%8F%E8%AE%AE)
-    - [statsd 指标类型](#statsd-%E6%8C%87%E6%A0%87%E7%B1%BB%E5%9E%8B)
-        - [counter 计数器](#counter-%E8%AE%A1%E6%95%B0%E5%99%A8)
-        - [timer 计时器](#timer-%E8%AE%A1%E6%97%B6%E5%99%A8)
-        - [gauge 标量](#gauge-%E6%A0%87%E9%87%8F)
-        - [set](#set)
-    - [statsite](#statsite)
-    - [install](#install)
-    - [Python StatD Client](#python-statd-client)
-        - [Timers](#timers)
-        - [Cunters](#cunters)
-        - [Gauge](#gauge)
-        - [Raw](#raw)
-        - [Average](#average)
-        - [Connection settings](#connection-settings)
-        - [Advanced Usage](#advanced-usage)
-        - [udpcopy](#udpcopy)
-- [PromQL](#promql)
-- [alertmanager](#alertmanager)
-    - [配置](#%E9%85%8D%E7%BD%AE)
-        - [配置段](#%E9%85%8D%E7%BD%AE%E6%AE%B5)
-    - [核心特性](#%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7)
-        - [1. Groupinbg](#1-groupinbg)
-        - [2. Inhibition\(抑制\)](#2-inhibition%E6%8A%91%E5%88%B6)
-        - [3. Silences\(静默\)](#3-silences%E9%9D%99%E9%BB%98)
-        - [4. client behavior](#4-client-behavior)
-        - [5. HA](#5-ha)
-
-<!-- /MarkdownTOC -->
+# Thanos 学习笔记
 
 ## 参考文档
 
@@ -115,6 +6,7 @@ tags:
 http://dockone.io/article/6019
 https://thanos.io/getting-started.md/
 ```
+
 ## 概述
 
 ![Thanos 组件架构图](http://wx3.sinaimg.cn/large/77fd5d57gy1g4fl0a15n5j20qo0k0dhb.jpg)
@@ -135,7 +27,7 @@ Thanos 组件职责分工明确, 方便解耦, 同时, 支持只部署部分组�
 2. Stores
 3. Queriers
 
-必要条件:
+**必要条件**:
 1. Prometheus v2.2.1 + 版本
   
   可以在 Thanos 的 `Makefile` 的 `PROM_VERSION` 变量中查找 Thanos 测试的基准版本.
@@ -147,7 +39,7 @@ Thanos 组件职责分工明确, 方便解耦, 同时, 支持只部署部分组�
 [github release](https://github.com/improbable-eng/thanos/releases)
 
 ## 组件
-### 1. Sidecar: connects to Prometheus and reads its data for query and/or upload it to cloud storage.
+### 1. Sidecar
 
 Sidecar 实现在 Prometheus' remote-read API 的基础上实现了 Thanos's StoreAPI .
 
@@ -174,8 +66,8 @@ Thanos 可以监控 Prometheus 的 rules 和 配置, 更新和查询环境变量
     `--reloader.config-file=CONFIG_FILE` 配置 Sidecar 监视 `CONFIG_FILE` 计算环境变量, 并把发现的环境变量用于生成 `--reloader.config-envsubst-file=OUT_CONFIG_FIL` 配置的配置文件.
 
 
-#### 1.1 使用外部存储:       
-```
+#### 1.1 使用外部存储
+```bash
 # 配置 sidecar 读取 prometheus 收集的数据, 并写入到远程的 对象存储中.
 $ thanos sidecar \
     --tsdb.path            /var/prometheus \          # TSDB data directory of Prometheus
@@ -222,7 +114,7 @@ global:
     replica: A
 ```
 
-### 2. Store Gateway: exposes the content of a cloud storage bucket.
+### 2. Store Gateway
 
 提供 云存储的 访问权限控制.
 
@@ -263,7 +155,7 @@ config:
     enable: false
 ```
 
-### 3. Compactor: compact and downsample data stored in remote storage
+### 3. Compactor
 
 压缩远程存储中数据的数据/降低远程存储中数据的精度 
 
@@ -284,10 +176,16 @@ Compactor 可以作为**定期任务**执行, 也可以作为 Daemon 程序运�
 1. Compactor 必须作为 **单例** 运行;
 2. Compactor 运行时, 必须**禁止手动修改** 云存储中的数据.
 
-### 4. Receiver: receives data from Prometheus's remote-write WAL, exposes it and/or upload it to cloud storage.
+### 4. Receiver
+
+Receiver: receives data from Prometheus's remote-write WAL, exposes it and/or upload it to cloud storage.
+
 通过 Prometheus 的 remote-write WAL 接受数据 并 向外暴露数据 或者 上传数据到云存储.
 
-### 5. Ruler: evaluates recording and alerting rules against data in Thanos for exposition and/or uploads.
+### 5. Ruler
+
+Ruler: evaluates recording and alerting rules against data in Thanos for exposition and/or uploads.
+
 基于 Thanos Query 提供的数据, 评估记录和报警规则.
 
 In case of Prometheus with Thanos sidecar does not have enough retention, or if you want to have alerts or recording rules that requires global view, Thanos has just the component for that: the Ruler, which does rule and alert evaluation on top of a given Thanos Querier.
@@ -384,7 +282,9 @@ Ruler 使用外部的资源, 通过网络来获取资源计算, 在性能上会�
 
 其他计划添加的 relabelling 可以参考如下链接: `https://github.com/improbable-eng/thanos/issues/660`
 
-### 6. Query Gateway: implements Prometheus’s v1 API to aggregate data from the underlying components
+### 6. Query Gateway
+
+Query Gateway: implements Prometheus’s v1 API to aggregate data from the underlying components
 
 实现了 Prometheus’ v1 API 来从其他组件聚合数据, 使用 Thanos 全局查询层 来基于全部的 Prometheus 实例 使用 PromQL 查询监控数据.
 
@@ -435,7 +335,8 @@ Query Gateway 链接 StoreApi 的配置有多中配置方式:
     - `dns+` 基于 DNS A 记录获取 StoreAPI 地址列表
     - `dbssrv+` 基于 SRV 获取 StoreAPI 地址列表
 
-```
+启动示例:
+```bash
 thanos query \
     --http-address 0.0.0.0:19192 \              # Endpoint for Query UI
     --grpc-address 0.0.0.0:19092 \              # gRPC endpoint for Store API
@@ -444,21 +345,28 @@ thanos query \
     --store        dns+rest.thanos.peers:19092  # Use DNS lookup for getting all registered IPs as separate StoreAPIs    
 ```
 
-#### 6.3 配置 query 与 sidecar/store 通信的方式, 自动发现
+#### 6.3 配置 query 与 sidecar/store 通信的方式, 
+
 `--store STORE` 配置项是可重复的. 有一下配置方法:
 
 1. 静态配置
-  ```
-  --store        1.2.3.4:19090 \              # Static gRPC Store API Address for the query node to query
-  --store        1.2.3.5:19090 \              # Also repeatable
-  ```
+
+    ```
+    --store        1.2.3.4:19090 \              # Static gRPC Store API Address for the query node to query
+    --store        1.2.3.5:19090 \              # Also repeatable
+    ```
+
 2. 服务发现
+
     - `dns+` or `dnssrv+`
+
         ```
         --store        dns+rest.thanos.peers:19092  # Use DNS lookup for getting all registered IPs as separate StoreAPIs    
 
         ```
+
     - 基于文件的自动发现
+
         ```
         --store.sd-files=/etc/thanos/file_sd/query_sidecar_*.yaml \
         --store.sd-files=/etc/thanos/file_sd/query_store_*.yaml \
@@ -472,13 +380,6 @@ thanos query \
 ### 1. prometheus
 
 #### prometheus.service
-
-```
-prometheus \
-  --storage.tsdb.max-block-duration=2h \
-  --storage.tsdb.min-block-duration=2h \
-  --web.enable-lifecycle
-```
 
 ```
 # prometheus.service
