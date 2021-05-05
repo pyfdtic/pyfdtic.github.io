@@ -1,5 +1,4 @@
 
-![logo](_media/logoicon.png)
 
 # Pyfdtic Documents
 
