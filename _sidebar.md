@@ -29,6 +29,10 @@
   * [flask-sqlalchemy](/documents/flask/flaskExt--flask-sqlalchemy)
   * [flask-sse](/documents/flask/flaskExt--flask-sse)
   * [flask-whooshee](/documents/flask/flaskExt--flask-whooshee)
+* Scrapy 爬虫
+  * [scrapy 文档](documents/scrapy/scrapy)
+  * [scrapy-cli](documents/scrapy/scrapy-cli)
+  * [fake-useragent](documents/scrapy/fake-useragent)
 * Ansible
   * [Ansible-学习总结](/documents/ansible/Ansible-学习总结)  
   * [Task-Role-Playbook](/documents/ansible/Ansible-task-role-playbook)
