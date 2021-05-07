@@ -9,7 +9,7 @@
 - End users
     choose a deployment environment, model the app with available capability templates, and deploy the app to target environment.
 
-![](images/kube-vela-workflow.png)
+![](imgs/kube-vela-workflow.png)
 
 主要概念:
 - `Application` : 类似乐高积木, 通过组合 component 和 traits 组成上层应用, 而无需暴露 kubernetes workload 的细节.
@@ -58,13 +58,13 @@
   - `capability definitions` : 在 kubevela 中, component definitions 和 trait definitions  也被称为 `capability definitions`
 - `Environment` : 每个环境有自己独特的定义, 如 domain, Kubernetes cluster and namespace, configuration data, access control policy, etc. 目前, kubevela 只支持 kubernetes namespace 的环境配置, 集群级别的在开发中.
 
-![](images/kube-vela-concepts.png)
-![](images/kube-vela-arch.png)
+![](imgs/kube-vela-concepts.png)
+![](imgs/kube-vela-arch.png)
 
 
 ### 几个概念
 
-![](images/what-is-kubevela.png)
+![](imgs/what-is-kubevela.png)
 
 - `Environments`: 可重用的基础设施配置
 - `Templates`: 平台部门 预定义的, 集成最佳实践的 k8s 能力模型模板.

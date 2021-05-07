@@ -164,7 +164,7 @@ controller-runtime 通过一个名为 logr 日志库使用结构化的记录日�
 最后, 我们将 Reconcile 添加到 manager 中，这样当 manager 启动时它就会被启动。
 ```go
 func (r *CronJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
-    return ctrl.NewControllerManagedBy(mgr).
+    return ctrl.NewControllerManagedBy(
         For(&batchv1.CronJob{}).
         Complete(r)
 }
@@ -178,7 +178,10 @@ func (r *CronJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 Kubebuilder 脚手架生成 Operator 的代码后，开发者只需要在 Reconciler 里面实现自己的控制逻辑，下图中除 Reconciler 外，其它部分的都是 Kubebuilder 自动生成的。生成的代码底层直接依赖 Controller Runtime 这个 Kubernetes SIG 维护的核心库.
 
-![3e55f8d8769b929c373825f86d4146a4.png](imgs/1.png)
+![3e55f8d8769b929c373825f86d4146a4.png](imgs/kubebuilder-arch.png)
+
+![kubebuilder 概念](imgs/kubebuilder-concept.png)
+
 
 ### 核心概念
 
@@ -243,7 +246,7 @@ Controller 对象跟开发者要实现的逻辑 `Reconciler` 是**一一对应**
 #### 5. Reconciler
 接收 Controller 发送给自己的 GVR 事件，然后从 Cache 中读取出 GVR 的当前状态，经过自己的控制逻辑，通过 Client 向 Kubernetes APIServer 更新 GVR 资源，开发者只需要在 Reconciler 实现自己的控制逻辑，示意图如下:
 
-![e3a2b20e6b437ee6e4c409adf70662ae.png](imgs/2.png)
+![e3a2b20e6b437ee6e4c409adf70662ae.png](imgs/reconciler.png)
 
 ### 工作流程
 我们以 MyJob CRD 这个 Operator 示例来说明整个流程:
@@ -258,7 +261,7 @@ Controller 对象跟开发者要实现的逻辑 `Reconciler` 是**一一对应**
 
 Operator 概念层级图:
 
-![d769a44bfca503d396db01899f3819ae.png](imgs/3.png)
+![d769a44bfca503d396db01899f3819ae.png](imgs/operator-concept.png)
 
 ## 生成 CRD
 
