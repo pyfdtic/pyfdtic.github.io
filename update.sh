@@ -9,4 +9,8 @@ gsed -i 's/^* /\n## /g' $INDEX_FILE
 
 echo '\n## AboutMe\n Email: `MjAxNi5ib2IuYmlAZ21haWwuY29t  (base64 encode)`' >> $INDEX_FILE
 
+git status
+
+echo
+
 gitci
