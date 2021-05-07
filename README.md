@@ -1,4 +1,4 @@
--e # Pyfdtic Documents 
+# Pyfdtic Documents 
 
 
 ## Kubernetes
@@ -48,6 +48,6 @@
   * [变量](/documents/ansible/Ansible-变量)
   * [流程控制](/documents/ansible/Ansible-流程控制)
   * [API](/documents/ansible/Ansible-API)
--e 
+
 ## AboutMe
  Email: `MjAxNi5ib2IuYmlAZ21haWwuY29t  (base64 encode)`
