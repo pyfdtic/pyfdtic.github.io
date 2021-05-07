@@ -1,13 +1,4 @@
----
-title: Linux 特殊用户权限 suid sgid sticky
-date: 2018-03-19 17:44:17
-categories:
-- 计算机原理与操作系统
-tags:
-- Linux
-- 权限管理
-- 用户管理
----
+
 
 每个进程会维护有如下6个ID:
 

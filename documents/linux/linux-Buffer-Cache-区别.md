@@ -1,12 +1,4 @@
----
-title: Buffer Cache 区别
-date: 2018-03-15 18:29:45
-categories:
-- 计算机原理与操作系统
-tags:
-- buffer
-- cache
----
+
 buffer 是磁盘缓存, 缓存的是连续的block
 cache 文件缓存, 缓存的是组成文件的非连续的block, 
 

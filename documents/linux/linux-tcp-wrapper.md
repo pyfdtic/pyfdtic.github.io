@@ -1,11 +1,4 @@
----
-title: linux tcp_wrapper
-date: 2018-03-16 17:22:42
-categories:
-- 计算机原理与操作系统
-tags:
-- Linux
----
+
 # 一. 简介
 tcp_wrapper：tcp包装器, 工作于库中的.
 - 访问控制 工具/组件 : 传输层 和 接近于应用层;

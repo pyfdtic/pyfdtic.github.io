@@ -1,12 +1,4 @@
----
-title: shell 函数与数组
-date: 2018-03-19 16:21:39
-categories:
-- 计算机原理与操作系统
-tags:
-- Linux
-- Shell
----
+
 # 一. 数组
 
 bash Shell只支持一维数组，数组从0开始标号，以array[x]表示数组元素，那么，array[0]就表示array数组的第1个元素、array[1]表示array数组的第2个元素、array[x]表示array数组的第x+1个元素

@@ -12,6 +12,15 @@
 ## Prometheus
   * [Thanos 笔记](/documents/prometheus/thanos)
 
+## Linux
+  * [iptables-汇总](documents/linux/linux-iptables-汇总)
+  * [tcp-wrapper](documents/linux/linux-tcp-wrapper)
+  * [shell-函数与数组](documents/linux/linux-shell-函数与数组)
+  * [特殊用户权限-suid-sgid-sticky](documents/linux/linux-特殊用户权限-suid-sgid-sticky)
+  * [进程-线程-与进程间通信](documents/linux/linux-进程-线程-与进程间通信)
+  * [Buffer-Cache-区别](documents/linux/linux-Buffer-Cache-区别)
+  * [文件系统](documents/linux/linux-文件系统)
+
 ## Python
 
 ## Django

@@ -1,13 +1,3 @@
----
-title: iptables 汇总
-date: 2018-03-19 16:02:10
-categories:
-- 计算机原理与操作系统
-tags:
-- Linux
-- iptables
-- 安全
----
 
 # 一. 背景知识
 ## 1. 相关网络背景知识
