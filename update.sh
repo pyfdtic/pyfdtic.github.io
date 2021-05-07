@@ -2,6 +2,7 @@
 INDEX_FILE="README.md"
 SIDECAR_FILE="_sidebar.md"
 
+## genarate index.html file(README.md)
 echo -e "# Pyfdtic Documents \n" > $INDEX_FILE
 cat $SIDECAR_FILE >> $INDEX_FILE
 gsed -i 's/^* /\n## /g' $INDEX_FILE
