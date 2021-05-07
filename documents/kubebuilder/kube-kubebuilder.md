@@ -1,8 +1,3 @@
-[toc]
-
-文档地址: https://cloudnative.to/kubebuilder/quick-start.html
-
----
 
 ## kubebuilder
 快速开始
