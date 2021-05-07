@@ -1,10 +1,10 @@
-# Pyfdtic Documents 
+-e # Pyfdtic Documents 
 
 
 ## Kubernetes
   * [k8s-kubernetes-learn-note](/documents/kubernetes/k8s-kubernetes-learn-note)
   * [k8s-kubernetes](/documents/kubernetes/k8s-kubernetes)
-  * [kubebuilder](/documents/kubernetes/kube-kubebuilder)
+  * [kubebuilder](/documents/kubernetes/kubebuilder)
 
 ## GO
   * [Gin 文档汇总](/documents/go/gin)
@@ -48,6 +48,6 @@
   * [变量](/documents/ansible/Ansible-变量)
   * [流程控制](/documents/ansible/Ansible-流程控制)
   * [API](/documents/ansible/Ansible-API)
-
+-e 
 ## AboutMe
  Email: `MjAxNi5ib2IuYmlAZ21haWwuY29t  (base64 encode)`
