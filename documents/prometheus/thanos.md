@@ -1510,10 +1510,12 @@ statsd_connetcion = statsd.Connection(
     $ iptables -D OUTPUT 1      # 删除 OUOUT 链上的第一条规则. 
     ```
 
+<!-- 
 ## PromQL
 ```
 TODO
-```
+``` 
+-->
 
 ## alertmanager
 
@@ -1550,7 +1552,7 @@ Alertmanager 支持运行时重载, 有一下两种方式:
 - `<tmpl_string>`: a string which is template-expanded(展开) before usage
 - `<tmpl_secret>`: a string which is template-expanded before usage that is a secret
 
-
+<!-- 
 
 ### 核心特性
 #### 1. Groupinbg
@@ -1563,7 +1565,8 @@ Grouping of alerts, timing for the grouped notifications, and the receivers of t
 禁止一个 alert 报出一定时间. 基于 匹配 来过滤. 通过 web 来配置.
 
 #### 4. client behavior
-#### 5. HA
+#### 5. HA 
+-->
 
 
 
