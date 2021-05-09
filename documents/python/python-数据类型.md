@@ -1,10 +1,4 @@
----
-title: python-数据类型.md
-date: 2018-03-19 16:57:59
-categories:
-- Python
-tags:
----
+
 ## 一. int
 
     n1 + n2 --> n1.__add__(n2)

@@ -1,13 +1,3 @@
----
-title: python state_machine 文档及源码分析
-date: 2018-03-27 18:53:05
-categories:
-- Python
-tags:
-- 状态机
-- 设计模式
-- PyPi
----
 
 ## 一. 安装
     

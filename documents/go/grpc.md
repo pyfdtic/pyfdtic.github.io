@@ -4,6 +4,9 @@ https://colobu.com/2017/03/16/Protobuf3-language-guide/
 
 ![protobuf-wire-type.jpg](img/protobuf-wire-type.jpg)
 
+
+
+
 ## gRPC
 准确来说gRPC设计上是分层的，底层支持不同的协议，目前gRPC支持：
 - gRPC over HTTP2: 大多数情况.
@@ -16,12 +19,115 @@ gGRPC把元数据放到HTTP/2 Headers里，请求参数序列化之后放到 DAT
 
 gRPC开发分三步：
 1. 编写`.proto`文件，生成指定语言源代码。
-2. 编写服务端代码
-3. 编写客户端代码
+
+    服务接口定义:
+      - 消息类型: 是服务端和客户端数据交换的数据结构.
+        - 字段
+          - 类型
+          - 索引值: 在同一个消息定义中, 不能为两个字段设置相同的索引值.
+      - 服务类型: 是暴露给客户端的远程方法集合.
+        - 方法
+          - 类型
+          - 输入参数
+          - 输出参数
+
+    生成代码:
+    ```
+    $ protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    helloworld/helloworld.proto
+
+    ```
+2. 编写服务端骨架(skelon)代码
+3. 编写客户端存根(stub)代码
 
 ### gRPC 与分布式系统
 
 https://zhuanlan.zhihu.com/p/344914169
+
+### grpc 服务四种通信模式
+1. Unary RPC: 一元 rpc, 类似于 请求-响应 模型
+2. Server streaming RPC: 服务端 流
+    ```
+    stream.SetHeader()
+    stream.SendHeader()
+    
+    stream.SetTrailer()
+
+    stream.SendMsg()
+    stream.SendAndClose()
+    
+    stream.RecvMsg()
+    stream.Recv()
+    stream.Context()
+    
+    ```
+3. Client streaming RPC: 客户端 流
+    ```
+
+    stream.CloseSend()
+    stream.CloseAndRecv()
+
+    stream.Context()
+
+    stream.Header()
+    stream.RecvMsg()
+
+    stream.Trailer()
+
+    stream.Send()
+    stream.SendMsg()
+
+    ```
+
+4. Bidirectional streaming RPC: 双向流
+
+流式 RPC 是在客户端和服务器两端以一种类似的方式实现的。
+
+### grpc metadata 注入
+- https://github.com/grpc/grpc-go/blob/master/Documentation/grpc-metadata.md
+- https://help.aliyun.com/document_detail/187131.html?spm=a2c4g.11186623.6.657.52d161a2OlTb42
+- https://help.aliyun.com/document_detail/187135.html?spm=a2c4g.11186623.6.661.48ce47efIyO7Vo
+- https://blog.csdn.net/hjxzb/article/details/88980186
+- https://github.com/grpc/grpc-go/blob/master/examples/features/metadata/client/main.go
+- https://github.com/grpc/grpc-go/blob/master/examples/features/metadata/server/main.go
+- https://stackoverflow.com/questions/42116642/how-to-read-metadata-in-grpc-on-the-server-side-golang-example
+
+### grpc tcpdump 和 wireshark 抓包
+参考: https://grpc.io/blog/wireshark/
+
+1. 抓包
+    ```
+    $ tcpdump -i lo0 host 127.0.0.1 and tcp port 10000 -w route.pcap
+    ```
+2. 使用 wireshark 打开抓取的包, 并配置分析 grpc 协议
+    - 打开 抓取的 tcp 包
+    - 配置 proto buffer 加载路径: peferences --> protocol --> protoBuffer --> ProtoBuf search path , 选在 protobuf 所在路径, 并选中 `load all files`
+    - 根据抓包的端口, 选中一个 grpc 的包, 然后, 右键 --> Decode AS --> 选择正确的 端口, 然后再 current 一栏选择 http2 协议, 
+    - ok , 可以分析 grpc 抓包数据了.
+
+
+Stream ID，如果是 client 创建的 stream，ID 就是奇数，如果是 server 创建的，ID 就是偶数。I
+
+用 protobuf 定义的服务接口可以通过 protoc 的代码生成扩展简单地映射成 GRPC ，以下定义了所用的映射：
+- 路径 : `/ 服务名 / {方法名}`
+- 服务名 : `?( {proto 包名} "." ) {服务名}`
+- 消息类型 : `{全路径 proto 消息名}`
+- 内容类型 : `"application/grpc+proto"`
+
+
+为HTTP/2协议定义了两个版本：`h2` 和 `h2c`:
+- h2版本的协议是建立在**TLS层**之上的HTTP/2协议，这个标志被用在TLS应用层协议协商（TLS-ALPN）域和任何其它的TLS之上的HTTP/2协议。
+- h2c版本是建立在**明文的TCP**之上的HTTP/2协议，这个标志被用在HTTP/1.1的升级协议头域和其它任何直接在TCP层之上的HTTP/2协议。
+
+链接行为:
+- `Magic`: 帧的主要作用是建立 HTTP/2 请求的前言。在 HTTP/2 中，要求两端都要发送一个连接前言，作为对所使用协议的最终确认，并确定 HTTP/2 连接的初始设置，客户端和服务端各自发送不同的连接前言
+- `SETTINGS`: 主要作用是设置这一个连接的参数，作用域是整个连接而并非单一的流
+- `HEADERS`: 主要作用是存储和传播 HTTP 的标头信息。
+- `DATA`: 主要作用是装填主体信息，是数据帧。
+- `WINDOW_UPDATE`: 管理和流的窗口控制。通常情况下打开一个连接后，服务器和客户端会立即交换 SETTINGS 帧来确定流控制窗口的大小。默认情况下，该大小设置为约 65 KB，但可通过发出一个 WINDOW_UPDATE 帧为流控制设置不同的大小。
+- `PING/PONG`: 主要作用是判断当前连接是否仍然可用，也常用于计算往返时间。其实也就是 PING/PONG，大家对此应该很熟。
+
 
 ## HTTP2
 ![http2](img/http2.svg)
@@ -225,10 +331,6 @@ header的内容包含key的Index，value的长度、value的文本内容，其�
 解码结果可得header：     custom-key:custom-header  
 并将其加入动态表，下次直接只传index   
 ```
-
-
-
-
 
 
 

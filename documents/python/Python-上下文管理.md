@@ -1,16 +1,3 @@
----
-title: Python-上下文管理
-date: 2018-03-15 15:33:16
-categories:
-- Python
-tags:
-- python 上下文
-- python 标准库
----
-1. 使用上下文协议创建和管理上下文
-2. 使用 contextlib.contextmanager 创建和管理上下文
-3. 上下文的基本使用和嵌套方法
-<!-- more -->
 
 ## 1. 编写实现上下文管理器
 

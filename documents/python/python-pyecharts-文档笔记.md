@@ -1,15 +1,4 @@
----
-title: python-pyecharts-文档笔记
-date: 2018-03-16 16:41:56
-categories:
-- Python
-tags:
-- pyecharts
-- PyPi
-- echarts
-- JavaScript 图表
 
----
 **pyecharts 项目地址**
 
 [https://github.com/chenjiandongx/pyecharts](https://github.com/chenjiandongx/pyecharts)

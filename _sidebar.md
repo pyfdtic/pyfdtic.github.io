@@ -15,6 +15,21 @@
   * [Buffer-Cache-区别](documents/linux/linux-Buffer-Cache-区别)
   * [文件系统](documents/linux/linux-文件系统)
 * Python
+  * [python 数据类型](documents/python/python-数据类型)
+  * [python 装饰器](documents/python/Python-装饰器)
+  * [python 上下文管理](documents/python/Python-上下文管理)
+  * [python 类-OOP-元编程](documents/python/python-类-OOP-元编程)
+  * [python 设计模式](documents/python/python-设计模式)
+
+  * [celery 任务队列](documents/python/python-celery-任务队列)
+  * [itchat weixin api](documents/python/python-itchat-weixin-api)
+  * [pyecharts 文档笔记](documents/python/python-pyecharts-文档笔记)
+  * [state-machine](documents/python/python-state-machine)
+  * [wsgi-doc](documents/python/python-wsgi-doc)
+  
+  * [Ipython自动重载](documents/python/python-Ipython自动重载)
+  * [yml解析](documents/python/python-yml解析)
+  
 * Django
   * [django-学习总结](/documents/django/django-学习总结)
   * [django-模板原理及扩展](/documents/django/django-模板原理及扩展)
