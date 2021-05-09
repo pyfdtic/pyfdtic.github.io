@@ -1,12 +1,3 @@
----
-title: python wsgi 文档翻译
-date: 2018-03-13 14:41:11
-categories:
-- Python
-tags:
-- wsgi
-- web development
----
 
 ## 一. 背景知识
 

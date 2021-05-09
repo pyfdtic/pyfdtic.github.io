@@ -1,10 +1,3 @@
----
-title: python 类, OOP 与 元编程
-date: 2018-03-13 10:59:21
-categories:
-tags:
----
-Python 
 
 闭合(clusure)/工厂函数 : 一个能够记住嵌套作用域的变量值得函数, 尽管那个作用域或许已经不存在了.
 

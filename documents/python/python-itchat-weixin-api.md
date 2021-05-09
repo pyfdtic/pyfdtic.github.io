@@ -1,13 +1,4 @@
----
-title: python 微信接口 -- itchat 文档
-date: 2018-03-16 17:05:25
-categories:
-- Python
-tags:
-- itchat
-- 微信
-- PyPi
----
+
 # itchat
 
 ## 一. 安装

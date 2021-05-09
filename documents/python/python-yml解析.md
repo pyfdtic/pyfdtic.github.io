@@ -1,12 +1,3 @@
----
-title: python yaml 解析
-date: 2018-03-16 16:30:48
-categories:
-- Python
-tags:
-- yaml
-- PyPi
----
 0. 依赖
 
         $ pip install pyyaml

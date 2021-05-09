@@ -1,12 +1,3 @@
----
-title: Python-设计模式
-date: 2018-03-20 10:53:12
-categories:
-- Python
-tags:
-- 设计模式
-top: 1
----
 ## 零. 设计模式
 设计模式是可复用的且有点语言相关的解决方案. 根据 `Design Patterns: elements of Reusable Object-Oriented Software` 对设计模式的分类, 有如下几种:
 

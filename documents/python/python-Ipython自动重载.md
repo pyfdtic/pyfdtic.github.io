@@ -1,13 +1,3 @@
----
-title: python-Ipython自动重载
-date: 2018-03-16 16:56:01
-categories:
-- Python
-tags:
-- Ipython
-- 自动重载
-- PyPi
----
 ## 一. 使用示例
 
     In [1]: %load_ext autoreload
