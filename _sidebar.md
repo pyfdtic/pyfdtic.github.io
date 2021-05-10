@@ -2,6 +2,7 @@
   * [k8s-kubernetes-learn-note](/documents/kubernetes/k8s-kubernetes-learn-note)
   * [k8s-kubernetes](/documents/kubernetes/k8s-kubernetes)
   * [kubebuilder](/documents/kubernetes/kubebuilder)
+  * [coredns](/documents/kubernetes/coredns)
 * GO
   * [Gin 文档汇总](/documents/go/gin)
 * Prometheus
