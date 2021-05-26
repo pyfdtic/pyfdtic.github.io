@@ -30,7 +30,7 @@
   - 信息检索
   - 定时任务
 - 稳定性保障
-- 未来架构
+- 未来架构: 
   - service mesh
   - dapr
 - 语言前沿
@@ -49,7 +49,7 @@
   - medium
   - hacker news
   - morning paper(作者不干了): 论文
-  - acm.org: 论文, 可以登录 o'reily online
+  - acm.org: 每年 25 刀, 论文, 可以登录 o'reily online
   - o'reily
   - 国外领域的相关大会:
     - OSDI

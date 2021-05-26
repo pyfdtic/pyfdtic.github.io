@@ -1116,9 +1116,209 @@ public class PropDemo {
 ```
 
 
+## Java 注解
+作用在代码的注解是
+- `@Override` - 检查该方法是否是重写方法。如果发现其父类，或者是引用的接口中并没有该方法时，会报编译错误。
+- `@Deprecated` - 标记过时方法。如果使用该方法，会报编译警告。
+- `@SuppressWarnings` - 指示编译器去忽略注解中声明的警告。
+
+作用在其他注解的注解(或者说 元注解)是:
+- `@Retention` - 标识这个注解怎么保存，是只在代码中，还是编入class文件中，或者是在运行时可以通过反射访问。
+- `@Documented` - 标记这些注解是否包含在用户文档中。
+- `@Target` - 标记这个注解应该是哪种 Java 成员。
+- `@Inherited` - 标记这个注解是继承于哪个注解类(默认 注解并没有继承于任何子类)
+
+从 Java 7 开始，额外添加了 3 个注解:
+- `@SafeVarargs` - Java 7 开始支持，忽略任何使用参数为泛型变量的方法或构造函数调用产生的警告。
+- `@FunctionalInterface` - Java 8 开始支持，标识一个匿名函数或函数式接口。
+- `@Repeatable` - Java 8 开始支持，标识某注解可以在同一个声明上使用多次。
+
+### Annotation 组成部分
+
+![java-annotation](imgs/java-annotation.jpg)
+
+1. 1 个 Annotation 和 1 个 RetentionPolicy 关联。
+    可以理解为：每1个Annotation对象，都会有唯一的RetentionPolicy属性。
+
+2. 1 个 Annotation 和 1~n 个 ElementType 关联。
+
+    可以理解为：对于每 1 个 Annotation 对象，可以有若干个 ElementType 属性。
+
+3. Annotation 有许多实现类，包括：Deprecated, Documented, Inherited, Override 等等。
+
+    Annotation 的每一个实现类，都 "和 1 个 RetentionPolicy 关联" 并且 " 和 1~n 个 ElementType 关联"。
+
+
+```java
+// Annotation.java
+package java.lang.annotation;
+public interface Annotation {
+
+    boolean equals(Object obj);
+
+    int hashCode();
+
+    String toString();
+
+    Class<? extends Annotation> annotationType();
+}
+
+// ElementType.java
+package java.lang.annotation;
+
+public enum ElementType {
+    TYPE,               /* 类、接口（包括注释类型）或枚举声明  */
+
+    FIELD,              /* 字段声明（包括枚举常量）  */
+
+    METHOD,             /* 方法声明  */
+
+    PARAMETER,          /* 参数声明  */
+
+    CONSTRUCTOR,        /* 构造方法声明  */
+
+    LOCAL_VARIABLE,     /* 局部变量声明  */
+
+    ANNOTATION_TYPE,    /* 注释类型声明  */
+
+    PACKAGE             /* 包声明  */
+}
+
+// RetentionPolicy.java
+package java.lang.annotation;
+public enum RetentionPolicy {
+    SOURCE,            /* Annotation信息仅存在于编译器处理期间，编译器处理完之后就没有该Annotation信息了  */
+
+    CLASS,             /* 编译器将Annotation存储于类对应的.class文件中。默认行为  */
+
+    RUNTIME            /* 编译器将Annotation存储于class文件中，并且可由JVM读入 */
+}
+```
+
+
+1. Annotation 就是个接口。
+
+    "每 1 个 Annotation" 都与 "1 个 RetentionPolicy" 关联，并且与 "1～n 个 ElementType" 关联。可以通俗的理解为：每 1 个 Annotation 对象，都会有唯一的 RetentionPolicy 属性；至于 ElementType 属性，则有 1~n 个。
+
+2. ElementType 是 Enum 枚举类型，它用来指定 Annotation 的类型。
+
+    "每 1 个 Annotation" 都与 "1～n 个 ElementType" 关联。当 Annotation 与某个 ElementType 关联时，就意味着：Annotation有了某种用途。例如，若一个 Annotation 对象是 METHOD 类型，则该 Annotation 只能用来修饰方法。
+
+3. RetentionPolicy 是 Enum 枚举类型，它用来指定 Annotation 的策略。通俗点说，就是不同 RetentionPolicy 类型的 Annotation 的作用域不同。
+
+    "每 1 个 Annotation" 都与 "1 个 RetentionPolicy" 关联。
+    - a) 若 Annotation 的类型为 SOURCE，则意味着：Annotation 仅存在于编译器处理期间，编译器处理完之后，该 Annotation 就没用了。 例如，" @Override" 标志就是一个 Annotation。当它修饰一个方法的时候，就意味着该方法覆盖父类的方法；并且在编译期间会进行语法检查！编译器处理完后，"@Override" 就没有任何作用了。
+    - b) 若 Annotation 的类型为 CLASS，则意味着：编译器将 Annotation 存储于类对应的 .class 文件中，它是 Annotation 的默认行为。
+    - c) 若 Annotation 的类型为 RUNTIME，则意味着：编译器将 Annotation 存储于 class 文件中，并且可由JVM读入。
+
+
+
+### 函数式接口
+
+JDK 1.8 之前已有的函数式接口:
+- `java.lang.Runnable`
+- `java.util.concurrent.Callable`
+- `java.security.PrivilegedAction`
+- `java.util.Comparator`
+- `java.io.FileFilter`
+- `java.nio.file.PathMatcher`
+- `java.lang.reflect.InvocationHandler`
+- `java.beans.PropertyChangeListener`
+- `java.awt.event.ActionListener`
+- `javax.swing.event.ChangeListener`
+- `java.util.function`: JDK 1.8 新增
+    - `BiConsumer<T,U>` : 代表了一个接受两个输入参数的操作，并且不返回任何结果
+    - `BiFunction<T,U,R>` : 代表了一个接受两个输入参数的方法，并且返回一个结果
+    - `BinaryOperator<T>` : 代表了一个作用于于两个同类型操作符的操作，并且返回了操作符同类型的结果
+    - `BiPredicate<T,U>` : 代表了一个两个参数的boolean值方法
+    - `BooleanSupplier` : 代表了boolean值结果的提供方
+    - `Consumer<T>` : 代表了接受一个输入参数并且无返回的操作
+    - `DoubleBinaryOperator` : 代表了作用于两个double值操作符的操作，并且返回了一个double值的结果。
+    - `DoubleConsumer` : 代表一个接受double值参数的操作，并且不返回结果。
+    - `DoubleFunction<R>` : 代表接受一个double值参数的方法，并且返回结果
+    - `DoublePredicate` : 代表一个拥有double值参数的boolean值方法
+    - `DoubleSupplier` : 代表一个double值结构的提供方
+    - `DoubleToIntFunction` : 接受一个double类型输入，返回一个int类型结果。
+    - `DoubleToLongFunction` : 接受一个double类型输入，返回一个long类型结果
+    - `DoubleUnaryOperator` : 接受一个参数同为类型double,返回值类型也为double 。
+    - `Function<T,R>` : 接受一个输入参数，返回一个结果。
+    - `IntBinaryOperator` : 接受两个参数同为类型int,返回值类型也为int 。
+    - `IntConsumer` : 接受一个int类型的输入参数，无返回值 。
+    - `IntFunction<R>` : 接受一个int类型输入参数，返回一个结果 。
+    - `IntPredicate` : ：接受一个int输入参数，返回一个布尔值的结果。
+    - `IntSupplier` : 无参数，返回一个int类型结果。
+    - `IntToDoubleFunction` : 接受一个int类型输入，返回一个double类型结果 。
+    - `IntToLongFunction` : 接受一个int类型输入，返回一个long类型结果。
+    - `IntUnaryOperator` : 接受一个参数同为类型int,返回值类型也为int 。
+    - `LongBinaryOperator` : 接受两个参数同为类型long,返回值类型也为long。
+    - `LongConsumer` : 接受一个long类型的输入参数，无返回值。
+    - `LongFunction<R>` : 接受一个long类型输入参数，返回一个结果。
+    - `LongPredicate` : R接受一个long输入参数，返回一个布尔值类型结果。
+    - `LongSupplier` : 无参数，返回一个结果long类型的值。
+    - `LongToDoubleFunction` : 接受一个long类型输入，返回一个double类型结果。
+    - `LongToIntFunction` : 接受一个long类型输入，返回一个int类型结果。
+    - `LongUnaryOperator` : 接受一个参数同为类型long,返回值类型也为long。
+    - `ObjDoubleConsumer<T>` : 接受一个object类型和一个double类型的输入参数，无返回值。
+    - `ObjIntConsumer<T>` : 接受一个object类型和一个int类型的输入参数，无返回值。
+    - `ObjLongConsumer<T>` : 接受一个object类型和一个long类型的输入参数，无返回值。
+    - `Predicate<T>` : 接受一个输入参数，返回一个布尔值结果。
+    - `Supplier<T>` : 无参数，返回一个结果。
+    - `ToDoubleBiFunction<T,U>` : 接受两个输入参数，返回一个double类型结果
+    - `ToDoubleFunction<T>` : 接受一个输入参数，返回一个double类型结果
+    - `ToIntBiFunction<T,U>` : 接受两个输入参数，返回一个int类型结果。
+    - `ToIntFunction<T>` : 接受一个输入参数，返回一个int类型结果。
+    - `ToLongBiFunction<T,U>` : 接受两个输入参数，返回一个long类型结果。
+    - `ToLongFunction<T>` : 接受一个输入参数，返回一个long类型结果。
+    - `UnaryOperator<T>` : 接受一个参数为类型T,返回值类型也为T。
+
+Demo:
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+ 
+public class Java8Tester {
+   public static void main(String args[]){
+      List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        
+      // Predicate<Integer> predicate = n -> true
+      // n 是一个参数传递到 Predicate 接口的 test 方法
+      // n 如果存在则 test 方法返回 true
+        
+      System.out.println("输出所有数据:");
+        
+      // 传递参数 n
+      eval(list, n->true);
+        
+      // Predicate<Integer> predicate1 = n -> n%2 == 0
+      // n 是一个参数传递到 Predicate 接口的 test 方法
+      // 如果 n%2 为 0 test 方法返回 true
+        
+      System.out.println("输出所有偶数:");
+      eval(list, n-> n%2 == 0 );
+        
+      // Predicate<Integer> predicate2 = n -> n > 3
+      // n 是一个参数传递到 Predicate 接口的 test 方法
+      // 如果 n 大于 3 test 方法返回 true
+        
+      System.out.println("输出大于 3 的所有数字:");
+      eval(list, n-> n > 3 );
+   }
+    
+   public static void eval(List<Integer> list, Predicate<Integer> predicate) {
+      for(Integer n: list) {
+        
+         if(predicate.test(n)) {
+            System.out.println(n + " ");
+         }
+      }
+   }
+}
+```
 
 ## QA
 1. 包的路径关系: 包与路径对应? 包与子包?
+
     ```java
     package com.leyantech.utility.args.apt;
     package com.leyantech.utility.args;

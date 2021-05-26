@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+  <div id="app">
+    <el-container>
+        <el-main>
+            <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+                <el-tab-pane  v-for="item in tabs" :label="item.label" :name="item.name">
+                    <el-collapse>
+                        <el-collapse-item v-for="site in item.sites" :title="site.name + ' | ' + site.url" :name="site.name">
+                            <div>
+                                <iframe  :src="site.url" :height="iframeHight" :width="iframeWidth"></iframe>
+                            </div>        
+                        </el-collapse-item>
+                    </el-collapse>
+                </el-tab-pane>                
+            </el-tabs>
+        </el-main>
+        <el-footer></el-footer>
+      </el-container>
+  </div>
+</body>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+  <script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return { 
+                visible: true,
+                activeName: "blog",
+                iframeHight: 800,
+                iframeWidth: "100%",
+                tabs: [
+                    {"name": "blog", label: "博客", sites: [
+                        {"name": "xargin", "url": "https://xargin.com", tag: "go"},
+
+                        {"name": "敖小剑的博客", "url": "https://skyao.io/post/", tag: "k8s"},
+                        {"name": "roc", "url": "https://imroc.cc/post/", tag: "k8s"},
+
+                        {"name": "pyfdtic", "url": "https://www.pyfdtic.com/", tag: "k8s"},
+                    ]},
+                    {"name": "info", label: "资讯", sites: [
+                        {"name": "GithubTrending", "url": "https://github.com/trending", tag: "dev"},
+                        {"name": "云原生社区", "url": "https://cloudnative.to/", tag: "k8s"},
+                        {"name": "reddit", "url": "https://www.reddit.com/", tag: "dev"},
+                        {"name": "medium", "url": "https://medium.com/", tag: "dev"},
+                        {"name": "talkgo", "url": "https://talkgo.org/", tag: "go"},
+                        {"name": "Hacker News", "url": "https://news.ycombinator.com/", tag: "dev"},
+                    ]},
+                    {"name": "project", label: "Github 项目", sites: [
+                        {"name": "Kubernetes", "url": "https://github.com/kubernetes/kubernetes", tag: "dev"},
+                        {"name": "Dapr", "url": "https://github.com/dapr/dapr", tag: "dev"},
+                        {"name": "kubevela", "url": "https://github.com/oam-dev/kubevela", tag: "k8s"},
+                        {"name": "KubeBuilder", "url": "https://github.com/kubernetes-sigs/kubebuilder", tag: "dev"},
+                        {"name": "aeraki", "url": "https://github.com/aeraki-framework/aeraki", tag: "dev"},
+                        {"name": "istio", "url": "https://github.com/istio/istio", tag: "dev"},
+                        {"name": "ArgoCD", "url": "https://github.com/argoproj/argo-cd", tag: "go"},
+                    ]},
+                ]
+            }
+        },
+        methods: {
+            handleChange(val) {
+                console.log(val);
+            },
+            handleClick(tab, event) {
+                console.log(tab, event);
+            }
+        },
+    })
+  </script>
+</html>
