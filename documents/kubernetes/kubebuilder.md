@@ -34,6 +34,10 @@ $ make docker-build docker-push IMG=<some-registry>/<project-name>:tag
 $ make deploy IMG=<some-registry>/<project-name>:tag
 ```
 
+kubebuilder vs dev from scratch
+
+![kubebuilder vs scratch](imgs/kubebuilder-vs-scratch.png)
+
 ### 1. 创建基础组件
 
 `kubebuilder init` 生成的主要配置文件:
@@ -262,6 +266,8 @@ Controller 对象跟开发者要实现的逻辑 `Reconciler` 是**一一对应**
 Operator 概念层级图:
 
 ![d769a44bfca503d396db01899f3819ae.png](imgs/operator-concept.png)
+
+![kubebuilder 开发流程](imgs/kubebuilder-dev-flow.png)
 
 ## 生成 CRD
 
