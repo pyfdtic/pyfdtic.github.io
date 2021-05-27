@@ -11,7 +11,7 @@
         <el-main>
             <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
                 <el-tab-pane  v-for="item in tabs" :label="item.label" :name="item.name">
-                    <el-collapse>
+                    <el-collapse accordion>
                         <el-collapse-item v-for="site in item.sites" :title="site.name + ' | ' + site.url" :name="site.name">
                             <div>
                                 <iframe  :src="site.url" :height="iframeHight" :width="iframeWidth"></iframe>
