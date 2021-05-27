@@ -948,6 +948,12 @@ Maven Site 插件一般用来创建新的报告文档、部署站点等。经常
 - `post-site` :  执行一些需要在生成站点文档之后完成的工作，并且为部署做准备
 - `site-deploy` : 将生成的站点文档部署到特定的服务器上
 
+Maven 使用一个名为 [`Doxia`](https://maven.apache.org/doxia/) 的文档处理引擎来创建文档，它能将多种格式的源码读取成一种通用的文档模型. 支持如下格式:
+- Apt
+- Xdoc
+- FML
+- XHTML
+- Markdown: 插件.
 
 将 maven-antrun-plugin:run 目标添加到 Site 生命周期的所有阶段中。这样我们可以显示生命周期的所有文本信息。
 ```xml
@@ -1022,6 +1028,510 @@ Maven Site 插件一般用来创建新的报告文档、部署站点等。经常
 ```
 
 ### 配置文件
+
+构建配置文件是一系列的配置项的值，可以用来设置或者覆盖 Maven 构建默认值。
+
+使用构建配置文件，你可以为不同的环境，比如说生产环境（Production）和开发（Development）环境，定制构建方式。
+
+配置文件在 pom.xml 文件中使用 activeProfiles 或者 profiles 元素指定，并且可以通过各种方式触发。配置文件在构建时修改 POM，并且用来给参数设定不同的目标环境.
+
+配置文件激活:
+1. 配置文件激活
+2. 通过Maven设置激活配置文件
+3. 通过环境变量激活配置文件
+4. 通过操作系统激活配置文件
+5. 通过文件的存在或者缺失激活配置文件
+
+#### 配置文件激活
+一般位于 `src/main/resources` 文件夹下, 如 `env.properties`, `env.test.properties`, `env.prod.properties`等.
+
+profile 可以让我们定义一系列的配置信息，然后指定其激活条件。这样我们就可以定义多个 profile，然后每个 profile 对应不同的激活条件和配置信息，从而达到不同环境使用不同配置信息的效果。
+
+如下配置, 新建了三个 `<profiles>`，其中 `<id>` 区分了不同的 `<profiles>` 执行不同的 AntRun 任务:
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jsoft.test</groupId>
+  <artifactId>testproject</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1-SNAPSHOT</version>
+  <name>testproject</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <profiles>
+      <profile>
+          <id>test</id>
+          <build>
+              <plugins>
+                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                       <execution>
+                          <phase>test</phase>
+                          <goals>
+                             <goal>run</goal>
+                          </goals>
+                          <configuration>
+                          <tasks>
+                             <echo>Using env.test.properties</echo>
+                             <copy file="src/main/resources/env.test.properties" tofile="${project.build.outputDirectory}/env.properties" overwrite="true"/>
+                          </tasks>
+                          </configuration>
+                       </execution>
+                    </executions>
+                 </plugin>
+              </plugins>
+          </build>
+      </profile>
+      <profile>
+          <id>normal</id>
+          <build>
+              <plugins>
+                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                       <execution>
+                          <phase>test</phase>
+                          <goals>
+                             <goal>run</goal>
+                          </goals>
+                          <configuration>
+                          <tasks>
+                             <echo>Using env.properties</echo>
+                             <copy file="src/main/resources/env.properties" tofile="${project.build.outputDirectory}/env.properties" overwrite="true"/>
+                          </tasks>
+                          </configuration>
+                       </execution>
+                    </executions>
+                 </plugin>
+              </plugins>
+          </build>
+      </profile>
+      <profile>
+          <id>prod</id>
+          <build>
+              <plugins>
+                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                       <execution>
+                          <phase>test</phase>
+                          <goals>
+                             <goal>run</goal>
+                          </goals>
+                          <configuration>
+                          <tasks>
+                             <echo>Using env.prod.properties</echo>
+                             <copy file="src/main/resources/env.prod.properties" tofile="${project.build.outputDirectory}/env.properties" overwrite="true"/>
+                          </tasks>
+                          </configuration>
+                       </execution>
+                    </executions>
+                 </plugin>
+              </plugins>
+          </build>
+      </profile>
+   </profiles>
+</project>
+```
+
+通过 构建时 命令行参数输入指定 profile id:
+```bash
+# 第一个 test 为 Maven 生命周期阶段，第 2 个 test 为构建配置文件指定的 <id> 参数，这个参数通过 -P 来传输
+$ mvn test -Pprod
+```
+
+#### 通过Maven设置激活配置文件
+
+**该配置是全局的**
+
+修改 `%USER_HOME%/.m2/setting.xml` 或 `%M2_HOME%/conf/settings.xml `, 增加 `<activeProfiles>` 属性:
+```xml
+<settings xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/settings-1.0.0.xsd">
+   ...
+   <activeProfiles>
+      <activeProfile>test</activeProfile>
+   </activeProfiles>
+</settings>
+```
+
+执行构建:
+```bash
+$ mvn test
+```
+
+#### 通过环境变量激活配置文件
+在 项目 pom.xml 文件的 `<profile>` 节点, 增加 `<activation>` 节点:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jsoft.test</groupId>
+  <artifactId>testproject</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1-SNAPSHOT</version>
+  <name>testproject</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <profiles>
+      <profile>
+          <id>test</id>
+          <activation>
+            <property>
+               <name>env</name>
+               <value>test</value>
+            </property>
+          </activation>
+          <build>
+              <plugins>
+                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                       <execution>
+                          <phase>test</phase>
+                          <goals>
+                             <goal>run</goal>
+                          </goals>
+                          <configuration>
+                          <tasks>
+                             <echo>Using env.test.properties</echo>
+                             <copy file="src/main/resources/env.test.properties" tofile="${project.build.outputDirectory}/env.properties" overwrite="true"/>
+                          </tasks>
+                          </configuration>
+                       </execution>
+                    </executions>
+                 </plugin>
+              </plugins>
+          </build>
+      </profile>
+      <profile>
+          <id>normal</id>
+          <build>
+              <plugins>
+                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                       <execution>
+                          <phase>test</phase>
+                          <goals>
+                             <goal>run</goal>
+                          </goals>
+                          <configuration>
+                          <tasks>
+                             <echo>Using env.properties</echo>
+                             <copy file="src/main/resources/env.properties" tofile="${project.build.outputDirectory}/env.properties" overwrite="true"/>
+                          </tasks>
+                          </configuration>
+                       </execution>
+                    </executions>
+                 </plugin>
+              </plugins>
+          </build>
+      </profile>
+      <profile>
+          <id>prod</id>
+          <build>
+              <plugins>
+                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                       <execution>
+                          <phase>test</phase>
+                          <goals>
+                             <goal>run</goal>
+                          </goals>
+                          <configuration>
+                          <tasks>
+                             <echo>Using env.prod.properties</echo>
+                             <copy file="src/main/resources/env.prod.properties" tofile="${project.build.outputDirectory}/env.properties" overwrite="true"/>
+                          </tasks>
+                          </configuration>
+                       </execution>
+                    </executions>
+                 </plugin>
+              </plugins>
+          </build>
+      </profile>
+   </profiles>
+</project>
+```
+
+执行构建命令:
+```bash
+# 使用 -D 传递环境变量, 其中 env 对应刚才设置的 <env> 值, test 对应 <value>
+$ mvn test -Denv=test
+```
+
+#### 通过操作系统类型激活配置文件
+
+activation 元素包含下面的操作系统信息。
+
+如下配置, 在当系统为 windows XP 时，test Profile 将会被触发。
+```xml
+<profile>
+   <id>test</id>
+   <activation>
+      <os>
+         <name>Windows XP</name>
+         <family>Windows</family>
+         <arch>x86</arch>
+         <version>5.1.2600</version>
+      </os>
+   </activation>
+</profile>
+```
+
+执行构建
+```bash
+$ mvn test
+```
+
+#### 通过文件的存在或者缺失激活配置文件
+
+修改 `activation` 元素配置.
+
+如下配置, 表示 当`target/generated-sources/axistools/wsdl2java/com/companyname/group` 缺失时，`test` Profile 将会被触发。
+
+```xml
+<profile>
+   <id>test</id>
+   <activation>
+      <file>
+         <missing>target/generated-sources/axistools/wsdl2java/
+         com/companyname/group</missing>
+      </file>
+   </activation>
+</profile>
+```
+
+执行构建:
+```bash
+$ mvn test
+```
+
+### Maven 仓库
+
+Maven 仓库是项目中依赖的第三方库，这个库所在的位置叫做**仓库**。
+
+在 Maven 中，任何一个依赖、插件或者项目构建的输出，都可以称之为**构件**。
+
+Maven 仓库能帮助我们管理构件（主要是JAR），它就是放置所有JAR文件（WAR，ZIP，POM等等）的地方。
+
+Maven 仓库有三种类型:
+- 本地（local） : `$HOME/.m2/respository`
+
+    Maven 的本地仓库，在安装 Maven 后并*不会*创建，它是在*第一次*执行 maven 命令的时候才被创建。
+
+    运行 Maven 的时候，Maven 所需要的任何构件都是**直接从本地仓库获取**的。如果本地仓库没有，它会首先尝试从*远程仓库*下载构件至本地仓库，然后再使用*本地仓库*的构件。
+
+    默认路径为 `$HOME/.m2/respository`. 
+
+- 中央（central） : Maven 社区提供的仓库, 使用时无需配置, 但需要网络链接.
+
+- 远程（remote） : 
+    
+    远程仓库 是开发人员自己定制仓库，包含了所需要的代码库或者其他工程中用到的 jar 文件。
+
+    如下 pom.xml 将从远程仓库下载所需依赖:
+
+    ```xml
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.companyname.projectgroup</groupId>
+    <artifactId>project</artifactId>
+    <version>1.0</version>
+    <dependencies>
+        <dependency>
+            <groupId>com.companyname.common-lib</groupId>
+            <artifactId>common-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    <dependencies>
+    <repositories>
+        <repository>
+            <id>companyname.lib1</id>
+            <url>http://download.companyname.org/maven2/lib1</url>
+        </repository>
+        <repository>
+            <id>companyname.lib2</id>
+            <url>http://download.companyname.org/maven2/lib2</url>
+        </repository>
+    </repositories>
+    </project>
+    ```
+
+Maven 依赖搜索顺序:
+1. 在**本地仓库**中搜索，如果找不到，执行步骤 2，如果找到了则执行其他操作。
+2. 在**中央仓库**中搜索，如果找不到，并且有一个或多个远程仓库已经设置，则执行步骤 4，如果找到了则下载到*本地仓库*中以备将来引用。
+3. 如果远程仓库没有被设置，Maven 将简单的停滞处理并抛出错误（无法找到依赖的文件）。
+4. 在一个或多个**远程仓库**中搜索依赖的文件，如果找到则下载到*本地仓库*以备将来引用，否则 Maven 将停止处理并抛出错误（无法找到依赖的文件）。
+
+
+### Maven 插件
+
+Maven 有如下三个标准的生命周期:
+- `clean`: 项目清理的处理
+- `default(build)`: 项目部署的处理
+- `site`: 项目站点文档创建的处理.
+
+Maven 生命周期的每个阶段的具体实现都是有 Maven 插件实现的: 每个生命周期中都包含一系列的阶段 `phase`, 这些 `phase` 就相当于 Maven 提供的统一的接口, 然后, 这些 `phase` 的实现由 Maven 的插件来完成.
+
+如 `mvn clean` 中 `clean` 阶段就是由 `maven-clean-plugin` 插件来实现的.
+
+Maven 实际上是一个依赖插件执行的框架, 每个任务实际上是有插件完成的. Maven 插件通常被用来:
+- 创建 jar/war 文件
+- 编译代码文件
+- 代码单元测试
+- 创建工程文档
+- 创建工程报告
+
+插件通常提供了一个目标的集合, 并且用一下语法执行:
+```bash
+$ mvn [plugin-name]:[goal-name]
+
+# 一个 Java 工程可以使用 maven-compiler-plugin 的 compile-goal 编译.
+$ mvn compiler:compile
+```
+
+#### Maven 插件类型
+
+Maven 插件类型:
+- build plugins: 在构建时执行, 并在 pom.xml 的元素中配置.
+- Reporting plugins: 在网站生成过程中执行, 并在 pom.xml 的元素中配置.
+
+常用插件:
+| 插件 | Desc |
+| -- | -- |
+| clean | 构建之后清理目标文件, 删除目标目录 |
+| compiler | 编译 Java 源文件 |
+| surefile | 运行 JUnit 单元测试, 创建测试报告 |
+| jar | 从当前工程中构建 jar 包 |
+| war | 从当前工程中构建 war 包 |
+| javadoc | 为工程生成  javadoc |
+| antrun | 在构建工程中的任意一个阶段中运行一个 ant 任务的集合 |
+
+#### maven archetype 
+
+Maven 使用 `archetype(原型)` 来创建自定义的项目结构，形成 Maven 项目模板。
+
+`archetype` 也就是原型，是一个 Maven 插件，准确说是一个**项目模板**，它的任务是根据模板创建一个项目结构。
+
+```bash
+# 如下命令可以快速创建 Java 项目
+$ mvn archetype:generate
+```
+
+#### Maven Release 插件
+
+```bash
+# 清理工作空间，保证最新的发布进程成功进行。
+$ mvn release:clean
+
+# 在上次发布过程不成功的情况下，回滚修改的工作空间代码和配置保证发布过程成功进行。
+$ mvn release:rollback
+
+# 执行操作有: 检查本地是否存在还未提交的修改, 确保没有快照的依赖, 改变应用程序的版本信息用以发布, 更新 POM 文件到 SVN, 运行测试用例, 提交修改后的 POM 文件, 为代码在 SVN 上做标记, 增加版本号和附加快照以备将来发布, 提交修改后的 POM 文件到 SVN
+$ mvn release:prepare
+
+# 将代码切换到之前做标记的地方，运行 Maven 部署目标来部署 WAR 文件或者构建相应的结构到仓库里。
+$ mvn release:perform
+
+```
+
+### Mavan 快照 SNAPSHOT
+
+快照是一种**特殊的版本**，指定了某个当前的*开发进度的副本*。不同于常规的版本，Maven 每次构建都会在远程仓库中检查新的快照。 
+
+在Nexus仓库中，一个仓库一般分为public(Release)仓和SNAPSHOT仓，前者存放正式版本，后者存放快照版本。
+
+快照版本和正式版本的主要区别在于，本地获取这些依赖的机制有所不同。如果是 SNAPSHOT 版本, 每次在依赖构建的时候, 会尝试从远程仓库拉取新的版本.
+
+在配置Maven的Repository的时候中有个配置项，可以配置对于SNAPSHOT版本向远程仓库中查找的频率。频率共有四种，分别是always、daily、interval、never。
+- `always`: 当本地仓库中存在需要的依赖项目时，always是每次都去远程仓库查看是否有更新，
+- `daily`: **默认**配置, 只在第一次的时候查看是否有更新，当天的其它时候则不会查看；
+- `interval`: 允许设置一个*分钟*为单位的间隔时间，在这个间隔时间内只会去远程仓库中查找一次，
+- `never`: 是不会去远程仓库中查找（这种就和正式版本的行为一样了）。
+
+示例配置:
+```xml
+<repository>
+    <id>myRepository</id>
+    <url>...</url>
+    <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>interval:60</updatePolicy>
+    </snapshots>
+</repository>
+```
+
+一般在开发模式下，可以频繁的发布`SNAPSHOT`版本，以便让其它项目能实时的使用到最新的功能做联调；当版本趋于稳定时，再发布一个正式版本，供正式使用。当然在做正式发布时，也要确保当前项目的依赖项中不包含对任何`SNAPSHOT`版本的依赖，保证正式版本的稳定性。
+
+### Maven 依赖管理
+
+依赖管理是 Maven 的**核心特性**.
+
+Maven 可以避免去搜索所有所需库的需求。Maven 通过读取项目文件（pom.xml），找出它们项目之间的依赖关系。
+
+比如说 A 依赖于其他库 B。如果，另外一个项目 C 想要使用 A ，那么 C 项目也需要使用库 B。
+
+#### 可传递性依赖发现
+
+通过可传递性的依赖，所有被包含的库的图形会快速的增长。当有重复库时，可能出现的情形将会持续上升。Maven 提供一些功能来控制可传递的依赖的程度。
+
+| 功能 | 功能描述 | 
+| -- | -- |
+| 依赖调节 | 决定当多个手动创建的版本同时出现时，哪个依赖版本将会被使用。 如果两个依赖版本在依赖树里的深度是一样的时候，**第一个**被声明的依赖将会被使用。 | 
+| 依赖管理 | 直接的指定手动创建的某个版本被使用。例如当一个工程 C 在自己的依赖管理模块包含工程 B，即 B 依赖于 A， 那么 A 即可指定在 B 被引用时所使用的版本。 | 
+| 依赖范围 | 包含在构建过程每个阶段的依赖。 | 
+| 依赖排除 | 任何可传递的依赖都可以通过 `exclusion` 元素被排除在外。举例说明，A 依赖 B， B 依赖 C，因此 A 可以标记 C 为 "被排除的"。 | 
+| 依赖可选 | 任何可传递的依赖可以被标记为可选的，通过使用 `optional` 元素。例如：A 依赖 B， B 依赖 C。因此，B 可以标记 C 为可选的， 这样 A 就可以不再使用 C。 | 
+
+
+依赖范围:
+| 范围 | 描述 |
+| -- | -- |
+| 编译阶段 | 该范围表明相关依赖是只在项目的**类路径**下有效。**默认取值**。 |
+| 供应阶段 | 该范围表明相关依赖是由运行时的 JDK 或者 网络服务器提供的。 |
+| 运行阶段 | 该范围表明相关依赖*在编译阶段不是必须*的，但是*在执行阶段是必须的*。 |
+| 测试阶段 | 该范围表明相关依赖只在*测试编译*阶段和*执行*阶段。 |
+| 系统阶段 | 该范围表明你需要提供一个**系统路径**。 |
+| 导入阶段 | 该范围只在依赖是一个 `pom.xml` 里定义的依赖时使用。同时，当前项目的POM 文件的 部分定义的依赖关系可以取代某特定的 POM。 |
+
+
 
 
 
