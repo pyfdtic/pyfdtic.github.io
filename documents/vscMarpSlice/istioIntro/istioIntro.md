@@ -141,7 +141,7 @@ spec:
       protocol: TCP
   initContainers:
   - args:
-    - istio-iptables -p "15001" -z "15006" -u "1337" -m REDIRECT -i '*' -x "" -b '*' -d 15090,15021,15020
+    - istio-iptables -p "15001" -z "15006" -u "1337" ...
     name: istio-init
 ```
 
