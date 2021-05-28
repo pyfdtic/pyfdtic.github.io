@@ -11,7 +11,8 @@ $ ./create.sh
 ```
 
 ## 使用方法
-```
+
+```markdown
 # 顶格
 ---
 marp: true
