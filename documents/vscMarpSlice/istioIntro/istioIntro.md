@@ -11,7 +11,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 
 1. 什么是服务网格?
 2. istio 架构与核心概念
-3. istio 流量管理原理
+3. istio 流量管理
 4. 基于 istio 的开发泳道
 
 ---
@@ -25,7 +25,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 服务网格: 应用的交付与运行时. 服务网格是微服务之间通信的控制器.
 -->
 
-服务网格被称为**第二代微服务架构**。
+# 服务网格被称为**第二代微服务架构**.
 
 > William Morgan，Buoyant CEO , Linkerd : 
 > 
@@ -35,36 +35,37 @@ backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 ---
 
 传统微服务痛点:
-- 侵入性强。想要集成 SDK 的能力，除了需要添加相关依赖，往往还需要在业务代码中增加一部分的代码、或注解、或配置；业务代码与治理层代码界限不清晰。
-- 升级成本高, 版本碎片化严重。每次升级都需要业务应用修改 SDK 版本，重新进行功能回归测试，并且对每一台机器进行部署上线，而这对于业务方来说，与业务的快速迭代开发是有冲突的，大多不愿意停下来做这些与业务目标不太相关的事情。由于升级成本高，而中间件却不会停止向前发展的步伐，久而久之，就会导致线上不同服务引用的 SDK 版本不统一、能力参差不齐，造成很难统一治理。
-- 中间件演变困难。由于版本碎片化严重，导致中间件向前演进的过程中就需要在代码中兼容各种各样的老版本逻辑，带着 “枷锁” 前行，无法实现快速迭代。
-- 内容多、门槛高。Spring Cloud 被称为微服务治理的全家桶，包含大大小小几十个组件，内容相当之多，往往需要几年时间去熟悉其中的关键组件。而要想使用 Spring Cloud 作为完整的治理框架，则需要深入了解其中原理与实现，否则遇到问题还是很难定位。
-- 治理功能不全。协议转换支持、多重授权机制、动态请求路由、故障注入、灰度发布等高级功能并没有覆盖到。而这些功能往往是企业大规模落地不可获缺的功能，因此公司往往还需要投入其它人力进行相关功能的自研或者调研其它组件作为补充。
+- **侵入性强**: 业务代码与治理层代码界限不清晰.
+- **升级成本高, 版本碎片化严重**: 每次升级都需要业务应用修改 SDK 版本，就会导致线上不同服务引用的 SDK 版本不统一, 能力参差不齐，造成很难统一治理.
+- **中间件演变困难**: 由于版本碎片化严重，导致中间件向前演进的过程中就需要在代码中兼容各种各样的老版本逻辑，无法实现快速迭代.
+- **治理功能不全**: 协议转换支持, 多重授权机制, 动态请求路由, 故障注入, 灰度发布等高级功能并没有覆盖到.
 
 ---
-服务网格变革:
-- 微服务治理与业务逻辑的解耦。
-    服务网格把 SDK 中的大部分能力从应用中剥离出来，拆解为独立进程，以 sidecar 的模式进行部署。服务网格通过将服务通信及相关管控功能从业务程序中分离并下沉到基础设施层，使其和业务系统完全解耦，使开发人员更加专注于业务本身
+服务网格愿景:
+- **微服务治理与业务逻辑的解耦**
 
-- 异构系统的统一治理。
+    服务网格把 SDK 中的大部分能力从应用中剥离出来，拆解为独立进程，以 sidecar 的模式进行部署.服务网格通过将服务通信及相关管控功能从业务程序中分离并下沉到基础设施层，使其和业务系统完全解耦，使开发人员更加专注于业务本身
 
-    不同语言、不同框架的应用和服务，为了能够统一管控这些服务，以往的做法是为每种语言、每种框架都开发一套完整的 SDK，维护成本非常之高，而且给公司的中间件团队带来了很大的挑战。有了服务网格之后，通过将主体的服务治理能力下沉到基础设施，多语言的支持就轻松很多了。只需要提供一个非常轻量级的 SDK，甚至很多情况下都不需要一个单独的 SDK，就可以方便地实现多语言、多协议的统一流量管控、监控等需求。
+- **异构系统的统一治理**
 
----
-服务网格相对于传统微服务框架，还拥有三大技术优势：
-- 可观察性。因为服务网格是一个专用的基础设施层，所有的服务间通信都要通过它，所以它在技术堆栈中处于独特的位置，以便在服务调用级别上提供统一的遥测指标。服务网格捕获诸如来源、目的地、协议、URL、状态码、延迟、持续时间等线路数据。需要指出的是，收集数据仅仅是解决微服务应用程序中可观察性问题的一部分。
-- 流量控制。通过 Service Mesh，可以为服务提供智能路由（蓝绿部署、金丝雀发布、A/B test）、超时重试、熔断、故障注入、流量镜像等各种控制能力。
-- 安全。当单体架构应用被分解为多个微服务，更多的服务意味着更多的网络流量, 网络就会成为一个重要的攻击面。而服务网格恰恰提供了保护网络调用的能力和基础设施。服务网格的安全相关的好处主要体现在以下三个核心领域：服务的认证、服务间通讯的加密、安全相关策略的强制执行。
+    不同语言, 不同框架的应用和服务，为了能够统一管控这些服务，以往的做法是为每种语言, 每种框架都开发一套完整的 SDK，维护成本非常之高，而且给公司的中间件团队带来了很大的挑战.
 
 ---
-服务网格带来了巨大变革并且拥有其强大的技术优势，被称为第二代“微服务架构”。然而就像之前说的软件开发没有银弹，传统微服务架构有许多痛点，而服务网格也不例外，也有它的局限性: 
-- 增加了复杂度。服务网格将 sidecar 代理和其它组件引入到已经很复杂的分布式环境中，会极大地增加整体链路和操作运维的复杂性。
-- 运维人员需要更专业。在容器编排器（如 Kubernetes）上添加 Istio 之类的服务网格，通常需要运维人员成为这两种技术的专家，以便充分使用二者的功能以及定位环境中遇到的问题。
-- 延迟。从链路层面来讲，服务网格是一种侵入性的、复杂的技术，可以为系统调用增加显著的延迟。这个延迟是毫秒级别的，但是在特殊业务场景下，这个延迟可能也是难以容忍的。
-- 平台的适配。服务网格的侵入性迫使开发人员和运维人员适应高度自治的平台并遵守平台的规则。
+服务网格相对于传统微服务框架的**技术优势** : 
+- **可观察性** : 服务网格是一个专用的基础设施层，所有的服务间通信都要通过它. 所以服务网格可以捕获诸如来源, 目的地, 协议, URL, 状态码, 延迟, 持续时间等线路数据.
+
+- **流量控制** : 通过 服务网格 可以为服务提供智能路由（蓝绿部署, 金丝雀发布, A/B test）, 超时重试, 熔断, 故障注入, 流量镜像等各种控制能力.
+    
+- **安全** : 服务网格的安全相关体现在三个核心领域 : 服务的认证, 服务间通讯的加密, 安全相关策略的强制执行.
 
 ---
-Service Mesh 实现：
+服务网格的**局限性**: 
+- **增加了复杂度** : 服务网格将 sidecar 代理和其它组件引入到已经很复杂的分布式环境中，会极大地增加整体链路和操作运维的复杂性.
+- **延迟** : 从链路层面来讲，服务网格是一种侵入性的, 复杂的技术，可以为系统调用增加显著的延迟.这个延迟是**毫秒级别**的，但是在特殊业务场景下，这个延迟可能也是难以容忍的.
+- **平台的适配 及 维护人员需要更专业** : 服务网格的侵入性迫使开发人员和运维人员适应高度自治的平台并遵守平台的规则. 在容器编排器（如 Kubernetes）上添加 Istio 之类的服务网格，通常需要运维人员成为这两种技术的专家，以便充分使用二者的功能以及定位环境中遇到的问题.
+
+---
+服务网格 实现 : 
 - Istio
 - Linkerd
 - AWS App Mesh
@@ -74,65 +75,99 @@ Service Mesh 实现：
 - OSM, open service mesh
 
 ---
-# Service Mesh 架构
+# 服务网格 架构
 
-Service Mesh 的基础设施层主要分为两部分：
-- 控制平面
-- 数据平面
-
----
-
-![service mesh 概念模型](imgs/service-mesh-model.png)
-
----
-控制平面的特点：
-- 不直接解析数据包。
-- 与控制平面中的代理通信，下发策略和配置。
-- 负责网络行为的可视化。
-- 通常提供 API 或者命令行工具可用于配置版本化管理，便于持续集成和部署。
-
----
-数据平面的特点：
-- 通常是按照**无状态**目标设计的，但实际上为了提高流量转发性能，需要缓存一些数据，因此- 无状态也是有争议的。
-- 直接处理入站和出站数据包，转发、路由、健康检查、负载均衡、认证、鉴权、产生监控数据等。
-- 对应用来说**透明**，即可以做到无感知部署。
+Service Mesh 的基础设施层主要分为两部分 : 
+- 控制平面: `istiod`
+- 数据平面: `istio-proxy(envoy)`
 
 ---
 
-![bg](imgs/istio-arch.svg)
+![](imgs/service-mesh-model.png)
 
 ---
-# Istio 服务网格实现原理
+
+![bg left: 95% right: 95%](imgs/istio-arch.svg)
 
 ---
-## 如何实现一个精简版的服务网格 ?
+## 控制平面
+- 不直接解析数据包.
+- 与控制平面中的代理通信，下发策略和配置.
+- 负责网络行为的可视化.
+- 通常提供 API 或者命令行工具可用于配置版本化管理，便于持续集成和部署.
+
+---
+## 数据平面
+- 通常是按照**无状态**目标设计的，但实际上为了提高流量转发性能，需要缓存一些数据，因此- 无状态也是有争议的.
+- 直接处理入站和出站数据包，转发, 路由, 健康检查, 负载均衡, 认证, 鉴权, 产生监控数据等.
+- 对应用来说**透明**，即可以做到无感知部署.
+
+---
+# Istio 服务网格实现
 
 | 动态配置(控制平面) | 流量转发(数据平面) |
 | -- | -- |
-| consul + consul-template | Nginx + Iptables |
-| Istio | Istio-Proxy(Envoy xDS) |
+| consul + consul-template | Nginx + iptables |
+| istiod | istio-proxy(Envoy xDS) + iptables |
 
 ---
-### Pod : 生命周期
-- Init Container: 通过 iptables 劫持所有流量到 sidecar
-- Sidecar: 讲流量转发到 后端服务.
+### Pod 与 K8S Admission Webhook
+- `MutatingAdmissionWebhook`: 可以在返回准入响应之前通过创建补丁来修改对象.
+- `Init Container`: 通过 iptables 劫持所有流量到 sidecar
+- `Proxy Sidecar`: 讲流量转发到 后端服务.
 
 ---
-### Admission Webhook: MutatingAdmissionWebhook
-![h:500 w:800](imgs/k8s-api-request-lifecycle.png)
+![bg left: 99% right: 99%](imgs/k8s-api-request-lifecycle.png)
 
-mutating webhooks 可以在返回准入响应之前通过创建补丁来修改对象.
+---
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gapp-c-747b697695-n842r
+  namespace: lane-http
+spec:
+  containers:
+  - name: gapp-c
+    ports:
+    - containerPort: 8080
+      name: p8080
+      protocol: TCP
+  - name: istio-proxy
+    ports:
+    - containerPort: 15090
+      name: http-envoy-prom
+      protocol: TCP
+  initContainers:
+  - args:
+    - istio-iptables -p "15001" -z "15006" -u "1337" -m REDIRECT -i '*' -x "" -b '*' -d 15090,15021,15020
+    name: istio-init
+```
 
 ---
 ###  CRD & Envoy xDS
-- Virtual Service: 流量路由
-- Destination Rule: 将流量路由到目标 pod, 流量策略, tls 等.
-- Service Entry: 服务网格外的服务注册到服务网格内.
-- Gateway: ingress/egress 控制出入服务网格的流量.
+
+- `Virtual Service`: 流量路由
+- `Destination Rule`: 将流量路由到目标 pod, 流量策略, tls 等.
+- `Service Entry`: 服务网格外的服务注册到服务网格内.
+- `Gateway`: egress/ingress 控制出/入服务网格的流量.
+
+---
+
+| xDS | 描述 |
+| -- | -- |
+| LDS, Listener Discovery Service | 监听器发现服务 |
+| RDS, Route Discovery Service | 路由发现服务 |
+| CDS, Cluster Discovery Service | 集群发现服务 |
+| EDS, Endpoint Discovery Service | 集群成员发现服务 |
+| ADS, Aggregated Discovery Service | 聚合发现服务 |
+| SDS, Secret Discovery Service | 密钥发现服务 |
+| xDS  | 以上各种 API 的统称 |
 
 ---
 ```
-# 路由
+# VirtualService 路由
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -157,7 +192,7 @@ spec:
 ```
 ---
 ```
-# 故障注入: 网络层
+# VirtualService: 故障注入, 网络层
   fault:
     delay:
       percentage:
@@ -165,7 +200,7 @@ spec:
       fixedDelay: 5s
 ```
 ```
-# 流量镜像
+# VirtualService: 流量镜像
   http:
   - route:
     - destination:
@@ -179,7 +214,7 @@ spec:
 ```
 ---
 ```
-# 负载均衡
+# DestinationRule: 负载均衡
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
@@ -205,6 +240,7 @@ spec:
 ```
 ---
 ```
+# Gateway: 外部服务导入
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -223,8 +259,10 @@ spec:
       mode: SIMPLE
       credentialName: ext-host-cert
 ```
+
 ---
 ```
+# ServiceEntry: 注册外部服务
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
@@ -240,3 +278,19 @@ spec:
   resolution: DNS
 ```
 
+---
+# 基于服务网格的泳道实现
+
+泳道实现层面:
+1. 应用层面: --> Istio work here.
+
+    - 流量打标/染色: 通过在 HTTP/GRCP 传递 `X-LANE-ID` 首部实现.
+    - 流量路由: Virtual Service + Destination Rule
+
+2. 数据层面: 
+
+    参考: https://git.leyantech.com/ep/team-tasks/-/issues/100
+
+---
+# 效果图
+![bg right: 99%](imgs/lane-example.png)
