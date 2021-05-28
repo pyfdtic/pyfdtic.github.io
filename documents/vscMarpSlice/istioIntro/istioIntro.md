@@ -7,6 +7,8 @@ backgroundColor: #fff
 backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 ---
 # Service Mesh
+![bg left:33%](imgs/istio-logo-2.png)
+
 1. 什么是服务网格?
 2. istio 架构与核心概念
 3. istio 流量管理原理
@@ -97,7 +99,7 @@ Service Mesh 的基础设施层主要分为两部分：
 
 ---
 
-![](imgs/istio-arch.svg)
+![bg](imgs/istio-arch.svg)
 
 ---
 # Istio 服务网格实现原理
@@ -117,7 +119,7 @@ Service Mesh 的基础设施层主要分为两部分：
 
 ---
 ### Admission Webhook: MutatingAdmissionWebhook
-![](imgs/k8s-api-request-lifecycle.png)
+![h:500 w:800](imgs/k8s-api-request-lifecycle.png)
 
 mutating webhooks 可以在返回准入响应之前通过创建补丁来修改对象.
 
@@ -128,9 +130,113 @@ mutating webhooks 可以在返回准入响应之前通过创建补丁来修改�
 - Service Entry: 服务网格外的服务注册到服务网格内.
 - Gateway: ingress/egress 控制出入服务网格的流量.
 
-
-
-
-
-
+---
+```
+# 路由
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews.bookinfo
+spec:
+  hosts:
+    - reviews.bookinfo.com
+  http:
+  - route:
+    timeout: 10s
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+    - destination:
+        host: reviews
+        subset: v1
+      weight: 75
+    - destination:
+        host: reviews
+        subset: v2
+      weight: 25
+```
+---
+```
+# 故障注入: 网络层
+  fault:
+    delay:
+      percentage:
+        value: 0.1
+      fixedDelay: 5s
+```
+```
+# 流量镜像
+  http:
+  - route:
+    - destination:
+        host: httpbin
+        subset: v1
+      weight: 100
+    mirror:
+      host: httpbin
+      subset: v2
+    mirrorPercent: 100
+```
+---
+```
+# 负载均衡
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: my-destination-rule
+spec:
+  host: my-svc
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+  - name: v3
+    labels:
+      version: v3
+```
+---
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ext-host-gwy
+spec:
+  selector:
+    app: my-gateway-controller
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - ext-host.example.com
+    tls:
+      mode: SIMPLE
+      credentialName: ext-host-cert
+```
+---
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: ext-google
+spec:
+  hosts:
+  - www.google.com
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+```
 
