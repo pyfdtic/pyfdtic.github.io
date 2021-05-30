@@ -38,6 +38,11 @@ kubebuilder vs dev from scratch
 
 ![kubebuilder vs scratch](imgs/kubebuilder-vs-scratch.png)
 
+### 0. 使用 minikube 启动集群
+```shell
+$ minikube start --kubernetes-version='v1.18.8' --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers"
+```
+
 ### 1. 创建基础组件
 
 `kubebuilder init` 生成的主要配置文件:
