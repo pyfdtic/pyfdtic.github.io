@@ -39,6 +39,7 @@ kubebuilder vs dev from scratch
 ![kubebuilder vs scratch](imgs/kubebuilder-vs-scratch.png)
 
 ### 0. 使用 minikube 启动集群
+
 ```shell
 $ minikube start --kubernetes-version='v1.18.8' --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers"
 ```
@@ -56,7 +57,8 @@ $ minikube start --kubernetes-version='v1.18.8' --image-repository="registry.cn-
     导入依赖库: 核心的 controller-runtime 库; 控制器运行时日志库 zap.
 
     每一组控制器都需要一个 `Scheme`，它提供了 Kinds 和相应的 Go 类型之间的映射。
-    ```
+
+    ```go
     var (
         scheme   = runtime.NewScheme()
         setupLog = ctrl.Log.WithName("setup")
@@ -71,7 +73,8 @@ $ minikube start --kubernetes-version='v1.18.8' --image-repository="registry.cn-
     - 通过 flag 库解析入参
     - 实例化了一个manager，它记录着我们所有控制器的运行情况，以及设置共享缓存和API服务器的客户端（注意，我们把我们的 Scheme 的信息告诉了 manager）。
     - 运行 manager，它反过来运行我们所有的控制器和 webhooks。manager 状态被设置为 Running，直到它收到一个优雅停机 (graceful shutdown) 信号。这样一来，当我们在 Kubernetes 上运行时，我们就可以优雅地停止 pod。
-    ```
+    
+    ```go
     mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
         Scheme:             scheme,
         MetricsBindAddress: metricsAddr,
@@ -99,10 +102,8 @@ GVK = Group + Version + Kind
 
 GVR = Group + Version + Resources
 
-
 - `Group/Version`: Kubernetes 中的 API 组简单来说就是相关功能的集合。每个组都有一个或多个版本，顾名思义，它允许我们随着时间的推移改变 API 的职责。
-- `kind/resource`: 
-
+- `kind/resource`: 类型 和 资源.
 
 ### 3. 设计 API
 在 Kubernetes 中，对如何设计 API 有一些原则。也就是说，**所有序列化的字段必须是 `驼峰式`**，所以我们使用的 JSON 标签需要遵循该格式。
