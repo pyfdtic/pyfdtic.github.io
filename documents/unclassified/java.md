@@ -1316,6 +1316,14 @@ public class Java8Tester {
 }
 ```
 
+## grpc
+
+gRPC提供了3种传输层的实现
+
+gRPC comes with three Transport implementations:
+- The **Netty-based** transport is the main transport implementation based on Netty. It is for both the client and the server.
+- The **OkHttp-based** transport is a lightweight transport based on OkHttp. It is mainly for use on Android and is for client only.
+- The **inProcess** transport is for when a server is in the same process as the client. It is useful for testing.
 
 ## QA
 1. 包的路径关系: 包与路径对应? 包与子包?
