@@ -14,7 +14,8 @@
 主要概念:
 - `Application` : 类似乐高积木, 通过组合 component 和 traits 组成上层应用, 而无需暴露 kubernetes workload 的细节.
   示例:
-  ```
+  
+  ```yaml
   apiVersion: core.oam.dev/v1beta1
   kind: Application
   metadata:
@@ -73,7 +74,7 @@
 
 
 ### crd
-```
+```text
 appdeployments.core.oam.dev
 applicationconfigurations.core.oam.dev
 applicationcontexts.core.oam.dev
@@ -112,7 +113,8 @@ kubevela 是声明式应用描述，所以原生支持所有 gitops 工具，不
     Helm chart 中所有 value 值都可以在 properties 进行定义，同时还可以为 components 绑定已经定义好的 Trait（运维特性），无需修改 Helm chart 本身的 template
 
     将一个 elasticsearch 的 helm chart 定义为 `ComponentDefinition`:
-    ```
+
+    ```yaml
     apiVersion: core.oam.dev/v1beta1
     kind: ComponentDefinition
     metadata:
@@ -136,7 +138,8 @@ kubevela 是声明式应用描述，所以原生支持所有 gitops 工具，不
 
     ```
     定义一个 es + kibana 的应用:
-    ```
+
+    ```yaml
     apiVersion: core.oam.dev/v1beta1
     kind: Application
     metadata:
