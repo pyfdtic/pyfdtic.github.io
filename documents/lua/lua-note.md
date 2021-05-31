@@ -1,19 +1,9 @@
----
-title: Lua学习笔记
-date: 2018-03-15 16:49:35
-categories:
-- Lua
-tags:
-- lua
-- redis
-- scrapy
-- nginx
----
+# Lua 学习笔记
+
 Lua 是一种高性能, 解释型, 面向对象的语句, 广泛用于各种项目的内嵌语言, 如 redis, nginx, scrapy, 愤怒的小鸟, 魔兽世界等等.
 
 本文主要介绍 Lua 的语法.
 
-<!-- more -->
 ## 1. 数据类型
 lua 是一个动态类型语言,一个变量可以存储类型的值.
 Lua 常用数据类型:
@@ -301,7 +291,8 @@ Redis 支持大部分Lua标准库,如下所示:
         string.lower(string)
     
 3. 获取子字符串
-    
+
+    ```lua
     string.sub() 可以获取一个字符串从索引 start 开始到 end 结束的子字符串,索引从1 开始. 索引也可以是负数, -1 代表最后一个元素 . 
 
         string.sub(string start[,end ])    -- end 默认为 -1.
@@ -309,11 +300,12 @@ Redis 支持大部分Lua标准库,如下所示:
         > print(string.sub('hello',1))  -- hello
         > print(string.sub('hello',2))  -- ello
         > print(string.sub('hello',2,-2))  -- ell
-
+    ```
 ### 10.2 Table库 : 其中大部分函数都需要表的形式是数组形式.
 
 1. 将数组转换为字符串
-    
+
+    ```lua
     table.concat(table [,sep [,i [,j]]])
         # sep : 以 sep 指定的参数分割, 默认为空.
         # i , j : 用来限制要转换的表元素的索引范围. 默认分别为 1 和 表的长度. 不支持负索引.
@@ -321,9 +313,10 @@ Redis 支持大部分Lua标准库,如下所示:
     > print(table.concat({1,2,3}))     --123
     > print(table.concat({1,2,3},',',2))  --2,3
     > print(table.concat({1,2,3},',',2,2)) --2
+    ```
 
 2. 向数组中插入元素
-
+    ```lua
     table.insert(table ,[pos,] value)   # 在指定索引位置 pos 插入元素 value, 并将后面的元素顺序后移. 默认 pos 值是数组长度加 1 , 即在数组尾部插入.
 
         > a = {1,2,4}
@@ -331,32 +324,33 @@ Redis 支持大部分Lua标准库,如下所示:
         > table.insert(a,5)    # {1,2,3,4,5}
         > print(table.concat(a,','))
         1,2,3,4,5
+    ```
 
 3. 从数组中弹出一个元素
-
+    ```lua
     table.remove(table,[,pos])  # 从指定的索引删除一个元素,并将后面的元素前移,返回删除元素值. 默认 pos 的值是数组的长度,即从数组尾部弹出一个元素.
 
         > table.remove(a)     --{1,2,3,4}
         > table.remove(a,1)   --{2,3,4}
         > print(table.caoncat(a,','))
         2,3,4
-    
+    ```
 
 ### 10.3 Math库 : 提供常用的数学运算函数, 如果参数是字符串会自动尝试转换成数字.
-
-    math.abs(x)         # 绝对值
-    math.sin(x)         # 三角函数sin
-    math.cos(x)         # 三角函数cos
-    math.tan(x)         # 三角函数tan
-    math.ceil(x)        # 进一取整, 1.2 取整后是 2
-    math.floor(x)       # 向下取整, 1.8 取整后是 1
-    math.max(x,...)     # 获得参数中的最大的值
-    math.min(x,...)     # 获取参数中的最小的值
-    math.pow(x,y)       # 获取 xy 的值
-    math.sqrt(x)        # 获取 x 的平方根
-    math.random([m,[,n]]) # 生成随机数,没有参数 返回 [0,1]的实数, 参数 m 返回范围在 [1,m] 的整数, 同时提供 m n 返回范围在 [m,n] 的整数.
-    math.randomseed(x)  # 设置随机数种子, 同一种子生成的随机数相同.
-        
+```lua
+math.abs(x)         # 绝对值
+math.sin(x)         # 三角函数sin
+math.cos(x)         # 三角函数cos
+math.tan(x)         # 三角函数tan
+math.ceil(x)        # 进一取整, 1.2 取整后是 2
+math.floor(x)       # 向下取整, 1.8 取整后是 1
+math.max(x,...)     # 获得参数中的最大的值
+math.min(x,...)     # 获取参数中的最小的值
+math.pow(x,y)       # 获取 xy 的值
+math.sqrt(x)        # 获取 x 的平方根
+math.random([m,[,n]]) # 生成随机数,没有参数 返回 [0,1]的实数, 参数 m 返回范围在 [1,m] 的整数, 同时提供 m n 返回范围在 [m,n] 的整数.
+math.randomseed(x)  # 设置随机数种子, 同一种子生成的随机数相同.
+```  
 ## 11. 其他库
 Redis 还通过 cjson库 和 cmsgpack库 提供了对 JSON 和 MessagePack的支持. Redis自动加载了这两个库,在脚本中可以分别通过 cjson 和 cmsgpack 两个全局变量来访问对应的库.
 
