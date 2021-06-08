@@ -1,4 +1,6 @@
 ## kubernetes 扩展模式
+
+Kubernetes 扩展可以使用如下方式:
 - 二进制 `kubelet` 插件, 如 网络 (CNI), 设备, 存储 (CSI), 容器运行时 (CRI)
 - 二进制 `kubectl` 插件
 - API server 中的访问扩展, 例如 webhooks 的动态准入控制
