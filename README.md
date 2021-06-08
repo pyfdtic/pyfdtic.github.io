@@ -91,3 +91,6 @@
   * [变量](/documents/ansible/Ansible-变量)
   * [流程控制](/documents/ansible/Ansible-流程控制)
   * [API](/documents/ansible/Ansible-API)
+
+## 效率工具
+  * [提升工作效率的奇技淫巧](documents/unclassified/efficient-tools)
