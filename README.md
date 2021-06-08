@@ -13,6 +13,10 @@
 ## Prometheus
   * [Thanos 笔记](/documents/prometheus/thanos)
 
+## Redis
+  * [Redis 笔记](/documents/redis/redis-note)
+  * [利用redis生成分布式锁](/documents/redis/利用redis生成分布式锁)
+
 ## Linux
   * [iptables-汇总](documents/linux/linux-iptables-汇总)
   * [tcp-wrapper](documents/linux/linux-tcp-wrapper)
