@@ -44,6 +44,16 @@
 
     **xsel、xclip 命令是在 X 环境下使用的，所以远程连接服务器时使用会报异常**
 
+- Windows
+
+    ```shell
+    // 将输出复制至剪贴板
+    $ echo "hello windows" | clip
+
+    // 将文件中的内容全部复制至剪贴板
+    $ clip < remade.txt
+    ```
+
 ## Chrome 插件
 - `OneTeb`: chrome tab 合并到一个页面, 节省内存, 支持 html 导入导出
 - `XPath helper`: 在 web 页面使用 XPath 选择元素
