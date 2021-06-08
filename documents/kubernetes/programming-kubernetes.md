@@ -1,10 +1,10 @@
 ## kubernetes 扩展模式
-- 二进制 `kubelet` 插件，如 网络 (CNI)、设备、存储 (CSI)、容器运行时 (CRI)
+- 二进制 `kubelet` 插件, 如 网络 (CNI), 设备, 存储 (CSI), 容器运行时 (CRI)
 - 二进制 `kubectl` 插件
-- API server 中的访问扩展，例如 webhooks 的动态准入控制
+- API server 中的访问扩展, 例如 webhooks 的动态准入控制
 - 自定义资源（CRD）和自定义 controller
 - 自定义 API servers
-- 调度器扩展，例如使用 [webhook](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md) 来实现自己的调度决策
+- 调度器扩展, 例如使用 [webhook](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/scheduler_extender.md) 来实现自己的调度决策
 - 通过 webhook 进行 [身份验证](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#webhook-token-authentication)
 
 
@@ -85,3 +85,55 @@ $ kubectl get pods -n emojivoto -v 6
 ```
 
 
+## CNI 
+
+CNI Plugin 可以分为三类 : `Main`, `IPAM` 和 `Meta`. 其中 `Main` 和 `IPAM` 插件相辅相成, 完成了为容器创建网络环境的基本工作. 
+
+- IPAM 插件
+    
+    IPAM (IP Address Management) 插件主要用来负责分配IP地址. 官方提供的可使用插件包括下面几种 : 
+
+    - `dhcp` : 宿主机上运行的守护进程, 代表容器发出 DHCP 请求
+    - `host-local` : 使用提前分配好的 IP 地址段来分配, 并在内存中记录 ip 的使用情况
+    - `static` : 用于为容器分配静态的 IP 地址, 主要是调试使用
+
+- Main 插件
+
+    Main 插件主要用来创建具体的网络设备的二进制文件. 官方提供的可使用插件包括下面几种 : 
+
+    - `bridge` :  在宿主机上创建网桥然后通过 veth pair 的方式连接到容器
+    - `macvlan` : 虚拟出多个 macvtap, 每个 macvtap 都有不同的 mac 地址
+    - `ipvlan` : 和 macvla n相似, 也是通过一个主机接口虚拟出多个虚拟网络接口, 不同的是 ipvlan 虚拟出来的是共享 MAC 地址, ip 地址不同
+    - `loopback` : lo 设备（将回环接口设置成up）
+    - `ptp` : veth pair 设备
+    - `vlan` : 分配 vlan 设备
+    - `host-device` : 移动宿主上已经存在的设备到容器中
+
+- Meta 插件
+
+    由CNI社区维护的内部插件, 目前主要包括 : 
+
+    - `flannel`: 专门为 Flannel 项目提供的插件
+    - `tuning` : 通过 sysctl 调整网络设备参数的二进制文件
+    - `portmap` : 通过 iptables 配置端口映射的二进制文件
+    - `bandwidth` : 使用 Token Bucket Filter (TBF) 来进行限流的二进制文件
+    - `firewall` : 通过 iptables 或者 firewalled 添加规则控制容器的进出流量
+
+[CNI Plugins 插件 https://github.com/containernetworking/plugins ](https://github.com/containernetworking/plugins)
+[CNI 仓库 https://github.com/containernetworking/cni](https://github.com/containernetworking/cni)
+
+每个 Plugin 都需要实现以下三个方法, 再在 main 中注册一下. 
+
+```golang
+func cmdCheck(args *skel.CmdArgs) error {
+    ...
+}
+
+func cmdAdd(args *skel.CmdArgs) error {
+    ...
+}
+
+func cmdDel(args *skel.CmdArgs) error {
+    ...
+}
+```
