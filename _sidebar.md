@@ -34,7 +34,7 @@
   * [pyecharts 文档笔记](documents/python/python-pyecharts-文档笔记)
   * [state-machine](documents/python/python-state-machine)
   * [wsgi-doc](documents/python/python-wsgi-doc)
-  * [自动化 web 测试 splinter](documents/python/splinter)
+  * [自动化WEB测试 splinter](documents/python/splinter)
   
   * [Ipython自动重载](documents/python/python-Ipython自动重载)
   * [yml解析](documents/python/python-yml解析)
