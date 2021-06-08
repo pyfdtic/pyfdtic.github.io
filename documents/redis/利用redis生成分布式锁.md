@@ -1,16 +1,8 @@
----
-title: 利用redis生成分布式锁
-date: 2018-03-15 18:27:36
-categories:
-- Middleware
-tags:
-- redis
-- 分布式锁
----
+# 利用redis生成分布式锁
 
 使用 redis 命令 set(self, name, value, ex=None, px=None, nx=False, xx=False) 生成分布式锁.
 使用 `setnx(key, value) + expire(key, sec)`  生成分布式锁.
-<!-- more -->
+
 **指令与原理**: 
 
 `set(self, name, value, ex=None, px=None, nx=False, xx=False)`  --> **推荐**, 更加原子性

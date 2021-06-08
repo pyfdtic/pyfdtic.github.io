@@ -1,12 +1,4 @@
----
-title: redis 汇总
-date: 2018-03-15 18:24:36
-categories:
-- Middleware
-tags:
-- redis
-- 缓存
----
+# redis 
 
 ## 1. Redis 介绍
 

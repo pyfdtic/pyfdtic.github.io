@@ -7,11 +7,6 @@
   * [Gin 文档汇总](/documents/go/gin)
 * Prometheus
   * [Thanos 笔记](/documents/prometheus/thanos)
-* Redis
-  * [Redis 笔记](/documents/redis/redis-note)
-  * [利用redis生成分布式锁](/documents/redis/利用redis生成分布式锁)
-* Lua
-  * [Lua 笔记](/documents/lua/lua-note)
 * Linux
   * [iptables-汇总](documents/linux/linux-iptables-汇总)
   * [tcp-wrapper](documents/linux/linux-tcp-wrapper)
@@ -67,6 +62,11 @@
   * [fake-useragent](documents/scrapy/fake-useragent)
 * Vue
   * [vuex 笔记](documents/vue/vuex-note)
+* Redis
+  * [Redis 笔记](/documents/redis/redis-note)
+  * [利用redis生成分布式锁](/documents/redis/利用redis生成分布式锁)
+* Lua
+  * [Lua 笔记](/documents/lua/lua-note)
 * Ansible
   * [Ansible-学习总结](/documents/ansible/Ansible-学习总结)  
   * [Task-Role-Playbook](/documents/ansible/Ansible-task-role-playbook)
