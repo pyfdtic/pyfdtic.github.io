@@ -56,4 +56,10 @@
 - `有道词典Chrome划词插件`: 
 
 ## Mac 技巧
-### `open` 命令行, 使用系统默认应用打开文件或链接.
+- `open`: 命令行, 使用系统默认应用打开文件或链接.
+
+## VS Code
+### 插件
+- `Markdown All in One`: 写 Markdown 文档, 包含大纲等功能.
+- `Marp for VS Code`: 使用 Markdown 写 PPT
+- `vscode-pdf`: 支持只读形式打开 PDF 文档.
