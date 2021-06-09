@@ -630,7 +630,7 @@ exporters:
     - `block_profile_fraction: 0`: 阻塞, Fraction of blocking events that are profiled. A value `<= 0` disables profiling.
     - `mutex_profile_fraction: 0`: 互斥锁, Fraction of mutex contention events that are profiled. A value `<= 0` disables profiling.
     - `save_to_file: /path/to/file`: 保存 CPU profile 到文件.
-  - `zpages`: Enables an extension that serves zPages, an HTTP endpoint that provides live data for debugging different components that were properly instrumented for such. All core exporters and receivers provide some zPages instrumentation.
+  - `zpages`: Enables an extension that serves zPages, an HTTP endpoint that provides live data for debugging different components that were properly instrumented for such. All core exporters and receivers provide some zPages instrumentation. [zPages in OpenTelemetry](https://medium.com/opentelemetry/zpages-in-opentelemetry-2b080a81eb47)
     - `endpoint: localhost:55679`: 
 
 
@@ -697,7 +697,7 @@ service:
     Exporters that leverage the net/http package (all do today) respect the following proxy environment variables:
 
     使用 `net/http` 包的 exporters , 使用如下环境变量, 配置代理:
-    
+
     ```text
     HTTP_PROXY
     HTTPS_PROXY
