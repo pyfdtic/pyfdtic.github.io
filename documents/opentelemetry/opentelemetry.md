@@ -90,13 +90,13 @@ Some instrumentation libraries, for example Ruby, offer a single repository that
 
 
 
-### Data Collection: Collector
+## Data Collection: Collector
 
 OpenTelemetry 提供一个 供应商无关的 收集器实现, 来 接收/处理/导出 遥测数据. 
 
 ![otel-collector](imgs/otel-collector.svg)
 
-#### Collector 组件
+### Collector 组件
 1. `receivers`: 如何接收数据, 可以基于 `pull` 或 `push` 模式.
 2. `processors`: 对于接受到的数据, 如何处理.
 3. `exporters`: 接收到的数据如何发送出去, 可以基于 `pull` 或 `push` 模式.
@@ -106,13 +106,13 @@ OpenTelemetry 提供两种版本的 Collector:
 - `Core`: 提供最基础, 最核心的 OpenTelemetry 组件, 如 receivers, processors, exporters, and extensions. 支持常用的开源项目, 如 `Jaeger`, `Prometheus`, `Fluent Bit`.
 - `Contrib`: 除了提供 `Core` 的功能之外, 会提供实验性的其他组件, 同时, 包含特定供应商的 receivers, processors, exporters, and extensions.
 
-#### 部署
+### 部署
 
-##### 部署模式
+#### 部署模式
 1. Agent 模式: **推荐**, 与应用运行在一起或者同一宿主机上.
 2. Gateway 模式: 作为独立服务运行, 比如 每个 cluster, datacenter, or region 运行一个或多个作为独立服务. **每个 Gateway 服务后面的 Colloctor 作为独立的无状态实体运行, 可以轻松的实现横向扩展**
 
-##### docker-compose
+#### docker-compose
 
 ```shell
 $ git clone git@github.com:open-telemetry/opentelemetry-collector.git
@@ -120,7 +120,7 @@ $ cd opentelemetry-collector/examples/demo
 $ docker-compose up -d
 ```
 
-##### kubernetes 部署
+#### kubernetes 部署
 1. 配置文件
 
     ```yaml
@@ -375,7 +375,7 @@ $ docker-compose up -d
 2. [OpenTelemetry Operator](https://github.com/open-telemetry/opentelemetry-operator)
 
 
-#### 配置
+### 配置
 1. `receivers`, `processors`, `exporters` 组件必须要在 `service.pipelines` 中 enable 后才可以使用.
 2. `extensions` 为 Collector 提供额外的能力, 但是无需直接访问 遥测数据, 也不是 pipeline 的一部分. 需要在 `service` 中 enable.
 3. the same `receiver`, `processor`, `exporter` and/or `pipeline` can be defined more than once. 
@@ -427,7 +427,7 @@ service:
       exporters: [otlp]
 ```
 
-##### Receivers
+#### Receivers
 - 可以基于 `push` 或 `pull` 模式
 - 支持多个数据源
 
@@ -486,7 +486,7 @@ receivers:
   zipkin:
 ```
 
-##### Processors
+#### Processors
 
 运行在 Receivers 和 Exporters 之间, 需要在 `service` 中开启, 才可以使用.
 
@@ -565,7 +565,7 @@ processors:
       separator: "::"
 ```
 
-##### Exporters
+#### Exporters
 - 可以基于 `push` 或 `pull` 的模式
 - 支持一个或多个导出目标
 - 许多 Exporters 支持默认的配置, 所以, 只需写个名字即可.
@@ -618,7 +618,7 @@ exporters:
     endpoint: "http://localhost:9411/api/v2/spans"
 ```
 
-##### Extensions
+#### Extensions
 - 可选配置
 - 用于**非**处理遥测数据的 任务
 - 许多插件有默认配置, 因此, 只写一个名字即可, 如 `pprof:`
@@ -643,7 +643,7 @@ extensions:
   zpages:
 ```
 
-##### Service
+#### Service
 
 只有在 service 中定义的 Receivers, Processors, Exporters, Extensions, 才会被启动.
 
@@ -681,7 +681,7 @@ service:
       exporters: [opencensus, zipkin]
 ```
 
-##### 其他配置
+#### 其他配置
 1. 配置环境变量: 可以在 Collector 配置中配置环境变量.
 
     ```yaml
