@@ -7,7 +7,7 @@
   * [Gin 文档汇总](/documents/go/gin)
 * Prometheus
   * [Thanos 笔记](/documents/prometheus/thanos)
-  * [OpenTelemerty](/documents/opentelemerty/opentelemerty)
+  * [OpenTelemerty](/documents/opentelemetry/opentelemetry)
 * Linux
   * [iptables-汇总](documents/linux/linux-iptables-汇总)
   * [tcp-wrapper](documents/linux/linux-tcp-wrapper)
