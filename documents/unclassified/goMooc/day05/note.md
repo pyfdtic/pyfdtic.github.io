@@ -114,3 +114,6 @@ Bitmap & allocCache
 
 
 ### GC 标记流程
+
+
+## 参考
