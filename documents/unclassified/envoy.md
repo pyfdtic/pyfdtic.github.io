@@ -1,3 +1,51 @@
+
+## 术语
+
+- `Host`: 服务端点.
+- `Cluster`: 一组提供服务的 Host, 作为 Envoy 的 Upstream 被链接.
+- `Downstream`: 向 Envoy 发起请求.
+- `Upstream`: 从 Envoy 接受链接和请求.
+- `Listener`: Envoy 监听端口, 用于被 Downstream 访问.
+- `Mesh`:  一组 Envoy Proxies. A group of hosts that coordinate(配合) to provide a consistent(一致性的) network topology. In this documentation, an “Envoy mesh” is a group of Envoy proxies that form a message passing substrate(基石, 基座) for a distributed system comprised of many different services and application platforms.
+- `Runtime Configuration`: Out of band realtime configuration system deployed alongside Envoy. Configuration settings can be altered(改动) that will affect operation without needing to restart Envoy or change the primary configuration.
+
+线程模型: Envoy 使用**单进程, 多线程**架构. 
+- 主线程: 负责协调其他线程.
+- work 线程: 负责 listening, filtering, forwarding. Once a connection is accepted by a listener, the connection spends the rest of its lifetime bound to a single worker thread. 
+- Envoy 是 100% **非阻塞**模型, 推荐配置 **线程数 等于机器的硬件线程数**.
+
+默认情况下, worker 线程之间没有通讯, 每个 worker 线程在 listener 上独立接受链接, 并且依赖于 内核在 线程之间执行调度. 大多数情况下, 这种方式工作良好, 但在有些场景中, 例如 少量长链接场景 如 service mesh HTTP2/gRPC egress, 有可能需要 Envoy 强制在 worker 线程之间做负载均衡. 此时, 可以通过在 listener 上配置 `connection_balance_config` 实现.
+
+## Listeners
+### Listeners TCP
+
+
+### Listeners UDP
+
+
+### Listeners Filter
+
+
+### Listeners Network Chain
+
+
+### Network(L3/L4) Filter
+
+
+### TCP Proxy
+
+
+### UDP Proxy
+
+
+### DNS Filter
+
+
+### Connection limiting
+
+
+
+
 ## 配置文件
 
 ![envoy-arch](imgs/envoy-arch.png)
@@ -146,23 +194,6 @@
 ![envoy-wasm-arch](imgs/envoy-wasm-arch.jpg)
 
 ![envoy-wasm-operator-principle](imgs/envoy-wasm-operator-principle.png)
-
-### Tips
-
-```shell
-
-RUN go env -w GOPROXY=https://goproxy.cn,direct
-
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
-
-```
-
-TODO:
-```
-https://www.envoyproxy.io/docs/envoy/v1.17.3/start/sandboxes/load_reporting_service
-
-
-```
 
 ## HTTP Filter
 ### Lua Filter
@@ -336,51 +367,230 @@ Envoy 会在 Lua Filter 中 寻找 并调用 如下两个函数, 在 Lua 脚本�
     ```lua
     local headers, body = handle:httpCall(cluster, headers, body, timeout, asynchronous)
     ```
-    - cluster: 字符串, 为一个 cluster 的名字.
-    - headers: 发送的 key/value 对, 作为请求首部.
+    - `cluster`: 字符串, 为一个 cluster 的名字.
+    - `headers`: 发送的 key/value 对, 作为请求首部.
         `:method`, `:path`, and `:authority` headers must be set.
-    - body: 可选字段, 请求体.
-    - timeout: int, 请求超时时间, 单位 milliseconds.
-    - asynchronous: 布尔值, 
+    - `body`: 可选字段, 请求体.
+    - `timeout`: int, 请求超时时间, 单位 milliseconds.
+    - `asynchronous`: 布尔值, 当设置为 `true` 时, Envoy 会采用协程执行 http 请求, 并不再关心 响应的成功与失败. 如果为 `false` 时(**默认值**), Envoy 会阻塞并等待请求完成或出错.
+    -  `headers`: 一个 table 表示的响应首部
+    -  `body`: 一个 string 类型的响应体, 当响应体为 空时, 值为 `nil`.
+    
+- `respond()`: 立即返回响应, 并不再执行后续的 filter. 该方法只在 请求流 中有效.
 
-- `respond()`
+    ```lua
+    handle:respond(headers, body)
+    ```
+    响应内容:
+    - `headers`: 一个包含 key/value 的 table, `:status` 为必选首部.
+    - `body`: 一个可选的字符串, 表示响应体. 可以为 `nil`
 
-- `metadata()`
+- `metadata()`: 返回当前路由的路径的 metadata 信息. metadata 信息需要特别指定在 filter name 下.
 
-- `streamInfo()`
+    ```yaml
+    metadate:
+      filter_metadata:
+        envoy.filters.http.lua:
+          foo: bar
+          baz:
+            - bad
+            - baz
+    ```
 
-- `connection()`
+- `streamInfo()`: 返回与当前请求相关的 [information](https://github.com/envoyproxy/envoy/blob/v1.17.3/include/envoy/stream_info/stream_info.h)
 
-- `importPublicKey()`
+    ```lua
+    local streamInfo = handle:streamInfo()
+    ```
 
-- `verifySignature()`
+- `connection()`: 返回与当前请求的基础(underlying) [connection](https://github.com/envoyproxy/envoy/blob/v1.17.3/include/envoy/network/connection.h)
 
-- `base64Escape()`
+    ```lua
+    local connection = handle:connection()
+    ```
 
+- `importPublicKey()`: 返回 `verifySignature` 用来校验的数字签名的公钥.
 
+    ```lua
+    local pubkey = handle:importPublicKey(keyder, keyderLength)
+    ```
 
+- `verifySignature()`: 使用提供的参数, 做数字校验. 该函数返回两个值, 如果第一个值为 true, 则请求成功, 第二个值为 空; 反之, 第二个值为 报错信息.
 
+    ```lua
+    local ok, error = verifySignature(hashFunction, pubkey, signature, signatureLength, data, dataLength)
+    ```
+
+    - `hashFunction`: 用来验证数字签名的 hash 函数. 支持的函数有 SHA1, SHA224, SHA256, SHA384 and SHA512 . 
+    - `pubkey`: 公钥. 
+    - `signature`: 签名. 
+    - `signatureLength`: 签名长度. 
+    - `data`: 被 hash 的内容. 
+    - `dataLength`: 被 hash 内容长度.
+
+- `base64Escape()`: 将输入内容使用 base64 encode 转义.
+
+    ```lua
+    local base64_encoded = handle:base64Escape("input string")
+    ```
 
 ##### Header object API
 
+- `add()`: 添加一个 header
+    ```lua
+    headers:add(key, value)
+    ```
+- `get()`: 获取
+    ```lua
+    headers:get(key)
+    ```
+- `__pairs()`: 迭代每个 headers
+    ```lua
+    for key, value in pairs(headers) do
+        -- do something
+    end
+    ```
+- `remove()`: 删除
+    ```lua
+    headers:remove(key)
+    ```
+- `replace()`: 替换
+    ```lua
+    headers:replace(key, value)
+    ```
 
 ##### Buffer API
 
+- `length()`: 获取 buffer bytes 的大小, 返回一个 int.
+    ```lua
+    local size = buffer:length()
+    ```
+- `getBytes()`: 从 buffer 中获取 bytes. 默认情况下, envoy 不会拷贝 all buffer 到 lua 运行时环境, 该方法拷贝一个 segment 到内存.
+    ```lua
+    buffer:getBytes(index, length)
+    ```
+    - `index` + `length` 必须小于 buffer 本身的长度.
+    - `index`: int, 开始拷贝的 buffer index.
+    - `length`: int, 拷贝的 buffer 长度.
+    
+- `setBytes()`: 设置 buffer 的内容.
+    ```lua
+    buffer:setBytes(string)
+    ```
 
 ##### Metadata object API
 
+- `get()`: 获取 metadata
+    ```lua
+    metadata:get(key)
+    ```
+- `__pairs()`: 迭代 metadata 键值对.
+    ```lua
+    for key, value in pairs(metadata) do
+        -- do something
+    end
+    ```
 
 ##### Stream info object API
+- `protocol()`: 获取当前请求的 HTTP 请求协议文本表示. 可能为值为: `HTTP/1.0`, `HTTP/1.1`, and `HTTP/2`.
+    ```lua
+    streamInfo:protocol()
+    ```
 
+- `downstreamLocalAddress()`: 返回字符串表示的 当前请求的 downstream remote addr.
+    ```lua
+    streamInfo:downstreamLocalAddress()
+    ```
+
+- `downstreamDirectRemoteAddress()`: 返回字符串表示的 当前请求的 downstream directly connected addr.
+    ```lua
+    streamInfo:downstreamDirectRemoteAddress()
+    ```
+
+- `dynamicMetadata()`: 返回 dynamic metadata object
+    ```lua
+    streamInfo:dynamicMetadata()
+    ```
+
+- `downstreamSslConnection()`: 返回与当前 SSL 链接相关的 [information](https://github.com/envoyproxy/envoy/blob/v1.17.3/include/envoy/ssl/connection.h)
+    ```lua
+    streamInfo:downstreamSslConnection()
+    ```
 
 ##### Dynamic metadata object API
+- `get()`: get an entry in dynamic metadata struct. 返回一个相应的 filterName 的 table
+    
+    ```lua
+    dynamicMetadata:get(filterName)
 
+    -- to get a value from a returned table.
+    dynamicMetadata:get(filterName)[key]
+    ```
+
+    - `filterName`: 是一个 filter 的名称, 如 `envoy.lb`
+
+- `set()`: 设置一个 filter 的 键/值 对 metadata.
+
+    ```lua
+    dynamicMetadata:set(filterName, key, value)
+    ```
+
+    示例:
+
+    ```lua
+    function envoy_on_request(request_handle)
+      local headers = request_handle:headers()
+      request_handle:streamInfo():dynamicMetadata():set("envoy.filters.http.lua", "request.info", {
+        auth: headers:get("authorization"),
+        token: headers:get("x-request-token"),
+      })
+    end
+
+    function envoy_on_response(response_handle)
+      local meta = response_handle:streamInfo():dynamicMetadata():get("envoy.filters.http.lua")["request.info"]
+      response_handle:logInfo("Auth: "..meta.auth..", token: "..meta.token)
+    end
+    ```
+
+- `__pairs()`: 迭代 dynamicMetadata entry.
+    
+    ```lua
+    for key, value in pairs(dynamicMetadata) do
+        -- do something
+    end
+    ```
 
 ##### Connection object API
+- `ssl()`: 当使用 SSL 链接时, 返回 [SSL connection object](https://github.com/envoyproxy/envoy/blob/v1.17.3/include/envoy/ssl/connection.h), 否则返回 `nil`.
 
+    ```lua
+    if connection:ssl() == nil then
+      print("plain")
+    else
+      print("secure")
+    end
+    ```
 
 ##### SSL connection object API
-
+- `downstreamSslConnection:peerCertificatePresented()`
+- `downstreamSslConnection:peerCertificateValidated()`
+- `downstreamSslConnection:uriSanLocalCertificate()`
+- `downstreamSslConnection:sha256PeerCertificateDigest()`
+- `downstreamSslConnection:serialNumberPeerCertificate()`
+- `downstreamSslConnection:issuerPeerCertificate()`
+- `downstreamSslConnection:subjectPeerCertificate()`
+- `downstreamSslConnection:uriSanPeerCertificate()`
+- `downstreamSslConnection:subjectLocalCertificate()`
+- `downstreamSslConnection:urlEncodedPemEncodedPeerCertificate()`
+- `downstreamSslConnection:urlEncodedPemEncodedPeerCertificateChain()`
+- `downstreamSslConnection:dnsSansPeerCertificate()`
+- `downstreamSslConnection:dnsSansLocalCertificate()`
+- `downstreamSslConnection:validFromPeerCertificate()`
+- `downstreamSslConnection:expirationPeerCertificate()`
+- `downstreamSslConnection:sessionId()`
+- `downstreamSslConnection:ciphersuiteId()`
+- `downstreamSslConnection:ciphersuiteString()`
+- `downstreamSslConnection:tlsVersion()`
 
 #### Lua 脚本示例
 
@@ -461,12 +671,45 @@ function envoy_on_response(response_handle)
 end
 ```
 
+### Tips
+
+```shell
+
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
+```
+
+TODO:
+```
+https://www.envoyproxy.io/docs/envoy/v1.17.3/start/sandboxes/load_reporting_service
+
+```
+
+Envoy 性能测试:
+- [envoy-perf](https://github.com/envoyproxy/envoy-perf)
+- https://github.com/google/copybara: A tool for transforming and moving code between repositories.
+- envoy mock: https://github.com/envoyproxy/envoy/tree/main/test/mocks
 
 
+参考: 
+- https://dropbox.tech/infrastructure/how-we-migrated-dropbox-from-nginx-to-envoy? 翻译: http://dockone.io/article/450995
+- https://dropbox.tech/infrastructure/courier-dropbox-migration-to-grpc
+- https://dropbox.tech/infrastructure/optimizing-web-servers-for-high-throughput-and-low-latency
+- https://blog.envoyproxy.io/the-universal-data-plane-api-d15cec7a
+- https://dropbox.tech/infrastructure/monitoring-server-applications-with-vortex
+- https://istio.io/latest/blog/2020/wasm-announce/
+- https://dropbox.tech/infrastructure/meet-bandaid-the-dropbox-service-proxy
+- https://dropbox.tech/infrastructure/dropbox-traffic-infrastructure-edge-network
+- https://dropbox.tech/infrastructure/meet-bandaid-the-dropbox-service-proxy
 
+grpc 参考:
+- https://grpc.io/docs/guides/error/
 
-
-
+envoy 扩展:
+- https://www.getenvoy.io/
+- https://github.com/tetratelabs/getistio
 
 
 
