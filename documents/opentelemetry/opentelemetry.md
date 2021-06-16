@@ -707,6 +707,28 @@ service:
     If set at Collector start time then exporters, regardless of protocol, will or will not proxy traffic as defined by these environment variables.
 
 
+## Tips
+### 1. Traceing Headers
+
+```python
+TRACE_HEADERS_TO_PROPAGATE = [
+    'X-Ot-Span-Context',
+    'X-Request-Id',
+
+    # Zipkin headers
+    'X-B3-TraceId',
+    'X-B3-SpanId',
+    'X-B3-ParentSpanId',
+    'X-B3-Sampled',
+    'X-B3-Flags',
+
+    # Jaeger header (for native client)
+    "uber-trace-id",
+
+    # SkyWalking headers.
+    "sw8"
+]
+```
 
 
 
