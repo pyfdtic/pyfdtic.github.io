@@ -17,7 +17,9 @@
 默认情况下, worker 线程之间没有通讯, 每个 worker 线程在 listener 上独立接受链接, 并且依赖于 内核在 线程之间执行调度. 大多数情况下, 这种方式工作良好, 但在有些场景中, 例如 少量长链接场景 如 service mesh HTTP2/gRPC egress, 有可能需要 Envoy 强制在 worker 线程之间做负载均衡. 此时, 可以通过在 listener 上配置 `connection_balance_config` 实现.
 
 ## Listeners
+
 ### Listeners TCP
+
 
 
 ### Listeners UDP
