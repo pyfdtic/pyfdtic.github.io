@@ -17,6 +17,7 @@
 默认情况下, worker 线程之间没有通讯, 每个 worker 线程在 listener 上独立接受链接, 并且依赖于 内核在 线程之间执行调度. 大多数情况下, 这种方式工作良好, 但在有些场景中, 例如 少量长链接场景 如 service mesh HTTP2/gRPC egress, 有可能需要 Envoy 强制在 worker 线程之间做负载均衡. 此时, 可以通过在 listener 上配置 `connection_balance_config` 实现.
 
 ## Listeners
+
 ### Listeners 
 推荐每台机器运行一个 Envoy 进程, 并监听多个端口. Envoy 支持 TCP/UDP 监听.
 
@@ -28,7 +29,6 @@
         listener filter 的 API 是相对 简单的, 基本上这些 filter 作用在 新接收到的套接字上. 在 listener filter chain 上的 filter 可以停止或者转发到后面的 filter 上, 这允许处理更加多和复杂的场景, 例如调用 rate limiting 服务.
         
         内置 listener filter: https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/listener_filters/listener_filters#config-listener-filters
-
     - 可以通过 LDS(listener discovery service) 动态获得.
 
 - UDP: 
@@ -47,7 +47,6 @@ Network levle(L3/L4) filter 是构建 Envoy 链接处理的核心. 这些 filter
 Network level filter 的 API 保持相对简单, 并主要用于处理 raw bytes 和 少量的 connection event(如 tls 握手/本地或远端链接断开 等).
 
 多个 Network level filter 之间在一个 downstream 链接上下文里, 可以共享(静态或动态)状态. 参考[ data shareing between filter](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/advanced/data_sharing_between_filters#arch-overview-data-sharing-between-filters).
-
 
 
 ### Network(L3/L4) Filter
