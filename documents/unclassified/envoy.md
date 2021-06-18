@@ -35,7 +35,8 @@
 
     - 监听器 + UDP listener filter: 每当一个 Worker 线程启动之后, 实例化一个 UDP listener filter, 并且对当前线程全局可见. listener filter 处理接受到的 UDP 数据报. 通常 UDP 监听器会配置 `SO_REUSEPORT` 内核参数, 这会导致内核持续将每个 UDP 4-tuple 发送到同一个 worker 线程. 因此, UDP listener 自带有类似 session 的功能, 该功能可以参考 [UDP Proxy listern filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/udp_filters/udp_proxy#config-udp-listener-filters-udp-proxy).
 
-### Network filter Chain
+
+### Network(L3/L4) Filter
 
 Network levle(L3/L4) filter 是构建 Envoy 链接处理的核心. 这些 filter api 允许被混合, 附着到一个 listener 上 处理链接请求.
 
@@ -49,8 +50,17 @@ Network level filter 的 API 保持相对简单, 并主要用于处理 raw bytes
 多个 Network level filter 之间在一个 downstream 链接上下文里, 可以共享(静态或动态)状态. 参考[ data shareing between filter](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/advanced/data_sharing_between_filters#arch-overview-data-sharing-between-filters).
 
 
-### Network(L3/L4) Filter
+#### filter chain
 
+network filter 被串联成有序的列表, 即 filter chain. 每个 listenter 有多个 filter chain 以及一个可选的 default filter chain. 
+
+如果没有 filter chain 被匹配到请求, 则 default filter chain 将发生作用. 如果没有提供 default filter chain, 链接将被关闭
+
+filter chain 可以被独立更新. 如果 listenter manager 监测到 listener 配置的更新只是 filter chain 的更新, 则 listener manager 管理器会 增/删/改 这写 filter chain. 哪些被老的 filter chain 处理的请求, 会被 drained (The connections owned by these destroying filter chains will be drained as described in listener drain).
+
+如果新的 filter chain 和 旧的 filter chain 持有相同的 protobuf message (protobuf message equivalent), 则这些一致的 filter chain runtime info 会被保留. 被这些 filter chain 处理的链接也会保持 open.
+
+并不是所有的 listener 配置更新可以被当做 filter chain 更新. 例如 如果 listener metadata 的更新, 新的 listener metadata 需要被 新的 filter chain 获取, 这种情况下, 整个 listener 会被 drained 和 更新.
 
 ### TCP Proxy
 
