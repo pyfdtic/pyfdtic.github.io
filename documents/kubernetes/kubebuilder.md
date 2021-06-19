@@ -44,6 +44,11 @@ kubebuilder vs dev from scratch
 $ minikube start --kubernetes-version='v1.18.8' --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers"
 ```
 
+如果 `storage-provisioner` 发生 ImagePullError, 执行下面的命令:
+```shell
+$ kubectl patch pod storage-provisioner -p '{"spec":{"containers":[{"name":"storage-provisioner","image":"registry.cn-hangzhou.aliyuncs.com/google_containers/storage-provisioner:v5"}]}}' -n kube-system
+```
+
 ### 1. 创建基础组件
 
 `kubebuilder init` 生成的主要配置文件:
