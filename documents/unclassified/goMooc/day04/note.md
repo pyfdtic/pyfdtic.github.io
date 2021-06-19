@@ -21,6 +21,10 @@ Tips:
 - go spec 
 
 ## QA
+
+https://shimo.im/docs/vjYP3WkRGyd9R9P9
+
+
 ```
 ring0-ring3在os代码中是怎么体现的
 ring3 -> ring0: syscall(硬件指令)
