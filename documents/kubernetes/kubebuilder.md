@@ -41,8 +41,13 @@ kubebuilder vs dev from scratch
 ### 0. 使用 minikube 启动集群
 
 ```shell
-$ minikube start --kubernetes-version='v1.18.8' --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers"
+$ minikube start --kubernetes-version='v1.18.8' --image-repository="registry.cn-hangzhou.aliyuncs.com/google_containers" --network-plugin=cni 
+
+# 安装 Cilium 组件
+$ kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.8/install/kubernetes/quick-install.yaml
+
 ```
+
 
 如果 `storage-provisioner` 发生 ImagePullError, 执行下面的命令:
 ```shell
