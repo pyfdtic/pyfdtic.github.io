@@ -39,11 +39,34 @@
 常见框架:
 - [go-micro](https://github.com/asim/go-micro)
 
-    框架设计的很好: 
+    框架设计的很好: https://www.bilibili.com/video/av73488208/
     
     主要组件:
+    - Service: 具体实例化的服务, 包含如下两个组件
+      - Client: 发送 RPC 请求与广播消息
+      - Server: 接受 RPC 请求与消费消息
+    - Broker: 异步通信组件
+    - Codec: 数据编码组件
+    - Registry: 服务注册组件
+    - Selector: 客户端均衡器
+    - Transport: 同步通信组件
+    
+    ![go-micro 组件](imgs/gomicro_com.png) 
 
     接口:
+
+    | 接口 | 支持组件 |
+    | -- | -- |
+    | Client | gRPC, HTTP |
+    | Server | gRPC, HTTP |
+    | Broker | NATS, NSQ, RabbitMQ, Kafka, Redis 等 |
+    | Codec | BSON, Mercury 等 |
+    | Registry | Etcd, NATS, Kubernetes, Eureka 等 |
+    | Selector | Label, Blacklist, Static 等 |
+    | Transport | NATS, gRPC, RabbisMQ, TCP, UDP |
+    | Wrapper |  中间件: 熔断, 限流, 追踪, 监控 |
+
+    ![go-micro 接口](imgs/gomicro_interface.png) 
 
 - [go-zero](https://github.com/tal-tech/go-zero)
 - [yoyogo](https://github.com/yoyofx/yoyogo)
@@ -70,7 +93,7 @@
     - 接口文档可检索
     - 服务 上线/部署 流水线化
 - 集成化
-    - 框架提供所需基础设施 SDK(log/tracing/config center/orm sql builder/es/clickhouse/mq etc...)
+    - 框架提供所需基础设施 SDK(log/tracing/config center/orm, sql builder/es sdk/clickhouse sdk/mq etc...)
     - 开箱即用, 核心依赖无需外部站点寻找
     - 专门的 organization 下维护其他非核心依赖
     - 解决用户的选择困难症
@@ -89,9 +112,24 @@
     - 对于企业内部框架来说, 通用并**不是**一定要追求的目标.
 
 ## 如何看待社区观点
+
 - IDL 之间可以用技术手段互相转换
 - 要做平台化, 可以适当屏蔽 IDL 语言, 可以参考 openapi
 - 业务代码入口不应于任何协议绑定
 
+
+## Tips
+- `fmt.Spintf` 会有很多变量逃逸, gc 变多.
+- 微服务热门书单:
+    - building microservice
+    - microservice.io
+    - microsoft
+
+
 ## 参考
 - https://shimo.im/docs/yTQHRjHkW83qDqtQ
+- sre 三本书:
+  - building secure & reliable system
+  - the site reliability workbook
+  - site reliability engineening
+
