@@ -36,6 +36,36 @@
     - 监听器 + UDP listener filter: 每当一个 Worker 线程启动之后, 实例化一个 UDP listener filter, 并且对当前线程全局可见. listener filter 处理接受到的 UDP 数据报. 通常 UDP 监听器会配置 `SO_REUSEPORT` 内核参数, 这会导致内核持续将每个 UDP 4-tuple 发送到同一个 worker 线程. 因此, UDP listener 自带有类似 session 的功能, 该功能可以参考 [UDP Proxy listern filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/udp_filters/udp_proxy#config-udp-listener-filters-udp-proxy).
 
 
+Listener 配置
+```json
+{
+  "name": "...",
+  "address": "{...}",
+  "stat_prefix": "...",
+  "filter_chains": [],
+  "use_original_dst": "{...}",
+  "default_filter_chain": "{...}",
+  "per_connection_buffer_limit_bytes": "{...}",
+  "metadata": "{...}",
+  "drain_type": "...",
+  "listener_filters": [],
+  "listener_filters_timeout": "{...}",
+  "continue_on_listener_filters_timeout": "...",
+  "transparent": "{...}",
+  "freebind": "{...}",
+  "socket_options": [],
+  "tcp_fast_open_queue_length": "{...}",
+  "traffic_direction": "...",
+  "udp_listener_config": "{...}",
+  "api_listener": "{...}",
+  "connection_balance_config": "{...}",
+  "reuse_port": "...",
+  "access_log": [],
+  "tcp_backlog_size": "{...}",
+  "bind_to_port": "{...}"
+}
+```
+
 ### Network(L3/L4) Filter
 
 Network levle(L3/L4) filter 是构建 Envoy 链接处理的核心. 这些 filter api 允许被混合, 附着到一个 listener 上 处理链接请求.
