@@ -94,14 +94,290 @@ filter chain 可以被独立更新. 如果 listenter manager 监测到 listener 
 
 ### TCP Proxy
 
+TCP proxy filter 在 upstream cliend 和 downstream server 之间, 维护 1:1 的网络连接. 
+
+TCP proxy filter 可以自己工作, 也可以配合其他的 filter 联合工作, 如 MongoDB filter , rate limit filter.
+
+TCP proxy filter 尊重每个 upstream cluster 的全局资源管理对 connection limits 的配置. TCP proxy filter 创建连接之前会检查 upstream cluster 的 connection limit 配置, 如果不超过则建立连接, 否则不会创建连接.
 
 ### UDP Proxy
 
+Envoy 通过 UDP proxy listener filer 支持 UDP proxy.
 
 ### DNS Filter
 
+Envoy 支持响应 通过配置 [UDP listener DNS filter] 来响应 DNS 请求.
+
+DNS filter 支持响应 DNS `A` 和 `AAAA` 记录. 这些响应通过静态配置资源, cluster, 或 额外的 DNS server 产生.
+
+DNS filter 返回 DNS 响应最大为 512 bytes. 如果某个域名有多个地址, Envoy 只会响应小于这个大小的 DNS 响应.
 
 ### Connection limiting
+
+Envoy 支持如下的 connection limit:
+- local(non-distributed) connection limiting of L4 connections via the [connection limit filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/network_filters/connection_limit_filter#config-network-filters-connection-limit)
+- runtime conection limiting via [Runtime listener connection limit](https://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/runtime#config-listeners-runtime)
+
+## HTTP
+
+Envoy 将 HTTP 协议视为一等公民.
+
+### HTTP connection management
+
+HTTP Connection manager 将原生的 bytes 转换为 HTTP 协议的消息和事件(如 headers received, body data received, trailers received 等). 同时, 它也处理与 HTTP 请求和链接相关的其他事务, 如 access log, request id 生成和 tracing, request/response 首部处理, 请求路由映射 和 statistics 等.
+
+- 协议: Envoy 原生支持 HTTP/1.1, HTTP/2, HTTP/3, WebSockets, 目前尚未支持**SPDY**. 
+
+    Envoy HTTP 支持被首要设置为最 HTTP/2 多路复用代理, 并在内部实现中, 使用 HTTP/2 术语.
+
+- HTTP header sanitizing
+
+    Envoy sanitize(无害化处理) 首部是基于 请求是内部还是一个外部请求. 通常基于 `x-forwarded-for` 来判断, 也可以通过设置 `internal_address_condfig` 来修改.
+
+    出于安全考虑, Envoy 会对如下 HTTP 首部做 santize(无害化) 处理:
+    - x-envoy-decorator-operation
+    - x-envoy-downstream-service-cluster
+    - x-envoy-downstream-service-node
+    - x-envoy-expected-rq-timeout-ms
+    - x-envoy-external-address
+    - x-envoy-force-trace
+    - x-envoy-internal
+    - x-envoy-ip-tags
+    - x-envoy-max-retries
+    - x-envoy-retry-grpc-on
+    - x-envoy-retry-on
+    - x-envoy-upstream-alt-stat-name
+    - x-envoy-upstream-rq-per-try-timeout-ms
+    - x-envoy-upstream-rq-timeout-alt-response
+    - x-envoy-upstream-rq-timeout-ms
+    - x-forwarded-client-cert
+    - x-forwarded-for
+    - x-forwarded-proto
+    - x-request-id
+
+- 路由映射
+    
+    Envoy 通过两种方式来做路由映射:
+    1. 静态 配置
+    2. 动态 RDS API.
+
+- 重试策略插件
+
+    通常情况下, 重试时 主机的选择遵循与原始请求一样的规则.
+
+    重试策略插件可以组合使用, Envoy 也支持自定义的 重试插件.
+    ```yaml
+    retry_policy:
+      retry_host_predicate:
+      - name: envoy.retry_host_predicates.previous_hosts
+      host_selection_retry_max_attempts: 3
+      retry_priority:
+        name: envoy.retry_priorities.previous_priorities
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.retry.priority.previous_priorities.v3.PreviousPrioritiesConfig
+          update_frequency: 2
+    ```
+    重试插件, 可以将重试策略分为如下两类:
+    - host predicates: 通常用来 reject host. 可以定义任意数量的 host predicates, 任意一个 predicates 匹配到主机, 则会拒绝该 host.
+        Envoy 支持如下内置 host predicates:
+        - `envoy.retry_host_predicates.previous_hosts` : 使用原始请求中的 reject host.
+            ```yaml
+            retry_policy:
+              retry_host_predicate:
+              - name: envoy.retry_host_predicates.previous_hosts
+              host_selection_retry_max_attempts: 3
+            ```
+        - `envoy.retry_host_predicates.omit_canary_hosts` : reject 任意被标记为 canary 的 host.
+            主机被标记为 canary 通过 `envoy.lb` 中配置 `canary: true` 实现.
+        - `envoy.retry_host_predicates.omit_host_metadata` : reject 任意匹配在预定于元信息的匹配项.
+            ```yaml
+            retry_policy:
+              retry_host_predicate:
+              - name: envoy.retry_host_predicates.omit_host_metadata
+                typed_config:
+                  "@type": type.googleapis.com/envoy.extensions.retry.host.omit_host_metadata.v3.OmitHostMetadataConfig
+                  metadata_match:
+                    filter_metadata:
+                      envoy.lb:
+                        key: value
+            ```
+    - priotiry predicatres: 依据 定义的负载优先级匹配主机. 只能定义一个匹配向.
+        Envoy 使用 如下内置 优先级 predicates:
+        - `envoy.retry_priorities.previous_priorities`: 使用原始请求中 priotiry predicates.
+        
+        ```yaml
+        retry_policy:
+          retry_priority:
+            name: envoy.retry_priorities.previous_priorities
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.retry.priority.previous_priorities.v3.PreviousPrioritiesConfig
+              update_frequency: 2
+        ```
+
+- 内部跳转: Envoy 通过在路由配置中配置 internal redirect policy 支持内部 3xx 跳转. Trailers 暂不支持.
+    配置:
+    ```json
+    {
+      "max_internal_redirects": "{...}",
+      "redirect_response_codes": [],
+      "predicates": [],
+      "allow_cross_scheme_redirect": "..."
+    }
+    ```
+
+    有种 predicates 可以被用来定义重定向链的 DAG(有向无环图):
+    - [previous routes](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/internal_redirect/previous_routes/v3/previous_routes_config.proto#envoy-v3-api-msg-extensions-internal-redirect-previous-routes-v3-previousroutesconfig)
+    - [allow_listed_routes](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/internal_redirect/allow_listed_routes/v3/allow_listed_routes_config.proto#envoy-v3-api-msg-extensions-internal-redirect-allow-listed-routes-v3-allowlistedroutesconfig)
+    
+    [safe_cross_scheme](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/internal_redirect/safe_cross_scheme/v3/safe_cross_scheme_config.proto#envoy-v3-api-msg-extensions-internal-redirect-safe-cross-scheme-v3-safecrossschemeconfig) 可以用来防止 `HTTP -> HTTPS` 的重定向.
+
+- Timeout: 有多种 timeout 配置可以用来应用到 HTTP 链接.
+
+    比较重要的超时配置:
+    - HTTP/gRPC
+        - Connection timeouts: 
+            HTTP 协议的 idle_timeout 用来定义一个通用的超时时间, 适用于 HTTP connection manager 和 upstream cluster HTTP connection
+            
+            ```json
+            # config.core.v3.HttpProtocolOptions
+            {
+              "idle_timeout": "{...}",      # 默认为 1h
+              "max_connection_duration": "{...}",
+              "max_headers_count": "{...}",
+              "max_stream_duration": "{...}",
+              "headers_with_underscores_action": "..."
+            }
+            ```
+
+            - 修改 downstream 链接的超时时间, 
+                ```yaml
+                # extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                
+                common_http_protocol_options: 
+                    headers_with_underscores_action: REJECT_REQUEST,
+                    idle_timeout: 900s
+                ```
+            - 修改 upstream 链接的超时时间, 
+                ```yaml
+                # extensions.upstreams.http.v3.HttpProtocolOptions
+                common_http_protocol_options: 
+                          idle_timeout: 1s
+                ```
+        - Stream timeouts: 应用HTTP 链接中的独立的 请求流, 包含 HTTP/1, HTTP/2, HTTP/3 .
+            - `extensions.filters.network.http_connection_manager.v3.HttpConnectionManager.request_timeout: 300s`
+            - `extensions.filters.network.http_connection_manager.v3.HttpConnectionManager.request_headers_timeout: 10s`
+            - `extensions.filters.network.http_connection_manager.v3.HttpConnectionManager.stream_idle_timeout: 30s`
+            - `config.core.v3.HttpProtocolOptions.max_stream_duration: 10s`
+        - Route timeout: 
+            - `config.route.v3.RouteAction.timeout: 15s`
+            - `config.route.v3.RouteAction.idle_timeout: 10s`
+            - `config.route.v3.RetryPolicy.pre_try_timeout: `
+            - `config.route.v3.RouteAction.MaxStreamDuration.max_stream_duration: `
+        - Scaled timeout: 
+    - TCP
+        - `config.cluster.v3.Cluster.connect_timeout: 5s`
+        - `extensions.filters.network.tcp_proxy.v3.TcpProxy.idle_timeout: 1h`
+    - Transport Socket
+        - `config.listener.v3.FilterChain.transport_socket_connect_timeout: `
+
+### HTTP filters
+
+Envoy 支持在 HTTP 协议级别的 filter. 这些 filter 可以在 HTTP协议级别做修改操作, 而 无需感知底层协议(HTTP/1.1, HTTP2 ...)
+
+
+HTTP level filter 有三种:
+- Decode: decode 请求流, 如 headers, body, trailers.
+- Encoder: encode 请求流, 如 headers, body, trailers.
+- Decoder/Encoder: 上面二合一.
+
+HTTP level filter 可以在单个请求流中共享状态(静态或者动态).
+
+- filter 顺序: 与定义顺序有关. 调用 decoder 顺序, encode 逆序.
+- 有条件的 filter 配置: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/composite_filter#config-http-filters-composite
+- Filter route mutation: https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/http/http_filters#filter-route-mutation
+
+### HTTP routing
+
+HTTP router filter 可以用做边缘代理, 构建服务到服务的 Envoy mesh, 或者正向代理.
+
+- Route Scope: 用于约束 domain 和 route rule 的搜索范围. 
+    
+    一个 Route scope 将一个 Scope key 与 route table 做映射. 对于每个请求来说, 一个 Scope key 被 HTTP connection manager 动态计算出来,用来匹配一个 route table.
+
+    Scoped RDS (SRDS) API 可以用来动态配饰 route scope.
+
+    ```yaml
+    # addr: foo=1;x-foo-key=127.0.0.1;x-bar-key=1.1.1.1 中, 127.0.0.1 会被用来被计算做 scope key
+    name: scope_by_addr
+    fragments:
+      - header_value_extractor:
+          name: Addr
+          element_separator: ;
+          element:
+            key: x-foo-key
+            separator: =
+    ```
+
+- Route table
+    
+    HTTP connection manager 中的 route table 配置可以被所有的 HTTP filter 访问. 
+
+    ```json
+    // config.route.v3.RouteConfiguration
+    
+    {
+      "name": "...",
+      "virtual_hosts": [],
+      "vhds": "{...}",
+      "internal_only_headers": [],
+      "response_headers_to_add": [],
+      "response_headers_to_remove": [],
+      "request_headers_to_add": [],
+      "request_headers_to_remove": [],
+      "most_specific_header_mutations_wins": "...",
+      "validate_clusters": "{...}",
+      "max_direct_response_body_size_bytes": "{...}"
+    }
+    ```
+
+- Retry semantics(语义)
+    重试策略可以通过 route 配置中的 `config.route.v3.RouteAction.retry_policy` 定义 也可以通过在特定请求中添加 请求头(`x-envoy-max-retries`, `x-envoy-retry-on`, `x-envoy-retry-grpc-on` 等)来定义.
+
+    retry 有如下四种可用配置参数:
+    - Maximum number of retries: 
+    - Retry conditions: 如依据 5xx 响应码等.
+    - Retry budgets: 用来限制 retry_budget, 防止发生网络风暴.
+    - Host selection retry plugins: 
+
+    Envoy 会在当配置有 `x-envoy-overloaded` 首部的时候重试请求. 推荐同时配置 `retry_budget` 或 设置 `maximum active retries circuit breaker` 来避免重试风暴.
+- Request Headging(范围,限制): Envoy 会同时向 upstream cluster 发起请求, 并返回响应最快的请求给 downstream.
+    ```json
+    // config.route.v3.HedgePolicy
+    {
+        "hedge_on_per_try_timeout": "..."
+    }
+    ```
+- Priotiry routing: envoy 支持 在 route 阶段 的 优先级路由. 当前的优先级路由实现为每个 优先级 使用不同的 [connection pool](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/connection_pooling#arch-overview-conn-pool) 和 [circuit breaking](https://www.envoyproxy.io/docs/envoy/latest/configuration/upstream/cluster_manager/cluster_circuit_breakers#config-cluster-manager-cluster-circuit-breakers). 这意味着即使是 http/2 协议, 也会用两个物理链接来链接 upstream host.
+
+    当前支持的优先级有:
+    - `default`
+    - `high`
+    
+- Direct Response: 直接响应无需将请求路由到一个 upstream server.
+
+    在一个 Route 配置中有两种方式来配置 直接响应:
+    - 设置 `direct_response` 字段, 适用于所有的 HTTP 响应状态码
+    - 设置 `redirect` 字段, 只适用于 重定向状态码.
+
+### HTTP3 overview
+
+Alpha 支持. 
+
+### HTTP upgrades
+
+
+### HTTP dynamic forward proxy
+
 
 
 ## 配置文件
