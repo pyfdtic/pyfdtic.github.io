@@ -4,6 +4,8 @@
 - 本地扩展: `Application` 有模块化的构建块组成. 这些构建块支持 CUELang 和 Helm 作为模板引擎. 对抽象模板所做的
 - 简单而可靠的抽象机制: KubeVela 中的抽象是用 Kubernetes Control Loop 构建的，所以它们永远不会在集群中留下配置漂移。作为 Kubernetes 自定义资源，KubeVela可以与任何 CI/CD 或 GitOps 工具无缝协作，不需要进行集成工作。
 
+![](imgs/kube-vela-note.png)
+
 ## 安装部署
 依赖:
 - kubernetes > 1.15.0
@@ -149,6 +151,63 @@ $ curl -H "Host:testsvc.example.com" http://<your ip address>/
 ![](imgs/kube-vela-arch.png)
 
 
+
+```shell
+# 获取所有在运行的 application
+kubectl get [app|application]
+kubectl get app APP_NAME -o yaml
+
+# 获取历史版本
+kubectl get apprev 
+
+# 查看所有可用的 components
+# 一般 ComponentDefinition 只能被同 namespace 下 application 引用，但是 vela-system namespace 下可以被所有 application 引用。
+kubectl get comp -n vela-system
+
+# 获取某个 component 详细配置信息.
+kubectl vela shwo webservice
+
+# 获取所有 trait
+kubectl get trait -n vela-system   
+- annotations   [deployments.apps]    Add annotations for your Workload.
+- cpuscaler     [webservice worker]   Automatically scale the component based on CPU usage.
+- ingress       [webservice worker]   Enable public web traffic for the component.
+- labels        [deployments.apps]    Add labels for your Workload.
+- scaler        [webservice worker]   Manually scale the component.
+- sidecar       [deployments.apps]    Inject a sidecar container to the component.
+
+# 查看某个 trait 配置详情
+kubectl vela show sidecar
+```
+
+远端仓库的 component
+```shell
+# 获取远端仓库的 component
+kubectl get comp --discover [--url REGISTRY]
+
+# 安装远端仓库的 component
+kubectl vela comp get cloneset [--url REGISTRY]
+```
+
+自定义 component 的四种方式:
+- Helm
+- CUE
+- Simple Template
+- Cloud Services
+
+远端仓库的 trait:
+```shell
+# 获取远端仓库的 trait
+kubectl vela trait --discover [--url REGISTRY]
+
+# 安装远端仓库的 trait 到本地集群
+kubectl vela trait get init-container [--url REGISTRY]
+
+```
+自定义 trait:
+- CUE
+- TraitDefinition
+
 ### 几个概念
 
 ![](imgs/what-is-kubevela.png)
@@ -157,28 +216,27 @@ $ curl -H "Host:testsvc.example.com" http://<your ip address>/
 - `Templates`: 平台部门 预定义的, 集成最佳实践的 k8s 能力模型模板.
 - `App`: 面向开发者的应用抽象.
 
-
-
 ### crd
-```text
-appdeployments.core.oam.dev
-applicationconfigurations.core.oam.dev
-applicationcontexts.core.oam.dev
-applicationdeployments.core.oam.dev
-applicationrevisions.core.oam.dev
-applications.core.oam.dev
-approllouts.core.oam.dev
-componentdefinitions.core.oam.dev
-components.core.oam.dev
-containerizedworkloads.core.oam.dev
-healthscopes.core.oam.dev
-manualscalertraits.core.oam.dev
-podspecworkloads.standard.oam.dev
-scopedefinitions.core.oam.dev
-traitdefinitions.core.oam.dev
-workloaddefinitions.core.oam.dev
-```
 
+- `appdeployments.core.oam.dev` : 应用部署相关, 如滚动更新, 流量切换等.
+- `applicationconfigurations.core.oam.dev` : 
+- `applicationcontexts.core.oam.dev` : 
+- `applicationrevisions.core.oam.dev` : 
+- `applications.core.oam.dev` : 
+- `approllouts.core.oam.dev` : 
+- `clusters.core.oam.dev` : 
+- `componentdefinitions.core.oam.dev` : 
+- `components.core.oam.dev` : 
+- `containerizedworkloads.core.oam.dev` : 
+- `definitionrevisions.core.oam.dev` : 
+- `healthscopes.core.oam.dev` : 应用健康探针
+- `manualscalertraits.core.oam.dev` : 
+- `podspecworkloads.standard.oam.dev` : 
+- `resourcetrackers.core.oam.dev` : 
+- `rollouttraits.standard.oam.dev` : 
+- `scopedefinitions.core.oam.dev` : 
+- `traitdefinitions.core.oam.dev` : 
+- `workloaddefinitions.core.oam.dev` : 
 
 # Topic
 ## kube-vela 集成 argocd
@@ -190,6 +248,7 @@ kubevela 是声明式应用描述，所以原生支持所有 gitops 工具，不
 汇总:
 1. appfile 模式: 需要配置 argocd 的 kubevela 插件.
     参考: https://www.cncf.io/blog/2020/12/22/argocd-kubevela-gitops-with-developer-centric-experience/ 
+
 2. app crd 模式: 无需配置, 原生支持.
 
 
@@ -261,7 +320,7 @@ kubevela 是声明式应用描述，所以原生支持所有 gitops 工具，不
     ```
 - 原生 Kubernetes 资源模板
 
-open-api schema: 在 1.0 版本，所有的抽象定义都会自动生成 Open-API-v3 架构 JSON 格式的表单数据，方便前端进行集成。无论是 CUE、Helm 还是原生 Kubernetes 资源模板，都会已生成一个名为 schema-<your-definition-name> 的 ConfigMap，其中的 key  openapi-v3-json-schema 的值就是 JSON 格式的参数，可以非常方便生成一个前端表单供平台和应用团队使用
+open-api schema: 在 1.0 版本，所有的抽象定义都会自动生成 Open-API-v3 架构 JSON 格式的表单数据，方便前端进行集成。无论是 CUE、Helm 还是原生 Kubernetes 资源模板，都会已生成一个名为 `schema-<your-definition-name>` 的 ConfigMap，其中的 key  openapi-v3-json-schema 的值就是 JSON 格式的参数，可以非常方便生成一个前端表单供平台和应用团队使用
 
 
 ## kubevele & terraform 
