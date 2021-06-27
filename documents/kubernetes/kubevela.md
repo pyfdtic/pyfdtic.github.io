@@ -4,14 +4,14 @@
 - 本地扩展: `Application` 有模块化的构建块组成. 这些构建块支持 CUELang 和 Helm 作为模板引擎. 对抽象模板所做的
 - 简单而可靠的抽象机制: KubeVela 中的抽象是用 Kubernetes Control Loop 构建的，所以它们永远不会在集群中留下配置漂移。作为 Kubernetes 自定义资源，KubeVela可以与任何 CI/CD 或 GitOps 工具无缝协作，不需要进行集成工作。
 
-![](imgs/kube-vela-note.png)
+![](imgs/kube-vela-arch.png)
 
 ## 安装部署
+
 依赖:
 - kubernetes > 1.15.0
 - ingress-nginx
 
-### 安装 kubevela
 ```shell
 # 通过 helm 安装
 $ helm repo add kubevela https://kubevelacharts.oss-cn-hangzhou.aliyuncs.com/core
@@ -49,6 +49,7 @@ $ kubectl delete crd \
   traitdefinitions.core.oam.dev \
   workloaddefinitions.core.oam.dev
 ```
+
 升级:
 
 ```shell
@@ -81,13 +82,10 @@ $ kubectl apply -f https://raw.githubusercontent.com/oam-dev/kubevela/master/doc
 $ kubectl get application
 
 $ curl -H "Host:testsvc.example.com" http://<your ip address>/
-
-
 ```
 
 ## 核心概念
-1. 关注点分离
-
+关注点分离:
 - 平台团队: 通过给部署环境和可重复使用的能力模块编写模板来构建应用, 并将他们注册到集群当中.
 - 业务用户: 选择部署环境, 模型和可用模块来组装应用, 并吧应用部署到目标环境中.
 
@@ -145,13 +143,37 @@ $ curl -H "Host:testsvc.example.com" http://<your ip address>/
 
     - `capability definitions` : 在 kubevela 中, component definitions 和 trait definitions  也被称为 `capability definitions`
 
-- `Environment` : 每个环境有自己独特的定义, 如 domain, Kubernetes cluster and namespace, configuration data, access control policy, etc. 目前, kubevela 只支持 kubernetes namespace 的环境配置, 集群级别的在开发中.
+- `Environment` : 可重用的基础设施配置. 每个环境有自己独特的定义, 如 domain, Kubernetes cluster and namespace, configuration data, access control policy, etc. 目前, kubevela 只支持 kubernetes namespace 的环境配置, 集群级别的在开发中.
+
+![](imgs/kube-vela-note.png)
 
 ![](imgs/kube-vela-concepts.png)
-![](imgs/kube-vela-arch.png)
+
+![](imgs/what-is-kubevela.png)
 
 
+CRD:
+- `appdeployments.core.oam.dev` : 应用部署相关, 如滚动更新, 流量切换等.
+- `applicationconfigurations.core.oam.dev` : 
+- `applicationcontexts.core.oam.dev` : 
+- `applicationrevisions.core.oam.dev` : 
+- `applications.core.oam.dev` : 
+- `approllouts.core.oam.dev` : 
+- `clusters.core.oam.dev` : 
+- `componentdefinitions.core.oam.dev` : 
+- `components.core.oam.dev` : 
+- `containerizedworkloads.core.oam.dev` : 
+- `definitionrevisions.core.oam.dev` : 
+- `healthscopes.core.oam.dev` : 应用健康探针
+- `manualscalertraits.core.oam.dev` : 
+- `podspecworkloads.standard.oam.dev` : 
+- `resourcetrackers.core.oam.dev` : 
+- `rollouttraits.standard.oam.dev` : 
+- `scopedefinitions.core.oam.dev` : 
+- `traitdefinitions.core.oam.dev` : 
+- `workloaddefinitions.core.oam.dev` : 
 
+## kubectl vela 使用
 ```shell
 # 获取所有在运行的 application
 kubectl get [app|application]
@@ -189,12 +211,6 @@ kubectl get comp --discover [--url REGISTRY]
 kubectl vela comp get cloneset [--url REGISTRY]
 ```
 
-自定义 component 的四种方式:
-- Helm
-- CUE
-- Simple Template
-- Cloud Services
-
 远端仓库的 trait:
 ```shell
 # 获取远端仓库的 trait
@@ -204,53 +220,208 @@ kubectl vela trait --discover [--url REGISTRY]
 kubectl vela trait get init-container [--url REGISTRY]
 
 ```
-自定义 trait:
+
+# kubevela 开发
+## 1. 应用抽象扩展
+### 1.1 Component
+- Helm
+- CUE
+- Simple Template
+- Cloud Services
+
+### 1.2 Trait
 - CUE
 - TraitDefinition
 
-### 几个概念
+## 2. Appfile
 
-![](imgs/what-is-kubevela.png)
+有点类似 [skaffold](https://skaffold.dev/docs/), 结合配置文件来管理 kubevela 应用生命周期.
 
-- `Environments`: 可重用的基础设施配置
-- `Templates`: 平台部门 预定义的, 集成最佳实践的 k8s 能力模型模板.
-- `App`: 面向开发者的应用抽象.
+Schema
+```yaml
+name: _app-name_
 
-### crd
+services:
+  _service-name_:
+    # If `build` section exists, this field will be used as the name to build image. Otherwise, KubeVela will try to pull the image with given name directly.
+    image: oamdev/testapp:v1
 
-- `appdeployments.core.oam.dev` : 应用部署相关, 如滚动更新, 流量切换等.
-- `applicationconfigurations.core.oam.dev` : 
-- `applicationcontexts.core.oam.dev` : 
-- `applicationrevisions.core.oam.dev` : 
-- `applications.core.oam.dev` : 
-- `approllouts.core.oam.dev` : 
-- `clusters.core.oam.dev` : 
-- `componentdefinitions.core.oam.dev` : 
-- `components.core.oam.dev` : 
-- `containerizedworkloads.core.oam.dev` : 
-- `definitionrevisions.core.oam.dev` : 
-- `healthscopes.core.oam.dev` : 应用健康探针
-- `manualscalertraits.core.oam.dev` : 
-- `podspecworkloads.standard.oam.dev` : 
-- `resourcetrackers.core.oam.dev` : 
-- `rollouttraits.standard.oam.dev` : 
-- `scopedefinitions.core.oam.dev` : 
-- `traitdefinitions.core.oam.dev` : 
-- `workloaddefinitions.core.oam.dev` : 
+    build:
+      docker:
+        file: _Dockerfile_path_ # relative path is supported, e.g. "./Dockerfile"
+        context: _build_context_path_ # relative path is supported, e.g. "."
+
+      push:
+        local: kind # optionally push to local KinD cluster instead of remote registry
+
+    type: webservice (default) | worker | task
+
+    # detailed configurations of workload
+    ... properties of the specified workload  ...
+
+    _trait_1_:
+      # properties of trait 1
+
+    _trait_2_:
+      # properties of trait 2
+
+    ... more traits and their properties ...
+  
+  _another_service_name_: # more services can be defined
+    ...
+
+```
+
+Demo:
+```yaml
+name: testapp
+
+services:
+  frontend: # 1st service
+
+    image: oamdev/testapp:v1
+    build:
+      docker:
+        file: Dockerfile
+        context: .
+
+    cmd: ["node", "server.js"]
+    port: 8080
+
+    route: # trait
+      domain: example.com
+      rules:
+        - path: /testapp
+          rewriteTarget: /
+
+  backend: # 2nd service
+    type: task # workload type
+    image: perl 
+    cmd: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+```
+
+Command
+```shell
+vela init
+
+vela up [-f /path/to/appfile]
+
+vela status APPNAME
+vela delete APPNAME
+vela port-forward APPNAME
+vela ls 
+
+vela components
+vela traits    
+vela workloads 
+```
+
+
+## 3. Open API Schema
+
+所有的抽象定义都会自动生成 Open-API-v3 架构 JSON 格式的表单数据，并把它储存到一个和定义对象处于同一个 `namespace` 的 `ConfigMap` 中.
+
+无论是 CUE、Helm 还是原生 Kubernetes 资源模板，都会已生成一个名为 `schema-<your-definition-name>` 的 ConfigMap，其中的 `key`  `openapi-v3-json-schema` 的值就是 JSON 格式的参数，可以非常方便生成一个前端表单供平台和应用团队使用.
+
+```
+$ kubectl get configmap -n vela-system -l definition.oam.dev=schema
+    NAME                   DATA   AGE
+    schema-cpuscaler       1      28h
+    schema-ingress         1      28h
+    schema-scaler          1      28h
+    schema-sidecar         1      28h
+    schema-task            1      28h
+    schema-task-v1         1      28h
+    schema-webservice      1      28h
+    schema-webservice-v1   1      28h
+    schema-worker          1      28h
+    schema-worker-v1       1      28h
+
+$ kubectl get configmap -n vela-system schema-webservice -o yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      labels:
+        definition.oam.dev: schema
+      name: schema-webservice
+      namespace: vela-system
+    data:
+      openapi-v3-json-schema: '{"properties":{"addRevisionLabel":{"default":false,"description":"If
+        addRevisionLabel is true, the appRevision label will be added to the underlying
+        pods","title":"addRevisionLabel","type":"boolean"},"cmd":{"description":"Commands
+        to run in the container","items":{"type":"string"},"title":"cmd","type":"array"},"cpu":{"description":"Number
+        of CPU units for the service, like `0.5` (0.5 CPU core), `1` (1 CPU core)","title":"cpu","type":"string"},"env":{"description":"Define
+        arguments by using environment variables","items":{"properties":{"name":{"description":"Environment
+        variable name","title":"name","type":"string"},"value":{"description":"The value
+        of the environment variable","title":"value","type":"string"},"valueFrom":{"description":"Specifies
+        a source the value of this var should come from","properties":{"secretKeyRef":{"description":"Selects
+        a key of a secret in the pod''s namespace","properties":{"key":{"description":"The
+        key of the secret to select from. Must be a valid secret key","title":"key","type":"string"},"name":{"description":"The
+        name of the secret in the pod''s namespace to select from","title":"name","type":"string"}},"required":["name","key"],"title":"secretKeyRef","type":"object"}},"required":["secretKeyRef"],"title":"valueFrom","type":"object"}},"required":["name"],"type":"object"},"title":"env","type":"array"},"image":{"description":"Which
+        image would you like to use for your service","title":"image","type":"string"},"port":{"default":80,"description":"Which
+        port do you want customer traffic sent to","title":"port","type":"integer"},"volumes":{"description":"Declare
+        volumes and volumeMounts","items":{"properties":{"mountPath":{"title":"mountPath","type":"string"},"name":{"title":"name","type":"string"},"type":{"description":"Specify
+        volume type, options: \"pvc\",\"configMap\",\"secret\",\"emptyDir\"","enum":["pvc","configMap","secret","emptyDir"],"title":"type","type":"string"}},"required":["name","mountPath","type"],"type":"object"},"title":"volumes","type":"array"}},"required":["addRevisionLabel","image","port"],"type":"object"}'
+```
+
+该 schema 是根据`capability` 定义中的 `parameter` 部分生成的：
+- 对于基于 CUE 的定义：`parameter` CUE 模板中的关键词。
+- 对于基于 Helm 的定义：`parameter` 是从在 Helm Chart 中的 `values.yaml` 生成的。
+
+### 3.1 vela dashboard
+
+```shell
+$ vela dashboard
+
+$ curl localhost:38081
+```
+
+API
+```text
+/api/envs/
+/api/envs/:envName
+/api/envs/:envName/apps/
+/api/envs/:envName/apps/:appName
+/api/envs/:envName/apps/:appName/components/
+/api/envs/:envName/apps/:appName/components/:compName
+/api/envs/:envName/apps/:appName/components/:compName/traits/
+/api/envs/:envName/apps/:appName/components/:compName/traits/:traitName
+/api/components/:componentName
+/api/components/
+/api/traits/
+/api/traits/:traitName
+/api/scopes/
+/api/scopes/:scopeName
+/api/capability-centers/
+/api/capability-centers/:capabilityCenterName
+/api/capability-centers/:capabilityCenterName/capabilities/
+/api/capability-centers/:capabilityCenterName/capabilities/:capabilityName
+/api/capabilities/:capabilityName
+/api/capabilities/
+/api/definitions/:name
+/api/version
+/swagger/*any
+```
 
 # Topic
-## kube-vela 集成 argocd
+## 1. kube-vela 集成 argocd
 
-OAM 模型是 [Kubernetes Resource Model](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/architecture/resource-management.md) 
+OAM 模型 [Kubernetes Resource Model](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/architecture/resource-management.md) 
 
-kubevela 是声明式应用描述，所以原生支持所有 gitops 工具，不需要任何额外的工作。这也是我们建议的使用 kubevela 的方式，具体优势在 cncf 的文章中有介绍。不过文章中用的是 appfile 为例，如果直接使用 app crd的话，任何配置工作都不需要。
+kubevela 是声明式应用描述，所以原生支持所有 gitops 工具，不需要任何额外的工作。这也是推荐的使用 kubevela 的方式。
 
-汇总:
-1. appfile 模式: 需要配置 argocd 的 kubevela 插件.
+可以使用如下两种方式:
+1. `appfile` 模式: 需要配置 argocd 的 kubevela 插件.
+
     参考: https://www.cncf.io/blog/2020/12/22/argocd-kubevela-gitops-with-developer-centric-experience/ 
 
 2. app crd 模式: 无需配置, 原生支持.
 
+## 2. kubevela & terraform 
+
+https://github.com/oam-dev/terraform-controller
+
+<!-- 
 
 ## kubevela 应用抽象模式
 - CUE
@@ -320,18 +491,9 @@ kubevela 是声明式应用描述，所以原生支持所有 gitops 工具，不
     ```
 - 原生 Kubernetes 资源模板
 
-open-api schema: 在 1.0 版本，所有的抽象定义都会自动生成 Open-API-v3 架构 JSON 格式的表单数据，方便前端进行集成。无论是 CUE、Helm 还是原生 Kubernetes 资源模板，都会已生成一个名为 `schema-<your-definition-name>` 的 ConfigMap，其中的 key  openapi-v3-json-schema 的值就是 JSON 格式的参数，可以非常方便生成一个前端表单供平台和应用团队使用
 
-
-## kubevele & terraform 
-
-https://github.com/oam-dev/terraform-controller
 
 ## 社区
-https://i.cloudnative.to/oam/articles
+https://i.cloudnative.to/oam/articles 
 
-
-
-
-
-
+-->
