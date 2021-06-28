@@ -13,3 +13,6 @@ Konveyor 还支持越来越多的工具，这些工具的设计都是为了加�
 - [Pelorus](https://github.com/redhat-cop/pelorus): 支持指标驱动的转型，并度量软件交付性能的关键指标，包括变更的交付时间、部署频率、恢复的平均时间和变更失败率。
 - [Forklift](https://github.com/konveyor/forklift-operator): 将虚拟机迁移到 Kubernetes，并提供了将虚拟机迁移到 KubeVirt 的能力，同时最小化停机时间。
 - [KubeVirt](https://kubevirt.io/): 允许开发人员和运营团队获得 Kubernetes 编配和周围生态系统的好处，而不需要更改代码或配置。
+
+## [kspan](https://github.com/weaveworks-experiments/kspan)
+将 kubenetes evnets 转为 OpenTelemetry Spans, 方便在 Jaeger 中呈现.

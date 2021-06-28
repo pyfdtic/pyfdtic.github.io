@@ -83,6 +83,6 @@ java -XX:MaxDirectMemorySize=512m ...
 
 test netty leak
 ```
--Dio.netty.leakDetection.level=ADVANCED
--Dio.netty.leakDetection.level=PARANOID 
+-Dio.netty.leakDetection.level=ADVANCED  # 10% 采样
+-Dio.netty.leakDetection.level=PARANOID  # 全部采样.
 ```
