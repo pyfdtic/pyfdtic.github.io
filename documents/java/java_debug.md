@@ -234,3 +234,33 @@ Java 1.8 中 -XX:PermSize 和 -XX:MaxPermSize 已经失效, 取而代之的是�
 
 JDK 1.8 的对 JVM 架构的改造将类元数据放到本地内存中, 另外, 将常量池和静态变量放到 Java 堆里. HotSopt VM 将会为类的元数据明确分配和释放本地内存. 在这种架构下, 类元信息就突破了原来 -XX:MaxPermSize 的限制, 现在可以使用更多的本地内存. 这样就从一定程度上解决了原来在运行时生成大量类的造成经常 Full GC 问题, 如运行时使用反射、代理等. 
 
+## 工具
+### jvm heap dump 分析工具
+
+- IBM HeapAnalyzer
+    
+    参考: https://www.ibm.com/support/pages/ibm-heapanalyzer
+
+    ```shell
+    # 下载 ibm-heapanalyzer jar
+    $ wget https://public.dhe.ibm.com/software/websphere/appserv/support/tools/HeapAnalyzer/ha457.jar
+
+    # 运行分析命令
+    $ java -Xmx2g -jar ha457.jar /path/to/jvm-dump.jmap
+    ```
+
+- VisualVM
+  
+### GC 分析
+- IBM Pattern Modeling and Analysis Tool for Java Garbage Collector (PMAT)
+
+    参考: https://www.ibm.com/support/pages/ibm-pattern-modeling-and-analysis-tool-java-garbage-collector-pmat
+    
+    Document:
+    ```shell
+    # 下载 pmat jar
+    $ wget https://public.dhe.ibm.com/software/websphere/appserv/support/tools/pmat/ga458.jar
+
+    # 运行 jar 诊断工具
+    $ java -Xmx1g -jar ga*.jar
+    ```
