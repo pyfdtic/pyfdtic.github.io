@@ -94,10 +94,8 @@ k9s:
       warn: 70
 ```
 
-### 4. kt-connect
+### 4. [kt-connect](https://github.com/alibaba/kt-connect)
 通过 VPN/Socket5 本地连接集群调试工具
-
-- [https://github.com/alibaba/kt-connect](https://github.com/alibaba/kt-connect)
 
 ## 其他开源项目
 
