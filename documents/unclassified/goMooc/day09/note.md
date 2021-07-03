@@ -1,17 +1,26 @@
 ## 传统分层
-MVC
+MVC: 
+- View: 前端, 模板
+- Model: 数据相关结构
+- Controller: 业务逻辑
 
-前后端分离
+前后端分离: View 消失.
 
-贫血模式: 
+DLC:
+- Dao: Data access object
+- logic/service: 业务逻辑
+- Controller: api 入口.
+
+贫血模式: 国内使用较多.
 - 业务逻辑都在 Logic 层内
 - Struct, Class 上没有任何逻辑, 或只有少量逻辑
 
-充血模式: 
+充血模式: DDD 推荐.
 - 要让 domain object 即 entity 有更多逻辑
 - 通过聚合来组合 entity 的咯及
 
-SOLID 架构
+SOLID : 面向对象五原则.
+DIP(Dependency Inversion Priciple): 依赖方向与程序控制方向相反.
 
 ## 整洁架构 Style
 
@@ -20,7 +29,14 @@ SOLID 架构
     1. 业务代码入口不应于任何协议绑定
     2. 框架代码(如 gin.Context) 不要入侵到业务层.
 - 可测试: 业务逻辑应该在没有 UI、database 环境、web server 等所有外部环境的前提下做到可测试。
-    mock
+    mock:
+    - Sql Driver mock for Golang
+    - Go monkeypatching
+    - Redis clinet Mock
+    - go mock
+    - etcd mock
+    - httptest
+    - testify
 - 不与 UI 绑定: 不与具体的 UI 库绑定，项目应该做到随意切换外部 UI，比如可以将 web UI 替换为 console UI，同时无需业务逻辑做修改。
     前后分离
 - 不与数据库绑定: 可以把 Oracle 换成  SQL Server，也可以换成Mongo，换成 BigTable，换成 CouchDB。业务不依赖具体存储方式。
