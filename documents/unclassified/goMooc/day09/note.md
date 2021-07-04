@@ -46,9 +46,15 @@ DIP(Dependency Inversion Priciple): 依赖方向与程序控制方向相反.
 https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 
 使用 Go 实现 clean architecture: https://eltonminetto.dev/en/post/2020-07-06-clean-architecture-2years-later/
-相关代码: https://github.com/eminetto/clean-architecture-go-v2
+相关示例代码: 
+- https://github.com/eminetto/clean-architecture-go-v2
+- https://github.com/bxcodec/go-clean-arch
 
 ## DDD style
+
+DDD:
+- 战略设计
+- 战术设计
 
 名词多:
 - Value Object(Value Type): 是不可变的(immutable), 可比较的(comparable)值.
@@ -98,6 +104,3 @@ Adapters = instances
 ## 参考
 
 - https://shimo.im/docs/c999gcd8jRrkTcYt/
-
-
-
