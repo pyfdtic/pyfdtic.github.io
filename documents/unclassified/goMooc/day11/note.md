@@ -23,15 +23,10 @@ Go 在数据中台中的应用:
 - apache beam: 好像比较拉胯 --> 书 streaming system
 
 
-## Linter
-
-## 优雅代码
-
-## 如何写测试
-
-## 错误注入原理与实现
-
-## 如何做 Code Review
+## CRUD 如何进步
+- 自动化
+- 配置化
+- 平台化
 
 
 ## 参考
@@ -39,3 +34,8 @@ Go 在数据中台中的应用:
 - https://shimo.im/docs/wyKKc6wVRjdQvHhT/
 - [Apache Beam 架构原理及应用实践](https://www.infoq.cn/article/aly182jgm6mtitg7nl0r)
 - greenplum
+- 推书:
+    1. 数据中台
+    2. 企业 IT 架构转型之道
+    3. streaming system
+- http://research.google/pubs/?area=distributed-systems-and-parallel-computing
