@@ -7,6 +7,7 @@
   * [kubebuilder](/documents/kubernetes/kubebuilder)
   * [coredns](/documents/kubernetes/coredns)
   * [kubevela](/documents/kubernetes/kubevela)
+  * [kubernetes awesome tools](/documents/kubernetes/k8s-awesome)
 
 ## GO
   * [Gin 文档汇总](/documents/go/gin)

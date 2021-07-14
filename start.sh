@@ -2,5 +2,5 @@
 
 PORT=30000
 
-open http://localhost:$PORT ;
+open -F http://localhost:$PORT ;
 docsify s -p $PORT
