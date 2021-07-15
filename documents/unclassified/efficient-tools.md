@@ -72,6 +72,7 @@
 ### 插件
 - `Markdown All in One`: 写 Markdown 文档, 包含大纲等功能.
 - `Marp for VS Code`: 使用 Markdown 写 PPT
+- `Paste Image`: 在 Markdown 中粘贴图片. 可以配置图片默认保存的目录(默认为当前文件所在目录), `CMD + Alt + V` 粘贴剪切板中的图片.
 - `vscode-pdf`: 支持只读形式打开 PDF 文档.
 
 ## 工具软件
